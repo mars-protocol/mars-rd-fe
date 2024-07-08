@@ -9,7 +9,7 @@ import { BN } from 'utils/helpers'
 
 export default function useRouteInfo(denomIn: string, denomOut: string, amount: BigNumber) {
   const chainConfig = useChainConfig()
-  const isOsmosis = [ChainInfoID.Osmosis1, ChainInfoID.OsmosisDevnet].includes(chainConfig.id)
+  const isOsmosis = [ChainInfoID.Osmosis1].includes(chainConfig.id)
   const { data: assets } = useAssets()
   const debouncedAmount = useDebounce<string>(amount.toString(), 500)
 
@@ -23,7 +23,8 @@ export default function useRouteInfo(denomIn: string, denomOut: string, amount: 
         const route = (await resp.json()) as OsmosisRouteResponse
 
         return {
-          priceImpact: BN(route.price_impact),
+          amountOut: BN(route.amount_out),
+          priceImpact: BN(route.price_impact).times(100),
           fee: BN(route.effective_fee),
           description: [
             assets.find(byDenom(denomIn))?.symbol,
@@ -51,6 +52,7 @@ export default function useRouteInfo(denomIn: string, denomOut: string, amount: 
 
   const astroportRoute = useSWR<SwapRouteInfo | null>(
     !isOsmosis &&
+      debouncedAmount !== '0' &&
       `${chainConfig.endpoints.routes}?start=${denomIn}&end=${denomOut}&amount=${debouncedAmount}&chainId=${chainConfig.id}&limit=1`,
     async (url: string) => {
       try {
@@ -58,6 +60,7 @@ export default function useRouteInfo(denomIn: string, denomOut: string, amount: 
         const route = (await resp.json())[0] as AstroportRouteResponse
 
         return {
+          amountOut: BN(route.amount_out),
           priceImpact: BN(route.price_impact),
           fee: BN(0), // TODO: Fees are not implemented yet on Astroport endpoint
           description: [

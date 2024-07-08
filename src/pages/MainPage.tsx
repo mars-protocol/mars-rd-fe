@@ -2,7 +2,7 @@ import StatsTrading from 'components/Stats/StatsTrading'
 import Card from 'components/common/Card'
 import Loading from 'components/common/Loading'
 import AssetImage from 'components/common/assets/AssetImage'
-import useDepositEnabledAssets from 'hooks/assets/useDepositEnabledAssets'
+import useWhitelistedAssets from 'hooks/assets/useWhitelistedAssets'
 import { Suspense } from 'react'
 
 export default function MainPage() {
@@ -26,7 +26,7 @@ export default function MainPage() {
 }
 
 function Assets() {
-  const assets = useDepositEnabledAssets()
+  const assets = useWhitelistedAssets()
 
   return (
     <>

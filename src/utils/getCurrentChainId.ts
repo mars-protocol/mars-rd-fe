@@ -1,10 +1,13 @@
 import chains from 'chains'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
-import { ChainInfoID } from 'types/enums'
+import { ChainInfoID, NETWORK } from 'types/enums'
 
 export const getCurrentChainId = () => {
-  const defaultChainId = chains[ChainInfoID.Osmosis1].id
-
+  const currentNetwork = process.env.NEXT_PUBLIC_NETWORK ?? NETWORK.TESTNET
+  const defaultChainId =
+    currentNetwork === NETWORK.MAINNET
+      ? chains[ChainInfoID.Osmosis1].id
+      : chains[ChainInfoID.Pion1].id
   let chainId = defaultChainId
 
   if (window) {
@@ -12,19 +15,15 @@ export const getCurrentChainId = () => {
 
     switch (subdomain) {
       case 'osmosis':
-        chainId = ChainInfoID.Osmosis1
-        break
-
-      case 'testnet-osmosis':
-        chainId = ChainInfoID.OsmosisDevnet
+        if (currentNetwork === NETWORK.MAINNET) chainId = ChainInfoID.Osmosis1
         break
 
       case 'neutron':
-        chainId = ChainInfoID.Neutron1
+        if (currentNetwork === NETWORK.MAINNET) chainId = ChainInfoID.Neutron1
         break
 
       case 'testnet-neutron':
-        chainId = ChainInfoID.Pion1
+        if (currentNetwork === NETWORK.TESTNET) chainId = ChainInfoID.Pion1
         break
     }
 
@@ -35,19 +34,15 @@ export const getCurrentChainId = () => {
   if (localStorageChainId !== null) {
     switch (localStorageChainId) {
       case ChainInfoID.Osmosis1:
-        chainId = ChainInfoID.Osmosis1
-        break
-
-      case ChainInfoID.OsmosisDevnet:
-        chainId = ChainInfoID.OsmosisDevnet
+        if (currentNetwork === NETWORK.MAINNET) chainId = ChainInfoID.Osmosis1
         break
 
       case ChainInfoID.Neutron1:
-        chainId = ChainInfoID.Neutron1
+        if (currentNetwork === NETWORK.MAINNET) chainId = ChainInfoID.Neutron1
         break
 
       case ChainInfoID.Pion1:
-        chainId = ChainInfoID.Pion1
+        if (currentNetwork === NETWORK.TESTNET) chainId = ChainInfoID.Pion1
         break
     }
   }
