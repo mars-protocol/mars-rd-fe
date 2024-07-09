@@ -11,6 +11,7 @@ export default function MainPage() {
     <div className='flex items-start justify-start w-full gap-4'>
       <div className='flex w-1/2 gap-4'>
         <StatsTrading />
+        {/* testing */}
       </div>
 
       <Card
