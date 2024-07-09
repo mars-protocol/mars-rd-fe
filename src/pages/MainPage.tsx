@@ -1,11 +1,12 @@
-import StatsTrading from 'components/Stats/StatsTrading'
 import Card from 'components/common/Card'
 import Loading from 'components/common/Loading'
-import AssetImage from 'components/common/assets/AssetImage'
-import useWhitelistedAssets from 'hooks/assets/useWhitelistedAssets'
+import StatsTrading from 'components/common/Stats/StatsTrading'
+import Assets from 'components/main/Assets'
+import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
 import { Suspense } from 'react'
 
 export default function MainPage() {
+  const { data: totalSupply } = useTotalSupply()
   return (
     <div className='flex items-start justify-start w-full gap-4'>
       <div className='flex w-1/2 gap-4'>
@@ -22,22 +23,5 @@ export default function MainPage() {
         </Suspense>
       </Card>
     </div>
-  )
-}
-
-function Assets() {
-  const assets = useWhitelistedAssets()
-
-  return (
-    <>
-      {assets.map((asset) => (
-        <div className='flex items-center gap-2' key={asset.denom}>
-          <div className='w-6 h-6 overflow-hidden rounded-full'>
-            <AssetImage asset={asset} />
-          </div>
-          {asset.symbol}
-        </div>
-      ))}
-    </>
   )
 }

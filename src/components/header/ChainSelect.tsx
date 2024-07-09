@@ -14,7 +14,7 @@ import useChainConfig from 'hooks/chain/useChainConfig'
 import useToggle from 'hooks/common/useToggle'
 import useCurrentChainId from 'hooks/localStorage/useCurrentChainId'
 import useStore from 'store'
-import { ChainInfoID, NETWORK } from 'types/enums'
+import { ChainInfoID } from 'types/enums'
 import { getRoute } from 'utils/route'
 
 interface Props {
@@ -22,19 +22,10 @@ interface Props {
   withText?: boolean
 }
 
-interface V1Outpost {
-  chainId: ChainInfoID
-  name: string
-  url: string
-  network: NETWORK.MAINNET | NETWORK.TESTNET
-  target: '_blank' | '_self'
-}
-
 interface ChainOptionProps {
   chainConfig?: ChainConfig
   onSelect?: (chain: ChainConfig) => void
   active: boolean
-  outpost?: V1Outpost
 }
 
 export default function ChainSelect(props: Props) {
@@ -44,6 +35,8 @@ export default function ChainSelect(props: Props) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const isV1 = useStore((s) => s.isV1)
+
+  console.log('current ChainConfig', chainConfig)
 
   const [_, setCurrentChainId] = useCurrentChainId()
 
@@ -62,7 +55,7 @@ export default function ChainSelect(props: Props) {
   )
 
   const ChainOption = (props: ChainOptionProps) => {
-    const { onSelect, active, outpost, chainConfig } = props
+    const { onSelect, active, chainConfig } = props
     return (
       <div
         className={classNames(

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import ChartBody from 'components/Chart/ChartBody'
-import ChartLoading from 'components/Chart/ChartLoading'
 import Card from 'components/common/Card'
+import ChartBody from 'components/common/Chart/ChartBody'
+import ChartLoading from 'components/common/Chart/ChartLoading'
 
 interface Props {
   data: ChartData | null

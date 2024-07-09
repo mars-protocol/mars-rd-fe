@@ -1,11 +1,9 @@
 import { Navigate, Outlet, Route, Routes as RoutesWrapper } from 'react-router-dom'
 
-import useChainConfig from 'hooks/chain/useChainConfig'
 import MainPage from 'pages/MainPage'
 import Layout from 'pages/_layout'
 
 export default function Routes() {
-  const chainConfig = useChainConfig()
   return (
     <RoutesWrapper>
       <Route
