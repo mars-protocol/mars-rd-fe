@@ -19,7 +19,7 @@ interface Props {
 
 function PageContainer(props: Props) {
   return (
-    <div className={classNames('mx-auto flex items-start w-full max-w-screen-full')}>
+    <div className={classNames('mx-auto flex justify-center w-full max-w-screen-full')}>
       {props.children}
     </div>
   )
