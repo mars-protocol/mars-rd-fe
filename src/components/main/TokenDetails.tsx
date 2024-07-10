@@ -3,15 +3,22 @@ import { GridGlobe } from 'components/common/Icons'
 import useCirculatingSupply from 'hooks/tokenomics/useCirculatingSupply'
 import useMarsTokenPrice from 'hooks/tokenomics/useMarsTokenPrice'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
+import { useMemo } from 'react'
 import { BN } from 'utils/helpers'
 
 export default function TokenDetails() {
-  const { data: circulatingSupply } = useCirculatingSupply()
-  const { data: totalSupply } = useTotalSupply()
-  const { data: marsTokenPrice } = useMarsTokenPrice()
+  const { data: circulatingSupply, isLoading: isLoadingCirculatingSupply } = useCirculatingSupply()
+  const { data: totalSupply, isLoading: isLoadingTotalSupply } = useTotalSupply()
+  const { data: marsTokenPrice, isLoading: isLoadingMarsTokenPrice } = useMarsTokenPrice()
 
-  const marketCap = BN(circulatingSupply ?? 0).multipliedBy(marsTokenPrice ?? 0)
-  const FDV = BN(totalSupply ?? 0).multipliedBy(marsTokenPrice ?? 0)
+  const marketCap = useMemo(
+    () => BN(circulatingSupply ?? 0).multipliedBy(marsTokenPrice ?? 0),
+    [circulatingSupply, marsTokenPrice],
+  )
+  const FDV = useMemo(
+    () => BN(totalSupply ?? 0).multipliedBy(marsTokenPrice ?? 0),
+    [totalSupply, marsTokenPrice],
+  )
 
   return (
     <MetricsCard
@@ -28,6 +35,7 @@ export default function TokenDetails() {
         { isCurrency: false, value: BN(circulatingSupply ?? 0), label: 'Circulating Supply' },
         { isCurrency: true, value: FDV, label: 'FDV' },
       ]}
+      isLoading={isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingMarsTokenPrice}
     />
   )
 }

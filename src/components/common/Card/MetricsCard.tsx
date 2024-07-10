@@ -1,8 +1,7 @@
 import Card from 'components/common/Card'
-import Text from 'components/common/Text'
-import { BNCoin } from 'types/classes/BNCoin'
-import DisplayCurrency from 'components/common/DisplayCurrency'
 import { FormattedNumber } from 'components/common/FormattedNumber'
+import Loading from 'components/common/Loading'
+import Text from 'components/common/Text'
 import React from 'react'
 
 interface Props {
@@ -10,6 +9,7 @@ interface Props {
   background: React.ReactNode
   copy?: string
   metrics: Metric[]
+  isLoading?: boolean
 }
 
 interface Metric {
@@ -19,43 +19,51 @@ interface Metric {
 }
 
 export default function MetricsCard(props: Props) {
-  const { title, copy, metrics, background } = props
+  const { title, copy, metrics, background, isLoading } = props
 
   return (
     <Card
       className='flex flex-col justify-between p-8 h-80 w-[850px]'
-      title={<h1 className='text-5xl font-bold mb-4'>{title}</h1>}
+      title={<h1 className='mb-4 text-5xl font-bold'>{title}</h1>}
     >
-      <div className='absolute inset-0 w-full h-full opacity-10'>{background}</div>
+      <div className='absolute inset-0 w-full h-full opacity-10 -z-1'>{background}</div>
       <div className='flex-grow'></div>
       {copy && (
         <Text className='mb-8' size='sm'>
           {copy}
         </Text>
       )}
-      {metrics.map((metric: Metric, index: number) => {
-        if (metric.isCurrency) {
-          const coin = BNCoin.fromDenomAndBigNumber('uusd', metric.value)
-
+      <div className='flex justify-between w-full'>
+        {metrics.map((metric: Metric, index: number) => {
           return (
-            <React.Fragment key={index}>
-              <DisplayCurrency coin={coin} />
-              <Text size='sm' className='text-white/40'>
+            <div className='flex flex-wrap w-[140px]' key={index}>
+              <MetricValue metric={metric} isLoading={isLoading} />
+              <Text size='xs' className='w-full text-white/40'>
                 {metric.label}
               </Text>
-            </React.Fragment>
+            </div>
           )
-        }
-
-        return (
-          <React.Fragment key={index}>
-            <FormattedNumber amount={metric.value.toNumber()} />
-            <Text size='sm' className='text-white/40'>
-              {metric.label}
-            </Text>
-          </React.Fragment>
-        )
-      })}
+        })}
+      </div>
     </Card>
+  )
+}
+
+function MetricValue({ metric, isLoading }: { metric: Metric; isLoading?: boolean }) {
+  if (isLoading) {
+    return <Loading className='w-full h-8' />
+  }
+
+  return (
+    <FormattedNumber
+      className='w-full text-2xl'
+      amount={metric.value.toNumber()}
+      options={
+        metric.isCurrency
+          ? { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true }
+          : { abbreviated: true }
+      }
+      animate
+    />
   )
 }
