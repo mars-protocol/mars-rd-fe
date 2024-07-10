@@ -37,7 +37,20 @@ export default function MetricsCard(props: Props) {
         {metrics.map((metric: Metric, index: number) => {
           return (
             <div className='flex flex-wrap w-[140px]' key={index}>
-              <MetricValue metric={metric} isLoading={isLoading} />
+              {isLoading ? (
+                <Loading className='w-full h-8' />
+              ) : (
+                <FormattedNumber
+                  className='w-full text-2xl'
+                  amount={metric.value.toNumber()}
+                  options={
+                    metric.isCurrency
+                      ? { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true }
+                      : { abbreviated: true }
+                  }
+                  animate
+                />
+              )}
               <Text size='xs' className='w-full text-white/40'>
                 {metric.label}
               </Text>
@@ -46,24 +59,5 @@ export default function MetricsCard(props: Props) {
         })}
       </div>
     </Card>
-  )
-}
-
-function MetricValue({ metric, isLoading }: { metric: Metric; isLoading?: boolean }) {
-  if (isLoading) {
-    return <Loading className='w-full h-8' />
-  }
-
-  return (
-    <FormattedNumber
-      className='w-full text-2xl'
-      amount={metric.value.toNumber()}
-      options={
-        metric.isCurrency
-          ? { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true }
-          : { abbreviated: true }
-      }
-      animate
-    />
   )
 }
