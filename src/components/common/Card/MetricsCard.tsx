@@ -13,9 +13,14 @@ interface Props {
 }
 
 interface Metric {
-  isCurrency: boolean
   value: BigNumber
   label: string
+  formatOptions: {
+    prefix?: string
+    maxDecimals?: number
+    minDecimals?: number
+    abbreviated?: boolean
+  }
 }
 
 export default function MetricsCard(props: Props) {
@@ -43,11 +48,7 @@ export default function MetricsCard(props: Props) {
                 <FormattedNumber
                   className='w-full text-2xl'
                   amount={metric.value.toNumber()}
-                  options={
-                    metric.isCurrency
-                      ? { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true }
-                      : { abbreviated: true }
-                  }
+                  options={metric.formatOptions}
                   animate
                 />
               )}

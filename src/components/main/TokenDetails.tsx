@@ -27,13 +27,33 @@ export default function TokenDetails() {
           <GridGlobe />
         </div>
       }
-      title='$MARS'
+      title='MARS'
       metrics={[
-        { isCurrency: true, value: BN(marsTokenPrice ?? 0), label: 'Price' },
-        { isCurrency: true, value: marketCap, label: 'Market Cap' },
-        { isCurrency: false, value: BN(totalSupply ?? 0), label: 'Total Supply' },
-        { isCurrency: false, value: BN(circulatingSupply ?? 0), label: 'Circulating Supply' },
-        { isCurrency: true, value: FDV, label: 'FDV' },
+        {
+          value: BN(marsTokenPrice ?? 0),
+          label: 'Price',
+          formatOptions: { prefix: '$', maxDecimals: 4, minDecimals: 2, abbreviated: true },
+        },
+        {
+          value: marketCap,
+          label: 'Market Cap',
+          formatOptions: { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true },
+        },
+        {
+          value: BN(totalSupply ?? 0),
+          label: 'Total Supply',
+          formatOptions: { abbreviated: true },
+        },
+        {
+          value: BN(circulatingSupply ?? 0),
+          label: 'Circulating Supply',
+          formatOptions: { abbreviated: true },
+        },
+        {
+          value: FDV,
+          label: 'FDV',
+          formatOptions: { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true },
+        },
       ]}
       isLoading={isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingMarsTokenPrice}
     />
