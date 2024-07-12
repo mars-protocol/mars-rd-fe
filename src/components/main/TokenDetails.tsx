@@ -1,5 +1,4 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
-import { GridGlobe } from 'components/common/Icons'
 import useCirculatingSupply from 'hooks/tokenomics/useCirculatingSupply'
 import useMarsTokenPrice from 'hooks/tokenomics/useMarsTokenPrice'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
@@ -22,12 +21,6 @@ export default function TokenDetails() {
 
   return (
     <MetricsCard
-      background={
-        <div className='absolute right-0 top-0 sm:w-[600px] transform scale-y-[-1]'>
-          <GridGlobe />
-        </div>
-      }
-      title='MARS'
       metrics={[
         {
           value: BN(marsTokenPrice ?? 0),
@@ -37,7 +30,12 @@ export default function TokenDetails() {
         {
           value: marketCap,
           label: 'Market Cap',
-          formatOptions: { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true },
+          formatOptions: {
+            prefix: '$',
+            maxDecimals: 2,
+            minDecimals: 2,
+            abbreviated: true,
+          },
         },
         {
           value: BN(totalSupply ?? 0),
@@ -55,7 +53,10 @@ export default function TokenDetails() {
           formatOptions: { prefix: '$', maxDecimals: 2, minDecimals: 2, abbreviated: true },
         },
       ]}
+      hideBackground={true}
       isLoading={isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingMarsTokenPrice}
+      className='w-full md:w-[55vw]'
+      formattedNumberClassName='text-sm'
     />
   )
 }

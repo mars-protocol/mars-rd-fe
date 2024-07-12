@@ -3,13 +3,17 @@ import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import React from 'react'
+import { Spacer } from '../Spacer'
 
 interface Props {
-  title: string
-  background: React.ReactNode
+  title?: string
+  background?: React.ReactNode
   copy?: string
   metrics: Metric[]
   isLoading?: boolean
+  className?: string
+  hideBackground?: boolean
+  formattedNumberClassName?: string
 }
 
 interface Metric {
@@ -17,36 +21,48 @@ interface Metric {
   label: string
   formatOptions: {
     prefix?: string
+    suffix?: string
     maxDecimals?: number
     minDecimals?: number
     abbreviated?: boolean
+    thousandSeparator?: boolean
   }
 }
 
 export default function MetricsCard(props: Props) {
-  const { title, copy, metrics, background, isLoading } = props
+  const {
+    title,
+    copy,
+    metrics,
+    background,
+    isLoading,
+    className,
+    hideBackground,
+    formattedNumberClassName,
+  } = props
 
   return (
     <Card
-      className='flex flex-col justify-between p-8 h-80 w-[850px]'
-      title={<h1 className='mb-4 text-5xl font-bold'>{title}</h1>}
+      className={`flex flex-col justify-between mx-auto my-5 p-5 ${className}`}
+      title={<h1 className='text-4xl md:text-5xl font-bold'>{title}</h1>}
     >
-      <div className='absolute inset-0 w-full h-full opacity-10 -z-1'>{background}</div>
-      <div className='flex-grow'></div>
+      {!hideBackground && (
+        <div className='absolute inset-0 w-full h-full opacity-10 -z-1'>{background}</div>
+      )}
       {copy && (
-        <Text className='mb-8' size='sm'>
+        <Text className='mb-8 text-white/50' size='sm'>
           {copy}
         </Text>
       )}
-      <div className='flex justify-between w-full'>
+      <div className='flex flex-wrap justify-evenly gap-3 text-center'>
         {metrics.map((metric: Metric, index: number) => {
           return (
-            <div className='flex flex-wrap w-[140px]' key={index}>
+            <div className='min-w-[110px] p-2' key={index}>
               {isLoading ? (
                 <Loading className='w-full h-8' />
               ) : (
                 <FormattedNumber
-                  className='w-full text-2xl'
+                  className={`w-full ${formattedNumberClassName}`}
                   amount={metric.value.toNumber()}
                   options={metric.formatOptions}
                   animate
