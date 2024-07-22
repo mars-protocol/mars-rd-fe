@@ -57,7 +57,7 @@ export default function StatsMetrics() {
           },
         },
       ]}
-      className='sm:p-10 gap-5 sm:gap-10 md:gap-18 w-full md:w-[1100px] mx-auto'
+      className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
       formattedNumberClassName='text-2xl md:text-5xl'
     />
   )

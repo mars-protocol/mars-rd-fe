@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Card from 'components/common/Card'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
@@ -25,7 +26,7 @@ export default function TokenMetrics() {
   const metrics: Metric[] = [
     {
       value: BN(marsTokenPrice ?? 0),
-      label: 'Price',
+      label: 'MARS Token Price',
       formatOptions: { prefix: '$', maxDecimals: 4, minDecimals: 2, abbreviated: true },
     },
     {
@@ -58,12 +59,20 @@ export default function TokenMetrics() {
   const isLoading = isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingMarsTokenPrice
 
   return (
-    <div className='w-full flex justify-between gap-4'>
+    <div className='w-full grid grid-cols-2 md:grid-cols-5 gap-4'>
       {metrics.map((metric, index) => {
         return (
-          <Card className='w-full py-6 text-center' key={index}>
+          <Card
+            className={classNames(
+              'md:col-span-1 py-6 text-center',
+              index === 0 ? 'col-span-2' : 'col-span-1',
+            )}
+            key={index}
+          >
             {isLoading ? (
-              <Loading className='w-full h-8' />
+              <div className='w-full h-8 flex justify-center items-center'>
+                <Loading />
+              </div>
             ) : (
               <FormattedNumber
                 className='w-full text-sm'

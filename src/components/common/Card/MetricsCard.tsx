@@ -43,7 +43,7 @@ export default function MetricsCard(props: Props) {
       <div className='flex flex-wrap justify-evenly gap-3 text-center'>
         {metrics.map((metric: Metric, index: number) => {
           return (
-            <div className='min-w-[110px] p-2' key={index}>
+            <div className='min-w-28 p-2' key={index}>
               {isLoading ? (
                 <Loading className='w-full h-8' />
               ) : (
