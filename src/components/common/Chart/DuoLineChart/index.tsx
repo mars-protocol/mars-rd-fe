@@ -33,7 +33,7 @@ interface RenderLegendProps {
   payload: LegendEntry[]
 }
 
-export default function DuoLineCharBody(props: Props) {
+export default function DuoLineChart(props: Props) {
   const { selectedOption, selectedTimeframe, options, data } = props
   const dummyData = data[selectedOption][selectedTimeframe]
 

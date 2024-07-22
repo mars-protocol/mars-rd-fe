@@ -15,7 +15,7 @@ export default function Chart(props: Props) {
     <Card
       className={classNames('w-full', props.className)}
       title={props.title}
-      contentClassName='px-2 py-5'
+      contentClassName='px-2 py-3'
     >
       {props.data === null ? (
         <ChartLoading height={props.height} />

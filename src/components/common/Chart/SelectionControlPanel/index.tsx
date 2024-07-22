@@ -21,7 +21,7 @@ export default function SelectionControlPanel(props: Props) {
     onTimeframeSelect,
   } = props
   return (
-    <div className='flex flex-wrap justify-center sm:justify-between'>
+    <div className='flex flex-wrap sm:justify-between gap-5 sm:gap-0'>
       <Select
         options={selectOptions}
         defaultValue={defaultSelectValue}
@@ -33,6 +33,7 @@ export default function SelectionControlPanel(props: Props) {
         timeframes={timeframes}
         selectedTimeframe={selectedTimeframe}
         setSelectedTimeframe={onTimeframeSelect}
+        className='ml-auto'
       />
     </div>
   )

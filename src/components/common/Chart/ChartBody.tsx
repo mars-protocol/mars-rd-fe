@@ -15,6 +15,7 @@ import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
 import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import { formatValue } from 'utils/formatters'
+import CustomTooltip from './Tooltip/CustomTooltip'
 
 interface Props {
   data: ChartData
@@ -28,8 +29,15 @@ export default function ChartBody(props: Props) {
   )
   const height = props.height ?? 'h-100'
 
+  const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
+    const value = Number(payload[0].value) ?? 0
+    return (
+      <Text size='sm'>{formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}</Text>
+    )
+  }
+
   return (
-    <div className={classNames('-ml-2 w-full', height)}>
+    <div className={classNames('-ml-5', height)}>
       <ResponsiveContainer width='100%' height='100%'>
         <AreaChart
           data={props.data}
@@ -57,7 +65,7 @@ export default function ChartBody(props: Props) {
             tickFormatter={(value) => {
               return moment(value).format('DD MMM')
             }}
-            padding={{ left: 10, right: 20 }}
+            padding={{ left: 5, right: 10 }}
             axisLine={false}
             tickLine={false}
             fontSize={12}
@@ -82,26 +90,7 @@ export default function ChartBody(props: Props) {
             cursor={false}
             isAnimationActive={!reduceMotion}
             wrapperStyle={{ outline: 'none' }}
-            content={({ payload, label }) => {
-              if (payload && payload.length) {
-                const value = Number(payload[0].value) ?? 0
-                return (
-                  <div
-                    className={classNames(
-                      'max-w-[320px] rounded-lg px-4 py-2 isolate bg-black/5 backdrop-blur',
-                      'before:content-[" "] before:absolute before:inset-0 before:-z-1 before:rounded-sm before:p-[1px] before:border-glas',
-                    )}
-                  >
-                    <Text size='sm' className='text-white/60'>
-                      {moment(label).format('DD MMM YYYY')}
-                    </Text>
-                    <Text size='sm'>
-                      {formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-                    </Text>
-                  </div>
-                )
-              }
-            }}
+            content={<CustomTooltip payload={[]} label={''} renderContent={renderTooltipContent} />}
           />
           <Area
             type='monotone'

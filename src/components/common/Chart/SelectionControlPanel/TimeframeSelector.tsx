@@ -1,15 +1,17 @@
+import classNames from 'classnames'
 import Button from 'components/common/Button'
 
 interface Props {
   timeframes: string[]
   selectedTimeframe: string
   setSelectedTimeframe: (timeframe: string) => void
+  className?: string
 }
 
 export default function TimeframeSelector(props: Props) {
-  const { timeframes, setSelectedTimeframe } = props
+  const { timeframes, setSelectedTimeframe, className } = props
   return (
-    <div className='flex flex-row gap-3 mx-5 my-2'>
+    <div className={classNames('flex flex-row gap-3 my-3', className)}>
       {timeframes.map((time, index) => (
         <Button
           variant='solid'

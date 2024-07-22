@@ -36,7 +36,7 @@ export default function ChartCard(props: Props) {
   )
 
   return (
-    <Card contentClassName='p-5 bg-white/5' className={props.className}>
+    <Card contentClassName='px-2 md:px-3 py-3 bg-white/5' className={props.className}>
       <SelectionControlPanel
         selectOptions={displayOptions}
         defaultSelectValue={selectedOption}

@@ -64,7 +64,7 @@ export default function TokenMetrics() {
         return (
           <Card
             className={classNames(
-              'md:col-span-1 py-6 text-center',
+              'md:col-span-1 py-6 text-center bg-white/5',
               index === 0 ? 'col-span-2' : 'col-span-1',
             )}
             key={index}
