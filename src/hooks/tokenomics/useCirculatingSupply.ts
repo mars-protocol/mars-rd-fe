@@ -1,6 +1,8 @@
 import getCirculatingSupply from 'api/tokenomics/getCirculatingSupply'
-import useSWRImmutable from 'swr/immutable'
+import useSWR from 'swr'
 
 export default function useCirculatingSupply() {
-  return useSWRImmutable('tokenomics/circulatingSupply', async () => getCirculatingSupply())
+  return useSWR('tokenomics/circulatingSupply', async () => getCirculatingSupply(), {
+    refreshInterval: 60_000,
+  })
 }

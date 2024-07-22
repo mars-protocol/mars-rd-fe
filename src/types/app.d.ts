@@ -774,7 +774,7 @@ interface ButtonProps {
 }
 
 type CardTab = {
-  title: string
+  title: string | React.ReactNode
   notificationCount?: number
   renderContent: () => React.ReactNode
 }
@@ -1262,7 +1262,9 @@ interface PerpsParams {
   openingFeeRate: BigNumber
 }
 
-interface Store extends CommonSlice, ModalSlice {}
+interface Store extends CommonSlice, ModalSlice {
+  withdrawFromVaults: any
+}
 
 interface FormatOptions {
   decimals?: number
@@ -1416,3 +1418,46 @@ interface PoolInfo {
 }
 type ChartDataItem = { date: string; value: number }
 type ChartData = ChartDataItem[]
+
+type BarChartDataItem = { name: string; date: string; [key: string]: string | number }
+type BarChartData = BarChartDataItem[]
+
+interface DummyData {
+  [key: string]: {
+    [key: string]: DateDoubleValue[]
+  }
+}
+
+interface DateDoubleValue {
+  date: string
+  value: number
+  value2: number
+}
+
+interface ChartDataPayloadProps {
+  chartType?: string
+  color: string
+  dataKey: string
+  fill: string
+  formatter?: string
+  hide: boolean
+  name: string
+  payload: {} // once we have real data this will be updated
+  value: string | number
+  stroke?: string
+  strokeWidth?: number
+  type?: string
+  unit?: string
+}
+interface Metric {
+  value: BigNumber
+  label: string
+  formatOptions: {
+    prefix?: string
+    suffix?: string
+    maxDecimals?: number
+    minDecimals?: number
+    abbreviated?: boolean
+    thousandSeparator?: boolean
+  }
+}

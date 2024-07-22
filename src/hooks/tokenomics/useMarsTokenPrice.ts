@@ -3,7 +3,6 @@ import useSWR from 'swr'
 
 export default function useMarsTokenPrice() {
   return useSWR('tokenomics/marsTokenPrice', async () => getMarsTokenPrice(), {
-    refreshInterval: 60000,
-    revalidateOnFocus: true,
+    refreshInterval: 60_000,
   })
 }

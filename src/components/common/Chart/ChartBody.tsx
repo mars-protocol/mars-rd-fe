@@ -29,7 +29,7 @@ export default function ChartBody(props: Props) {
   const height = props.height ?? 'h-100'
 
   return (
-    <div className={classNames('-ml-6 w-full', height)}>
+    <div className={classNames('-ml-2 w-full', height)}>
       <ResponsiveContainer width='100%' height='100%'>
         <AreaChart
           data={props.data}

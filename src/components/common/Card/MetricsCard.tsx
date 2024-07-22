@@ -3,7 +3,6 @@ import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import React from 'react'
-import { Spacer } from '../Spacer'
 
 interface Props {
   title?: string
@@ -14,19 +13,6 @@ interface Props {
   className?: string
   hideBackground?: boolean
   formattedNumberClassName?: string
-}
-
-interface Metric {
-  value: BigNumber
-  label: string
-  formatOptions: {
-    prefix?: string
-    suffix?: string
-    maxDecimals?: number
-    minDecimals?: number
-    abbreviated?: boolean
-    thousandSeparator?: boolean
-  }
 }
 
 export default function MetricsCard(props: Props) {

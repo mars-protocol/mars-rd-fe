@@ -5,7 +5,7 @@ import ChartLoading from 'components/common/Chart/ChartLoading'
 
 interface Props {
   data: ChartData | null
-  title: string
+  title?: string
   height?: string
   className?: string
 }
@@ -15,7 +15,7 @@ export default function Chart(props: Props) {
     <Card
       className={classNames('w-full', props.className)}
       title={props.title}
-      contentClassName='p-4 pr-0'
+      contentClassName='px-2 py-5'
     >
       {props.data === null ? (
         <ChartLoading height={props.height} />

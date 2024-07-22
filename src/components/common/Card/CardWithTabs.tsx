@@ -3,8 +3,10 @@ import { useState } from 'react'
 
 import Card from 'components/common/Card'
 
-type Props = {
+interface Props {
   tabs: CardTab[]
+  contentClassName?: string
+  className?: string
 }
 
 export function CardWithTabs(props: Props) {
@@ -15,7 +17,8 @@ export function CardWithTabs(props: Props) {
   return (
     <Card
       title={<Tabs onChange={setActiveIdx} activeIdx={activeIdx} {...props} />}
-      className='w-full'
+      className={classNames('w-full', props.className)}
+      contentClassName={props.contentClassName}
     >
       {props.tabs[activeIdx].renderContent()}
     </Card>
@@ -34,11 +37,11 @@ function Tabs(props: TabsProps) {
       {props.tabs.map((tab, index) => {
         return (
           <button
-            key={tab.title}
+            key={index}
             className={classNames(
               'py-4 border-b-[2px] border-transparent flex items-center',
               props.tabs.length < 2 && 'cursor-default text-white border-transparent',
-              index === props.activeIdx && props.tabs.length > 1 && 'border-mars',
+              index === props.activeIdx && props.tabs.length > 1 && 'border-martian-red',
               index !== props.activeIdx && props.tabs.length > 1 && 'text-white/20',
             )}
             onClick={() => props.onChange(index)}
