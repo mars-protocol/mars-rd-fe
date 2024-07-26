@@ -20,15 +20,6 @@ interface Props {
   options: { value: string; label: string }[]
   data: DummyData
 }
-
-interface LegendEntry {
-  inactive: boolean
-  dataKey: string
-  type: string
-  color: string
-  value: string
-}
-
 interface RenderLegendProps {
   payload: LegendEntry[]
 }

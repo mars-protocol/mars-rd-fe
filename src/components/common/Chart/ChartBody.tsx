@@ -15,7 +15,7 @@ import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
 import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import { formatValue } from 'utils/formatters'
-import CustomTooltip from './Tooltip/CustomTooltip'
+import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
 
 interface Props {
   data: ChartData

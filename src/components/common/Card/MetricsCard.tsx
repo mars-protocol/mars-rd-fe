@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Card from 'components/common/Card'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
@@ -29,7 +30,7 @@ export default function MetricsCard(props: Props) {
 
   return (
     <Card
-      className={`flex flex-col justify-between mx-auto my-5 p-5 ${className}`}
+      className={classNames('flex flex-col justify-between mx-auto my-5 p-5', className)}
       title={<h1 className='text-4xl md:text-5xl font-bold'>{title}</h1>}
     >
       {!hideBackground && (
@@ -48,7 +49,7 @@ export default function MetricsCard(props: Props) {
                 <Loading className='w-full h-8' />
               ) : (
                 <FormattedNumber
-                  className={`w-full ${formattedNumberClassName}`}
+                  className={classNames('w-full', formattedNumberClassName)}
                   amount={metric.value.toNumber()}
                   options={metric.formatOptions}
                   animate

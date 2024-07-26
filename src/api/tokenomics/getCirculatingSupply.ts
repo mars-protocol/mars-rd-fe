@@ -4,7 +4,7 @@ export default async function getCirculatingSupply() {
     const data = (await response.json()) as number
     return data
   } catch (e) {
-    console.log(e)
+    console.error(e)
     return 367608907
   }
 }

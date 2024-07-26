@@ -1262,9 +1262,7 @@ interface PerpsParams {
   openingFeeRate: BigNumber
 }
 
-interface Store extends CommonSlice, ModalSlice {
-  withdrawFromVaults: any
-}
+interface Store extends CommonSlice, ModalSlice {}
 
 interface FormatOptions {
   decimals?: number
@@ -1460,4 +1458,24 @@ interface Metric {
     abbreviated?: boolean
     thousandSeparator?: boolean
   }
+}
+
+interface Token {
+  chainId: string
+  denom: string
+  symbol: string
+  icon: string
+  description: string
+  decimals: number
+  priceUSD: number
+  totalLiquidityUSD: number
+  dayVolumeUSD: number
+}
+
+interface LegendEntry {
+  inactive: boolean
+  dataKey: string
+  type: string
+  color: string
+  value: string
 }

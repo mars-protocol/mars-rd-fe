@@ -17,6 +17,7 @@ const options = [
 const timeframe = ['1H', '1D', '1W', '1Y']
 
 export default function ChartCard(props: Props) {
+  const { className, data } = props
   const [selectedOption, setSelectedOption] = useState<string>(options[0].value)
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<string>(timeframe[0])
 
@@ -36,7 +37,7 @@ export default function ChartCard(props: Props) {
   )
 
   return (
-    <Card contentClassName='px-2 md:px-3 py-3 bg-white/5' className={props.className}>
+    <Card contentClassName='px-2 md:px-3 py-3 bg-white/5' className={className}>
       <SelectionControlPanel
         selectOptions={displayOptions}
         defaultSelectValue={selectedOption}
@@ -50,7 +51,7 @@ export default function ChartCard(props: Props) {
         selectedOption={selectedOption}
         options={options}
         selectedTimeframe={selectedTimeFrame}
-        data={props.data}
+        data={data}
       />
     </Card>
   )

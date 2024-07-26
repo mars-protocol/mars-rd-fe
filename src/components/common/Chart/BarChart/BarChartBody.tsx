@@ -23,11 +23,7 @@ export default function BarChartBody(props: Props) {
             prefix: '$',
             abbreviated: true,
           })
-          return (
-            <Text size='sm'>
-              {label}: {formattedValue}
-            </Text>
-          )
+          return <Text size='sm'>{`${label}: ${formattedValue}`}</Text>
         })}
       </>
     )
