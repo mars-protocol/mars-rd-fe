@@ -36,17 +36,31 @@ interface Props<T> {
 }
 
 export default function Table<T>(props: Props<T>) {
-  const [sorting, setSorting] = React.useState<SortingState>(props.initialSorting)
+  const {
+    title,
+    columns,
+    initialSorting,
+    data,
+    renderExpanded,
+    tableBodyClassName,
+    spacingClassName,
+    type,
+    hideCard,
+    selectedRows,
+    setRowSelection,
+    onClickRow,
+  } = props
+  const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
 
   const table = useReactTable({
-    data: props.data,
-    columns: props.columns,
+    data: data,
+    columns: columns,
     state: {
       sorting,
-      rowSelection: props.selectedRows,
+      rowSelection: selectedRows,
     },
     enableRowSelection: true,
-    onRowSelectionChange: props.setRowSelection,
+    onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -54,12 +68,12 @@ export default function Table<T>(props: Props<T>) {
 
   return (
     <ConditionalWrapper
-      condition={!props.hideCard}
+      condition={!hideCard}
       wrapper={(children) => (
         <Card
-          className={classNames('w-full', props.type !== 'balances' && 'h-fit')}
+          className={classNames('w-full', type !== 'balances' && 'h-fit')}
           contentClassName='max-w-full overflow-x-scroll scrollbar-hide'
-          title={props.title}
+          title={title}
         >
           {children}
         </Card>
@@ -75,7 +89,7 @@ export default function Table<T>(props: Props<T>) {
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
                     className={classNames(
-                      props.spacingClassName ?? 'px-4 py-3',
+                      spacingClassName ?? 'px-4 py-3',
                       header.column.getCanSort() && 'hover:cursor-pointer',
                       LEFT_ALIGNED_ROWS.includes(header.id) ? 'text-left' : 'text-right',
                       header.column.columnDef.meta?.className,
@@ -125,11 +139,11 @@ export default function Table<T>(props: Props<T>) {
               key={row.id}
               row={row}
               table={table}
-              renderExpanded={props.renderExpanded}
-              spacingClassName={props.spacingClassName}
-              isSelectable={!!props.setRowSelection}
-              type={props.type}
-              onClick={props.onClickRow}
+              renderExpanded={renderExpanded}
+              spacingClassName={spacingClassName}
+              isSelectable={!!setRowSelection}
+              type={type}
+              onClick={onClickRow}
             />
           ))}
         </tbody>

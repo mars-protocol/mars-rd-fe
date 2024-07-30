@@ -7,17 +7,19 @@ export default function LiquidationsMetrics() {
   const { data: liquidityOverviewData, isLoading: isLiquidityOverviewDataLoading } =
     useOverviewData()
 
-  const badDebt = liquidityOverviewData.data[0].bad_debt
-  const walletsForLiquidation = liquidityOverviewData.data[0].wallets_for_liquidation
-  const walletsAtRisk = liquidityOverviewData.data[0].wallets_at_risk
-  const valueForLiquidation = liquidityOverviewData.data[0].value_eligible_for_liquidation
+  console.log(liquidityOverviewData, 'liquidityOverviewData')
+
+  const badDebt = liquidityOverviewData?.data[0].bad_debt
+  const walletsForLiquidation = liquidityOverviewData?.data[0].wallets_for_liquidation
+  const walletsAtRisk = liquidityOverviewData?.data[0].wallets_at_risk
+  const valueForLiquidation = liquidityOverviewData?.data[0].value_eligible_for_liquidation
 
   const liquidationMetrics: Metric[] = [
     {
       value: BN(badDebt),
       label: 'Debt',
       formatOptions: {
-        prefix: '$', //what value is the bad debt in
+        prefix: '$',
         maxDecimals: 2,
         minDecimals: 2,
         abbreviated: true,
@@ -29,7 +31,6 @@ export default function LiquidationsMetrics() {
       formatOptions: {
         maxDecimals: 0,
         minDecimals: 0,
-        abbreviated: true,
       },
     },
     {
@@ -43,14 +44,16 @@ export default function LiquidationsMetrics() {
     },
     {
       value: BN(valueForLiquidation),
-      label: 'Value Eligible For Liquidation', //what value is this in
+      label: 'Value Eligible For Liquidation',
       formatOptions: {
+        prefix: '$',
         maxDecimals: 2,
         minDecimals: 2,
         abbreviated: true,
       },
     },
   ]
+
   return (
     <>
       <MetricsCard
@@ -61,8 +64,9 @@ export default function LiquidationsMetrics() {
           </div>
         }
         title='LIQUIDATION DATA'
-        copy='Explore the Mars Protocol Stats Dashboard to track key performance metrics.'
+        copy='Explore the Mars Protocol Liquidation Dashboard to track performance metrics.'
         metrics={liquidationMetrics}
+        isLoading={isLiquidityOverviewDataLoading}
         className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
         formattedNumberClassName='text-2xl md:text-5xl'
       ></MetricsCard>

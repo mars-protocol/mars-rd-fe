@@ -185,7 +185,7 @@ function getAssetAndCoinPrice(coin: BNCoin, assets: Asset[]) {
   return { asset, coinPrice }
 }
 
-function getAdjustedCoinProce(asset: Asset, coinPrice: BNCoin) {
+function getAdjustedCoinPrice(asset: Asset, coinPrice: BNCoin) {
   const decimals = asset.denom === ORACLE_DENOM ? 0 : asset.decimals * -1
   return coinPrice.amount.shiftedBy(decimals)
 }
@@ -193,13 +193,13 @@ function getAdjustedCoinProce(asset: Asset, coinPrice: BNCoin) {
 export function getCoinValueWithoutFallback(coin: BNCoin, assets: Asset[]) {
   const { asset, coinPrice } = getAssetAndCoinPrice(coin, assets)
   if (!coinPrice || !asset) return
-  return getAdjustedCoinProce(asset, coinPrice).multipliedBy(coin.amount)
+  return getAdjustedCoinPrice(asset, coinPrice).multipliedBy(coin.amount)
 }
 
 export function getCoinValue(coin: BNCoin, assets: Asset[]) {
   const { asset, coinPrice } = getAssetAndCoinPrice(coin, assets)
   if (!coinPrice || !asset) return BN_ZERO
-  return getAdjustedCoinProce(asset, coinPrice).multipliedBy(coin.amount)
+  return getAdjustedCoinPrice(asset, coinPrice).multipliedBy(coin.amount)
 }
 
 export function getCoinAmount(denom: string, value: BigNumber, assets: Asset[]) {
