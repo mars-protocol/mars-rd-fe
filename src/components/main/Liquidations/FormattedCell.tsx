@@ -1,5 +1,5 @@
 import { FormattedNumber } from 'components/common/FormattedNumber'
-import Loading from '../Loading'
+import Loading from 'components/common/Loading'
 import { getCoinValue } from 'utils/formatters'
 
 interface Props {

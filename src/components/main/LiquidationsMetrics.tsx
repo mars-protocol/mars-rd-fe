@@ -1,5 +1,5 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
-import { GridGlobe } from 'components/common/Icons'
+import { GridPlanet } from 'components/common/Icons'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { BN } from 'utils/helpers'
 
@@ -17,13 +17,14 @@ export default function LiquidationsMetrics() {
   const liquidationMetrics: Metric[] = [
     {
       value: BN(badDebt),
-      label: 'Debt',
+      label: 'Bad Debt',
       formatOptions: {
         prefix: '$',
         maxDecimals: 2,
         minDecimals: 2,
         abbreviated: true,
       },
+      tooltipContent: 'Borrowings with Collateral Ratio below 1',
     },
     {
       value: BN(walletsForLiquidation),
@@ -32,6 +33,7 @@ export default function LiquidationsMetrics() {
         maxDecimals: 0,
         minDecimals: 0,
       },
+      tooltipContent: 'Wallets with Health Factor below 1',
     },
     {
       value: BN(walletsAtRisk),
@@ -41,6 +43,7 @@ export default function LiquidationsMetrics() {
         minDecimals: 0,
         abbreviated: true,
       },
+      tooltipContent: 'Wallets with Health Factor below 1.2',
     },
     {
       value: BN(valueForLiquidation),
@@ -60,7 +63,7 @@ export default function LiquidationsMetrics() {
         hideBackground={false}
         background={
           <div className='absolute right-0 top-0 md:w-[500px] transform scale-y-[-1]'>
-            <GridGlobe />
+            <GridPlanet />
           </div>
         }
         title='LIQUIDATION DATA'
@@ -69,7 +72,7 @@ export default function LiquidationsMetrics() {
         isLoading={isLiquidityOverviewDataLoading}
         className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
         formattedNumberClassName='text-2xl md:text-5xl'
-      ></MetricsCard>
+      />
     </>
   )
 }

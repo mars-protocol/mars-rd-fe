@@ -3,6 +3,6 @@ import useSWR from 'swr'
 
 export default function useLiquidations() {
   return useSWR('liquidations/liquidationsData', async () => getLiquidations(), {
-    refreshInterval: 10_000,
+    refreshInterval: 60_000,
   })
 }

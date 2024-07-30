@@ -1,10 +1,8 @@
 import Table from 'components/common/Table'
-import FormattedCell from 'components/common/Table/FormattedCell'
+import FormattedCell from 'components/main/Liquidations/FormattedCell'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useMemo } from 'react'
-import { ColumnDef } from '@tanstack/react-table'
-
 interface Cell {
   getValue: () => BNCoin
 }
@@ -32,10 +30,6 @@ export default function LiquidationsTable() {
         cell: (props: Cell) => {
           return <FormattedCell value={props.getValue()} assetsData={assetsData} />
         },
-      },
-      {
-        accessorKey: 'liquidation_type',
-        header: 'Liquidation Type',
       },
       {
         accessorKey: 'protocol_fee_coin',

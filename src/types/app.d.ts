@@ -1460,4 +1460,5 @@ interface Metric {
     abbreviated?: boolean
     thousandSeparator?: boolean
   }
+  tooltipContent?: React.ReactNode
 }
