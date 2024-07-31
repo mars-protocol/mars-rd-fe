@@ -7,7 +7,7 @@ interface Props {
   active?: boolean
   payload: []
   label: string
-  renderContent: (payload: []) => React.ReactNode
+  renderContent: (payload: ChartDataPayloadProps[]) => React.ReactNode
 }
 
 export default function CustomTooltip(props: Props) {

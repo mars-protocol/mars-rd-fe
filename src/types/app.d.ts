@@ -1431,7 +1431,9 @@ interface DateDoubleValue {
   value: number
   value2: number
 }
-
+interface TooltipContentProps {
+  payload: ChartDataPayloadProps[]
+}
 interface ChartDataPayloadProps {
   chartType?: string
   color: string

@@ -22,19 +22,20 @@ interface Props {
   height?: string
 }
 
+function TooltipContent(props: TooltipContentProps) {
+  const { payload } = props
+  const value = Number(payload[0].value) ?? 0
+  return (
+    <Text size='sm'>{formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}</Text>
+  )
+}
+
 export default function ChartBody(props: Props) {
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
   )
   const height = props.height ?? 'h-100'
-
-  const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
-    const value = Number(payload[0].value) ?? 0
-    return (
-      <Text size='sm'>{formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}</Text>
-    )
-  }
 
   return (
     <div className={classNames('-ml-5', height)}>
@@ -90,7 +91,13 @@ export default function ChartBody(props: Props) {
             cursor={false}
             isAnimationActive={!reduceMotion}
             wrapperStyle={{ outline: 'none' }}
-            content={<CustomTooltip payload={[]} label={''} renderContent={renderTooltipContent} />}
+            content={
+              <CustomTooltip
+                payload={[]}
+                label={''}
+                renderContent={(payload) => <TooltipContent payload={payload} />}
+              />
+            }
           />
           <Area
             type='monotone'
