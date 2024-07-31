@@ -3,6 +3,7 @@ import FormattedCell from 'components/main/Liquidations/FormattedCell'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useMemo } from 'react'
+import { getCoinValue } from 'utils/formatters'
 interface Cell {
   getValue: () => BNCoin
 }
@@ -10,6 +11,16 @@ interface Cell {
 export default function LiquidationsTable() {
   const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations()
   const { data: assetsData } = useAssets()
+
+  const filteredData = useMemo(() => {
+    if (liquidityData && assetsData) {
+      return liquidityData.data.filter((data) => {
+        const dollarValue = getCoinValue(data.collateral_asset_won, assetsData)
+        return dollarValue.toNumber() > 10
+      })
+    }
+    return []
+  }, [liquidityData, assetsData])
 
   const columns = useMemo(
     () => [
@@ -50,7 +61,7 @@ export default function LiquidationsTable() {
         <Table
           title='Liquidations Data'
           columns={columns}
-          data={liquidityData.data}
+          data={filteredData}
           initialSorting={[]}
         />
       )}

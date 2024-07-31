@@ -1,4 +1,4 @@
-import LiquidationsMetrics from 'components/main/LiquidationsMetrics'
+import LiquidationsMetrics from 'components/main/Liquidations/LiquidationsMetrics'
 import LiquidationsTable from 'components/main/Liquidations/LiquidationsTable'
 
 export default function LiquidationsPage() {

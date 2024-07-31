@@ -58,21 +58,19 @@ export default function LiquidationsMetrics() {
   ]
 
   return (
-    <>
-      <MetricsCard
-        hideBackground={false}
-        background={
-          <div className='absolute right-0 top-0 md:w-[500px] transform scale-y-[-1]'>
-            <GridPlanet />
-          </div>
-        }
-        title='LIQUIDATION DATA'
-        copy='Explore the Mars Protocol Liquidation Dashboard to track performance metrics.'
-        metrics={liquidationMetrics}
-        isLoading={isLiquidityOverviewDataLoading}
-        className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
-        formattedNumberClassName='text-2xl md:text-5xl'
-      />
-    </>
+    <MetricsCard
+      hideBackground={false}
+      background={
+        <div className='absolute right-0 top-0 md:w-[500px] transform scale-y-[-1]'>
+          <GridPlanet />
+        </div>
+      }
+      title='LIQUIDATION DATA'
+      copy='Explore the Mars Protocol Liquidation Dashboard to track performance metrics.'
+      metrics={liquidationMetrics}
+      isLoading={isLiquidityOverviewDataLoading}
+      className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
+      formattedNumberClassName='text-2xl md:text-5xl'
+    />
   )
 }
