@@ -4,6 +4,7 @@ import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useMemo } from 'react'
 import { getCoinValue } from 'utils/formatters'
+import CustomAssetCell from './CustomAssetCell'
 interface Cell {
   getValue: () => BNCoin
 }
@@ -15,6 +16,7 @@ export default function LiquidationsTable() {
   const filteredData = useMemo(() => {
     if (liquidityData && assetsData) {
       return liquidityData.data.filter((data) => {
+        console.log(data, 'data')
         const dollarValue = getCoinValue(data.collateral_asset_won, assetsData)
         return dollarValue.toNumber() > 10
       })
@@ -32,7 +34,7 @@ export default function LiquidationsTable() {
         accessorKey: 'collateral_asset_won',
         header: 'Collateral Asset Amount',
         cell: (props: Cell) => {
-          return <FormattedCell value={props.getValue()} assetsData={assetsData} />
+          return <CustomAssetCell value={props.getValue()} assetsData={assetsData} />
         },
       },
       {
@@ -59,7 +61,7 @@ export default function LiquidationsTable() {
         <div>Fetching Data...</div>
       ) : (
         <Table
-          title='Liquidations Data'
+          title='Recently Executed Liquidations'
           columns={columns}
           data={filteredData}
           initialSorting={[]}
