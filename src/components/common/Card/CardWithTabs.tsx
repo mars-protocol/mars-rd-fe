@@ -3,11 +3,14 @@ import { useState } from 'react'
 
 import Card from 'components/common/Card'
 
-type Props = {
+interface Props {
   tabs: CardTab[]
+  contentClassName?: string
+  className?: string
 }
 
 export function CardWithTabs(props: Props) {
+  const { className, contentClassName, tabs } = props
   const [activeIdx, setActiveIdx] = useState(0)
 
   if (props.tabs.length === 0) return null
@@ -15,9 +18,10 @@ export function CardWithTabs(props: Props) {
   return (
     <Card
       title={<Tabs onChange={setActiveIdx} activeIdx={activeIdx} {...props} />}
-      className='w-full'
+      className={classNames('w-full', className)}
+      contentClassName={contentClassName}
     >
-      {props.tabs[activeIdx].renderContent()}
+      {tabs[activeIdx].renderContent()}
     </Card>
   )
 }
@@ -29,19 +33,20 @@ type TabsProps = {
 }
 
 function Tabs(props: TabsProps) {
+  const { tabs, activeIdx, onChange } = props
   return (
     <div className='flex gap-6 items-center w-full font-semibold bg-white/10 px-4'>
-      {props.tabs.map((tab, index) => {
+      {tabs.map((tab, index) => {
         return (
           <button
-            key={tab.title}
+            key={index}
             className={classNames(
               'py-4 border-b-[2px] border-transparent flex items-center',
-              props.tabs.length < 2 && 'cursor-default text-white border-transparent',
-              index === props.activeIdx && props.tabs.length > 1 && 'border-mars',
-              index !== props.activeIdx && props.tabs.length > 1 && 'text-white/20',
+              tabs.length < 2 && 'cursor-default text-white border-transparent',
+              index === activeIdx && tabs.length > 1 && 'border-martian-red',
+              index !== activeIdx && tabs.length > 1 && 'text-white/20',
             )}
-            onClick={() => props.onChange(index)}
+            onClick={() => onChange(index)}
           >
             {tab.title}
             <NotificationCount count={tab.notificationCount} />
@@ -57,7 +62,8 @@ interface NotificationCountProps {
 }
 
 function NotificationCount(props: NotificationCountProps) {
-  if (!props.count) return null
+  const { count } = props
+  if (!count) return null
 
-  return <div className='px-1 bg-martian-red text-xs text-white rounded-sm ml-1'>{props.count}</div>
+  return <div className='px-1 bg-martian-red text-xs text-white rounded-sm ml-1'>{count}</div>
 }

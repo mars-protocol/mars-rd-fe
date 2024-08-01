@@ -774,7 +774,7 @@ interface ButtonProps {
 }
 
 type CardTab = {
-  title: string
+  title: string | React.ReactNode
   notificationCount?: number
   renderContent: () => React.ReactNode
 }
@@ -1416,3 +1416,68 @@ interface PoolInfo {
 }
 type ChartDataItem = { date: string; value: number }
 type ChartData = ChartDataItem[]
+
+type BarChartDataItem = { name: string; date: string; [key: string]: string | number }
+type BarChartData = BarChartDataItem[]
+
+interface DummyData {
+  [key: string]: {
+    [key: string]: DateDoubleValue[]
+  }
+}
+
+interface DateDoubleValue {
+  date: string
+  value: number
+  value2: number
+}
+interface TooltipContentProps {
+  payload: ChartDataPayloadProps[]
+}
+interface ChartDataPayloadProps {
+  chartType?: string
+  color: string
+  dataKey: string
+  fill: string
+  formatter?: string
+  hide: boolean
+  name: string
+  payload: {} // once we have real data this will be updated
+  value: string | number
+  stroke?: string
+  strokeWidth?: number
+  type?: string
+  unit?: string
+}
+interface Metric {
+  value: BigNumber
+  label: string
+  formatOptions: {
+    prefix?: string
+    suffix?: string
+    maxDecimals?: number
+    minDecimals?: number
+    abbreviated?: boolean
+    thousandSeparator?: boolean
+  }
+}
+
+interface Token {
+  chainId: string
+  denom: string
+  symbol: string
+  icon: string
+  description: string
+  decimals: number
+  priceUSD: number
+  totalLiquidityUSD: number
+  dayVolumeUSD: number
+}
+
+interface LegendEntry {
+  inactive: boolean
+  dataKey: string
+  type: string
+  color: string
+  value: string
+}

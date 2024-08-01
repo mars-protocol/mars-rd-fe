@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, { useEffect, useRef } from 'react'
 import { animated, useSpring } from 'react-spring'
+import { isEqual } from 'lodash'
 
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
@@ -24,7 +25,8 @@ export const FormattedNumber = React.memo(
     )
     const prevAmountRef = useRef<number>(0)
 
-    let { options, smallerThanThreshold } = props
+    let options = props.options
+    const smallerThanThreshold = props.smallerThanThreshold
 
     if (smallerThanThreshold) {
       if (!options) options = { prefix: '< ' }
@@ -46,7 +48,6 @@ export const FormattedNumber = React.memo(
     if (
       (prevAmountRef.current === props.amount && props.amount === 0) ||
       !props.animate ||
-      prevAmountRef.current === 0 ||
       reduceMotion
     )
       return (
@@ -73,7 +74,7 @@ export const FormattedNumber = React.memo(
       </animated.p>
     )
   },
-  (prevProps, nextProps) => prevProps.amount === nextProps.amount,
+  (prevProps, nextProps) => isEqual(prevProps, nextProps),
 )
 
 FormattedNumber.displayName = 'FormattedNumber'

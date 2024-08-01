@@ -36,8 +36,6 @@ export default function ChainSelect(props: Props) {
   const [searchParams] = useSearchParams()
   const isV1 = useStore((s) => s.isV1)
 
-  console.log('current ChainConfig', chainConfig)
-
   const [_, setCurrentChainId] = useCurrentChainId()
 
   const selectChain = useCallback(
