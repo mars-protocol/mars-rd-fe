@@ -32,23 +32,23 @@ export default function LiquidationsTable() {
       },
       {
         accessorKey: 'collateral_asset_won',
-        header: 'Collateral Asset Amount',
+        header: 'Collateral Gained',
         cell: (props: Cell) => {
           return <CustomAssetCell value={props.getValue()} assetsData={assetsData} />
         },
       },
       {
         accessorKey: 'debt_asset_repaid',
-        header: 'Debt Asset Amount',
+        header: 'Repaid Debt',
         cell: (props: Cell) => {
-          return <FormattedCell value={props.getValue()} assetsData={assetsData} />
+          return <CustomAssetCell value={props.getValue()} assetsData={assetsData} />
         },
       },
       {
         accessorKey: 'protocol_fee_coin',
-        header: 'Protocol Fee Amount',
+        header: 'Protocol Fee',
         cell: (props: Cell) => {
-          return <FormattedCell value={props.getValue()} assetsData={assetsData} />
+          return <CustomAssetCell value={props.getValue()} assetsData={assetsData} />
         },
       },
     ],
