@@ -1,10 +1,11 @@
 import AssetImage from 'components/common/assets/AssetImage'
 import { FormattedNumber } from 'components/common/FormattedNumber'
+import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import TitleAndSubCell from 'components/common/TitleAndSubCell'
-import Image from 'next/image'
 import { byDenom } from 'utils/array'
-import { getCoinValue } from 'utils/formatters'
+import { getCoinAmount, getCoinValue } from 'utils/formatters'
+import { BN } from 'utils/helpers'
 
 interface Props {
   value: BNCoin
@@ -14,11 +15,14 @@ interface Props {
 export default function CustomAssetCell(props: Props) {
   const { value, assetsData } = props
   const asset = assetsData.find(byDenom(value.denom))
-  //   const logo = asset?.logo
-  //   console.log(logo, 'logo')
-
-  console.log(asset, 'assetsData')
   const formattedValue = getCoinValue(value, assetsData)
+
+  const coinAmount = getCoinAmount(value.denom, formattedValue, assetsData)
+  console.log(coinAmount.toNumber(), 'amount of coins')
+
+  if (!asset || !formattedValue) {
+    return <Loading />
+  }
 
   return (
     <TitleAndSubCell
