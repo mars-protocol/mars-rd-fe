@@ -34,6 +34,10 @@ interface Props<T> {
   hideCard?: boolean
   setRowSelection?: OnChangeFn<RowSelectionState>
   selectedRows?: RowSelectionState
+  paginationRows: {
+    pageIndex: number
+    pageSize: number
+  }
   onClickRow?: (id: string) => void
 }
 
@@ -49,10 +53,12 @@ export default function Table<T>(props: Props<T>) {
     type,
     hideCard,
     selectedRows,
+    paginationRows,
     setRowSelection,
     onClickRow,
   } = props
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
+  const [pagination, setPagination] = React.useState(paginationRows)
 
   const table = useReactTable({
     data: data,
@@ -60,10 +66,12 @@ export default function Table<T>(props: Props<T>) {
     state: {
       sorting,
       rowSelection: selectedRows,
+      pagination,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

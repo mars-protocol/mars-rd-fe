@@ -63,6 +63,7 @@ export default function LiquidationsTable() {
           columns={columns}
           data={filteredData}
           initialSorting={[]}
+          paginationRows={{ pageIndex: 0, pageSize: 15 }}
         />
       )}
     </>
