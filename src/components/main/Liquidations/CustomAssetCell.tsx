@@ -1,35 +1,36 @@
 import AssetImage from 'components/common/assets/AssetImage'
 import { FormattedNumber } from 'components/common/FormattedNumber'
-import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import TitleAndSubCell from 'components/common/TitleAndSubCell'
-import { byDenom } from 'utils/array'
-import { getCoinAmount, getCoinValue } from 'utils/formatters'
-import { BN } from 'utils/helpers'
+import { MIN_AMOUNT } from 'constants/math'
+import useAsset from 'hooks/assets/useAsset'
+import { BNCoin } from 'types/classes/BNCoin'
+import { demagnify } from 'utils/formatters'
 
 interface Props {
   value: BNCoin
-  assetsData: Asset[]
 }
 
 export default function CustomAssetCell(props: Props) {
-  const { value, assetsData } = props
-  const asset = assetsData.find(byDenom(value.denom))
-  const formattedValue = getCoinValue(value, assetsData)
+  const {
+    value: { amount, denom },
+  } = props
+  const asset = useAsset(denom)
 
-  const coinAmount = getCoinAmount(value.denom, formattedValue, assetsData)
-  console.log(coinAmount.toNumber(), 'amount of coins')
+  if (!asset) return null
+  const assetAmount = demagnify(amount.toString(), asset)
 
-  if (!asset || !formattedValue) {
-    return <Loading />
-  }
+  const isZero = assetAmount === 0
+  const isBelowMinAmount = assetAmount < MIN_AMOUNT
+  const displayAmount = isBelowMinAmount ? MIN_AMOUNT : assetAmount
 
   return (
     <TitleAndSubCell
       title={
         <FormattedNumber
-          amount={formattedValue.toNumber()}
-          options={{ minDecimals: 2, abbreviated: true, prefix: '$' }}
+          amount={displayAmount}
+          smallerThanThreshold={!isZero && isBelowMinAmount}
+          options={{ minDecimals: 2, maxDecimals: 3, abbreviated: true }}
           className='text-xs'
           animate
         />

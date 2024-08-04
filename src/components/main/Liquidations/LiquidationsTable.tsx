@@ -1,13 +1,9 @@
 import Table from 'components/common/Table'
-import FormattedCell from 'components/main/Liquidations/FormattedCell'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useMemo } from 'react'
 import { getCoinValue } from 'utils/formatters'
 import CustomAssetCell from './CustomAssetCell'
-import AmountAndValue from 'components/common/AmountAndValue'
-import useAsset from 'hooks/assets/useAsset'
-import CollateralCell from './CollateralCell'
 interface Cell {
   getValue: () => BNCoin
 }
@@ -36,26 +32,25 @@ export default function LiquidationsTable() {
         accessorKey: 'collateral_asset_won',
         header: 'Collateral Gained',
         cell: (props: Cell) => {
-          console.log(props.getValue(), 'proppppps')
-          return <CollateralCell data={props.getValue()} />
+          return <CustomAssetCell value={props.getValue()} />
         },
       },
       {
         accessorKey: 'debt_asset_repaid',
         header: 'Repaid Debt',
         cell: (props: Cell) => {
-          return <CustomAssetCell value={props.getValue()} assetsData={assetsData} />
+          return <CustomAssetCell value={props.getValue()} />
         },
       },
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Protocol Fee',
         cell: (props: Cell) => {
-          return <CustomAssetCell value={props.getValue()} assetsData={assetsData} />
+          return <CustomAssetCell value={props.getValue()} />
         },
       },
     ],
-    [assetsData],
+    [],
   )
 
   return (
