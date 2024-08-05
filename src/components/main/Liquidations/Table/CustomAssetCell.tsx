@@ -7,6 +7,7 @@ import useAsset from 'hooks/assets/useAsset'
 import { BNCoin } from 'types/classes/BNCoin'
 import { demagnify, getCoinValue } from 'utils/formatters'
 import { Tooltip } from 'components/common/Tooltip'
+import { InfoCircle } from 'components/common/Icons'
 
 interface Props {
   value: BNCoin
@@ -44,19 +45,21 @@ export default function CustomAssetCell(props: Props) {
         </span>
       }
       sub={
-        <span className='flex items-center justify-end space-x-1'>
-          <Tooltip
-            type='info'
-            className='pb-1'
-            content={<Text size='xs'>Current Price of the Asset</Text>}
-          />
+        <div className='flex items-center justify-end space-x-1'>
           <FormattedNumber
             amount={assetValue.toNumber()}
             options={{ minDecimals: 1, abbreviated: true, prefix: '$' }}
             className='text-xs'
             animate
           />
-        </span>
+          <Tooltip
+            type='info'
+            className='pb-1'
+            content={<Text size='xs'>Current Price of the Asset</Text>}
+          >
+            <InfoCircle className='w-3.5 h-3.5 text-white/40 hover:text-inherit' />
+          </Tooltip>
+        </div>
       }
     />
   )

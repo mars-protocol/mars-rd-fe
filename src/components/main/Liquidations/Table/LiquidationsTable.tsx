@@ -4,6 +4,7 @@ import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { getCoinValue } from 'utils/formatters'
 import CustomAssetCell from 'components/main/Liquidations/Table/CustomAssetCell'
+import CustomAccountCell from './CustomAccountCell'
 
 interface Cell {
   getValue: () => BNCoin
@@ -28,6 +29,9 @@ export default function LiquidationsTable() {
       {
         accessorKey: 'account_id',
         header: 'Account ID',
+        cell: (props: Cell) => {
+          return <CustomAccountCell value={props.getValue()} />
+        },
       },
       {
         accessorKey: 'collateral_asset_won',
