@@ -1,9 +1,10 @@
+import { useMemo } from 'react'
 import Table from 'components/common/Table'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
-import { useMemo } from 'react'
 import { getCoinValue } from 'utils/formatters'
-import CustomAssetCell from './CustomAssetCell'
+import CustomAssetCell from 'components/main/Liquidations/Table/CustomAssetCell'
+
 interface Cell {
   getValue: () => BNCoin
 }
@@ -32,23 +33,31 @@ export default function LiquidationsTable() {
         accessorKey: 'collateral_asset_won',
         header: 'Collateral Gained',
         cell: (props: Cell) => {
-          return <CustomAssetCell value={props.getValue()} />
+          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
       },
       {
         accessorKey: 'debt_asset_repaid',
         header: 'Repaid Debt',
         cell: (props: Cell) => {
-          return <CustomAssetCell value={props.getValue()} />
+          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
       },
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Protocol Fee',
         cell: (props: Cell) => {
-          return <CustomAssetCell value={props.getValue()} />
+          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
       },
+      // will be added once we have the data
+      // {
+      //   accessorKey: 'protocol_fee_coin',
+      //   header: 'Liquidation Price',
+      //   cell: (props: Cell) => {
+      //     return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
+      //   },
+      // },
     ],
     [],
   )
@@ -62,6 +71,7 @@ export default function LiquidationsTable() {
           title='Recently Executed Liquidations'
           columns={columns}
           data={filteredData}
+          tableBodyClassName='text-lg '
           initialSorting={[]}
           paginationRows={{ pageIndex: 0, pageSize: 15 }}
         />

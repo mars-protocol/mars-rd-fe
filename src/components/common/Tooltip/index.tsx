@@ -61,7 +61,7 @@ export const Tooltip = (props: Props) => {
       ) : (
         <div
           className={classNames(
-            'inline-block w-[18px] hover:cursor-pointer opacity-40 hover:opacity-80',
+            'inline-block w-[16px] hover:cursor-pointer opacity-40 hover:opacity-80',
             props.className,
           )}
         >
