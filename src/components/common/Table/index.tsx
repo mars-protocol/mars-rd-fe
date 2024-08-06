@@ -61,13 +61,19 @@ export default function Table<T>(props: Props<T>) {
   const [pagination, setPagination] = React.useState(paginationRows)
 
   const table = useReactTable({
-    data: data,
-    columns: columns,
+    data,
+    columns,
     state: {
       sorting,
-      rowSelection: selectedRows,
       pagination,
+      rowSelection: selectedRows,
     },
+    // initialState: {
+    //   pagination: {
+    //     pageIndex: 0, //custom initial page index
+    //     pageSize: 25, //custom default page size
+    //   },
+    // },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,

@@ -5,9 +5,22 @@ import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { getCoinValue } from 'utils/formatters'
 import CustomAssetCell from 'components/main/Liquidations/Table/CustomAssetCell'
 import CustomAccountCell from './CustomAccountCell'
+import CustomLiquidationPriceCell from './CustomLiquidationPriceCell'
 
-interface Cell {
+interface AssetCell {
   getValue: () => BNCoin
+}
+interface AccountCell {
+  getValue: () => string
+}
+
+interface LiquidityData {
+  account_id: string
+  block_height: number
+  collateral_asset_won: BNCoin
+  debt_asset_repaid: BNCoin
+  liquidation_type: string
+  protocol_fee_coin: BNCoin
 }
 
 export default function LiquidationsTable() {
@@ -16,9 +29,9 @@ export default function LiquidationsTable() {
 
   const filteredData = useMemo(() => {
     if (liquidityData && assetsData) {
-      return liquidityData.data.filter((data) => {
+      return liquidityData.data.filter((data: LiquidityData) => {
         const dollarValue = getCoinValue(data.collateral_asset_won, assetsData)
-        return dollarValue.toNumber() > 10
+        return dollarValue.toNumber() >= 10
       })
     }
     return []
@@ -29,39 +42,39 @@ export default function LiquidationsTable() {
       {
         accessorKey: 'account_id',
         header: 'Account ID',
-        cell: (props: Cell) => {
+        cell: (props: AccountCell) => {
           return <CustomAccountCell value={props.getValue()} />
         },
       },
       {
         accessorKey: 'collateral_asset_won',
         header: 'Collateral Gained',
-        cell: (props: Cell) => {
+        cell: (props: AssetCell) => {
           return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
       },
       {
         accessorKey: 'debt_asset_repaid',
         header: 'Repaid Debt',
-        cell: (props: Cell) => {
+        cell: (props: AssetCell) => {
           return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
       },
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Protocol Fee',
-        cell: (props: Cell) => {
+        cell: (props: AssetCell) => {
           return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
       },
       // will be added once we have the data
-      // {
-      //   accessorKey: 'protocol_fee_coin',
-      //   header: 'Liquidation Price',
-      //   cell: (props: Cell) => {
-      //     return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
-      //   },
-      // },
+      {
+        accessorKey: 'protocol_fee_coin',
+        header: 'Liquidation Price',
+        cell: (props: AssetCell) => {
+          return <CustomLiquidationPriceCell value={props.getValue()} />
+        },
+      },
     ],
     [],
   )

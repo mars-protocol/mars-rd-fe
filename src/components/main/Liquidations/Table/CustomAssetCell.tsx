@@ -29,7 +29,7 @@ export default function CustomAssetCell(props: Props) {
   return (
     <TitleAndSubCell
       title={
-        <span className='flex align-center justify-end'>
+        <div className='flex align-center justify-end'>
           <AssetImage asset={asset} className='w-4 h-4 mr-1' />
           <FormattedNumber
             amount={displayAmount}
@@ -40,9 +40,8 @@ export default function CustomAssetCell(props: Props) {
           />
           <Text size='xs' className='text-white/60'>
             {asset ? asset.symbol : 'Unknown Asset'}
-            {/* pretty sure there is somewhere unknow asset image which I will add later */}
           </Text>
-        </span>
+        </div>
       }
       sub={
         <div className='flex items-center justify-end space-x-1'>
