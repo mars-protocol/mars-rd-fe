@@ -33,10 +33,6 @@ interface Props<T> {
   hideCard?: boolean
   setRowSelection?: OnChangeFn<RowSelectionState>
   selectedRows?: RowSelectionState
-  paginationRows: {
-    pageIndex: number
-    pageSize: number
-  }
   onClickRow?: (id: string) => void
 }
 

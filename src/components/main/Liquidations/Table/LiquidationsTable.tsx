@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Table from 'components/common/Table'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
@@ -25,8 +25,15 @@ interface LiquidityData {
 }
 
 export default function LiquidationsTable() {
-  const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations()
+  const [page, setPage] = useState<number>(1)
+  const pageSize = 20
+
+  const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations(page, pageSize)
   const { data: assetsData } = useAssets()
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage)
+  }
 
   const filteredData = useMemo(() => {
     if (liquidityData && assetsData) {
@@ -69,13 +76,13 @@ export default function LiquidationsTable() {
           return <CustomLiquidationPriceCell value={props.getValue()} />
         },
       },
-      {
-        accessorKey: 'protocol_fee_coin',
-        header: 'Protocol Fee',
-        cell: (props: AssetCell) => {
-          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
-        },
-      },
+      // {
+      //   accessorKey: 'protocol_fee_coin',
+      //   header: 'Protocol Fee',
+      //   cell: (props: AssetCell) => {
+      //     return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
+      //   },
+      // },
     ],
     [],
   )
@@ -83,7 +90,7 @@ export default function LiquidationsTable() {
   return (
     <>
       {isLiquidityDataLoading ? (
-        <div className='text-center'>Fetching Data...</div>
+        <div className='text-center animate-pulse'>Fetching Data...</div>
       ) : (
         <>
           <Table
@@ -92,9 +99,8 @@ export default function LiquidationsTable() {
             data={filteredData}
             tableBodyClassName='text-lg '
             initialSorting={[]}
-            paginationRows={{ pageIndex: 0, pageSize: 15 }}
           />
-          <Pagination />
+          <Pagination currentPage={page} totalPages={20} onPageChange={handlePageChange} />
         </>
       )}
     </>
