@@ -18,19 +18,16 @@ export default function CustomLiquidationPriceCell(props: Props) {
   return (
     <TitleAndSubCell
       title={
-        <div className='flex align-center justify-end'>
-          <AssetImage asset={asset} className='w-4 h-4 mr-1' />
-          <FormattedNumber
-            amount={7}
-            options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true, prefix: '$' }}
-            className='text-xs'
-            animate
-          />
-        </div>
+        <FormattedNumber
+          amount={7}
+          options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true, prefix: '$' }}
+          className='text-xs'
+          animate
+        />
       }
       sub={
         <div className='flex items-center justify-end space-x-1'>
-          <Text size='xs'>Total Liquidation Price: $354</Text>
+          <Text size='xs'>Total: $354</Text>
           {/* collateral amount * liquidation price */}
         </div>
       }

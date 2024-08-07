@@ -48,7 +48,7 @@ export default function LiquidationsTable() {
       },
       {
         accessorKey: 'collateral_asset_won',
-        header: 'Collateral Gained',
+        header: 'Liquidated Collateral',
         cell: (props: AssetCell) => {
           return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
@@ -56,13 +56,6 @@ export default function LiquidationsTable() {
       {
         accessorKey: 'debt_asset_repaid',
         header: 'Repaid Debt',
-        cell: (props: AssetCell) => {
-          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
-        },
-      },
-      {
-        accessorKey: 'protocol_fee_coin',
-        header: 'Protocol Fee',
         cell: (props: AssetCell) => {
           return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
         },
@@ -75,6 +68,13 @@ export default function LiquidationsTable() {
           return <CustomLiquidationPriceCell value={props.getValue()} />
         },
       },
+      {
+        accessorKey: 'protocol_fee_coin',
+        header: 'Protocol Fee',
+        cell: (props: AssetCell) => {
+          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
+        },
+      },
     ],
     [],
   )
@@ -82,7 +82,7 @@ export default function LiquidationsTable() {
   return (
     <>
       {isLiquidityDataLoading ? (
-        <div>Fetching Data...</div>
+        <div className='text-center'>Fetching Data...</div>
       ) : (
         <Table
           title='Recently Executed Liquidations'

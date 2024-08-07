@@ -51,11 +51,7 @@ export default function CustomAssetCell(props: Props) {
             className='text-xs'
             animate
           />
-          <Tooltip
-            type='info'
-            className='pb-1'
-            content={<Text size='xs'>Current Price of the Asset</Text>}
-          >
+          <Tooltip type='info' content={<Text size='xs'>Current Price of the Asset</Text>}>
             <InfoCircle className='w-3.5 h-3.5 text-white/40 hover:text-inherit' />
           </Tooltip>
         </div>
