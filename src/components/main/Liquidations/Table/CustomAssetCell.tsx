@@ -38,7 +38,7 @@ export default function CustomAssetCell(props: Props) {
             className='text-xs'
             animate
           />
-          <Text size='xs' className='text-white/60'>
+          <Text size='xs' className='text-white/60 pl-0.5'>
             {asset ? asset.symbol : 'Unknown Asset'}
           </Text>
         </div>

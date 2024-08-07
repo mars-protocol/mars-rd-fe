@@ -20,7 +20,6 @@ import Row from 'components/common/Table/Row'
 import Text from 'components/common/Text'
 import { LEFT_ALIGNED_ROWS } from 'constants/table'
 import ConditionalWrapper from 'hocs/ConditionalWrapper'
-import Button from 'components/common/Button'
 
 interface Props<T> {
   title: string | ReactElement
@@ -53,31 +52,21 @@ export default function Table<T>(props: Props<T>) {
     type,
     hideCard,
     selectedRows,
-    paginationRows,
     setRowSelection,
     onClickRow,
   } = props
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
-  const [pagination, setPagination] = React.useState(paginationRows)
 
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
-      pagination,
       rowSelection: selectedRows,
     },
-    // initialState: {
-    //   pagination: {
-    //     pageIndex: 0, //custom initial page index
-    //     pageSize: 25, //custom default page size
-    //   },
-    // },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -164,33 +153,6 @@ export default function Table<T>(props: Props<T>) {
             />
           ))}
         </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={1000} className='text-right'>
-              <div className='flex justify-end items-center space-x-2'>
-                <Button
-                  variant='solid'
-                  color='tertiary'
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  text={'Prev'}
-                  size='sm'
-                />
-                <Button
-                  variant='solid'
-                  color='tertiary'
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                  text={'Next'}
-                  size='sm'
-                />
-              </div>
-              <Text size='xs' className='mt-2'>
-                Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-              </Text>
-            </td>
-          </tr>
-        </tfoot>
       </table>
     </ConditionalWrapper>
   )

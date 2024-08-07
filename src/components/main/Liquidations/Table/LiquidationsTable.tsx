@@ -6,6 +6,7 @@ import { getCoinValue } from 'utils/formatters'
 import CustomAssetCell from 'components/main/Liquidations/Table/CustomAssetCell'
 import CustomAccountCell from './CustomAccountCell'
 import CustomLiquidationPriceCell from './CustomLiquidationPriceCell'
+import Pagination from './Pagination'
 
 interface AssetCell {
   getValue: () => BNCoin
@@ -84,14 +85,17 @@ export default function LiquidationsTable() {
       {isLiquidityDataLoading ? (
         <div className='text-center'>Fetching Data...</div>
       ) : (
-        <Table
-          title='Recently Executed Liquidations'
-          columns={columns}
-          data={filteredData}
-          tableBodyClassName='text-lg '
-          initialSorting={[]}
-          paginationRows={{ pageIndex: 0, pageSize: 15 }}
-        />
+        <>
+          <Table
+            title='Recently Executed Liquidations'
+            columns={columns}
+            data={filteredData}
+            tableBodyClassName='text-lg '
+            initialSorting={[]}
+            paginationRows={{ pageIndex: 0, pageSize: 15 }}
+          />
+          <Pagination />
+        </>
       )}
     </>
   )
