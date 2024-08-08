@@ -11,7 +11,7 @@ export default function Pagination(props: Props) {
   const { currentPage, totalPages, onPageChange } = props
 
   return (
-    <div className='flex justify-end'>
+    <div className='flex justify-end mt-2'>
       <div className='text-right'>
         <div className='flex space-x-2'>
           <Button
