@@ -1462,3 +1462,10 @@ interface Metric {
   }
   tooltipContent?: React.ReactNode
 }
+
+interface LiquidationDataItem {
+  account_id: string
+  collateral_asset_won?: BNCoin
+  debt_asset_repaid?: BNCoin
+  protocol_fee_coin?: BNCoin
+}

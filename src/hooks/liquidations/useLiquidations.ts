@@ -1,7 +1,7 @@
 import getLiquidations from 'api/liquidations/getLiquidations'
 import useSWR from 'swr'
 
-export default function useLiquidations(page = 1, pageSize = 20) {
+export default function useLiquidations(page = 1, pageSize = 25) {
   return useSWR(
     ['liquidations/liquidationsData', page, pageSize],
     async () => getLiquidations(page, pageSize),

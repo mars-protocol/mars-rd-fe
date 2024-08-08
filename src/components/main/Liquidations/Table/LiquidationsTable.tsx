@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
 import Table from 'components/common/Table'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
@@ -9,64 +10,75 @@ import Pagination from './Pagination'
 import { CircularProgress } from 'components/common/CircularProgress'
 import Text from 'components/common/Text'
 
-interface AssetCell {
-  getValue: () => BNCoin
-}
-interface AccountCell {
-  getValue: () => string
-}
-
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
-  const pageSize = 20
+  const pageSize = 25
+  const maxEntries = 1_000
 
   const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations(page, pageSize)
   const { data: assetsData } = useAssets()
+
+  const totalPages = Math.ceil(maxEntries / pageSize)
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
   }
 
-  const columns = useMemo(
+  const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(
     () => [
       {
         accessorKey: 'account_id',
         header: 'Account ID',
-        cell: (props: AccountCell) => {
-          return <CustomAccountCell value={props.getValue()} />
+        cell: ({ row }) => {
+          return <CustomAccountCell value={row.original.account_id as string} />
         },
       },
       {
         accessorKey: 'collateral_asset_won',
         header: 'Liquidated Collateral',
-        cell: (props: AssetCell) => {
-          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
+        cell: ({ row }) => {
+          return (
+            <CustomAssetCell
+              value={row.original.collateral_asset_won as BNCoin}
+              assetData={assetsData}
+            />
+          )
         },
       },
       {
         accessorKey: 'debt_asset_repaid',
         header: 'Repaid Debt',
-        cell: (props: AssetCell) => {
-          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
+        cell: ({ row }) => {
+          return (
+            <CustomAssetCell
+              value={row.original.debt_asset_repaid as BNCoin}
+              assetData={assetsData}
+            />
+          )
         },
       },
-      // will be added once we have the data
+      // will be updated once we have the data
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Liquidation Price',
-        cell: (props: AssetCell) => {
-          return <CustomLiquidationPriceCell value={props.getValue()} />
+        cell: ({ row }) => {
+          return <CustomLiquidationPriceCell value={row.original} />
         },
       },
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Protocol Fee',
-        cell: (props: AssetCell) => {
-          return <CustomAssetCell value={props.getValue()} assetData={assetsData} />
+        cell: ({ row }) => {
+          return (
+            <CustomAssetCell
+              value={row.original.protocol_fee_coin as BNCoin}
+              assetData={assetsData}
+            />
+          )
         },
       },
     ],
-    [],
+    [assetsData],
   )
 
   return (
@@ -87,7 +99,7 @@ export default function LiquidationsTable() {
             tableBodyClassName='text-lg '
             initialSorting={[]}
           />
-          <Pagination currentPage={page} totalPages={20} onPageChange={handlePageChange} />
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
         </>
       )}
     </>
