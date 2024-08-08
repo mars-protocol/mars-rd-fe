@@ -55,7 +55,7 @@ export default function MetricsCard(props: Props) {
               />
             )}
             <div className='flex items-center justify-center space-x-1 '>
-              <Text size='xs' className='text-white/40 pt-2'>
+              <Text size='xs' className='text-white/40'>
                 {metric.label}
               </Text>
               {metric.tooltipContent && (
