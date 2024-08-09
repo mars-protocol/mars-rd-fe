@@ -10,13 +10,18 @@ import {
 } from 'components/common/Chart/dummydata'
 import StatsMetrics from 'components/main/StatsMetrics'
 import TokenMetrics from 'components/main/TokenMetrics'
+import useOverviewData from 'hooks/tokenomics/useOverviewData'
 
 export default function MainPage() {
+  const { data: overviewData, isLoading: isOverviewDataLoading } = useOverviewData()
+
+  const TVLChartData = overviewData?.formattedTVL
+
   const tabs: CardTab[] = [
     {
       title: 'TVL',
       renderContent: () => (
-        <Chart data={dummyChartData1} className='rounded-t-none before:content-none' />
+        <Chart data={TVLChartData} className='rounded-t-none before:content-none' />
       ),
     },
     {

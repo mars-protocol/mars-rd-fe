@@ -14,7 +14,7 @@ const options = [
   { value: 'deposits/withdrawals', label: 'Deposits/Withdrawals' },
 ]
 
-const timeframe = ['1H', '1D', '1W', '1Y']
+const timeframe = ['1D', '7D', '1M', '1Y']
 
 export default function ChartCard(props: Props) {
   const [selectedOption, setSelectedOption] = useState<string>(options[0].value)
