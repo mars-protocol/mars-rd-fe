@@ -10,28 +10,26 @@ interface Props {
   height?: string
   dataKeys: { [key: string]: string }
 }
+interface BarTooltipContentProps {
+  payload: ChartDataPayloadProps[]
+  dataKeys: { [key: string]: string }
+}
+
+function TooltipContent(props: BarTooltipContentProps) {
+  const { payload, dataKeys } = props
+  return Object.entries(dataKeys).map(([key, label]) => {
+    const value = payload.find((p) => p.dataKey === key)?.value ?? 0
+    const formattedValue = formatValue(value, {
+      minDecimals: 0,
+      maxDecimals: 0,
+      prefix: '$',
+      abbreviated: true,
+    })
+    return <Text size='sm'>{`${label}: ${formattedValue}`}</Text>
+  })
+}
 
 export default function BarChartBody(props: Props) {
-  const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
-    return (
-      <>
-        {Object.entries(props.dataKeys).map(([key, label]) => {
-          const value = payload.find((p) => p.dataKey === key)?.value ?? 0
-          const formattedValue = formatValue(value, {
-            minDecimals: 0,
-            maxDecimals: 0,
-            prefix: '$',
-            abbreviated: true,
-          })
-          return (
-            <Text size='sm'>
-              {label}: {formattedValue}
-            </Text>
-          )
-        })}
-      </>
-    )
-  }
   return (
     <div className='-ml-2 h-100'>
       <ResponsiveContainer width='100%' height={props.height || '100%'}>
@@ -73,7 +71,13 @@ export default function BarChartBody(props: Props) {
           />
           <Tooltip
             cursor={{ stroke: '#000', strokeWidth: 2, fill: 'rgba(255, 255, 255, 0.2)' }}
-            content={<CustomTooltip payload={[]} label={''} renderContent={renderTooltipContent} />}
+            content={
+              <CustomTooltip
+                payload={[]}
+                label={''}
+                renderContent={(payload) => TooltipContent({ payload, dataKeys: props.dataKeys })}
+              />
+            }
           />
 
           <Bar dataKey='valueTwo' fill='rgba(171, 66, 188, 0.5)' legendType='plainline' />

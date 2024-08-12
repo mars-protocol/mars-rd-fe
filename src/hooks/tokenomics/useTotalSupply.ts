@@ -1,8 +1,6 @@
 import getTotalSupply from 'api/tokenomics/getTotalSupply'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 export default function useTotalSupply() {
-  return useSWR('tokenomics/totalSupply', async () => getTotalSupply(), {
-    refreshInterval: 60_000,
-  })
+  return useSWRImmutable('tokenomics/totalSupply', async () => getTotalSupply())
 }

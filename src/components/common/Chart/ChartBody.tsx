@@ -15,11 +15,19 @@ import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
 import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import { formatValue } from 'utils/formatters'
-import CustomTooltip from './Tooltip/CustomTooltip'
+import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
 
 interface Props {
   data: ChartData
   height?: string
+}
+
+function TooltipContent(props: TooltipContentProps) {
+  const { payload } = props
+  const value = Number(payload[0].value) ?? 0
+  return (
+    <Text size='sm'>{formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}</Text>
+  )
 }
 
 export default function ChartBody(props: Props) {
@@ -28,13 +36,6 @@ export default function ChartBody(props: Props) {
     DEFAULT_SETTINGS.reduceMotion,
   )
   const height = props.height ?? 'h-100'
-
-  const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
-    const value = Number(payload[0].value) ?? 0
-    return (
-      <Text size='sm'>{formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}</Text>
-    )
-  }
 
   return (
     <div className={classNames('-ml-5', height)}>
@@ -90,7 +91,13 @@ export default function ChartBody(props: Props) {
             cursor={false}
             isAnimationActive={!reduceMotion}
             wrapperStyle={{ outline: 'none' }}
-            content={<CustomTooltip payload={[]} label={''} renderContent={renderTooltipContent} />}
+            content={
+              <CustomTooltip
+                payload={[]}
+                label={''}
+                renderContent={(payload) => <TooltipContent payload={payload} />}
+              />
+            }
           />
           <Area
             type='monotone'

@@ -20,16 +20,7 @@ interface Props {
   options: { value: string; label: string }[]
   data: DummyData
 }
-
-interface LegendEntry {
-  inactive: boolean
-  dataKey: string
-  type: string
-  color: string
-  value: string
-}
-
-interface RenderLegendProps {
+interface DuoLineChartLegendProps {
   payload: LegendEntry[]
 }
 
@@ -37,21 +28,6 @@ export default function DuoLineChart(props: Props) {
   const { selectedOption, selectedTimeframe, options, data } = props
   const dummyData = data[selectedOption][selectedTimeframe]
 
-  const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
-    const value = Number(payload[0].value) ?? 0
-    const value2 = Number(payload[1].value) ?? 0
-    return (
-      <>
-        <Text size='sm'>
-          {payload[0].name}: {formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-        </Text>
-
-        <Text size='sm'>
-          {payload[1].name}: {formatValue(value2, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-        </Text>
-      </>
-    )
-  }
   return (
     <div className='-mr-6'>
       <ResponsiveContainer width='100%' height={400}>
@@ -103,12 +79,12 @@ export default function DuoLineChart(props: Props) {
                 active={false}
                 payload={[]}
                 label={''}
-                renderContent={renderTooltipContent}
+                renderContent={(payload) => <TooltipContent payload={payload} />}
               />
             }
           />
 
-          <Legend content={<RenderLegend payload={[]} />} verticalAlign='bottom' />
+          <Legend content={<DuoLineChartLegend payload={[]} />} verticalAlign='bottom' />
 
           <CartesianGrid opacity={0.1} vertical={false} />
         </LineChart>
@@ -117,7 +93,24 @@ export default function DuoLineChart(props: Props) {
   )
 }
 
-function RenderLegend(props: RenderLegendProps) {
+function TooltipContent(props: TooltipContentProps) {
+  const { payload } = props
+  const value = Number(payload[0].value) ?? 0
+  const value2 = Number(payload[1].value) ?? 0
+  return (
+    <>
+      <Text size='sm'>
+        {payload[0].name}: {formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
+      </Text>
+
+      <Text size='sm'>
+        {payload[1].name}: {formatValue(value2, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
+      </Text>
+    </>
+  )
+}
+
+function DuoLineChartLegend(props: DuoLineChartLegendProps) {
   const { payload } = props
   const colors = ['#AB47BC', '#8884d8']
   return (

@@ -1262,9 +1262,7 @@ interface PerpsParams {
   openingFeeRate: BigNumber
 }
 
-interface Store extends CommonSlice, ModalSlice {
-  withdrawFromVaults: any
-}
+interface Store extends CommonSlice, ModalSlice {}
 
 interface FormatOptions {
   decimals?: number
@@ -1433,7 +1431,9 @@ interface DateDoubleValue {
   value: number
   value2: number
 }
-
+interface TooltipContentProps {
+  payload: ChartDataPayloadProps[]
+}
 interface ChartDataPayloadProps {
   chartType?: string
   color: string
@@ -1468,4 +1468,24 @@ interface LiquidationDataItem {
   collateral_asset_won?: BNCoin
   debt_asset_repaid?: BNCoin
   protocol_fee_coin?: BNCoin
+}
+
+interface Token {
+  chainId: string
+  denom: string
+  symbol: string
+  icon: string
+  description: string
+  decimals: number
+  priceUSD: number
+  totalLiquidityUSD: number
+  dayVolumeUSD: number
+}
+
+interface LegendEntry {
+  inactive: boolean
+  dataKey: string
+  type: string
+  color: string
+  value: string
 }
