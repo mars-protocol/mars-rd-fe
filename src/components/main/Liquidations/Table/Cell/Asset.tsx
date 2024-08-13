@@ -14,7 +14,7 @@ interface Props {
   assetData: Asset[]
 }
 
-export default function CustomAssetCell(props: Props) {
+export default function Asset(props: Props) {
   const { value, assetData } = props
   const asset = useAsset(value.denom)
   const assetValue = getCoinValue(value, assetData)

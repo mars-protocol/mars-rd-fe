@@ -6,7 +6,7 @@ interface Props {
   value: BNCoin
 }
 
-export default function CustomLiquidationPriceCell(props: Props) {
+export default function LiquidationPrice(props: Props) {
   return (
     <TitleAndSubCell
       title={
@@ -19,8 +19,8 @@ export default function CustomLiquidationPriceCell(props: Props) {
       }
       sub={
         <div className='flex items-center justify-end space-x-1'>
+          {/* TODO: update with real data (collateral amount * liquidation price) */}
           <Text size='xs'>Total: $354</Text>
-          {/* collateral amount * liquidation price */}
         </div>
       }
     />

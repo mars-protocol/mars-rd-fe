@@ -3,9 +3,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import Table from 'components/common/Table'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
-import CustomAssetCell from 'components/main/Liquidations/Table/CustomAssetCell'
-import CustomAccountCell from './CustomAccountCell'
-import CustomLiquidationPriceCell from './CustomLiquidationPriceCell'
+import Asset from 'components/main/Liquidations/Table/Cell/Asset'
+import Account from 'components/main/Liquidations/Table/Cell/Account'
+import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
 import Pagination from './Pagination'
 import { CircularProgress } from 'components/common/CircularProgress'
 import Text from 'components/common/Text'
@@ -30,7 +30,7 @@ export default function LiquidationsTable() {
         accessorKey: 'account_id',
         header: 'Account ID',
         cell: ({ row }) => {
-          return <CustomAccountCell value={row.original.account_id as string} />
+          return <Account value={row.original.account_id as string} />
         },
       },
       {
@@ -38,10 +38,7 @@ export default function LiquidationsTable() {
         header: 'Liquidated Collateral',
         cell: ({ row }) => {
           return (
-            <CustomAssetCell
-              value={row.original.collateral_asset_won as BNCoin}
-              assetData={assetsData}
-            />
+            <Asset value={row.original.collateral_asset_won as BNCoin} assetData={assetsData} />
           )
         },
       },
@@ -49,12 +46,7 @@ export default function LiquidationsTable() {
         accessorKey: 'debt_asset_repaid',
         header: 'Repaid Debt',
         cell: ({ row }) => {
-          return (
-            <CustomAssetCell
-              value={row.original.debt_asset_repaid as BNCoin}
-              assetData={assetsData}
-            />
-          )
+          return <Asset value={row.original.debt_asset_repaid as BNCoin} assetData={assetsData} />
         },
       },
       // will be updated once we have the data
@@ -62,19 +54,14 @@ export default function LiquidationsTable() {
         accessorKey: 'protocol_fee_coin',
         header: 'Liquidation Price',
         cell: ({ row }) => {
-          return <CustomLiquidationPriceCell value={row.original} />
+          return <LiquidationPrice value={row.original} />
         },
       },
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Protocol Fee',
         cell: ({ row }) => {
-          return (
-            <CustomAssetCell
-              value={row.original.protocol_fee_coin as BNCoin}
-              assetData={assetsData}
-            />
-          )
+          return <Asset value={row.original.protocol_fee_coin as BNCoin} assetData={assetsData} />
         },
       },
     ],
