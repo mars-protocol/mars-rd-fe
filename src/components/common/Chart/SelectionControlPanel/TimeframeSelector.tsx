@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function TimeframeSelector(props: Props) {
-  const { timeframes, setSelectedTimeframe, className } = props
+  const { timeframes, selectedTimeframe, setSelectedTimeframe, className } = props
   return (
     <div className={classNames('flex flex-row gap-3 my-3', className)}>
       {timeframes.map((time, index) => (
@@ -17,6 +17,7 @@ export default function TimeframeSelector(props: Props) {
           variant='solid'
           color='tertiary'
           onClick={() => setSelectedTimeframe(time)}
+          hasFocus={time === selectedTimeframe}
           key={index}
           text={time}
           size='sm'

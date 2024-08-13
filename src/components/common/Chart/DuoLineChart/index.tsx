@@ -36,7 +36,7 @@ interface RenderLegendProps {
 export default function DuoLineChart(props: Props) {
   const { selectedOption, selectedTimeframe, options, data } = props
   const dummyData = data[selectedOption][selectedTimeframe]
-
+  console.log(dummyData, 'dummyData')
   const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
     const value = Number(payload[0].value) ?? 0
     const value2 = Number(payload[1].value) ?? 0
@@ -83,7 +83,7 @@ export default function DuoLineChart(props: Props) {
             stroke='rgba(255, 255, 255, 0.3)'
             axisLine={false}
             tickLine={false}
-            tickCount={6}
+            tickCount={7}
             padding={{ top: 20 }}
             orientation='right'
             fontSize={12}

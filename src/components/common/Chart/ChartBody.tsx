@@ -76,6 +76,7 @@ export default function ChartBody(props: Props) {
             axisLine={false}
             tickLine={false}
             fontSize={12}
+            tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
               return formatValue(value, {
