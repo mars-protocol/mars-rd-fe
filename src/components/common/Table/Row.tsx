@@ -65,6 +65,7 @@ export default function Row<T>(props: Props<T>) {
             <td
               key={cell.id}
               className={classNames(
+                'text-sm',
                 LEFT_ALIGNED_ROWS.includes(cell.column.id) ? 'text-left' : 'text-right',
                 spacingClassName ?? 'px-3 py-4',
                 type &&
