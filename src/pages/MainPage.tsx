@@ -22,7 +22,11 @@ export default function MainPage() {
     {
       title: 'TVL',
       renderContent: () => (
-        <Chart data={TVLChartData} className='rounded-t-none before:content-none' />
+        <Chart
+          data={TVLChartData}
+          loading={isOverviewDataLoading}
+          className='rounded-t-none before:content-none'
+        />
       ),
     },
     // TODO: replace with real data

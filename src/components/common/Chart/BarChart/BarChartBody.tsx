@@ -12,15 +12,14 @@ import {
 import Text from 'components/common/Text'
 import { formatValue } from 'utils/formatters'
 import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
-import { dummyBarChartData } from 'components/common/Chart/dummydata'
 import { Circle } from 'components/common/Icons'
+import moment from 'moment'
 
 interface Props {
   data: BarChartData
   height?: string
   dataKeys: { [key: string]: string }
 }
-
 interface LegendEntry {
   inactive: boolean
   dataKey: string
@@ -59,7 +58,7 @@ export default function BarChartBody(props: Props) {
     <div className='-ml-2 h-100'>
       <ResponsiveContainer width='100%' height={props.height || '100%'}>
         <BarChart
-          data={dummyBarChartData}
+          data={data}
           margin={{
             top: 0,
             right: 0,
@@ -74,37 +73,22 @@ export default function BarChartBody(props: Props) {
             syncWithTicks={true}
           />
           <XAxis
-            dataKey='name'
+            dataKey='date'
             stroke='rgba(255, 255, 255, 0.4)'
             fontSize={12}
             axisLine={false}
             tickLine={false}
-          />
-          <YAxis
-            yAxisId='left'
-            orientation='left'
-            fontSize={12}
-            tickCount={4}
-            axisLine={false}
-            tickLine={false}
-            padding={{ top: 10 }}
             tickFormatter={(value) => {
-              return formatValue(value, {
-                minDecimals: 0,
-                maxDecimals: 0,
-                prefix: '$',
-                abbreviated: true,
-              })
+              return moment(value).format('DD MMM')
             }}
           />
           <YAxis
-            yAxisId='right'
             orientation='right'
             fontSize={12}
             tickCount={4}
             axisLine={false}
             tickLine={false}
-            padding={{ top: 10 }}
+            stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
               return formatValue(value, {
                 minDecimals: 0,
@@ -115,30 +99,32 @@ export default function BarChartBody(props: Props) {
             }}
           />
 
-          {/* <Tooltip
+          <Tooltip
             cursor={{
-              stroke: '#ccc',
+              stroke: 'rgba(255, 255, 255, 0.1)',
               strokeWidth: 2,
-              fill: '#f4f44',
+              fill: 'rgba(255, 255, 255, 0.1)',
             }}
             content={<CustomTooltip payload={[]} label={''} renderContent={renderTooltipContent} />}
-          /> */}
+          />
           <Legend content={<RenderLegend payload={[]} />} verticalAlign='bottom' />
 
           <Bar
-            dataKey='value'
-            yAxisId='left'
+            dataKey='supply'
             fill='rgba(171, 66, 188, 0.5)'
             legendType='plainline'
-            maxBarSize={30}
+            stackId='a'
+            maxBarSize={24}
+            activeBar={{ stroke: 'rgba(255, 255, 255, 0.1)', strokeWidth: 2 }}
           />
-          {/* <Bar
-            dataKey='value2'
-            yAxisId='right'
-            fill='rgba(66, 188, 171, 0.8)'
+          <Bar
+            dataKey='borrow'
+            fill='rgb(255, 82, 82, 0.7)'
+            stackId='a'
             legendType='plainline'
-            maxBarSize={30}
-          /> */}
+            maxBarSize={24}
+            activeBar={{ stroke: 'rgba(255, 255, 255, 0.1)', strokeWidth: 2 }}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -147,7 +133,7 @@ export default function BarChartBody(props: Props) {
 
 function RenderLegend(props: RenderLegendProps) {
   const { payload } = props
-  const colors = ['#AB47BC', '#8884d8']
+  const colors = ['#AB47BC', '#FF5252']
   return (
     <div className='flex justify-center sm:justify-end sm:mr-7'>
       {payload.map((entry: LegendEntry, index: number) => (
