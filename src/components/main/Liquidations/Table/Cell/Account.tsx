@@ -5,7 +5,7 @@ interface Props {
   value: string
 }
 
-export default function CustomAccountCell(props: Props) {
+export default function Account(props: Props) {
   const { value } = props
   return (
     <div className='flex items-center justify-end space-x-1'>

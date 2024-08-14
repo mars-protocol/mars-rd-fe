@@ -14,11 +14,12 @@ export default function StatsMetrics() {
       title='MARS PROTOCOL'
       copy='Explore the Mars Protocol Stats Dashboard to track key performance metrics.'
       metrics={[
+        // TODO: Replace with actual data
         {
           value: BN(121422433),
           label: 'Volume',
+          isCurrency: true,
           formatOptions: {
-            prefix: '$',
             suffix: '+',
             maxDecimals: 0,
             thousandSeparator: false,
@@ -48,8 +49,8 @@ export default function StatsMetrics() {
         {
           value: BN(539093),
           label: 'Treasury',
+          isCurrency: true,
           formatOptions: {
-            prefix: '$',
             suffix: '+',
             maxDecimals: 0,
             thousandSeparator: false,
@@ -58,7 +59,7 @@ export default function StatsMetrics() {
         },
       ]}
       className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
-      formattedNumberClassName='text-2xl md:text-5xl'
+      numberClassName='text-2xl md:text-5xl'
     />
   )
 }

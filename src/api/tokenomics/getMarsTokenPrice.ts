@@ -1,16 +1,6 @@
-import BigNumber from 'bignumber.js'
-
-interface Token {
-  chainId: string
-  denom: string
-  symbol: string
-  icon: string
-  description: string
-  decimals: number
-  priceUSD: number
-  totalLiquidityUSD: number
-  dayVolumeUSD: number
-}
+import { MARS_DENOM } from 'constants/mars'
+import { BN_ZERO } from 'constants/math'
+import { BN } from 'utils/helpers'
 
 export default async function getMarsTokenPrice() {
   try {
@@ -20,16 +10,16 @@ export default async function getMarsTokenPrice() {
     }
 
     const data = await response.json()
-    const marsToken = data.find((token: Token) => token.symbol === 'MARS')
+    const marsToken = data.find((token: Token) => token.denom === MARS_DENOM)
 
     if (!marsToken) {
       console.error('MARS token not found in the dataset.')
-      return null
+      return BN_ZERO
     }
 
-    return new BigNumber(marsToken.priceUSD)
+    return BN(marsToken.priceUSD)
   } catch (e) {
     console.error('Error fetching Mars token price:', e)
-    return null
+    return BN_ZERO
   }
 }

@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, { useEffect, useRef } from 'react'
 import { animated, useSpring } from 'react-spring'
+import { isEqual } from 'lodash'
 
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
@@ -73,9 +74,7 @@ export const FormattedNumber = React.memo(
       </animated.p>
     )
   },
-  (prevProps, nextProps) =>
-    prevProps.amount === nextProps.amount &&
-    JSON.stringify(prevProps.options) === JSON.stringify(nextProps.options),
+  (prevProps, nextProps) => isEqual(prevProps, nextProps),
 )
 
 FormattedNumber.displayName = 'FormattedNumber'

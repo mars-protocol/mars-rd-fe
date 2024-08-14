@@ -20,7 +20,6 @@ interface Props {
   options: { value: string; label: string }[]
   data: DummyData
 }
-
 interface LegendEntry {
   inactive: boolean
   dataKey: string
