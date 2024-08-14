@@ -1,9 +1,12 @@
 import classNames from 'classnames'
 import Card from 'components/common/Card'
-import { FormattedNumber } from 'components/common/FormattedNumber'
+import DisplayCurrency from '../DisplayCurrency'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import React from 'react'
+import { BNCoin } from 'types/classes/BNCoin'
+import { FormattedNumber } from 'components/common/FormattedNumber'
+import { ORACLE_DENOM } from 'constants/oracle'
 import { Tooltip } from 'components/common/Tooltip'
 
 interface Props {
@@ -14,7 +17,7 @@ interface Props {
   isLoading?: boolean
   className?: string
   hideBackground?: boolean
-  formattedNumberClassName?: string
+  numberClassName?: string
 }
 
 export default function MetricsCard(props: Props) {
@@ -26,7 +29,7 @@ export default function MetricsCard(props: Props) {
     isLoading,
     className,
     hideBackground,
-    formattedNumberClassName,
+    numberClassName,
   } = props
 
   return (
@@ -47,9 +50,15 @@ export default function MetricsCard(props: Props) {
           <div className='min-w-28 p-2' key={index}>
             {isLoading ? (
               <Loading className='w-full h-8' />
+            ) : metric.isCurrency ? (
+              <DisplayCurrency
+                className={`w-full ${numberClassName}`}
+                coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, metric.value)}
+                options={metric.formatOptions}
+              />
             ) : (
               <FormattedNumber
-                className={`w-full ${formattedNumberClassName}`}
+                className={`w-full ${numberClassName}`}
                 amount={metric.value.toNumber()}
                 options={metric.formatOptions}
                 animate

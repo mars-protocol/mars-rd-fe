@@ -49,7 +49,7 @@ export default function LiquidationsTable() {
           return <Asset value={row.original.debt_asset_repaid as BNCoin} assetData={assetsData} />
         },
       },
-      // will be updated once we have the data
+      // TODO: update this once we have the data
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Liquidation Price',

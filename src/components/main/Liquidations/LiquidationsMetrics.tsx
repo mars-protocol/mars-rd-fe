@@ -16,10 +16,10 @@ export default function LiquidationsMetrics() {
     {
       value: BN(badDebt),
       label: 'Bad Debt',
+      isCurrency: true,
       formatOptions: {
-        prefix: '$',
         maxDecimals: 2,
-        minDecimals: 2,
+        minDecimals: 0,
         abbreviated: true,
       },
       tooltipContent: 'Borrowings with Collateral Ratio below 1',
@@ -46,10 +46,10 @@ export default function LiquidationsMetrics() {
     {
       value: BN(valueForLiquidation),
       label: 'Value Eligible For Liquidation',
+      isCurrency: true,
       formatOptions: {
-        prefix: '$',
         maxDecimals: 2,
-        minDecimals: 2,
+        minDecimals: 0,
         abbreviated: true,
       },
     },
@@ -68,7 +68,7 @@ export default function LiquidationsMetrics() {
       metrics={liquidationMetrics}
       isLoading={isLiquidityOverviewDataLoading}
       className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
-      formattedNumberClassName='text-2xl md:text-5xl'
+      numberClassName='text-2xl md:text-5xl'
     />
   )
 }

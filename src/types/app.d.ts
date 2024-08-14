@@ -1461,6 +1461,7 @@ interface Metric {
     thousandSeparator?: boolean
   }
   tooltipContent?: React.ReactNode
+  isCurrency?: boolean
 }
 
 interface LiquidationDataItem {

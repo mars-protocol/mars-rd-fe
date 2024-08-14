@@ -1,13 +1,15 @@
 import AssetImage from 'components/common/assets/AssetImage'
-import { FormattedNumber } from 'components/common/FormattedNumber'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import Text from 'components/common/Text'
 import TitleAndSubCell from 'components/common/TitleAndSubCell'
-import { MIN_AMOUNT } from 'constants/math'
 import useAsset from 'hooks/assets/useAsset'
+import { FormattedNumber } from 'components/common/FormattedNumber'
+import { MIN_AMOUNT } from 'constants/math'
 import { BNCoin } from 'types/classes/BNCoin'
 import { demagnify, getCoinValue } from 'utils/formatters'
 import { Tooltip } from 'components/common/Tooltip'
 import { InfoCircle } from 'components/common/Icons'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   value: BNCoin
@@ -45,11 +47,10 @@ export default function Asset(props: Props) {
       }
       sub={
         <div className='flex items-center justify-end space-x-1'>
-          <FormattedNumber
-            amount={assetValue.toNumber()}
-            options={{ minDecimals: 1, abbreviated: true, prefix: '$' }}
+          <DisplayCurrency
+            coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, assetValue)}
             className='text-xs'
-            animate
+            options={{ minDecimals: 1, abbreviated: true }}
           />
           <Tooltip type='info' content={<Text size='xs'>Current Price of the Asset</Text>}>
             <InfoCircle className='w-3.5 h-3.5 text-white/40 hover:text-inherit' />

@@ -1,6 +1,9 @@
-import { FormattedNumber } from 'components/common/FormattedNumber'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import Text from 'components/common/Text'
 import TitleAndSubCell from 'components/common/TitleAndSubCell'
+import { BN } from 'utils/helpers'
+import { BNCoin } from 'types/classes/BNCoin'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   value: BNCoin
@@ -10,11 +13,11 @@ export default function LiquidationPrice(props: Props) {
   return (
     <TitleAndSubCell
       title={
-        <FormattedNumber
-          amount={7}
-          options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true, prefix: '$' }}
+        <DisplayCurrency
+          // TODO: update with real data (liquidation price)
+          coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, BN(7))}
           className='text-xs'
-          animate
+          options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
         />
       }
       sub={
