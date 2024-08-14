@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import Card from 'components/common/Card'
-import DisplayCurrency from '../DisplayCurrency'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import React from 'react'
@@ -52,13 +52,13 @@ export default function MetricsCard(props: Props) {
               <Loading className='w-full h-8' />
             ) : metric.isCurrency ? (
               <DisplayCurrency
-                className={`w-full ${numberClassName}`}
+                className={classNames(`w-full ${numberClassName}`)}
                 coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, metric.value)}
                 options={metric.formatOptions}
               />
             ) : (
               <FormattedNumber
-                className={`w-full ${numberClassName}`}
+                className={classNames(`w-full ${numberClassName}`)}
                 amount={metric.value.toNumber()}
                 options={metric.formatOptions}
                 animate
