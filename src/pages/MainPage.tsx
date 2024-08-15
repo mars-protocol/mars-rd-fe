@@ -1,21 +1,14 @@
-import { CardWithTabs } from 'components/common/Card/CardWithTabs'
 import Chart from 'components/common/Chart'
-import BarChart from 'components/common/Chart/BarChart'
 import ChartCard from 'components/common/Chart/ChartCard'
-import {
-  dummyBarChartData,
-  dummyChartData1,
-  dummyChartData2,
-  dummyDataSets,
-} from 'components/common/Chart/dummydata'
 import StatsMetrics from 'components/main/StatsMetrics'
 import TokenMetrics from 'components/main/TokenMetrics'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
+import { CardWithTabs } from 'components/common/Card/CardWithTabs'
+import { dummyChartData2 } from 'components/common/Chart/dummydata'
 
 export default function MainPage() {
   const { data: overviewData, isLoading: isOverviewDataLoading } = useOverviewData()
 
-  const supplyBorrowData = overviewData?.formattedSupplyBorrow
   const TVLChartData = overviewData?.formattedTVL
 
   const tabs: CardTab[] = [

@@ -35,27 +35,23 @@ interface RenderLegendProps {
 export default function BarChartBody(props: Props) {
   const { data, height, dataKeys } = props
   const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
-    return (
-      <>
-        {Object.entries(dataKeys).map(([key, label]) => {
-          const value = payload.find((p) => p.dataKey === key)?.value ?? 0
-          const formattedValue = formatValue(value, {
-            minDecimals: 0,
-            maxDecimals: 0,
-            prefix: '$',
-            abbreviated: true,
-          })
-          return (
-            <Text size='sm'>
-              {label}: {formattedValue}
-            </Text>
-          )
-        })}
-      </>
-    )
+    return Object.entries(dataKeys).map(([key, label]) => {
+      const value = payload.find((p) => p.dataKey === key)?.value ?? 0
+      const formattedValue = formatValue(value, {
+        minDecimals: 0,
+        maxDecimals: 0,
+        prefix: '$',
+        abbreviated: true,
+      })
+      return (
+        <Text size='sm'>
+          {label}: {formattedValue}
+        </Text>
+      )
+    })
   }
   return (
-    <div className='-ml-2 h-100'>
+    <div className='h-100 w-full'>
       <ResponsiveContainer width='100%' height={props.height || '100%'}>
         <BarChart
           data={data}

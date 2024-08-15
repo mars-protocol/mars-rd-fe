@@ -18,7 +18,7 @@ const loadingData = [
 
 export default function BarChartLoading(props: Props) {
   return (
-    <div className='-ml-2 h-100 animate-pulse'>
+    <div className='-mr-6 h-100 animate-pulse'>
       <ResponsiveContainer width='100%' height={props.height || '100%'}>
         <BarChart
           data={loadingData}

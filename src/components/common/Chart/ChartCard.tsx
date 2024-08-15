@@ -1,11 +1,11 @@
-import Text from 'components/common/Text'
-import { useMemo, useState } from 'react'
-import SelectionControlPanel from 'components/common/Chart/SelectionControlPanel'
+import BarChart from 'components/common/Chart/BarChart'
 import Card from 'components/common/Card'
 import DuoLineChart from 'components/common/Chart/DuoLineChart'
+import SelectionControlPanel from 'components/common/Chart/SelectionControlPanel'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
-import BarChart from './BarChart'
+import Text from 'components/common/Text'
 import { dummyDataSets } from 'components/common/Chart/dummydata'
+import { useEffect, useMemo, useState } from 'react'
 
 interface Props {
   className?: string
@@ -21,10 +21,10 @@ const timeframe = ['1D', '7D', '1M', '1Y']
 export default function ChartCard(props: Props) {
   const { className } = props
   const [selectedOption, setSelectedOption] = useState<string>(options[0].value)
-  const [selectedTimeFrame, setSelectedTimeFrame] = useState<string>(timeframe[2])
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(timeframe[2])
 
   const { data: overviewData, isLoading: isOverviewDataLoading } =
-    useOverviewData(selectedTimeFrame)
+    useOverviewData(selectedTimeframe)
 
   const supplyBorrowData = overviewData?.formattedSupplyBorrow
 
@@ -49,15 +49,16 @@ export default function ChartCard(props: Props) {
         selectOptions={displayOptions}
         defaultSelectValue={selectedOption}
         onSelectChange={setSelectedOption}
-        timeframes={timeframe}
-        selectedTimeframe={selectedTimeFrame}
-        onTimeframeSelect={setSelectedTimeFrame}
+        timeframe={timeframe}
+        selectedTimeframe={selectedTimeframe}
+        onTimeframeSelect={setSelectedTimeframe}
       />
 
       {selectedOption === 'supplied/borrowed' && (
         <BarChart
           data={supplyBorrowData}
           dataKeys={{ supply: 'Supplied', borrow: 'Borrowed' }}
+          loading={isOverviewDataLoading}
           // className='rounded-t-none before:content-none'
         />
       )}
@@ -67,7 +68,7 @@ export default function ChartCard(props: Props) {
         <DuoLineChart
           selectedOption={selectedOption}
           options={options}
-          selectedTimeframe={selectedTimeFrame}
+          selectedTimeframe={selectedTimeframe}
           data={dummyDataSets}
         />
       )}

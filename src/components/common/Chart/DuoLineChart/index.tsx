@@ -1,3 +1,6 @@
+import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
+import moment from 'moment'
+import Text from 'components/common/Text'
 import {
   CartesianGrid,
   Legend,
@@ -9,9 +12,6 @@ import {
   YAxis,
 } from 'recharts'
 import { Circle } from 'components/common/Icons'
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
-import moment from 'moment'
-import Text from 'components/common/Text'
 import { formatValue } from 'utils/formatters'
 
 interface Props {
@@ -36,6 +36,7 @@ export default function DuoLineChart(props: Props) {
   const { selectedOption, selectedTimeframe, options, data } = props
   const dummyData = data[selectedOption][selectedTimeframe]
   console.log(dummyData, 'dummyData')
+
   const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
     const value = Number(payload[0].value) ?? 0
     const value2 = Number(payload[1].value) ?? 0

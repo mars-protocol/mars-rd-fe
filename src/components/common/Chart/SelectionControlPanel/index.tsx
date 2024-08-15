@@ -6,7 +6,7 @@ interface Props {
   selectOptions: { value: string; label: React.ReactNode }[]
   defaultSelectValue: string
   onSelectChange: (value: string) => void
-  timeframes: string[]
+  timeframe: string[]
   selectedTimeframe: string
   onTimeframeSelect: (timeframe: string) => void
 }
@@ -16,7 +16,7 @@ export default function SelectionControlPanel(props: Props) {
     selectOptions,
     defaultSelectValue,
     onSelectChange,
-    timeframes,
+    timeframe,
     selectedTimeframe,
     onTimeframeSelect,
   } = props
@@ -30,7 +30,7 @@ export default function SelectionControlPanel(props: Props) {
         containerClassName='justify-center'
       />
       <TimeframeSelector
-        timeframes={timeframes}
+        timeframe={timeframe}
         selectedTimeframe={selectedTimeframe}
         setSelectedTimeframe={onTimeframeSelect}
         className='ml-auto'
