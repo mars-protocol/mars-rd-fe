@@ -1,4 +1,7 @@
+import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
+import moment from 'moment'
 import React from 'react'
+import Text from 'components/common/Text'
 import {
   Bar,
   BarChart,
@@ -9,11 +12,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import Text from 'components/common/Text'
 import { formatValue } from 'utils/formatters'
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
 import { Circle } from 'components/common/Icons'
-import moment from 'moment'
 
 interface Props {
   data: BarChartData
@@ -34,6 +34,7 @@ interface RenderLegendProps {
 
 export default function BarChartBody(props: Props) {
   const { data, height, dataKeys } = props
+
   const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
     return Object.entries(dataKeys).map(([key, label]) => {
       const value = payload.find((p) => p.dataKey === key)?.value ?? 0
@@ -52,7 +53,7 @@ export default function BarChartBody(props: Props) {
   }
   return (
     <div className='h-100 w-full'>
-      <ResponsiveContainer width='100%' height={props.height || '100%'}>
+      <ResponsiveContainer width='100%' height={height || '100%'}>
         <BarChart
           data={data}
           margin={{

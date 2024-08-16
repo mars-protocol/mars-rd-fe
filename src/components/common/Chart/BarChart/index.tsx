@@ -10,7 +10,6 @@ interface Props {
 
 export default function Chart(props: Props) {
   const { data, loading, height, dataKeys } = props
-  console.log(loading, 'barchart loading')
   return (
     <div className='w-full'>
       {data === null || loading ? (

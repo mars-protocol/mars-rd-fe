@@ -1,5 +1,6 @@
 import BarChart from 'components/common/Chart/BarChart'
 import Card from 'components/common/Card'
+import ChartError from 'components/common/Chart/ChartError'
 import DuoLineChart from 'components/common/Chart/DuoLineChart'
 import SelectionControlPanel from 'components/common/Chart/SelectionControlPanel'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
@@ -18,13 +19,29 @@ const options = [
 
 const timeframe = ['1D', '7D', '1M', '1Y']
 
-export default function ChartCard(props: Props) {
+export default function DropdownChart(props: Props) {
   const { className } = props
   const [selectedOption, setSelectedOption] = useState<string>(options[0].value)
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(timeframe[2])
 
-  const { data: overviewData, isLoading: isOverviewDataLoading } =
-    useOverviewData(selectedTimeframe)
+  const {
+    data: overviewData,
+    isLoading: isOverviewDataLoading,
+    error,
+    isValidating,
+    mutate,
+  } = useOverviewData(selectedTimeframe)
+
+  console.log(error, '========ERROR =======')
+
+  useEffect(() => {
+    console.log('mutating')
+    mutate(['tokenomics/overviewData', selectedTimeframe])
+  }, [selectedTimeframe])
+
+  const handleRefetch = async () => {
+    await mutate(['tokenomics/overviewData', selectedTimeframe])
+  }
 
   const supplyBorrowData = overviewData?.formattedSupplyBorrow
 
@@ -54,23 +71,28 @@ export default function ChartCard(props: Props) {
         onTimeframeSelect={setSelectedTimeframe}
       />
 
-      {selectedOption === 'supplied/borrowed' && (
-        <BarChart
-          data={supplyBorrowData}
-          dataKeys={{ supply: 'Supplied', borrow: 'Borrowed' }}
-          loading={isOverviewDataLoading}
-          // className='rounded-t-none before:content-none'
-        />
-      )}
+      {error ? (
+        <ChartError handleRefetch={handleRefetch} isValidating={isValidating} />
+      ) : (
+        <>
+          {selectedOption === 'supplied/borrowed' && (
+            <BarChart
+              data={supplyBorrowData}
+              dataKeys={{ supply: 'Supplied', borrow: 'Borrowed' }}
+              loading={isValidating || isOverviewDataLoading}
+            />
+          )}
 
-      {/* TODO: update with correct data */}
-      {selectedOption === 'deposits/withdrawals' && (
-        <DuoLineChart
-          selectedOption={selectedOption}
-          options={options}
-          selectedTimeframe={selectedTimeframe}
-          data={dummyDataSets}
-        />
+          {/* TODO: update with correct data */}
+          {selectedOption === 'deposits/withdrawals' && (
+            <DuoLineChart
+              selectedOption={selectedOption}
+              options={options}
+              selectedTimeframe={selectedTimeframe}
+              data={dummyDataSets}
+            />
+          )}
+        </>
       )}
     </Card>
   )
