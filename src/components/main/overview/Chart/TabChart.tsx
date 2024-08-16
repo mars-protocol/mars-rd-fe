@@ -17,16 +17,14 @@ export default function TabChart() {
     isValidating,
     error,
     mutate,
-  } = useOverviewData(selectedTimeframe)
+  } = useOverviewData(selectedTimeframe, 'tab')
 
   const TVLChartData = overviewData?.formattedTVL
 
   const handleRefetch = async () => {
     console.log('mutating for tvl')
-    await mutate(['tokenomics/overviewData', selectedTimeframe])
+    await mutate(['tokenomics/overviewData', selectedTimeframe, 'tab'])
   }
-
-  console.log(error, '========ERROR from tvl=======')
 
   const tabs: CardTab[] = [
     {
@@ -40,7 +38,7 @@ export default function TabChart() {
             className='absolute right-5 top-0'
           />
           {error ? (
-            <ChartError handleRefetch={handleRefetch} isValidating={isValidating} />
+            <ChartError handleRefetch={handleRefetch} />
           ) : (
             <Chart
               data={TVLChartData}

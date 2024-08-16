@@ -3,7 +3,7 @@ import Text from 'components/common/Text'
 
 interface Props {
   handleRefetch: () => void
-  isValidating: boolean
+  isValidating?: boolean
 }
 
 export default function ChartError(props: Props) {

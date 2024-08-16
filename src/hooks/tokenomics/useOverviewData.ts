@@ -1,7 +1,7 @@
 import getOverviewData from 'api/tokenomics/getOverviewData'
 import useSWR from 'swr'
 
-export default function useOverviewData(selectedTimeframe = '1M') {
+export default function useOverviewData(selectedTimeframe = '1M', chartId = 'tab') {
   const daysMapping: { [key: string]: number } = {
     '1D': 1,
     '7D': 7,
@@ -10,8 +10,12 @@ export default function useOverviewData(selectedTimeframe = '1M') {
   }
   const days = daysMapping[selectedTimeframe] || 30
 
-  return useSWR(['tokenomics/overviewData', days], async () => {
+  return useSWR(['tokenomics/overviewData', chartId, days], async () => {
     const responseData = await getOverviewData(days)
+
+    if (!responseData) {
+      throw new Error('No data returned from API')
+    }
 
     const TVL = responseData?.data[0].total_value_locked || []
     const totalSupply = responseData?.data[0].total_supply || []
@@ -21,7 +25,6 @@ export default function useOverviewData(selectedTimeframe = '1M') {
       date: new Date(entry.timestamp).toISOString().split('T')[0],
       value: Number(entry.amount),
     }))
-    console.log(formattedTVL, 'RECIEVED FORMATTED DATA FOR TVL for ', days)
 
     const formattedSupplyBorrow = totalSupply.map(
       (entry: { timestamp: string; amount: string }, index: number) => ({
@@ -30,8 +33,6 @@ export default function useOverviewData(selectedTimeframe = '1M') {
         borrow: Number(totalBorrow[index]?.amount || 0),
       }),
     )
-
-    console.log(formattedSupplyBorrow, 'RECIEVED FORMATTED DATA FOR SUPPLY BORROW for ', days)
 
     return {
       ...responseData,

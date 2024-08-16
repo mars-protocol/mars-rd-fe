@@ -30,17 +30,15 @@ export default function DropdownChart(props: Props) {
     error,
     isValidating,
     mutate,
-  } = useOverviewData(selectedTimeframe)
+  } = useOverviewData(selectedTimeframe, 'dropdown')
 
-  console.log(error, '========ERROR =======')
-
-  useEffect(() => {
-    console.log('mutating')
-    mutate(['tokenomics/overviewData', selectedTimeframe])
-  }, [selectedTimeframe])
+  // useEffect(() => {
+  //   console.log('mutating')
+  //   mutate(['tokenomics/overviewData', selectedTimeframe, 'dropdown'])
+  // }, [selectedTimeframe])
 
   const handleRefetch = async () => {
-    await mutate(['tokenomics/overviewData', selectedTimeframe])
+    await mutate(['tokenomics/overviewData', selectedTimeframe, 'dropdown'])
   }
 
   const supplyBorrowData = overviewData?.formattedSupplyBorrow
@@ -72,7 +70,7 @@ export default function DropdownChart(props: Props) {
       />
 
       {error ? (
-        <ChartError handleRefetch={handleRefetch} isValidating={isValidating} />
+        <ChartError handleRefetch={handleRefetch} />
       ) : (
         <>
           {selectedOption === 'supplied/borrowed' && (
