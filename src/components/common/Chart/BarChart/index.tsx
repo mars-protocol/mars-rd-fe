@@ -2,7 +2,7 @@ import BarChartBody from 'components/common/Chart/BarChart/BarChartBody'
 import BarChartLoading from 'components/common/Chart/BarChart/BarChartLoading'
 
 interface Props {
-  data: BarChartData
+  data: BarChartData | null
   height?: string
   loading?: boolean
   dataKeys: { [key: string]: string }

@@ -5,9 +5,16 @@ import TokenMetrics from 'components/main/TokenMetrics'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { CardWithTabs } from 'components/common/Card/CardWithTabs'
 import { dummyChartData2 } from 'components/common/Chart/dummydata'
+import TimeframeSelector from 'components/common/Chart/SelectionControlPanel/TimeframeSelector'
+import { useState } from 'react'
+
+const timeframe = ['1D', '7D', '1M', '1Y']
 
 export default function MainPage() {
-  const { data: overviewData, isLoading: isOverviewDataLoading } = useOverviewData()
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(timeframe[2])
+
+  const { data: overviewData, isLoading: isOverviewDataLoading } =
+    useOverviewData(selectedTimeframe)
 
   const TVLChartData = overviewData?.formattedTVL
 
@@ -15,11 +22,19 @@ export default function MainPage() {
     {
       title: 'TVL',
       renderContent: () => (
-        <Chart
-          data={TVLChartData}
-          loading={isOverviewDataLoading}
-          className='rounded-t-none before:content-none'
-        />
+        <div className='relative'>
+          <TimeframeSelector
+            timeframe={timeframe}
+            selectedTimeframe={selectedTimeframe}
+            setSelectedTimeframe={setSelectedTimeframe}
+            className='absolute right-5 top-0'
+          />
+          <Chart
+            data={TVLChartData}
+            loading={isOverviewDataLoading}
+            className='rounded-t-none before:content-none'
+          />
+        </div>
       ),
     },
     // TODO: replace with real data
