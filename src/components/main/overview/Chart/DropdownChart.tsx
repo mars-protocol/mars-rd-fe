@@ -7,6 +7,7 @@ import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import Text from 'components/common/Text'
 import { dummyDataSets } from 'components/common/Chart/dummydata'
 import { useEffect, useMemo, useState } from 'react'
+import { TIMEFRAME } from 'constants/timeframe'
 
 interface Props {
   className?: string
@@ -17,31 +18,30 @@ const options = [
   { value: 'deposits/withdrawals', label: 'Deposits/Withdrawals' },
 ]
 
-const timeframe = ['1D', '7D', '1M', '1Y']
-
 export default function DropdownChart(props: Props) {
   const { className } = props
   const [selectedOption, setSelectedOption] = useState<string>(options[0].value)
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(timeframe[2])
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2])
 
   const {
-    data: overviewData,
-    isLoading: isOverviewDataLoading,
+    data: dropdownOverviewData,
+    isLoading: isDropdownOverviewDataLoading,
     error,
     isValidating,
     mutate,
   } = useOverviewData(selectedTimeframe, 'dropdown')
 
   // useEffect(() => {
-  //   console.log('mutating')
+  //   console.log('mutating for dropdownnnnnnnn')
   //   mutate(['tokenomics/overviewData', selectedTimeframe, 'dropdown'])
   // }, [selectedTimeframe])
 
   const handleRefetch = async () => {
+    console.log('mutating for dropdown')
     await mutate(['tokenomics/overviewData', selectedTimeframe, 'dropdown'])
   }
 
-  const supplyBorrowData = overviewData?.formattedSupplyBorrow
+  const supplyBorrowData = dropdownOverviewData?.formattedSupplyBorrow
 
   const displayOptions = useMemo(
     () =>
@@ -64,7 +64,7 @@ export default function DropdownChart(props: Props) {
         selectOptions={displayOptions}
         defaultSelectValue={selectedOption}
         onSelectChange={setSelectedOption}
-        timeframe={timeframe}
+        timeframe={TIMEFRAME}
         selectedTimeframe={selectedTimeframe}
         onTimeframeSelect={setSelectedTimeframe}
       />
@@ -77,7 +77,7 @@ export default function DropdownChart(props: Props) {
             <BarChart
               data={supplyBorrowData}
               dataKeys={{ supply: 'Supplied', borrow: 'Borrowed' }}
-              loading={isValidating || isOverviewDataLoading}
+              loading={isValidating || isDropdownOverviewDataLoading}
             />
           )}
 

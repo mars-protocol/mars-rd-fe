@@ -1,25 +1,29 @@
-import { CardWithTabs } from 'components/common/Card/CardWithTabs'
 import Chart from 'components/common/Chart'
 import ChartError from 'components/common/Chart/ChartError'
-import { dummyChartData2 } from 'components/common/Chart/dummydata'
 import TimeframeSelector from 'components/common/Chart/SelectionControlPanel/TimeframeSelector'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
-import { useState } from 'react'
-
-const timeframe = ['1D', '7D', '1M', '1Y']
+import { CardWithTabs } from 'components/common/Card/CardWithTabs'
+import { dummyChartData2 } from 'components/common/Chart/dummydata'
+import { TIMEFRAME } from 'constants/timeframe'
+import { useEffect, useState } from 'react'
 
 export default function TabChart() {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(timeframe[2])
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2])
 
   const {
-    data: overviewData,
-    isLoading: isOverviewDataLoading,
+    data: tabOverviewData,
+    isLoading: isTabOverviewDataLoading,
     isValidating,
     error,
     mutate,
   } = useOverviewData(selectedTimeframe, 'tab')
 
-  const TVLChartData = overviewData?.formattedTVL
+  const TVLChartData = tabOverviewData?.formattedTVL
+
+  // useEffect(() => {
+  //   console.log('mutating for tabbbbbbbbbbb')
+  //   mutate(['tokenomics/overviewData', selectedTimeframe, 'tab'])
+  // }, [selectedTimeframe])
 
   const handleRefetch = async () => {
     console.log('mutating for tvl')
@@ -32,7 +36,7 @@ export default function TabChart() {
       renderContent: () => (
         <div className='relative'>
           <TimeframeSelector
-            timeframe={timeframe}
+            timeframe={TIMEFRAME}
             selectedTimeframe={selectedTimeframe}
             setSelectedTimeframe={setSelectedTimeframe}
             className='absolute right-5 top-0'
@@ -42,7 +46,7 @@ export default function TabChart() {
           ) : (
             <Chart
               data={TVLChartData}
-              loading={isValidating || isOverviewDataLoading}
+              loading={isValidating || isTabOverviewDataLoading}
               className='rounded-t-none before:content-none'
             />
           )}
