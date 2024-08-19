@@ -1,5 +1,8 @@
 import classNames from 'classnames'
+import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
 import moment from 'moment'
+import Text from 'components/common/Text'
+import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import {
   Area,
   AreaChart,
@@ -9,13 +12,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-
-import Text from 'components/common/Text'
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
-import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import { formatValue } from 'utils/formatters'
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
 
 interface Props {
   data: ChartData
@@ -25,9 +24,15 @@ interface Props {
 function TooltipContent(props: TooltipContentProps) {
   const { payload } = props
   const value = Number(payload[0].value) ?? 0
-  return (
-    <Text size='sm'>{formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}</Text>
-  )
+  const label = payload[0].payload.label ?? 'Value'
+  const formattedValue = formatValue(value, {
+    minDecimals: 2,
+    maxDecimals: 2,
+    prefix: '$',
+    abbreviated: true,
+  })
+
+  return <Text size='sm'>{`${label}: ${formattedValue}`}</Text>
 }
 
 export default function ChartBody(props: Props) {
@@ -93,7 +98,7 @@ export default function ChartBody(props: Props) {
             isAnimationActive={!reduceMotion}
             wrapperStyle={{ outline: 'none' }}
             content={
-              <CustomTooltip
+              <ChartTooltip
                 payload={[]}
                 label={''}
                 renderContent={(payload) => <TooltipContent payload={payload} />}

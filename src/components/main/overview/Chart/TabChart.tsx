@@ -5,7 +5,7 @@ import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { CardWithTabs } from 'components/common/Card/CardWithTabs'
 import { dummyChartData2 } from 'components/common/Chart/dummydata'
 import { TIMEFRAME } from 'constants/timeframe'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function TabChart() {
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2])
@@ -18,15 +18,9 @@ export default function TabChart() {
     mutate,
   } = useOverviewData(selectedTimeframe, 'tab')
 
-  const TVLChartData = tabOverviewData?.formattedTVL
-
-  // useEffect(() => {
-  //   console.log('mutating for tabbbbbbbbbbb')
-  //   mutate(['tokenomics/overviewData', selectedTimeframe, 'tab'])
-  // }, [selectedTimeframe])
+  const TVLData: ChartData = tabOverviewData?.formattedTVL
 
   const handleRefetch = async () => {
-    console.log('mutating for tvl')
     await mutate(['tokenomics/overviewData', selectedTimeframe, 'tab'])
   }
 
@@ -45,7 +39,7 @@ export default function TabChart() {
             <ChartError handleRefetch={handleRefetch} />
           ) : (
             <Chart
-              data={TVLChartData}
+              data={TVLData}
               loading={isValidating || isTabOverviewDataLoading}
               className='rounded-t-none before:content-none'
             />

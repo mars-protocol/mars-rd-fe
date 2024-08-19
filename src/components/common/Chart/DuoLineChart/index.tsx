@@ -1,4 +1,5 @@
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
+import ChartLegend from 'components/common/Chart/Legend/ChartLegend'
+import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
 import moment from 'moment'
 import Text from 'components/common/Text'
 import {
@@ -11,7 +12,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { Circle } from 'components/common/Icons'
 import { formatValue } from 'utils/formatters'
 
 interface Props {
@@ -20,38 +20,28 @@ interface Props {
   options: { value: string; label: string }[]
   data: DummyData
 }
-interface LegendEntry {
-  inactive: boolean
-  dataKey: string
-  type: string
-  color: string
-  value: string
-}
 
-interface RenderLegendProps {
-  payload: LegendEntry[]
+function TooltipContent(payload: ChartDataPayloadProps[]) {
+  const value = payload[0].value ?? 0
+  const value2 = payload[1].value ?? 0
+
+  return (
+    <>
+      <Text size='sm'>
+        {payload[0].name}: {formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
+      </Text>
+
+      <Text size='sm'>
+        {payload[1].name}: {formatValue(value2, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
+      </Text>
+    </>
+  )
 }
 
 export default function DuoLineChart(props: Props) {
   const { selectedOption, selectedTimeframe, options, data } = props
   const dummyData = data[selectedOption][selectedTimeframe]
-  console.log(dummyData, 'dummyData')
 
-  const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
-    const value = Number(payload[0].value) ?? 0
-    const value2 = Number(payload[1].value) ?? 0
-    return (
-      <>
-        <Text size='sm'>
-          {payload[0].name}: {formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-        </Text>
-
-        <Text size='sm'>
-          {payload[1].name}: {formatValue(value2, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-        </Text>
-      </>
-    )
-  }
   return (
     <div className='-mr-6'>
       <ResponsiveContainer width='100%' height={400}>
@@ -99,37 +89,15 @@ export default function DuoLineChart(props: Props) {
 
           <Tooltip
             content={
-              <CustomTooltip
-                active={false}
-                payload={[]}
-                label={''}
-                renderContent={renderTooltipContent}
-              />
+              <ChartTooltip active={false} payload={[]} label={''} renderContent={TooltipContent} />
             }
           />
 
-          <Legend content={<RenderLegend payload={[]} />} verticalAlign='bottom' />
+          <Legend content={<ChartLegend payload={[]} />} verticalAlign='bottom' />
 
           <CartesianGrid opacity={0.1} vertical={false} />
         </LineChart>
       </ResponsiveContainer>
-    </div>
-  )
-}
-
-function RenderLegend(props: RenderLegendProps) {
-  const { payload } = props
-  const colors = ['#AB47BC', '#8884d8']
-  return (
-    <div className='flex justify-center sm:justify-end sm:mr-7'>
-      {payload.map((entry: LegendEntry, index: number) => (
-        <div className='flex items-center' key={`item-${index}`}>
-          <Circle className='fill-current h-2 w-2' color={colors[index]} />
-          <Text size='xs' className='mx-2'>
-            {entry.value}
-          </Text>
-        </div>
-      ))}
     </div>
   )
 }

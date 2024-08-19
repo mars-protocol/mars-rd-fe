@@ -6,7 +6,7 @@ import SelectionControlPanel from 'components/common/Chart/SelectionControlPanel
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import Text from 'components/common/Text'
 import { dummyDataSets } from 'components/common/Chart/dummydata'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { TIMEFRAME } from 'constants/timeframe'
 
 interface Props {
@@ -31,17 +31,11 @@ export default function DropdownChart(props: Props) {
     mutate,
   } = useOverviewData(selectedTimeframe, 'dropdown')
 
-  // useEffect(() => {
-  //   console.log('mutating for dropdownnnnnnnn')
-  //   mutate(['tokenomics/overviewData', selectedTimeframe, 'dropdown'])
-  // }, [selectedTimeframe])
-
   const handleRefetch = async () => {
-    console.log('mutating for dropdown')
     await mutate(['tokenomics/overviewData', selectedTimeframe, 'dropdown'])
   }
 
-  const supplyBorrowData = dropdownOverviewData?.formattedSupplyBorrow
+  const supplyBorrowData: BarChartData = dropdownOverviewData?.formattedSupplyBorrow
 
   const displayOptions = useMemo(
     () =>
@@ -76,7 +70,7 @@ export default function DropdownChart(props: Props) {
           {selectedOption === 'supplied/borrowed' && (
             <BarChart
               data={supplyBorrowData}
-              dataKeys={{ supply: 'Supplied', borrow: 'Borrowed' }}
+              dataKeys={{ valueOne: 'supply', valueTwo: 'borrow' }}
               loading={isValidating || isDropdownOverviewDataLoading}
             />
           )}

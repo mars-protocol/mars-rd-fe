@@ -1,4 +1,5 @@
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
+import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import ChartLegend from 'components/common/Chart/Legend/ChartLegend'
 import moment from 'moment'
 import React from 'react'
 import Text from 'components/common/Text'
@@ -13,44 +14,35 @@ import {
   YAxis,
 } from 'recharts'
 import { formatValue } from 'utils/formatters'
-import { Circle } from 'components/common/Icons'
 
 interface Props {
   data: BarChartData
   height?: string
   dataKeys: { [key: string]: string }
 }
-interface LegendEntry {
-  inactive: boolean
-  dataKey: string
-  type: string
-  color: string
-  value: string
+
+interface BarTooltipContentProps {
+  payload: ChartDataPayloadProps[]
+  dataKeys: { [key: string]: string }
 }
 
-interface RenderLegendProps {
-  payload: LegendEntry[]
+function TooltipContent(props: BarTooltipContentProps) {
+  const { payload, dataKeys } = props
+  return Object.entries(dataKeys).map(([key, label]) => {
+    const value = payload.find((p) => p.dataKey === label)?.value ?? 0
+    const formattedValue = formatValue(value, {
+      minDecimals: 2,
+      maxDecimals: 2,
+      prefix: '$',
+      abbreviated: true,
+    })
+    return <Text key={key} size='sm'>{`${label}: ${formattedValue}`}</Text>
+  })
 }
 
 export default function BarChartBody(props: Props) {
   const { data, height, dataKeys } = props
 
-  const renderTooltipContent = (payload: ChartDataPayloadProps[]) => {
-    return Object.entries(dataKeys).map(([key, label]) => {
-      const value = payload.find((p) => p.dataKey === key)?.value ?? 0
-      const formattedValue = formatValue(value, {
-        minDecimals: 0,
-        maxDecimals: 0,
-        prefix: '$',
-        abbreviated: true,
-      })
-      return (
-        <Text size='sm'>
-          {label}: {formattedValue}
-        </Text>
-      )
-    })
-  }
   return (
     <div className='h-100 w-full'>
       <ResponsiveContainer width='100%' height={height || '100%'}>
@@ -102,12 +94,18 @@ export default function BarChartBody(props: Props) {
               strokeWidth: 2,
               fill: 'rgba(255, 255, 255, 0.1)',
             }}
-            content={<CustomTooltip payload={[]} label={''} renderContent={renderTooltipContent} />}
+            content={
+              <ChartTooltip
+                payload={[]}
+                label={''}
+                renderContent={(payload) => TooltipContent({ payload, dataKeys: props.dataKeys })}
+              />
+            }
           />
-          <Legend content={<RenderLegend payload={[]} />} verticalAlign='bottom' />
+          <Legend content={<ChartLegend payload={[]} />} verticalAlign='bottom' />
 
           <Bar
-            dataKey='supply'
+            dataKey={dataKeys.valueOne}
             fill='rgba(171, 66, 188, 0.5)'
             legendType='plainline'
             stackId='a'
@@ -115,7 +113,7 @@ export default function BarChartBody(props: Props) {
             activeBar={{ stroke: 'rgba(255, 255, 255, 0.1)', strokeWidth: 2 }}
           />
           <Bar
-            dataKey='borrow'
+            dataKey={dataKeys.valueTwo}
             fill='rgb(255, 82, 82, 0.7)'
             stackId='a'
             legendType='plainline'
@@ -124,23 +122,6 @@ export default function BarChartBody(props: Props) {
           />
         </BarChart>
       </ResponsiveContainer>
-    </div>
-  )
-}
-
-function RenderLegend(props: RenderLegendProps) {
-  const { payload } = props
-  const colors = ['#AB47BC', '#FF5252']
-  return (
-    <div className='flex justify-center sm:justify-end sm:mr-7'>
-      {payload.map((entry: LegendEntry, index: number) => (
-        <div className='flex items-center' key={`item-${index}`}>
-          <Circle className='fill-current h-2 w-2' color={colors[index]} />
-          <Text size='xs' className='mx-2'>
-            {entry.value}
-          </Text>
-        </div>
-      ))}
     </div>
   )
 }
