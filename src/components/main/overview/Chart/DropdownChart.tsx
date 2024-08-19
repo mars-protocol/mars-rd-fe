@@ -15,7 +15,8 @@ interface Props {
 
 const options = [
   { value: 'supplied/borrowed', label: 'Supplied/Borrowed' },
-  { value: 'deposits/withdrawals', label: 'Deposits/Withdrawals' },
+  // TODO: update with correct data
+  // { value: 'deposits/withdrawals', label: 'Deposits/Withdrawals' },
 ]
 
 export default function DropdownChart(props: Props) {
@@ -76,14 +77,14 @@ export default function DropdownChart(props: Props) {
           )}
 
           {/* TODO: update with correct data */}
-          {selectedOption === 'deposits/withdrawals' && (
+          {/* {selectedOption === 'deposits/withdrawals' && (
             <DuoLineChart
               selectedOption={selectedOption}
               options={options}
               selectedTimeframe={selectedTimeframe}
               data={dummyDataSets}
             />
-          )}
+          )} */}
         </>
       )}
     </Card>

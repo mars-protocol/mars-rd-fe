@@ -48,12 +48,12 @@ export default function TabChart() {
       ),
     },
     // TODO: replace with real data
-    {
-      title: 'Trading Volume',
-      renderContent: () => (
-        <Chart data={dummyChartData2} className='rounded-t-none before:content-none' />
-      ),
-    },
+    // {
+    //   title: 'Trading Volume',
+    //   renderContent: () => (
+    //     <Chart data={dummyChartData2} className='rounded-t-none before:content-none' />
+    //   ),
+    // },
   ]
   return <CardWithTabs tabs={tabs} contentClassName='bg-white/5' className='mt-10' />
 }
