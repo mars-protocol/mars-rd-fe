@@ -1,5 +1,7 @@
+import BigNumber from 'bignumber.js'
 import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
 import ChartLegend from 'components/common/Chart/Legend/ChartLegend'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import moment from 'moment'
 import React from 'react'
 import Text from 'components/common/Text'
@@ -13,7 +15,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { BNCoin } from 'types/classes/BNCoin'
 import { formatValue } from 'utils/formatters'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   data: BarChartData
@@ -28,15 +32,17 @@ interface BarTooltipContentProps {
 
 function TooltipContent(props: BarTooltipContentProps) {
   const { payload, dataKeys } = props
+
   return Object.entries(dataKeys).map(([key, label]) => {
-    const value = payload.find((p) => p.dataKey === label)?.value ?? 0
-    const formattedValue = formatValue(value, {
-      minDecimals: 2,
-      maxDecimals: 2,
-      prefix: '$',
-      abbreviated: true,
-    })
-    return <Text key={key} size='sm'>{`${label}: ${formattedValue}`}</Text>
+    const amount = payload.find((p) => p.dataKey === label)?.value ?? 0
+    const value = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amount))
+
+    return (
+      <div key={key} className='flex space-x-1'>
+        <Text size='xs'>{label}: </Text>
+        <DisplayCurrency coin={value} className='text-xs' />
+      </div>
+    )
   })
 }
 

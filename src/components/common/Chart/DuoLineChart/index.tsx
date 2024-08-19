@@ -1,5 +1,7 @@
+import BigNumber from 'bignumber.js'
 import ChartLegend from 'components/common/Chart/Legend/ChartLegend'
 import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import moment from 'moment'
 import Text from 'components/common/Text'
 import {
@@ -13,6 +15,8 @@ import {
   YAxis,
 } from 'recharts'
 import { formatValue } from 'utils/formatters'
+import { BNCoin } from 'types/classes/BNCoin'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   selectedOption: string
@@ -22,18 +26,23 @@ interface Props {
 }
 
 function TooltipContent(payload: ChartDataPayloadProps[]) {
-  const value = payload[0].value ?? 0
-  const value2 = payload[1].value ?? 0
+  const amountOne = payload[0].value ?? 0
+  const amountTwo = payload[1].value ?? 0
+
+  const valueOne = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amountOne))
+  const valueTwo = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amountTwo))
 
   return (
     <>
-      <Text size='sm'>
-        {payload[0].name}: {formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-      </Text>
+      <div className='flex space-x-1'>
+        <Text size='xs'>{payload[0].name}: </Text>
+        <DisplayCurrency coin={valueOne} className='text-xs' />
+      </div>
 
-      <Text size='sm'>
-        {payload[1].name}: {formatValue(value2, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-      </Text>
+      <div className='flex space-x-1'>
+        <Text size='xs'>{payload[1].name}: </Text>
+        <DisplayCurrency coin={valueTwo} className='text-xs' />
+      </div>
     </>
   )
 }

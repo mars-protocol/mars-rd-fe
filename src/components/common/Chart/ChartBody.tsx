@@ -1,5 +1,7 @@
+import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
 import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import moment from 'moment'
 import Text from 'components/common/Text'
 import useLocalStorage from 'hooks/localStorage/useLocalStorage'
@@ -12,9 +14,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { BNCoin } from 'types/classes/BNCoin'
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
 import { formatValue } from 'utils/formatters'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   data: ChartData
@@ -23,16 +27,16 @@ interface Props {
 
 function TooltipContent(props: TooltipContentProps) {
   const { payload } = props
-  const value = Number(payload[0].value) ?? 0
+  const amount = Number(payload[0].value) ?? 0
   const label = payload[0].payload.label ?? 'Value'
-  const formattedValue = formatValue(value, {
-    minDecimals: 2,
-    maxDecimals: 2,
-    prefix: '$',
-    abbreviated: true,
-  })
+  const value = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amount))
 
-  return <Text size='sm'>{`${label}: ${formattedValue}`}</Text>
+  return (
+    <div className='flex space-x-1'>
+      <Text size='xs'>{label}: </Text>
+      <DisplayCurrency coin={value} className='text-xs' />
+    </div>
+  )
 }
 
 export default function ChartBody(props: Props) {
