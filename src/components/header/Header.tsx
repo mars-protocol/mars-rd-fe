@@ -13,6 +13,10 @@ const menuTree = (): MenuTreeEntry[] => [
     pages: ['main'],
     label: 'Home',
   },
+  {
+    pages: ['liquidations'],
+    label: 'Liquidations',
+  },
 ]
 
 export default function Header() {
