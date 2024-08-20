@@ -1,5 +1,5 @@
 import getOverviewData from 'api/tokenomics/getOverviewData'
-import useStore from 'store'
+import useChainConfig from 'hooks/chain/useChainConfig'
 import useSWR from 'swr'
 
 export default function useOverviewData(selectedTimeframe = '1M', chartId = 'tab') {
@@ -11,8 +11,7 @@ export default function useOverviewData(selectedTimeframe = '1M', chartId = 'tab
   }
   const days = daysMapping[selectedTimeframe] || 30
 
-  const chainConfig = useStore((state) => state.chainConfig)
-  console.log('chainConfig', chainConfig.id)
+  const chainConfig = useChainConfig()
 
   return useSWR(
     ['tokenomics/overviewData', days, chartId, chainConfig.id],
