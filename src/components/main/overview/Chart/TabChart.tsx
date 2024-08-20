@@ -3,7 +3,6 @@ import ChartError from 'components/common/Chart/ChartError'
 import TimeframeSelector from 'components/common/Chart/SelectionControlPanel/TimeframeSelector'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { CardWithTabs } from 'components/common/Card/CardWithTabs'
-import { dummyChartData2 } from 'components/common/Chart/dummydata'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useState } from 'react'
 

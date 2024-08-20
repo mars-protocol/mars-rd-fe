@@ -1,7 +1,7 @@
-export default async function getOverviewData(days: number = 30) {
+export default async function getOverviewData(days: number = 30, chain: string = 'osmosis-1') {
   try {
     const response = await fetch(
-      `https://api.marsprotocol.io/v1/overview?chain=osmosis&days=${days}`,
+      `https://api.marsprotocol.io/v1/overview?chain=${chain}&days=${days}`,
     )
     const data = await response.json()
     return data

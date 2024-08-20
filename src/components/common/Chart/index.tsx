@@ -14,7 +14,7 @@ interface Props {
 export default function Chart(props: Props) {
   const { data, loading, height, title, className } = props
   return (
-    <Card className={classNames('w-full', className)} title={title} contentClassName='px-2 py-3'>
+    <Card className={classNames('w-full', className)} title={title} contentClassName='px-3 py-3'>
       {data === null || loading ? (
         <ChartLoading height={height} />
       ) : (

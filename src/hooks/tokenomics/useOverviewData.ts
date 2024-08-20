@@ -1,4 +1,5 @@
 import getOverviewData from 'api/tokenomics/getOverviewData'
+import useStore from 'store'
 import useSWR from 'swr'
 
 export default function useOverviewData(selectedTimeframe = '1M', chartId = 'tab') {
@@ -10,10 +11,13 @@ export default function useOverviewData(selectedTimeframe = '1M', chartId = 'tab
   }
   const days = daysMapping[selectedTimeframe] || 30
 
+  const chainConfig = useStore((state) => state.chainConfig)
+  console.log('chainConfig', chainConfig.id)
+
   return useSWR(
-    ['tokenomics/overviewData', days, chartId],
+    ['tokenomics/overviewData', days, chartId, chainConfig.id],
     async () => {
-      const responseData = await getOverviewData(days)
+      const responseData = await getOverviewData(days, chainConfig.id)
 
       if (!responseData) {
         throw new Error('No data returned from API')
