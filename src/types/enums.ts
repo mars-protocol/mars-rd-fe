@@ -48,10 +48,10 @@ export enum WalletID {
 }
 
 export enum ChainInfoID {
-  Osmosis1 = 'osmosis-1',
+  Osmosis1 = 'osmosis',
   OsmosisDevnet = 'devnet',
   Pion1 = 'pion-1',
-  Neutron1 = 'neutron-1',
+  Neutron1 = 'neutron',
 }
 
 export enum AstroportSwapPoolType {

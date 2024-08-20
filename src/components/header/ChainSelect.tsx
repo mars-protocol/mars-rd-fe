@@ -40,6 +40,7 @@ export default function ChainSelect(props: Props) {
 
   const selectChain = useCallback(
     async (chainConfig: ChainConfig) => {
+      console.log('Chain selected:', chainConfig)
       setShowMenu(false)
       setCurrentChainId(chainConfig.id)
       mutate(() => true)
@@ -47,6 +48,7 @@ export default function ChainSelect(props: Props) {
         mobileNavExpanded: false,
         chainConfig,
       })
+      console.log('State after chain change:', useStore.getState())
       navigate(getRoute('main', searchParams))
     },
     [setCurrentChainId, setShowMenu, mutate, navigate, searchParams],
