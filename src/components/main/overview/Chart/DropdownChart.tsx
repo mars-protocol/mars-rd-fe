@@ -1,11 +1,9 @@
 import BarChart from 'components/common/Chart/BarChart'
 import Card from 'components/common/Card'
 import ChartError from 'components/common/Chart/ChartError'
-import DuoLineChart from 'components/common/Chart/DuoLineChart'
 import SelectionControlPanel from 'components/common/Chart/SelectionControlPanel'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import Text from 'components/common/Text'
-import { dummyDataSets } from 'components/common/Chart/dummydata'
 import { useMemo, useState } from 'react'
 import { TIMEFRAME } from 'constants/timeframe'
 

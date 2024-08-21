@@ -54,6 +54,7 @@ export default function DuoLineChart(props: Props) {
   return (
     <div className='-mr-6'>
       <ResponsiveContainer width='100%' height={400}>
+        {/* TODO: update with real data */}
         <LineChart data={dummyData}>
           <Line
             type='monotone'

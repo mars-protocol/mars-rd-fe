@@ -4,7 +4,7 @@ import { BN } from 'utils/helpers'
 
 export default async function getMarsTokenPrice() {
   try {
-    const response = await fetch(`https://api.astroport.fi/api/tokens?chainId=neutron-1`)
+    const response = await fetch('https://api.astroport.fi/api/tokens?chainId=neutron-1')
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`)
     }

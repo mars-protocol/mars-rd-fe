@@ -8,7 +8,7 @@ interface Props {
   dataKeys: { [key: string]: string }
 }
 
-export default function Chart(props: Props) {
+export default function BarChart(props: Props) {
   const { data, loading, height, dataKeys } = props
   return (
     <div className='w-full'>
