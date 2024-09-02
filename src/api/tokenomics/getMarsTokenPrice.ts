@@ -1,10 +1,12 @@
+import Neutron1 from 'chains/neutron/neutron-1'
 import { MARS_DENOM } from 'constants/mars'
 import { BN_ZERO } from 'constants/math'
 import { BN } from 'utils/helpers'
 
 export default async function getMarsTokenPrice() {
+  const url = Neutron1.endpoints.dexAssets
   try {
-    const response = await fetch('https://api.astroport.fi/api/tokens?chainId=neutron-1')
+    const response = await fetch(url)
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`)
     }
