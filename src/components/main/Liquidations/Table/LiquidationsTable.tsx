@@ -50,13 +50,13 @@ export default function LiquidationsTable() {
         },
       },
       // TODO: update this once we have the data
-      {
-        accessorKey: 'protocol_fee_coin',
-        header: 'Liquidation Price',
-        cell: ({ row }) => {
-          return <LiquidationPrice value={row.original} />
-        },
-      },
+      // {
+      //   accessorKey: 'protocol_fee_coin',
+      //   header: 'Liquidation Price',
+      //   cell: ({ row }) => {
+      //     return <LiquidationPrice value={row.original} />
+      //   },
+      // },
       {
         accessorKey: 'protocol_fee_coin',
         header: 'Protocol Fee',

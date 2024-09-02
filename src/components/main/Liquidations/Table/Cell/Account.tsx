@@ -8,7 +8,7 @@ interface Props {
 
 export default function Account(props: Props) {
   const { value } = props
-  const url = `https://app.marsprotocol.io/wallets/osmosiswallet/portfolio${value}`
+  const url = `https://app.marsprotocol.io/wallets/osmosiswallet/portfolio/${value}`
 
   return (
     <div
