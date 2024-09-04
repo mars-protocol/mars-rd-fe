@@ -10,7 +10,6 @@ export default function ChainLogo(props: Props) {
   const { chainID, className } = props
 
   switch (chainID) {
-    case ChainInfoID.Pion1:
     case ChainInfoID.Neutron1:
       return <Neutron className={className} />
 

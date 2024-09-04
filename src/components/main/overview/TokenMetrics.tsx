@@ -81,7 +81,7 @@ export default function TokenMetrics() {
             key={index}
           >
             {isLoading ? (
-              <div className='w-full h-8 flex justify-center items-center'>
+              <div className='w-full h-8 px-6 flex justify-center items-center'>
                 <Loading />
               </div>
             ) : metric.isCurrency ? (

@@ -11,7 +11,7 @@ interface Props {
 
 function createLoadingData() {
   const data = []
-  const dataValues = [0, 20, 40, 30, 60, 50, 100]
+  const dataValues = [10, 20, 80, 30, 60, 50, 60]
   const startDate = moment().subtract(7, 'days')
   const endDate = moment()
   const days = endDate.diff(startDate, 'days')
@@ -34,7 +34,7 @@ export default function Chart(props: Props) {
   const loadingData = createLoadingData()
 
   return (
-    <div className={classNames('-ml-6 w-full', props.height, !reduceMotion && 'animate-pulse')}>
+    <div className={classNames('-ml-6 w-full', height, !reduceMotion && 'animate-pulse')}>
       <ResponsiveContainer width='100%' height='100%'>
         <AreaChart
           data={loadingData}

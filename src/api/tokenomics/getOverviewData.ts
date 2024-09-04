@@ -1,6 +1,8 @@
-export default async function getOverviewData() {
+export default async function getOverviewData(days: number = 30, chain: string = 'neutron') {
   try {
-    const response = await fetch('https://api.marsprotocol.io/v1/overview?chain=osmosis&days=30')
+    const response = await fetch(
+      `https://api.marsprotocol.io/v1/overview?chain=${chain}&days=${days}`,
+    )
     const data = await response.json()
     return data
   } catch (error) {

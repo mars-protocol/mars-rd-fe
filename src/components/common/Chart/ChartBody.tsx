@@ -1,5 +1,10 @@
+import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
+import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import moment from 'moment'
+import Text from 'components/common/Text'
+import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import {
   Area,
   AreaChart,
@@ -9,13 +14,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-
-import Text from 'components/common/Text'
+import { BNCoin } from 'types/classes/BNCoin'
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
-import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import { formatValue } from 'utils/formatters'
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   data: ChartData
@@ -24,9 +27,15 @@ interface Props {
 
 function TooltipContent(props: TooltipContentProps) {
   const { payload } = props
-  const value = Number(payload[0].value) ?? 0
+  const amount = Number(payload[0].value) ?? 0
+  const label = payload[0].payload.label ?? 'Value'
+  const value = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amount))
+
   return (
-    <Text size='sm'>{formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}</Text>
+    <div className='flex space-x-1'>
+      <Text size='xs'>{label}: </Text>
+      <DisplayCurrency coin={value} className='text-xs' />
+    </div>
   )
 }
 
@@ -77,6 +86,7 @@ export default function ChartBody(props: Props) {
             axisLine={false}
             tickLine={false}
             fontSize={12}
+            tickCount={10}
             stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
               return formatValue(value, {
@@ -92,7 +102,7 @@ export default function ChartBody(props: Props) {
             isAnimationActive={!reduceMotion}
             wrapperStyle={{ outline: 'none' }}
             content={
-              <CustomTooltip
+              <ChartTooltip
                 payload={[]}
                 label={''}
                 renderContent={(payload) => <TooltipContent payload={payload} />}

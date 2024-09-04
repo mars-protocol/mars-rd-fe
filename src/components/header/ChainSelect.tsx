@@ -14,7 +14,7 @@ import useChainConfig from 'hooks/chain/useChainConfig'
 import useToggle from 'hooks/common/useToggle'
 import useCurrentChainId from 'hooks/localStorage/useCurrentChainId'
 import useStore from 'store'
-import { ChainInfoID } from 'types/enums'
+import { ChainInfoID, NETWORK } from 'types/enums'
 import { getRoute } from 'utils/route'
 
 interface Props {
@@ -82,10 +82,13 @@ export default function ChainSelect(props: Props) {
   }
 
   const availableChains = useMemo(() => {
+    const currentNetworkType = process.env.NEXT_PUBLIC_NETWORK ?? NETWORK.TESTNET
     const availableChains: { chainId: ChainInfoID; name: string }[] = []
     Object.entries(chains).forEach(([chainId, chainConfig]) => {
+      if (chainConfig.network !== currentNetworkType) return
       availableChains.push({ chainId: chainId as ChainInfoID, name: chainConfig.name })
     })
+    if (currentNetworkType === NETWORK.TESTNET) return availableChains
     return availableChains
   }, [])
 

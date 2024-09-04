@@ -1,20 +1,22 @@
-import classNames from 'classnames'
-import Card from 'components/common/Card'
 import BarChartBody from 'components/common/Chart/BarChart/BarChartBody'
+import BarChartLoading from 'components/common/Chart/BarChart/BarChartLoading'
 
 interface Props {
-  data: BarChartData
-  title?: string
+  data: BarChartData | null
   height?: string
-  className?: string
+  loading?: boolean
   dataKeys: { [key: string]: string }
 }
 
 export default function BarChart(props: Props) {
-  const { data, title, height, className, dataKeys } = props
+  const { data, loading, height, dataKeys } = props
   return (
-    <Card className={classNames('w-full', className)} title={title} contentClassName='px-2 py-3'>
-      <BarChartBody height={height} data={data} dataKeys={dataKeys} />
-    </Card>
+    <div className='w-full'>
+      {data === null || loading ? (
+        <BarChartLoading height={height} />
+      ) : (
+        <BarChartBody height={height} data={data} dataKeys={dataKeys} />
+      )}
+    </div>
   )
 }

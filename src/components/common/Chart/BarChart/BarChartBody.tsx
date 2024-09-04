@@ -1,15 +1,30 @@
+import BigNumber from 'bignumber.js'
+import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import ChartLegend from 'components/common/Chart/Legend/ChartLegend'
+import DisplayCurrency from 'components/common/DisplayCurrency'
+import moment from 'moment'
 import React from 'react'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import Text from 'components/common/Text'
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
+import { BNCoin } from 'types/classes/BNCoin'
 import { formatValue } from 'utils/formatters'
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
-import { dummyBarChartData } from 'components/common/Chart/dummydata'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   data: BarChartData
   height?: string
   dataKeys: { [key: string]: string }
 }
+
 interface BarTooltipContentProps {
   payload: ChartDataPayloadProps[]
   dataKeys: { [key: string]: string }
@@ -17,24 +32,28 @@ interface BarTooltipContentProps {
 
 function TooltipContent(props: BarTooltipContentProps) {
   const { payload, dataKeys } = props
+
   return Object.entries(dataKeys).map(([key, label]) => {
-    const value = payload.find((p) => p.dataKey === key)?.value ?? 0
-    const formattedValue = formatValue(value, {
-      minDecimals: 0,
-      maxDecimals: 0,
-      prefix: '$',
-      abbreviated: true,
-    })
-    return <Text size='sm'>{`${label}: ${formattedValue}`}</Text>
+    const amount = payload.find((p) => p.dataKey === label)?.value ?? 0
+    const value = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amount))
+
+    return (
+      <div key={key} className='flex space-x-1'>
+        <Text size='xs'>{label}: </Text>
+        <DisplayCurrency coin={value} className='text-xs' />
+      </div>
+    )
   })
 }
 
 export default function BarChartBody(props: Props) {
+  const { data, height, dataKeys } = props
+
   return (
-    <div className='-ml-2 h-100'>
-      <ResponsiveContainer width='100%' height={props.height || '100%'}>
+    <div className='h-100 w-full'>
+      <ResponsiveContainer width='100%' height={height || '100%'}>
         <BarChart
-          data={dummyBarChartData}
+          data={data}
           margin={{
             top: 0,
             right: 0,
@@ -49,17 +68,22 @@ export default function BarChartBody(props: Props) {
             syncWithTicks={true}
           />
           <XAxis
-            dataKey='name'
+            dataKey='date'
             stroke='rgba(255, 255, 255, 0.4)'
             fontSize={12}
             axisLine={false}
             tickLine={false}
+            tickFormatter={(value) => {
+              return moment(value).format('DD MMM')
+            }}
           />
           <YAxis
+            orientation='right'
             fontSize={12}
+            tickCount={4}
             axisLine={false}
             tickLine={false}
-            padding={{ top: 10 }}
+            stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
               return formatValue(value, {
                 minDecimals: 0,
@@ -69,19 +93,39 @@ export default function BarChartBody(props: Props) {
               })
             }}
           />
+
           <Tooltip
-            cursor={{ stroke: '#000', strokeWidth: 2, fill: 'rgba(255, 255, 255, 0.2)' }}
+            cursor={{
+              stroke: 'rgba(255, 255, 255, 0.1)',
+              strokeWidth: 2,
+              fill: 'rgba(255, 255, 255, 0.1)',
+            }}
             content={
-              <CustomTooltip
+              <ChartTooltip
                 payload={[]}
                 label={''}
                 renderContent={(payload) => TooltipContent({ payload, dataKeys: props.dataKeys })}
               />
             }
           />
+          <Legend content={<ChartLegend payload={[]} />} verticalAlign='bottom' />
 
-          <Bar dataKey='valueTwo' fill='rgba(171, 66, 188, 0.5)' legendType='plainline' />
-          <Bar dataKey='valueOne' fill='rgba(66, 188, 171, 0.8)' legendType='plainline' />
+          <Bar
+            dataKey={dataKeys.valueOne}
+            fill='rgba(171, 66, 188, 0.5)'
+            legendType='plainline'
+            stackId='a'
+            maxBarSize={24}
+            activeBar={{ stroke: 'rgba(255, 255, 255, 0.1)', strokeWidth: 2 }}
+          />
+          <Bar
+            dataKey={dataKeys.valueTwo}
+            fill='rgb(255, 82, 82, 0.7)'
+            stackId='a'
+            legendType='plainline'
+            maxBarSize={24}
+            activeBar={{ stroke: 'rgba(255, 255, 255, 0.1)', strokeWidth: 2 }}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

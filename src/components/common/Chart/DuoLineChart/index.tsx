@@ -1,3 +1,9 @@
+import BigNumber from 'bignumber.js'
+import ChartLegend from 'components/common/Chart/Legend/ChartLegend'
+import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import DisplayCurrency from 'components/common/DisplayCurrency'
+import moment from 'moment'
+import Text from 'components/common/Text'
 import {
   CartesianGrid,
   Legend,
@@ -8,11 +14,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { Circle } from 'components/common/Icons'
-import CustomTooltip from 'components/common/Chart/Tooltip/CustomTooltip'
-import moment from 'moment'
-import Text from 'components/common/Text'
 import { formatValue } from 'utils/formatters'
+import { BNCoin } from 'types/classes/BNCoin'
+import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
   selectedOption: string
@@ -20,8 +24,27 @@ interface Props {
   options: { value: string; label: string }[]
   data: DummyData
 }
-interface DuoLineChartLegendProps {
-  payload: LegendEntry[]
+
+function TooltipContent(payload: ChartDataPayloadProps[]) {
+  const amountOne = payload[0].value ?? 0
+  const amountTwo = payload[1].value ?? 0
+
+  const valueOne = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amountOne))
+  const valueTwo = BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, new BigNumber(amountTwo))
+
+  return (
+    <>
+      <div className='flex space-x-1'>
+        <Text size='xs'>{payload[0].name}: </Text>
+        <DisplayCurrency coin={valueOne} className='text-xs' />
+      </div>
+
+      <div className='flex space-x-1'>
+        <Text size='xs'>{payload[1].name}: </Text>
+        <DisplayCurrency coin={valueTwo} className='text-xs' />
+      </div>
+    </>
+  )
 }
 
 export default function DuoLineChart(props: Props) {
@@ -31,6 +54,7 @@ export default function DuoLineChart(props: Props) {
   return (
     <div className='-mr-6'>
       <ResponsiveContainer width='100%' height={400}>
+        {/* TODO: update with real data */}
         <LineChart data={dummyData}>
           <Line
             type='monotone'
@@ -59,7 +83,7 @@ export default function DuoLineChart(props: Props) {
             stroke='rgba(255, 255, 255, 0.3)'
             axisLine={false}
             tickLine={false}
-            tickCount={6}
+            tickCount={7}
             padding={{ top: 20 }}
             orientation='right'
             fontSize={12}
@@ -75,54 +99,15 @@ export default function DuoLineChart(props: Props) {
 
           <Tooltip
             content={
-              <CustomTooltip
-                active={false}
-                payload={[]}
-                label={''}
-                renderContent={(payload) => <TooltipContent payload={payload} />}
-              />
+              <ChartTooltip active={false} payload={[]} label={''} renderContent={TooltipContent} />
             }
           />
 
-          <Legend content={<DuoLineChartLegend payload={[]} />} verticalAlign='bottom' />
+          <Legend content={<ChartLegend payload={[]} />} verticalAlign='bottom' />
 
           <CartesianGrid opacity={0.1} vertical={false} />
         </LineChart>
       </ResponsiveContainer>
-    </div>
-  )
-}
-
-function TooltipContent(props: TooltipContentProps) {
-  const { payload } = props
-  const value = Number(payload[0].value) ?? 0
-  const value2 = Number(payload[1].value) ?? 0
-  return (
-    <>
-      <Text size='sm'>
-        {payload[0].name}: {formatValue(value, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-      </Text>
-
-      <Text size='sm'>
-        {payload[1].name}: {formatValue(value2, { minDecimals: 0, maxDecimals: 0, prefix: '$' })}
-      </Text>
-    </>
-  )
-}
-
-function DuoLineChartLegend(props: DuoLineChartLegendProps) {
-  const { payload } = props
-  const colors = ['#AB47BC', '#8884d8']
-  return (
-    <div className='flex justify-center sm:justify-end sm:mr-7'>
-      {payload.map((entry: LegendEntry, index: number) => (
-        <div className='flex items-center' key={`item-${index}`}>
-          <Circle className='fill-current h-2 w-2' color={colors[index]} />
-          <Text size='xs' className='mx-2'>
-            {entry.value}
-          </Text>
-        </div>
-      ))}
     </div>
   )
 }

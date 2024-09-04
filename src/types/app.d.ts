@@ -361,7 +361,7 @@ interface PythUpdateExecuteMsg {
   update_price_feeds: { data: string[] }
 }
 
-type Page = 'main'
+type Page = 'main' | 'liquidations'
 
 type OsmosisRouteResponse = {
   amount_in: {
@@ -1442,7 +1442,11 @@ interface ChartDataPayloadProps {
   formatter?: string
   hide: boolean
   name: string
-  payload: {} // once we have real data this will be updated
+  payload: {
+    date: string
+    value: number
+    label: string
+  }
   value: string | number
   stroke?: string
   strokeWidth?: number
@@ -1481,12 +1485,4 @@ interface Token {
   priceUSD: number
   totalLiquidityUSD: number
   dayVolumeUSD: number
-}
-
-interface LegendEntry {
-  inactive: boolean
-  dataKey: string
-  type: string
-  color: string
-  value: string
 }
