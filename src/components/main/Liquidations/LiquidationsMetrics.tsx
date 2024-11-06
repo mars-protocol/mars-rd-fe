@@ -7,10 +7,14 @@ export default function LiquidationsMetrics() {
   const { data: liquidityOverviewData, isLoading: isLiquidityOverviewDataLoading } =
     useOverviewData()
 
+  console.log(liquidityOverviewData, 'liquidityOverviewData')
+
   const badDebt = liquidityOverviewData?.data[0].bad_debt
   const walletsForLiquidation = liquidityOverviewData?.data[0].wallets_for_liquidation
   const walletsAtRisk = liquidityOverviewData?.data[0].wallets_at_risk
   const valueForLiquidation = liquidityOverviewData?.data[0].value_eligible_for_liquidation
+
+  console.log(badDebt, walletsForLiquidation, walletsAtRisk, valueForLiquidation, 'metrics')
 
   const liquidationMetrics: Metric[] = [
     {

@@ -361,7 +361,7 @@ interface PythUpdateExecuteMsg {
   update_price_feeds: { data: string[] }
 }
 
-type Page = 'main' | 'liquidations'
+type Page = 'main' | 'liquidations' | 'perps'
 
 type OsmosisRouteResponse = {
   amount_in: {
@@ -1473,6 +1473,7 @@ interface LiquidationDataItem {
   collateral_asset_won?: BNCoin
   debt_asset_repaid?: BNCoin
   protocol_fee_coin?: BNCoin
+  price_liquidated?: string
 }
 
 interface Token {

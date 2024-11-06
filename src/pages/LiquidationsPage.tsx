@@ -11,7 +11,7 @@ export default function LiquidationsPage() {
   return (
     <div className='w-full'>
       {isNeutron ? (
-        <div className='flex justify-center items-center h-full'>
+        <div className='flex items-center justify-center h-full'>
           <Text size='2xl'>Please switch to the Osmosis chain to see available data.</Text>
         </div>
       ) : (

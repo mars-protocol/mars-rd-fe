@@ -27,14 +27,12 @@ export default function LiquidationsTable() {
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(
     () => [
       {
-        accessorKey: 'account_id',
         header: 'Account ID',
         cell: ({ row }) => {
           return <Account value={row.original.account_id as string} />
         },
       },
       {
-        accessorKey: 'collateral_asset_won',
         header: 'Liquidated Collateral',
         cell: ({ row }) => {
           return (
@@ -43,22 +41,20 @@ export default function LiquidationsTable() {
         },
       },
       {
-        accessorKey: 'debt_asset_repaid',
         header: 'Repaid Debt',
         cell: ({ row }) => {
           return <Asset value={row.original.debt_asset_repaid as BNCoin} assetData={assetsData} />
         },
       },
       // TODO: update this once we have the data
-      // {
-      //   accessorKey: 'protocol_fee_coin',
-      //   header: 'Liquidation Price',
-      //   cell: ({ row }) => {
-      //     return <LiquidationPrice value={row.original} />
-      //   },
-      // },
       {
         accessorKey: 'protocol_fee_coin',
+        header: 'Liquidation Price',
+        cell: ({ row }) => {
+          return <LiquidationPrice value={row.original.price_liquidated ?? 'N/A'} />
+        },
+      },
+      {
         header: 'Protocol Fee',
         cell: ({ row }) => {
           return <Asset value={row.original.protocol_fee_coin as BNCoin} assetData={assetsData} />

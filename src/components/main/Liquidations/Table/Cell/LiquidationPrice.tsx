@@ -6,7 +6,7 @@ import { BNCoin } from 'types/classes/BNCoin'
 import { ORACLE_DENOM } from 'constants/oracle'
 
 interface Props {
-  value: BNCoin
+  value: string
 }
 
 export default function LiquidationPrice(props: Props) {
