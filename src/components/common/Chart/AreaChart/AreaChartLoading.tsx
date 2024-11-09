@@ -25,7 +25,7 @@ function createLoadingData() {
   return data
 }
 
-export default function Chart(props: Props) {
+export default function AreaChartLoading(props: Props) {
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,

@@ -1487,3 +1487,74 @@ interface Token {
   totalLiquidityUSD: number
   dayVolumeUSD: number
 }
+
+interface DateValue {
+  date: string
+  value: string
+}
+
+interface PerpsOpenInterest {
+  long: DateValue[]
+  short: DateValue[]
+  total: DateValue[]
+  oi_max_oi_long_ratio: DateValue[]
+  oi_max_oi_short_ratio: DateValue[]
+}
+
+interface PerpsSkewData {
+  skew: DateValue[]
+  imbalance_long_ratio: DateValue[]
+  imbalance_short_ratio: DateValue[]
+  maxskew_ratio: DateValue[]
+}
+
+interface PerpsFundingAndPnL {
+  funding_rate: DateValue[]
+  unrealized_pnl: DateValue[]
+  realized_pnl: DateValue[]
+}
+
+interface PerpsFees {
+  trading_fee: DateValue[]
+  net_funding_fee: DateValue[]
+}
+
+interface PerpsVaultData {
+  deposit: DateValue[]
+  vault_value: DateValue[]
+  vault_collateralization_ratio: DateValue[]
+}
+
+interface PerpsGlobalData {
+  daily_trading_volume: DateValue[]
+  open_interest: PerpsOpenInterest
+  skew_data: PerpsSkewData
+  funding_and_pnl: PerpsFundingAndPnL
+  fees: PerpsFees
+  vault_data: PerpsVaultData
+  notional_liquidated: DateValue[]
+  notional_at_risk: string
+  accounts_at_risk: string
+  total_accounts: string
+}
+
+interface PerpsGlobalOverview {
+  global_overview: PerpsGlobalData[]
+}
+interface PerpsMarketData {
+  denom: string
+  daily_trading_volume: DateValue[]
+  open_interest: PerpsOpenInterest
+  skew_data: PerpsSkewData
+  funding_and_pnl: PerpsFundingAndPnL
+  fees: PerpsFees
+  notional_at_risk: string
+  accounts_at_risk: string
+  total_accounts: string
+}
+
+interface PerpsMarketOverview {
+  market_overview: {
+    data: PerpsMarketData[]
+  }
+}

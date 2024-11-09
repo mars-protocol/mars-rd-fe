@@ -49,7 +49,8 @@ export default function PerpsOverviewPage() {
       ) : (
         <>
           <PerpsGlobalMetrics />
-          <Card className='mt-10 bg-white/5 h-[800px] p-4 flex flex-col'>
+
+          <Card className='mt-10 bg-white/5 p-4 flex flex-col'>
             <SelectionControlPanel
               selectOptions={displayOptions}
               defaultSelectValue={selectedOption}
@@ -60,18 +61,8 @@ export default function PerpsOverviewPage() {
             />
             <Divider className='mt-2' />
 
-            <div className='flex-1 flex justify-between'>
+            <div className='flex flex-col gap-4 mt-4'>
               <PerpsMarketStats />
-              {/* <div className='w-2/3 flex flex-col gap-4'>
-                <div className='h-1/2 flex justify-center items-center'>
-                  <PieChartBody />
-                </div>
-                <div className='h-1/2 flex justify-center items-center'>
-                  <div className='w-full h-full'>
-                    <TabChart />
-                  </div>
-                </div>
-              </div> */}
             </div>
           </Card>
         </>

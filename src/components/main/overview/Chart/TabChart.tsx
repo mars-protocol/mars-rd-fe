@@ -1,5 +1,5 @@
-import Chart from 'components/common/Chart'
-import ChartError from 'components/common/Chart/ChartError'
+import Chart from 'components/common/Chart/AreaChart'
+import ChartError from 'components/common/Chart/AreaChart/AreaChartError'
 import TimeframeSelector from 'components/common/Chart/SelectionControlPanel/TimeframeSelector'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { CardWithTabs } from 'components/common/Card/CardWithTabs'
@@ -46,13 +46,6 @@ export default function TabChart() {
         </div>
       ),
     },
-    // TODO: replace with real data
-    // {
-    //   title: 'Trading Volume',
-    //   renderContent: () => (
-    //     <Chart data={dummyChartData2} className='rounded-t-none before:content-none' />
-    //   ),
-    // },
   ]
   return <CardWithTabs tabs={tabs} contentClassName='bg-white/5' className='mt-10' />
 }

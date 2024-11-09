@@ -5,7 +5,7 @@ interface Props {
   handleRefetch: () => void
 }
 
-export default function ChartError(props: Props) {
+export default function AreaChartError(props: Props) {
   const { handleRefetch } = props
   return (
     <div className='h-100 w-full flex items-center justify-center'>

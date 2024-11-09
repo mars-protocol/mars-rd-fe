@@ -39,7 +39,7 @@ function TooltipContent(props: TooltipContentProps) {
   )
 }
 
-export default function ChartBody(props: Props) {
+export default function AreaChartBody(props: Props) {
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,

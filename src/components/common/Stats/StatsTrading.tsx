@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import Chart from 'components/common/Chart'
+import Chart from 'components/common/Chart/AreaChart'
 
 export default function StatsTrading() {
   const [totalSwapVolume, setTotalSwapVolume] = useState<ChartData | null>(null)

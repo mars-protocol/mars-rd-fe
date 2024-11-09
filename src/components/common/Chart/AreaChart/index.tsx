@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Card from 'components/common/Card'
-import ChartBody from 'components/common/Chart/ChartBody'
-import ChartLoading from 'components/common/Chart/ChartLoading'
+import AreaChartBody from 'components/common/Chart/AreaChart/AreaChartBody'
+import AreaChartLoading from 'components/common/Chart/AreaChart/AreaChartLoading'
 
 interface Props {
   data: ChartData | null
@@ -11,14 +11,14 @@ interface Props {
   loading?: boolean
 }
 
-export default function Chart(props: Props) {
+export default function AreaChart(props: Props) {
   const { data, loading, height, title, className } = props
   return (
     <Card className={classNames('w-full', className)} title={title} contentClassName='px-3 py-3'>
       {data === null || loading ? (
-        <ChartLoading height={height} />
+        <AreaChartLoading height={height} />
       ) : (
-        <ChartBody height={height} data={data} />
+        <AreaChartBody height={height} data={data} />
       )}
     </Card>
   )

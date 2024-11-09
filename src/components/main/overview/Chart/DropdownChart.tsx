@@ -1,6 +1,6 @@
 import BarChart from 'components/common/Chart/BarChart'
 import Card from 'components/common/Card'
-import ChartError from 'components/common/Chart/ChartError'
+import ChartError from 'components/common/Chart/AreaChart/AreaChartError'
 import SelectionControlPanel from 'components/common/Chart/SelectionControlPanel'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import Text from 'components/common/Text'
@@ -11,11 +11,7 @@ interface Props {
   className?: string
 }
 
-const options = [
-  { value: 'supplied/borrowed', label: 'Supplied/Borrowed' },
-  // TODO: update with correct data
-  // { value: 'deposits/withdrawals', label: 'Deposits/Withdrawals' },
-]
+const options = [{ value: 'supplied/borrowed', label: 'Supplied/Borrowed' }]
 
 export default function DropdownChart(props: Props) {
   const { className } = props
@@ -73,16 +69,6 @@ export default function DropdownChart(props: Props) {
               loading={isValidating || isDropdownOverviewDataLoading}
             />
           )}
-
-          {/* TODO: update with correct data */}
-          {/* {selectedOption === 'deposits/withdrawals' && (
-            <DuoLineChart
-              selectedOption={selectedOption}
-              options={options}
-              selectedTimeframe={selectedTimeframe}
-              data={dummyDataSets}
-            />
-          )} */}
         </>
       )}
     </Card>
