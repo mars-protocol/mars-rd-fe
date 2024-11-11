@@ -8,6 +8,6 @@ export default async function getPerpsGlobalStats() {
     return data.global_overview
   } catch (error) {
     console.error('Could not fetch perps global overview data.', error)
-    return []
+    return null
   }
 }

@@ -42,6 +42,8 @@ export const formatValue = (amount: number | string, options?: FormatOptions): s
     }
   }
   let convertedAmount: BigNumber | string = BN(amount).dividedBy(10 ** (options?.decimals ?? 0))
+  const isNegative = BN(convertedAmount).isLessThan(0)
+  convertedAmount = BN(convertedAmount).abs()
 
   const amountSuffix = options?.abbreviated
     ? convertedAmount.isGreaterThanOrEqualTo(1_000_000_000)
@@ -106,6 +108,10 @@ export const formatValue = (amount: number | string, options?: FormatOptions): s
 
   if (options?.prefix) {
     returnValue = `${options.prefix}${returnValue}`
+  }
+
+  if (isNegative) {
+    returnValue = `${returnValue}-`
   }
 
   returnValue = `${returnValue}${convertedAmount}`

@@ -11,14 +11,15 @@ import {
 } from 'recharts'
 import moment from 'moment'
 import { formatValue } from 'utils/formatters'
-import ChartLegend from 'components/common/Chart/Legend/ChartLegend'
-import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
+import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
 import DisplayCurrency from 'components/common/DisplayCurrency'
 import Text from 'components/common/Text'
 import { BNCoin } from 'types/classes/BNCoin'
 import { BN } from 'utils/helpers'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import { Circle } from 'components/common/Icons'
+import classNames from 'classnames'
 
 interface LineConfig {
   dataKey: string
@@ -27,17 +28,16 @@ interface LineConfig {
 }
 
 interface Props {
-  data: any[]
+  data: MergedChartData[]
   lines: LineConfig[]
   height?: number
-  width?: string
 }
 
 const TooltipContent = (payload: ChartDataPayloadProps[]) => {
   return (
     <>
-      {payload.map((item: any, index: number) => (
-        <div key={index} className='flex space-x-1 items-center'>
+      {payload.map((item: ChartDataPayloadProps, index: number) => (
+        <div key={index} className='flex items-center gap-1'>
           <Circle className='fill-current h-2 w-2' color={item.color} />
 
           <Text size='xs'>{item.name}: </Text>
@@ -47,6 +47,7 @@ const TooltipContent = (payload: ChartDataPayloadProps[]) => {
               BN(item.value).shiftedBy(-PRICE_ORACLE_DECIMALS),
             )}
             className='text-xs'
+            showSignPrefix
           />
         </div>
       ))}
@@ -55,14 +56,22 @@ const TooltipContent = (payload: ChartDataPayloadProps[]) => {
 }
 
 export default function DynamicLineChartBody(props: Props) {
-  const { data, lines, height = 400, width = '100%' } = props
+  const { data, lines, height = 400 } = props
 
   const reversedData = [...data].reverse()
 
   return (
-    <div className='-ml-6'>
-      <ResponsiveContainer width={width} height={height}>
-        <LineChart data={reversedData}>
+    <div className={classNames('-ml-6', height)}>
+      <ResponsiveContainer width='100%' height={height}>
+        <LineChart
+          data={reversedData}
+          margin={{
+            top: 10,
+            right: 0,
+            left: 0,
+            bottom: 0,
+          }}
+        >
           {lines.map((lineConfig, index) => (
             <Line
               key={index}
@@ -76,16 +85,16 @@ export default function DynamicLineChartBody(props: Props) {
           ))}
 
           <XAxis
+            axisLine={false}
+            tickLine={false}
+            fontSize={10}
+            padding={{ left: 5, right: 10 }}
+            dataKey='date'
+            dy={10}
             stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
               return moment(value).format('DD MMM')
             }}
-            padding={{ left: 5, right: 10 }}
-            axisLine={false}
-            tickLine={false}
-            fontSize={10}
-            dataKey='date'
-            dy={10}
           />
           <YAxis
             axisLine={false}
@@ -109,7 +118,7 @@ export default function DynamicLineChartBody(props: Props) {
               <ChartTooltip active={false} payload={[]} label={''} renderContent={TooltipContent} />
             }
           />
-          <Legend content={<ChartLegend payload={[]} />} verticalAlign='bottom' />
+          <Legend content={<ChartLegend payload={[]} />} verticalAlign='top' />
 
           <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
         </LineChart>

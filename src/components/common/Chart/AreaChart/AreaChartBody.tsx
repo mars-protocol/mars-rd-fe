@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
-import ChartTooltip from 'components/common/Chart/Tooltip/ChartTooltip'
+import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
 import DisplayCurrency from 'components/common/DisplayCurrency'
 import moment from 'moment'
 import Text from 'components/common/Text'

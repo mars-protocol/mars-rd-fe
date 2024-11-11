@@ -6,22 +6,23 @@ interface Props {
   selectedTimeframe: string
   setSelectedTimeframe: (timeframe: string) => void
   className?: string
+  size?: 'xs' | 'sm'
 }
 
 export default function TimeframeSelector(props: Props) {
-  const { timeframe, selectedTimeframe, setSelectedTimeframe, className } = props
+  const { timeframe, selectedTimeframe, setSelectedTimeframe, size = 'sm', className } = props
 
   return (
     <div className={classNames('flex flex-row gap-3 my-3', className)}>
       {timeframe.map((time, index) => (
         <Button
-          variant='solid'
           color='tertiary'
           onClick={() => setSelectedTimeframe(time)}
           hasFocus={time === selectedTimeframe}
           key={index}
           text={time}
-          size='sm'
+          size={size}
+          className='px-3 text-white/80'
         />
       ))}
     </div>

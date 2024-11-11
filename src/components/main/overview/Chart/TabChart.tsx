@@ -1,10 +1,10 @@
-import Chart from 'components/common/Chart/AreaChart'
-import ChartError from 'components/common/Chart/AreaChart/AreaChartError'
-import TimeframeSelector from 'components/common/Chart/SelectionControlPanel/TimeframeSelector'
+import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { CardWithTabs } from 'components/common/Card/CardWithTabs'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useState } from 'react'
+import ChartError from 'components/common/Chart/common/ChartError'
+import AreaChart from 'components/common/Chart/AreaChart'
 
 export default function TabChart() {
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2])
@@ -37,7 +37,7 @@ export default function TabChart() {
           {error ? (
             <ChartError handleRefetch={handleRefetch} />
           ) : (
-            <Chart
+            <AreaChart
               data={TVLData}
               loading={isValidating || isTabOverviewDataLoading}
               className='rounded-t-none before:content-none'

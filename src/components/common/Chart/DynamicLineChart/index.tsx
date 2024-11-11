@@ -1,9 +1,10 @@
-import classNames from 'classnames'
 import Card from 'components/common/Card'
-import DynamicLineChartBody from './DynamicLineChartBody'
+import DynamicLineChartBody from 'components/common/Chart/DynamicLineChart/DynamicLineChartBody'
 import Text from 'components/common/Text'
+import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
+import { TIMEFRAME } from 'constants/timeframe'
+import { useState } from 'react'
 
-// Define types for our props
 interface LineConfig {
   dataKey: string
   color: string
@@ -11,23 +12,38 @@ interface LineConfig {
 }
 
 interface Props {
-  data: any[]
+  data: MergedChartData[]
+  title: string | React.ReactNode
   lines: LineConfig[]
   height?: number
-  width?: string
 }
 
 export default function DynamicLineChart(props: Props) {
-  const { data, lines, height, width } = props
+  const { data, lines, height, title } = props
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0])
+
   return (
-    <Card className={classNames('w-full bg-white/5')} contentClassName='px-3 py-3'>
+    <Card
+      className='w-full bg-black/10'
+      contentClassName='px-3 pb-2'
+      title={
+        <div className='px-4 flex items-center justify-between font-semibold bg-white/10'>
+          <Text size='sm' className=''>
+            {title}
+          </Text>
+          <TimeframeSelector
+            timeframe={TIMEFRAME}
+            selectedTimeframe={selectedTimeframe}
+            setSelectedTimeframe={setSelectedTimeframe}
+            size='xs'
+          />
+        </div>
+      }
+    >
       {/* {data === null || loading ? (
         <DynamicLineChartLoading height={height} />
       ) : ( */}
-      <Text size='sm' className='text-white text-center'>
-        Open Interest
-      </Text>
-      <DynamicLineChartBody data={data} lines={lines} height={height} width={width} />
+      <DynamicLineChartBody data={data} lines={lines} height={height} />
       {/* )} */}
     </Card>
   )

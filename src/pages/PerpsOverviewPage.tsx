@@ -3,11 +3,11 @@ import Text from 'components/common/Text'
 import { ChainInfoID } from 'types/enums'
 import PerpsGlobalMetrics from 'components/main/perps/PerpsGlobalMetrics'
 import Card from 'components/common/Card'
-import SelectionControlPanel from 'components/common/Chart/SelectionControlPanel'
 import { useMemo, useState } from 'react'
 import { TIMEFRAME } from 'constants/timeframe'
 import Divider from 'components/common/Divider'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
+import Select from 'components/common/Select'
 
 const perpsOptions = [
   { value: 'total', label: 'Total Statistics' },
@@ -51,13 +51,12 @@ export default function PerpsOverviewPage() {
           <PerpsGlobalMetrics />
 
           <Card className='mt-10 bg-white/5 p-4 flex flex-col'>
-            <SelectionControlPanel
-              selectOptions={displayOptions}
-              defaultSelectValue={selectedOption}
-              onSelectChange={setSelectedOption}
-              timeframe={TIMEFRAME}
-              selectedTimeframe={selectedTimeframe}
-              onTimeframeSelect={setSelectedTimeframe}
+            <Select
+              options={displayOptions}
+              defaultValue={selectedOption}
+              onChange={setSelectedOption}
+              className='relative border w-60 rounded-base border-white/10 bg-white/10'
+              containerClassName='justify-center'
             />
             <Divider className='mt-2' />
 

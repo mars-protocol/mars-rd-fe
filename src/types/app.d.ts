@@ -1488,6 +1488,10 @@ interface Token {
   dayVolumeUSD: number
 }
 
+interface MergedChartData {
+  date: string
+  [key: string]: any
+}
 interface DateValue {
   date: string
   value: string
@@ -1539,7 +1543,7 @@ interface PerpsGlobalData {
 }
 
 interface PerpsGlobalOverview {
-  global_overview: PerpsGlobalData[]
+  global_overview: PerpsGlobalData
 }
 interface PerpsMarketData {
   denom: string

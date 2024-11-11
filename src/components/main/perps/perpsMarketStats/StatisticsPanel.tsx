@@ -9,11 +9,14 @@ import { BNCoin } from 'types/classes/BNCoin'
 import { BN } from 'utils/helpers'
 
 interface Props {
-  data: PerpsGlobalData
+  data?: PerpsGlobalData
+  loading?: boolean
 }
 
 export default function StatisticsPanel(props: Props) {
-  const { data } = props
+  const { data, loading } = props
+
+  if (!data) return <div>No data available</div>
 
   const getLatestValue = (dateValues: DateValue[] = []) => {
     if (dateValues.length === 0) return BN(0)
@@ -72,14 +75,12 @@ export default function StatisticsPanel(props: Props) {
     },
   ]
 
-  const isLoading = false
-
   return (
     <div className='flex items-center justify-center gap-2'>
       {metrics.map((metric, index) => {
         return (
           <Card className='text-center py-3 w-45 bg-white/5' key={index}>
-            {isLoading ? (
+            {loading ? (
               <div className='flex items-center justify-center px-8 w-full h-8'>
                 <Loading />
               </div>

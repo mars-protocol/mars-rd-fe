@@ -1,5 +1,5 @@
 import React from 'react'
-import TimeframeSelector from 'components/common/Chart/SelectionControlPanel/TimeframeSelector'
+import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import Select from 'components/common/Select'
 
 interface Props {
