@@ -36,16 +36,16 @@ export default function SynchronizedAreaChart(props: Props) {
         </div>
       }
     >
-      {data === null || loading ? (
+      {/* {data === null || loading ? (
         <SynchronizedAreaChartLoading height={height} />
-      ) : (
-        <SynchronizedAreaChartBody
-          height={height}
-          data={data}
-          dataKey1={dataKey1}
-          dataKey2={dataKey2}
-        />
-      )}
+      ) : ( */}
+      <SynchronizedAreaChartBody
+        height={height}
+        data={data}
+        dataKey1={dataKey1}
+        dataKey2={dataKey2}
+      />
+      {/* )} */}
     </Card>
   )
 }

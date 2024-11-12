@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 
 interface Props {
-  height?: string
+  height?: number
 }
 
 const loadingData = [
@@ -19,7 +19,7 @@ const loadingData = [
 export default function BarChartLoading(props: Props) {
   return (
     <div className='-mr-6 h-100 animate-pulse'>
-      <ResponsiveContainer width='100%' height={props.height || '100%'}>
+      <ResponsiveContainer width='100%' height={props.height}>
         <BarChart
           data={loadingData}
           margin={{

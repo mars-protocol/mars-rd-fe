@@ -57,8 +57,7 @@ export default function SynchronizedAreaChartBody(props: Props) {
   )
   const reversedData = [...data].reverse()
 
-  console.log(height, 'height')
-
+  console.log(reversedData, 'reverseData')
   return (
     <div className={`-ml-4 w-full h-[${height}]`}>
       <ResponsiveContainer width='100%' height={'50%'}>

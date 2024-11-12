@@ -1,9 +1,9 @@
 import Card from 'components/common/Card'
 import DynamicLineChartBody from 'components/common/Chart/DynamicLineChart/DynamicLineChartBody'
 import Text from 'components/common/Text'
-import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useState } from 'react'
+import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 
 interface LineConfig {
   dataKey: string

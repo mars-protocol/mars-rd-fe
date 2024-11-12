@@ -104,9 +104,9 @@ export default function StatisticsPanel(props: Props) {
             <Text size='xs' className='pt-1 text-white/40'>
               {metric.label}
             </Text>
-            <Text size='xs' className={classNames('pt-1', 'text-profit')}>
+            {/* <Text size='xs' className={classNames('pt-1', 'text-profit')}>
               +24k
-            </Text>
+            </Text> */}
           </Card>
         )
       })}
