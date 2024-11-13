@@ -34,7 +34,7 @@ export default function AreaChartLoading(props: Props) {
   const loadingData = createLoadingData()
 
   return (
-    <div className={classNames('-ml-6 w-full', height, !reduceMotion && 'animate-pulse')}>
+    <div className={classNames('-ml-6 ', height, !reduceMotion && 'animate-pulse')}>
       <ResponsiveContainer width='100%' height='100%'>
         <AreaChart
           data={loadingData}

@@ -1,1 +1,1 @@
-export const TIMEFRAME = ['7D', '1M', '1Y']
+export const TIMEFRAME = ['7D', '1M', '3M']

@@ -1,6 +1,6 @@
 import Card from 'components/common/Card'
 import SynchronizedAreaChartBody from 'components/common/Chart/SynchronizedAreaChart/SynchronizedAreaChartBody'
-import SynchronizedAreaChartLoading from 'components/common/Chart/AreaChart/AreaChartLoading'
+import SynchronizedAreaChartLoading from 'components/common/Chart/SynchronizedAreaChart/SynchronizedAreaChartLoading'
 import Text from 'components/common/Text'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import { TIMEFRAME } from 'constants/timeframe'
@@ -9,15 +9,13 @@ import React, { useState } from 'react'
 interface Props {
   data: MergedChartData[]
   title: string | React.ReactNode
-  height?: string
-  className?: string
   loading?: boolean
   dataKey1: string
   dataKey2: string
 }
 
 export default function SynchronizedAreaChart(props: Props) {
-  const { data, loading, height, title, dataKey1, dataKey2, className } = props
+  const { data, loading, title, dataKey1, dataKey2 } = props
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0])
 
   return (
@@ -36,16 +34,11 @@ export default function SynchronizedAreaChart(props: Props) {
         </div>
       }
     >
-      {/* {data === null || loading ? (
-        <SynchronizedAreaChartLoading height={height} />
-      ) : ( */}
-      <SynchronizedAreaChartBody
-        height={height}
-        data={data}
-        dataKey1={dataKey1}
-        dataKey2={dataKey2}
-      />
-      {/* )} */}
+      {data === null || loading ? (
+        <SynchronizedAreaChartLoading />
+      ) : (
+        <SynchronizedAreaChartBody data={data} dataKey1={dataKey1} dataKey2={dataKey2} />
+      )}
     </Card>
   )
 }

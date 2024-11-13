@@ -1446,6 +1446,7 @@ interface ChartDataPayloadProps {
     date: string
     value: number
     label: string
+    isPercentage?: boolean
   }
   value: string | number
   stroke?: string

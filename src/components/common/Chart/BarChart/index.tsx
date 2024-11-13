@@ -15,7 +15,7 @@ interface SeriesConfig {
 }
 
 interface Props {
-  data: any[]
+  data: MergedChartData[]
   height?: number
   loading?: boolean
   series: SeriesConfig[]
@@ -27,21 +27,17 @@ export default function BarChart(props: Props) {
   const { data, title, loading, height = 400, series, stacked } = props
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2])
 
-  console.log(data, 'data')
   return (
     <Card
       className='w-full bg-black/10'
       contentClassName='px-3 pb-2'
       title={
         <div className='px-4 flex items-center justify-between font-semibold bg-white/10'>
-          <Text size='sm' className=''>
-            {title}
-          </Text>
+          <Text size='sm'>{title}</Text>
           <TimeframeSelector
             timeframe={TIMEFRAME}
             selectedTimeframe={selectedTimeframe}
             setSelectedTimeframe={setSelectedTimeframe}
-            className='ml-auto'
             size='xs'
           />
         </div>

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Card from 'components/common/Card'
 import AreaChartBody from 'components/common/Chart/AreaChart/AreaChartBody'
-import AreaChartLoading from 'components/common/Chart/AreaChart/AreaChartLoading'
+import AreaChartLoading from 'components/common/Chart/common/AreaChartLoading'
 
 interface Props {
   data: ChartData | null

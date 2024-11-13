@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 
 interface Props {
@@ -18,8 +19,8 @@ const loadingData = [
 
 export default function BarChartLoading(props: Props) {
   return (
-    <div className='-mr-6 h-100 animate-pulse'>
-      <ResponsiveContainer width='100%' height={props.height}>
+    <div className={classNames('-mr-6 animate-pulse', props.height)}>
+      <ResponsiveContainer width='100%' height='100%'>
         <BarChart
           data={loadingData}
           margin={{

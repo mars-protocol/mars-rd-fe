@@ -45,7 +45,6 @@ export default function PerpsMarketStats() {
     return []
   }, [perpsGlobalStats])
 
-  console.log(pnlData, 'pnlDatapnlDatapnlDatapnlDatav')
   const feesData = useMemo(() => {
     if (perpsGlobalStats?.fees.trading_fee) {
       const tradingFees = transformDateValueArray(perpsGlobalStats.fees.trading_fee, 'trading_fees')
@@ -58,18 +57,14 @@ export default function PerpsMarketStats() {
     return []
   }, [perpsGlobalStats])
 
-  const imbalanceLongShortData = useMemo(() => {
+  const imbalanceRatioData = useMemo(() => {
     if (perpsGlobalStats?.fees.trading_fee) {
       const imbalance_long = transformDateValueArray(
         perpsGlobalStats.skew_data.imbalance_long_ratio,
         'imbalance_long',
       )
-      const imbalance_short = transformDateValueArray(
-        perpsGlobalStats.skew_data.imbalance_short_ratio,
-        'imbalance_short',
-      )
 
-      return mergeDateValueArrays(imbalance_long, imbalance_short)
+      return mergeDateValueArrays(imbalance_long)
     }
     return []
   }, [perpsGlobalStats])
@@ -110,27 +105,21 @@ export default function PerpsMarketStats() {
   const vaultData = useMemo(() => {
     if (perpsGlobalStats?.vault_data) {
       const deposit = transformDateValueArray(perpsGlobalStats.vault_data.deposit, 'deposit')
-      const value = transformDateValueArray(perpsGlobalStats.vault_data.vault_value, 'vault_value')
+      // const value = transformDateValueArray(perpsGlobalStats.vault_data.vault_value, 'vault_value')
       const collateralizationRatio = transformDateValueArray(
         perpsGlobalStats.vault_data.vault_collateralization_ratio,
         'vault_collateralization_ratio',
       )
 
-      return mergeDateValueArrays(deposit, value, collateralizationRatio)
+      return mergeDateValueArrays(deposit, collateralizationRatio)
     }
     return []
   }, [perpsGlobalStats])
 
-  const lineConfigsOpenInterest = [
-    { dataKey: 'long', color: '#AB47BC', name: 'Long' },
-    { dataKey: 'short', color: '#580DA3', name: 'Short' },
-    { dataKey: 'total', color: '#30E0A1', name: 'Total' },
-  ]
-
   const lineConfigsVault = [
-    { dataKey: 'deposit', color: '#30E0A1', name: 'Deposit' },
-    { dataKey: 'vault_value', color: '#580DA3', name: 'Value' },
-    { dataKey: 'vault_collateralization_ratio', color: '#AB47BC', name: 'Collateralization Ratio' },
+    { dataKey: 'deposit', color: '#AB47BC', name: 'Deposit' },
+    // { dataKey: 'vault_value', color: '#580DA3', name: 'Value' },
+    { dataKey: 'vault_collateralization_ratio', color: '#580DA3', name: 'Collateralization Ratio' },
   ]
   const lineConfigsTradingFees = [
     { dataKey: 'trading_fees', color: '#AB47BC', name: 'Trading Fees' },
@@ -143,6 +132,14 @@ export default function PerpsMarketStats() {
   ]
   const lineConfigsTradingVolume = [
     { dataKey: 'daily_trading_volume', color: '#30E0A1', name: 'Daily Trading Volume' },
+  ]
+  const lineConfigsImbalanceRatio = [
+    {
+      dataKey: 'imbalance_long',
+      color: '#30E0A1',
+      name: 'Imbalance Long Ratio',
+      isPercentage: true,
+    },
   ]
 
   const handleRefetch = async () => {
@@ -162,7 +159,6 @@ export default function PerpsMarketStats() {
     )
   if (!perpsGlobalStats || error) return <ChartError handleRefetch={handleRefetch} />
 
-  console.log(pnlData, 'pnlDatapnlDatapnlDatapnlDatav')
   return (
     <div className='flex flex-col gap-4'>
       <StatisticsPanel data={perpsGlobalStats} loading={perpsGlobalStatsLoading} />
@@ -170,7 +166,6 @@ export default function PerpsMarketStats() {
         <div className='w-1/2'>
           <SynchronizedAreaChart
             data={pnlData}
-            height='450px'
             title='Realized and Unrealized PnL'
             loading={perpsGlobalStatsLoading}
             dataKey1='Realized'
@@ -181,60 +176,55 @@ export default function PerpsMarketStats() {
           <DynamicLineChart
             data={feesData}
             lines={lineConfigsTradingFees}
-            height={200}
+            height='h-65'
             title='Trading and Net Funding Fees'
           />
           <DynamicLineChart
-            data={openInterestData}
-            lines={lineConfigsOpenInterest}
-            height={200}
-            title='Open Interest'
+            data={imbalanceRatioData}
+            lines={lineConfigsImbalanceRatio}
+            height='h-65'
+            title='Imbalance Long Ratio'
           />
         </div>
       </div>
-      <BarChart
-        data={imbalanceLongShortData}
-        series={[
-          {
-            key: 'long',
-            dataKey: 'imbalance_long',
-            displayName: 'Long',
-            color: '#AB47BC',
-            isPercentage: true,
-          },
-          {
-            key: 'short',
-            dataKey: 'imbalance_short',
-            displayName: 'Short',
-            color: '#580DA3',
-            isPercentage: true,
-          },
-        ]}
-        title='Long/Short Imbalance Ratios'
-        stacked={false}
-        height={300}
-      />
       <div className='flex gap-2'>
-        <DynamicLineChart data={skewData} lines={lineConfigsSkew} height={200} title='Skew' />
         <DynamicLineChart
           data={notionalLiquidatedData}
           lines={lineConfigsNotional}
-          height={200}
+          height='h-65'
           title='Notional Liquidated'
         />
+        <DynamicLineChart data={skewData} lines={lineConfigsSkew} height='h-65' title='Skew' />
       </div>
+      <BarChart
+        data={openInterestData}
+        series={[
+          {
+            key: 'long',
+            dataKey: 'long',
+            displayName: 'Long',
+            color: '#30E0A1',
+          },
+          {
+            key: 'short',
+            dataKey: 'short',
+            displayName: 'Short',
+            color: '#AB47BC',
+          },
+        ]}
+        title='Open Interest Long/Short'
+        stacked={false}
+        height={300}
+      />
+
       <DynamicLineChart
         data={dailyTradingVolumeData}
         lines={lineConfigsTradingVolume}
-        height={300}
+        height='h-75'
         title='Daily Trading Volume'
       />
-      <DynamicLineChart
-        data={vaultData}
-        lines={lineConfigsVault}
-        height={300}
-        title='Daily Trading Volume'
-      />
+
+      <DynamicLineChart data={vaultData} lines={lineConfigsVault} height='h-75' title='Vault' />
     </div>
   )
 }

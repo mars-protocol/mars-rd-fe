@@ -24,7 +24,6 @@ import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 
 interface Props {
   data: MergedChartData[]
-  height?: string
   dataKey1: string
   dataKey2: string
 }
@@ -50,16 +49,15 @@ function TooltipContent(props: TooltipContentProps) {
 }
 
 export default function SynchronizedAreaChartBody(props: Props) {
-  const { data, dataKey1, dataKey2, height = '450px' } = props
+  const { data, dataKey1, dataKey2 } = props
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
   )
   const reversedData = [...data].reverse()
 
-  console.log(reversedData, 'reverseData')
   return (
-    <div className={`-ml-4 w-full h-[${height}]`}>
+    <div className={`-ml-4 w-full h-[560px]`}>
       <ResponsiveContainer width='100%' height={'50%'}>
         <AreaChart
           data={reversedData}
@@ -73,7 +71,7 @@ export default function SynchronizedAreaChartBody(props: Props) {
         >
           <defs>
             <linearGradient id='chartGradient1' x1='0' y1='0' x2='0' y2='1'>
-              <stop offset='0%' stopColor={'#82ca9d'} stopOpacity={0.3} />
+              <stop offset='0%' stopColor={'#82ca9d'} stopOpacity={0.2} />
               <stop offset='100%' stopColor={'#82ca9d'} stopOpacity={0.02} />
             </linearGradient>
           </defs>
@@ -144,7 +142,7 @@ export default function SynchronizedAreaChartBody(props: Props) {
         >
           <defs>
             <linearGradient id='chartGradient2' x1='0' y1='0' x2='0' y2='1'>
-              <stop offset='0%' stopColor={'#AB47BC'} stopOpacity={0.3} />
+              <stop offset='0%' stopColor={'#AB47BC'} stopOpacity={0.2} />
               <stop offset='100%' stopColor={'#AB47BC'} stopOpacity={0.02} />
             </linearGradient>
           </defs>
