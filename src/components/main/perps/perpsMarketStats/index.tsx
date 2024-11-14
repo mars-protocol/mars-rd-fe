@@ -10,12 +10,17 @@ import { mutate } from 'swr'
 import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
 import { DEFAULT_PERPS_GLOBAL_DATA, PERPS_LINE_CONFIGS } from 'constants/perpsChartData'
 
-export default function PerpsMarketStats() {
+interface Props {
+  timeframe: string
+}
+
+export default function PerpsMarketStats(props: Props) {
+  const { timeframe } = props
   const {
     data: perpsGlobalStats,
     isLoading: perpsGlobalStatsLoading,
     error,
-  } = usePerpsGlobalStats()
+  } = usePerpsGlobalStats(timeframe)
 
   const {
     openInterestData,

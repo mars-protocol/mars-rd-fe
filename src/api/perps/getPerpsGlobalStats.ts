@@ -1,9 +1,9 @@
 import { DEFAULT_PERPS_GLOBAL_DATA } from 'constants/perpsChartData'
 
-export default async function getPerpsGlobalStats() {
+export default async function getPerpsGlobalStats(timeframe: string = '7') {
   try {
     const response = await fetch(
-      `https://testnet-api.marsprotocol.io/v2/perps_overview?chain=neutron&days=7&product=creditmanager&response_type=global`,
+      `https://testnet-api.marsprotocol.io/v2/perps_overview?chain=neutron&days=${timeframe}&product=creditmanager&response_type=global`,
     )
     const data = (await response.json()) as PerpsGlobalOverview
 

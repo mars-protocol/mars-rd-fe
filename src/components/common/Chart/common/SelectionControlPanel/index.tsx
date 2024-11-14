@@ -6,7 +6,7 @@ interface Props {
   selectOptions: { value: string; label: React.ReactNode }[]
   defaultSelectValue: string
   onSelectChange: (value: string) => void
-  timeframe: string[]
+  timeframe: TimeframeOption[]
   selectedTimeframe: string
   onTimeframeSelect: (timeframe: string) => void
 }

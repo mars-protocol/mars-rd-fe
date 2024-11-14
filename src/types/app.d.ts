@@ -1489,6 +1489,11 @@ interface Token {
   dayVolumeUSD: number
 }
 
+interface TimeframeOption {
+  value: string
+  label: string
+}
+
 interface MergedChartData {
   date: string
   [key: string]: any

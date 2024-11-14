@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import Button from 'components/common/Button'
 
 interface Props {
-  timeframe: string[]
+  timeframe: TimeframeOption[]
   selectedTimeframe: string
   setSelectedTimeframe: (timeframe: string) => void
   className?: string
@@ -17,10 +17,10 @@ export default function TimeframeSelector(props: Props) {
       {timeframe.map((time, index) => (
         <Button
           color='tertiary'
-          onClick={() => setSelectedTimeframe(time)}
-          hasFocus={time === selectedTimeframe}
+          onClick={() => setSelectedTimeframe(time.value)}
+          hasFocus={time.value === selectedTimeframe}
           key={index}
-          text={time}
+          text={time.label}
           size={size}
           className='px-3 text-white/80'
         />

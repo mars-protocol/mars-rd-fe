@@ -7,7 +7,7 @@ import ChartError from 'components/common/Chart/common/ChartError'
 import AreaChart from 'components/common/Chart/AreaChart'
 
 export default function TabChart() {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2])
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
 
   const {
     data: tabOverviewData,
