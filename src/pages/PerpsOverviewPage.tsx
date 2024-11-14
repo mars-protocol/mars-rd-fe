@@ -1,13 +1,13 @@
-import useChainConfig from 'hooks/chain/useChainConfig'
-import Text from 'components/common/Text'
-import { ChainInfoID } from 'types/enums'
-import PerpsGlobalMetrics from 'components/main/perps/PerpsGlobalMetrics'
 import Card from 'components/common/Card'
-import { useMemo, useState } from 'react'
-import { TIMEFRAME } from 'constants/timeframe'
 import Divider from 'components/common/Divider'
+import PerpsGlobalMetrics from 'components/main/perps/PerpsGlobalMetrics'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import Select from 'components/common/Select'
+import Text from 'components/common/Text'
+import useChainConfig from 'hooks/chain/useChainConfig'
+import { ChainInfoID } from 'types/enums'
+import { useMemo, useState } from 'react'
+import { TIMEFRAME } from 'constants/timeframe'
 
 const perpsOptions = [
   { value: 'total', label: 'Total Statistics' },

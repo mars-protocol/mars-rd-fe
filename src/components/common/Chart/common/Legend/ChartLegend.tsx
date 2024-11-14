@@ -26,17 +26,14 @@ export default function ChartLegend(props: Props) {
 
   return (
     <div className='flex justify-center sm:justify-end'>
-      {payload.map((entry, index) => {
-        console.log(entry, 'entry')
-        return (
-          <div className='flex items-center' key={`item-${index}`}>
-            <Circle className='fill-current h-2 w-2' color={entry.payload.stroke} />
-            <Text size='xs' className='mx-2'>
-              {entry.value}
-            </Text>
-          </div>
-        )
-      })}
+      {payload.map((entry, index) => (
+        <div className='flex items-center' key={`item-${index}`}>
+          <Circle className='fill-current h-2 w-2' color={entry.payload.stroke} />
+          <Text size='xs' className='mx-2'>
+            {entry.value}
+          </Text>
+        </div>
+      ))}
     </div>
   )
 }

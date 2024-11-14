@@ -74,11 +74,13 @@ function TooltipContent(props: BarTooltipContentProps) {
 export default function BarChartBody(props: Props) {
   const { data, height = 400, series, stacked = true } = props
 
+  const reversedData = [...data].reverse()
+
   return (
     <div className='h-full -ml-6'>
       <ResponsiveContainer width='100%' height={height}>
         <BarChart
-          data={data}
+          data={reversedData}
           margin={{
             top: 10,
             right: 0,

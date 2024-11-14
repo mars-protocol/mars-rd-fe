@@ -1,3 +1,5 @@
+import { DEFAULT_PERPS_GLOBAL_DATA } from 'constants/perpsChartData'
+
 export default async function getPerpsGlobalStats() {
   try {
     const response = await fetch(
@@ -8,6 +10,6 @@ export default async function getPerpsGlobalStats() {
     return data.global_overview
   } catch (error) {
     console.error('Could not fetch perps global overview data.', error)
-    return null
+    return DEFAULT_PERPS_GLOBAL_DATA
   }
 }
