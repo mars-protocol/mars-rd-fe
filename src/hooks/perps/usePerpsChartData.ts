@@ -1,11 +1,13 @@
 import { PERPS_CHART_TRANSFORMATIONS } from 'constants/perpsChartData'
 import { usePerpsChartDataTransform } from 'hooks/perps/usePerpsChartDataTransform'
 
-export const usePerpsChartData = (data: PerpsGlobalData) => {
+export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
   const openInterestData = usePerpsChartDataTransform(
     data,
     PERPS_CHART_TRANSFORMATIONS.openInterest,
   )
+  const oiRatioData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.oiRatios)
+  const fundingRateData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fundingRate)
   const pnlData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.pnl)
   const feesData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fees)
   const skewData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.skewData)
@@ -14,6 +16,8 @@ export const usePerpsChartData = (data: PerpsGlobalData) => {
 
   return {
     openInterestData,
+    oiRatioData,
+    fundingRateData,
     pnlData,
     feesData,
     imbalanceRatioData: skewData,

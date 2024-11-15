@@ -39,6 +39,17 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     { path: ['open_interest', 'short'], targetKey: 'short' },
     { path: ['open_interest', 'total'], targetKey: 'total' },
   ],
+  oiRatios: [
+    { path: ['open_interest', 'oi_max_oi_long_ratio'], targetKey: 'long_ratio' },
+    { path: ['open_interest', 'oi_max_oi_short_ratio'], targetKey: 'short_ratio' },
+  ],
+  fundingRate: [
+    {
+      path: ['funding_and_pnl', 'funding_rate'],
+      targetKey: 'funding_rate',
+      formatFn: (value: number) => value * 365,
+    },
+  ],
   pnl: [
     { path: ['funding_and_pnl', 'unrealized_pnl'], targetKey: 'Unrealized' },
     { path: ['funding_and_pnl', 'realized_pnl'], targetKey: 'Realized' },
@@ -50,6 +61,7 @@ export const PERPS_CHART_TRANSFORMATIONS = {
   skewData: [
     { path: ['skew_data', 'imbalance_long_ratio'], targetKey: 'imbalance_long' },
     { path: ['skew_data', 'skew'], targetKey: 'skew' },
+    { path: ['skew_data', 'maxskew_ratio'], targetKey: 'maxskew_ratio' },
   ],
   vaultData: [
     { path: ['vault_data', 'deposit'], targetKey: 'deposit' },
@@ -97,6 +109,42 @@ export const PERPS_LINE_CONFIGS = {
       dataKey: 'imbalance_long',
       color: PERPS_CHART_COLORS.primary,
       name: 'Imbalance Long Ratio',
+      isPercentage: true,
+    },
+    {
+      dataKey: 'maxskew_ratio',
+      color: PERPS_CHART_COLORS.tertiary,
+      name: 'MaxSkew Ratio',
+      isPercentage: true,
+    },
+  ],
+  oiRatios: [
+    {
+      dataKey: 'long_ratio',
+      color: PERPS_CHART_COLORS.primary,
+      name: 'Long Ratio',
+      isPercentage: true,
+    },
+    {
+      dataKey: 'short_ratio',
+      color: PERPS_CHART_COLORS.secondary,
+      name: 'Short Ratio',
+      isPercentage: true,
+    },
+  ],
+  maxSkewRatio: [
+    {
+      dataKey: 'maxskew_ratio',
+      color: PERPS_CHART_COLORS.primary,
+      name: 'MaxSkew Ratio',
+      isPercentage: true,
+    },
+  ],
+  fundingRate: [
+    {
+      dataKey: 'funding_rate',
+      color: PERPS_CHART_COLORS.secondary,
+      name: 'Funding Rate',
       isPercentage: true,
     },
   ],

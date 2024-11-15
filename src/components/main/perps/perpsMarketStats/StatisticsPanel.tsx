@@ -8,7 +8,7 @@ import { BNCoin } from 'types/classes/BNCoin'
 import { BN } from 'utils/helpers'
 
 interface Props {
-  data?: PerpsGlobalData
+  data?: PerpsGlobalData | PerpsMarketData
   loading?: boolean
 }
 
@@ -18,7 +18,7 @@ export default function StatisticsPanel(props: Props) {
   if (!data) return <div>No data available</div>
 
   const getLatestValue = (dateValues: DateValue[] = []) => {
-    if (dateValues.length === 0) return BN(0)
+    if (!dateValues || dateValues.length === 0) return BN(0)
 
     // If today's value (first in array) is non-zero, use it
     if (dateValues[0].value !== '0') {
@@ -41,7 +41,7 @@ export default function StatisticsPanel(props: Props) {
       formatOptions: { maxDecimals: 4, minDecimals: 2, abbreviated: true },
     },
     {
-      value: getLatestValue(data.open_interest.total),
+      value: getLatestValue(data.open_interest.total || []),
       label: 'Total Open Interest',
       isCurrency: true,
       formatOptions: {
@@ -51,24 +51,24 @@ export default function StatisticsPanel(props: Props) {
       },
     },
     {
-      value: getLatestValue(data.fees.trading_fee),
+      value: getLatestValue(data.fees.trading_fee || []),
       label: 'Daily Trading Fees',
       isCurrency: true,
       formatOptions: { abbreviated: true },
     },
     {
-      value: BN(data.notional_at_risk),
+      value: BN(data.notional_at_risk || '0'),
       label: 'Notional at Risk',
       isCurrency: true,
       formatOptions: { maxDecimals: 2, minDecimals: 2, abbreviated: true },
     },
     {
-      value: BN(data.accounts_at_risk),
+      value: BN(data.accounts_at_risk || '0'),
       label: 'Accounts at Risk',
       formatOptions: { maxDecimals: 0, minDecimals: 0 },
     },
     {
-      value: BN(data.total_accounts),
+      value: BN(data.total_accounts || '0'),
       label: 'Total Users',
       formatOptions: { maxDecimals: 0, minDecimals: 0 },
     },

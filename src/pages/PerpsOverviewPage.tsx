@@ -11,12 +11,11 @@ import SelectionControlPanel from 'components/common/Chart/common/SelectionContr
 
 const perpsOptions = [
   { value: 'total', label: 'Total Statistics' },
-  { value: 'btc', label: 'BTC Statistics' },
-  { value: 'eth', label: 'ETH Statistics' },
-  { value: 'ntrn', label: 'NTRN Statistics' },
-  { value: 'tia', label: 'TIA Statistics' },
-  { value: 'atom', label: 'ATOM Statistics' },
-  { value: 'pepe', label: 'PEPE Statistics' },
+  { value: 'factory/neutron166t9ww3p6flv7c86376fy0r92r88t3492xxj2h/ubtc', label: 'BTC Statistics' },
+  // { value: 'ueth', label: 'ETH Statistics' },
+  { value: 'untrn', label: 'NTRN Statistics' },
+  // { value: 'utia', label: 'TIA Statistics' },
+  // { value: 'upepe', label: 'PEPE Statistics' },
 ]
 
 export default function PerpsOverviewPage() {
@@ -62,7 +61,7 @@ export default function PerpsOverviewPage() {
             <Divider className='mt-2' />
 
             <div className='flex flex-col gap-4 mt-4'>
-              <PerpsMarketStats timeframe={selectedTimeframe} />
+              <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
             </div>
           </Card>
         </>
