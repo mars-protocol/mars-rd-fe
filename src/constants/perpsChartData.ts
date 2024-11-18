@@ -38,6 +38,8 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     { path: ['open_interest', 'long'], targetKey: 'long' },
     { path: ['open_interest', 'short'], targetKey: 'short' },
     { path: ['open_interest', 'total'], targetKey: 'total' },
+    { path: ['open_interest', 'oi_max_oi_long_ratio'], targetKey: 'long_ratio' },
+    { path: ['open_interest', 'oi_max_oi_short_ratio'], targetKey: 'short_ratio' },
   ],
   oiRatios: [
     { path: ['open_interest', 'oi_max_oi_long_ratio'], targetKey: 'long_ratio' },
@@ -47,7 +49,6 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     {
       path: ['funding_and_pnl', 'funding_rate'],
       targetKey: 'funding_rate',
-      formatFn: (value: number) => value * 365,
     },
   ],
   pnl: [
@@ -66,10 +67,23 @@ export const PERPS_CHART_TRANSFORMATIONS = {
   vaultData: [
     { path: ['vault_data', 'deposit'], targetKey: 'deposit' },
     { path: ['vault_data', 'vault_value'], targetKey: 'vault_value' },
+    {
+      path: ['vault_data', 'vault_collateralization_ratio'],
+      targetKey: 'vault_collateralization_ratio',
+    },
   ],
   singleMetrics: [
     { path: ['notional_liquidated'], targetKey: 'notional_liquidated' },
     { path: ['daily_trading_volume'], targetKey: 'daily_trading_volume' },
+  ],
+  combinedMetrics: [
+    { path: ['skew_data', 'skew'], targetKey: 'skew' },
+    { path: ['skew_data', 'maxskew_ratio'], targetKey: 'maxskew_ratio' },
+    {
+      path: ['funding_and_pnl', 'funding_rate'],
+      targetKey: 'funding_rate',
+      formatFn: (value: number) => value * 365,
+    },
   ],
 }
 
@@ -83,13 +97,26 @@ export const PERPS_LINE_CONFIGS = {
   vault: [
     { dataKey: 'deposit', color: PERPS_CHART_COLORS.secondary, name: 'Deposit' },
     { dataKey: 'vault_value', color: PERPS_CHART_COLORS.tertiary, name: 'Value' },
-    // { dataKey: 'vault_collateralization_ratio', color: PERPS_CHART_COLORS.tertiary, name: 'Collateralization Ratio' },
+    // {
+    //   dataKey: 'vault_collateralization_ratio',
+    //   color: PERPS_CHART_COLORS.primary,
+    //   name: 'Collateralization Ratio',
+    //   isPercentage: true,
+    // },
   ],
   tradingFees: [
     { dataKey: 'trading_fees', color: PERPS_CHART_COLORS.secondary, name: 'Trading Fees' },
     { dataKey: 'net_funding_fees', color: PERPS_CHART_COLORS.tertiary, name: 'Net Funding Fees' },
   ],
   skew: [{ dataKey: 'skew', color: PERPS_CHART_COLORS.tertiary, name: 'Skew' }],
+  vaultCollateralization: [
+    {
+      dataKey: 'vault_collateralization_ratio',
+      color: PERPS_CHART_COLORS.primary,
+      name: 'Vault Collateralization Ratio',
+      isPercentage: true,
+    },
+  ],
   notional: [
     {
       dataKey: 'notional_liquidated',
@@ -146,6 +173,44 @@ export const PERPS_LINE_CONFIGS = {
       color: PERPS_CHART_COLORS.secondary,
       name: 'Funding Rate',
       isPercentage: true,
+      isFundingRate: true,
     },
   ],
+  combinedChart: {
+    primary: [
+      {
+        type: 'line',
+        dataKey: 'skew',
+        name: 'Skew',
+        color: PERPS_CHART_COLORS.tertiary,
+      },
+    ],
+    secondary: [
+      {
+        type: 'line',
+        dataKey: 'maxskew_ratio',
+        name: 'MaxSkew Ratio',
+        color: PERPS_CHART_COLORS.secondary,
+        isPercentage: true,
+      },
+      {
+        type: 'line',
+        dataKey: 'funding_rate',
+        name: 'Funding Rate (Annualized)',
+        color: PERPS_CHART_COLORS.primary,
+        isPercentage: true,
+      },
+    ],
+  },
 }
+export enum FundingRateTimeBase {
+  HOURLY = '1h',
+  DAILY = '24h',
+  YEARLY = '1y',
+}
+
+export const FUNDING_RATE_OPTIONS: TimeframeOption[] = [
+  { value: FundingRateTimeBase.HOURLY, label: '1H' },
+  { value: FundingRateTimeBase.DAILY, label: '24H' },
+  { value: FundingRateTimeBase.YEARLY, label: '1Y' },
+]

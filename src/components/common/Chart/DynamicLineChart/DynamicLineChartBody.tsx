@@ -53,7 +53,7 @@ const TooltipContent = ({
         {lineConfig?.isPercentage ? (
           <FormattedNumber
             amount={value * 100}
-            options={{ maxDecimals: 2, minDecimals: 0, suffix: '%' }}
+            options={{ maxDecimals: 3, minDecimals: 0, suffix: '%' }}
             animate
             className='text-xs'
           />
@@ -133,19 +133,22 @@ export default function DynamicLineChartBody(props: Props) {
             fontSize={10}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
-            {...(lines[0]?.isPercentage && { domain: [0, 1.0] })}
+            {...(lines[0]?.isPercentage && { domain: [-1, 1] })}
+            // domain={[-1, 1]} // For percentages
+            // domain={['auto', 'auto']}
+            // domain={[(dataMin) => dataMin * 2.2, (dataMax) => dataMax * 1.2]}
             tickFormatter={(value) => {
               if (lines[0]?.isPercentage) {
                 return formatValue(value * 100, {
                   minDecimals: 0,
-                  maxDecimals: 0,
+                  maxDecimals: 2,
                   suffix: '%',
                 })
               }
               const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
               return formatValue(adjustedValue, {
                 minDecimals: 0,
-                maxDecimals: 2,
+                maxDecimals: 0,
                 prefix: '$',
                 abbreviated: true,
               })

@@ -13,7 +13,10 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
   const skewData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.skewData)
   const vaultData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.vaultData)
   const otherMetrics = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.singleMetrics)
-
+  const combinedMetricsData = usePerpsChartDataTransform(
+    data,
+    PERPS_CHART_TRANSFORMATIONS.combinedMetrics,
+  )
   return {
     openInterestData,
     oiRatioData,
@@ -25,5 +28,6 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
     notionalLiquidatedData: otherMetrics,
     dailyTradingVolumeData: otherMetrics,
     vaultData,
+    combinedMetricsData,
   }
 }

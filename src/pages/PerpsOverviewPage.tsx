@@ -1,6 +1,5 @@
 import Card from 'components/common/Card'
 import Divider from 'components/common/Divider'
-import PerpsGlobalMetrics from 'components/main/perps/PerpsGlobalMetrics'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import Text from 'components/common/Text'
 import useChainConfig from 'hooks/chain/useChainConfig'
@@ -8,33 +7,38 @@ import { ChainInfoID } from 'types/enums'
 import { useMemo, useState } from 'react'
 import { TIMEFRAME } from 'constants/timeframe'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
+import { PERPS_ASSETS } from 'constants/perps'
+import AssetImage from 'components/common/assets/AssetImage'
+import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 
 const perpsOptions = [
   { value: 'total', label: 'Total Statistics' },
-  { value: 'factory/neutron166t9ww3p6flv7c86376fy0r92r88t3492xxj2h/ubtc', label: 'BTC Statistics' },
-  // { value: 'ueth', label: 'ETH Statistics' },
-  { value: 'untrn', label: 'NTRN Statistics' },
-  // { value: 'utia', label: 'TIA Statistics' },
-  // { value: 'upepe', label: 'PEPE Statistics' },
-]
+  ...PERPS_ASSETS.map((asset) => ({
+    value: asset.denom,
+    label: `${asset.description} Statistics`,
+  })),
+].filter((option) => option.value === 'total' || !option.value.includes('UUSDC'))
 
 export default function PerpsOverviewPage() {
   const chainConfig = useChainConfig()
   const isOsmosis = chainConfig.id === ChainInfoID.Osmosis1
+  const perpAssets = usePerpsEnabledAssets()
+  console.log(perpAssets, 'perpAssets')
   const [selectedOption, setSelectedOption] = useState<string>(perpsOptions[0].value)
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
 
   const displayOptions = useMemo(
     () =>
-      perpsOptions.map((option, index) => ({
+      perpAssets.map((asset, index) => ({
         label: (
-          <div className='flex w-full gap-2' key={index}>
-            <Text size='sm' className='text-center'>
-              {option.label}
+          <div className='flex w-full gap-2'>
+            <AssetImage asset={asset} className='w-4 h-4' />
+            <Text size='sm' className='leading-4'>
+              {asset.name} Statistics
             </Text>
           </div>
         ),
-        value: option.value,
+        value: asset.denom,
       })),
     [],
   )
@@ -47,9 +51,7 @@ export default function PerpsOverviewPage() {
         </div>
       ) : (
         <>
-          <PerpsGlobalMetrics />
-
-          <Card className='mt-10 bg-white/5 p-4 flex flex-col'>
+          <Card className='mt-5 bg-white/5 p-4 flex flex-col'>
             <SelectionControlPanel
               selectOptions={displayOptions}
               defaultSelectValue={selectedOption}
