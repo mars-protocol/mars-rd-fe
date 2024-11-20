@@ -19,7 +19,9 @@ import { BN } from 'utils/helpers'
 import { Circle } from 'components/common/Icons'
 import { formatValue } from 'utils/formatters'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
-
+import useLocalStorage from 'hooks/localStorage/useLocalStorage'
+import { LocalStorageKeys } from 'constants/localStorageKeys'
+import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 interface ChartConfig {
   primaryChart: {
     bar: LineConfig
@@ -44,7 +46,7 @@ function TooltipContent(props: TooltipContentProps) {
     <div className='flex flex-col gap-2 p-2 rounded'>
       {payload.map((entry, index) => {
         const amount = Number(entry.value) ?? 0
-        const label = entry.dataKey.includes('daily') ? entry.name : entry.name
+        const label = entry.name
 
         return (
           <div key={index} className='flex items-center gap-1'>
@@ -72,7 +74,10 @@ function TooltipContent(props: TooltipContentProps) {
 
 export default function SynchronizedChartBody(props: Props) {
   const { data, config } = props
-
+  const [reduceMotion] = useLocalStorage<boolean>(
+    LocalStorageKeys.REDUCE_MOTION,
+    DEFAULT_SETTINGS.reduceMotion,
+  )
   const reversedData = [...data].reverse()
 
   return (
@@ -143,6 +148,7 @@ export default function SynchronizedChartBody(props: Props) {
             fill='url(#chartGradient1)'
             stroke={config.primaryChart.bar.color}
             maxBarSize={24}
+            isAnimationActive={!reduceMotion}
           />
           <Line
             type='monotone'
@@ -151,6 +157,7 @@ export default function SynchronizedChartBody(props: Props) {
             stroke={config.primaryChart.line.color}
             strokeWidth={1}
             dot={false}
+            isAnimationActive={!reduceMotion}
           />
         </ComposedChart>
       </ResponsiveContainer>
@@ -222,6 +229,7 @@ export default function SynchronizedChartBody(props: Props) {
             fill='url(#chartGradient2)'
             stroke={config.secondaryChart.bar.color}
             maxBarSize={24}
+            isAnimationActive={!reduceMotion}
           />
           <Line
             type='monotone'
@@ -230,6 +238,7 @@ export default function SynchronizedChartBody(props: Props) {
             stroke={config.secondaryChart.line.color}
             strokeWidth={1}
             dot={false}
+            isAnimationActive={!reduceMotion}
           />
         </ComposedChart>
       </ResponsiveContainer>

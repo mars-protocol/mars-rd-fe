@@ -12,12 +12,11 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
   const skewData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.skewData)
   const vaultData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.vaultData)
   const singleMetrics = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.singleMetrics)
-  // const combinedMetricsData = usePerpsChartDataTransform(
-  //   data,
-  //   PERPS_CHART_TRANSFORMATIONS.combinedMetrics,
-  // )
+  const combinedMetricsData = usePerpsChartDataTransform(
+    data,
+    PERPS_CHART_TRANSFORMATIONS.combinedMetrics,
+  )
 
-  console.log('singleMetrics', singleMetrics)
   return {
     openInterestData,
     fundingRateData,
@@ -28,6 +27,6 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
     dailyTradingVolumeData: singleMetrics,
     imbalanceRatioData: singleMetrics,
     vaultData,
-    // combinedMetricsData,
+    combinedMetricsData,
   }
 }

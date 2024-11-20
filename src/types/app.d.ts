@@ -1433,6 +1433,7 @@ interface DateDoubleValue {
 }
 interface TooltipContentProps {
   payload: ChartDataPayloadProps[]
+  config?: ChartConfig
 }
 interface ChartDataPayloadProps {
   chartType?: string
@@ -1506,8 +1507,10 @@ interface LineConfig {
 }
 
 interface ChartConfig {
-  bars: LineConfig[]
+  bars?: LineConfig[]
   line?: LineConfig
+  primary?: LineConfig[]
+  secondary?: LineConfig[]
 }
 interface DateValue {
   date: string

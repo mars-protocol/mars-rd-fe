@@ -21,6 +21,9 @@ import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import { Circle } from 'components/common/Icons'
 import classNames from 'classnames'
 import { FormattedNumber } from 'components/common/FormattedNumber'
+import useLocalStorage from 'hooks/localStorage/useLocalStorage'
+import { LocalStorageKeys } from 'constants/localStorageKeys'
+import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 
 interface LineConfig {
   dataKey: string
@@ -71,7 +74,10 @@ const TooltipContent = ({
 
 export default function DynamicLineChartBody(props: Props) {
   const { data, lines, height = 'h-65' } = props
-
+  const [reduceMotion] = useLocalStorage<boolean>(
+    LocalStorageKeys.REDUCE_MOTION,
+    DEFAULT_SETTINGS.reduceMotion,
+  )
   const reversedData = [...data].reverse()
 
   return (
@@ -112,6 +118,7 @@ export default function DynamicLineChartBody(props: Props) {
               name={lineConfig.name}
               dot={false}
               strokeWidth={2}
+              isAnimationActive={!reduceMotion}
             />
           ))}
 
@@ -138,7 +145,7 @@ export default function DynamicLineChartBody(props: Props) {
               if (lines[0]?.isPercentage) {
                 return formatValue(value * 100, {
                   minDecimals: 0,
-                  maxDecimals: 2,
+                  maxDecimals: 0,
                   suffix: '%',
                 })
               }

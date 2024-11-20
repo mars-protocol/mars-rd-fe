@@ -13,7 +13,6 @@ import {
   FundingRateTimeBase,
   PERPS_CHART_CONFIGS,
 } from 'constants/perpsChartData'
-import MultipleAxisChart from 'components/common/Chart/MultipleAxisChart'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import { useMemo, useState } from 'react'
 import { BN } from 'utils/helpers'
@@ -42,7 +41,7 @@ export default function PerpsMarketStats(props: Props) {
     notionalLiquidatedData,
     dailyTradingVolumeData,
     vaultData,
-    // combinedMetricsData,
+    combinedMetricsData,
   } = usePerpsChartData(perpsStats || DEFAULT_PERPS_GLOBAL_DATA)
   const [timeBase, setTimeBase] = useState<FundingRateTimeBase>(FundingRateTimeBase.YEARLY)
 
@@ -161,7 +160,7 @@ export default function PerpsMarketStats(props: Props) {
       <DynamicLineChart
         data={skewData}
         lines={PERPS_CHART_CONFIGS.skew}
-        height='h-70'
+        height='h-80'
         title='Skew'
       />
       <ComposedChart
@@ -177,6 +176,15 @@ export default function PerpsMarketStats(props: Props) {
         loading={perpsStatsLoading}
         config={PERPS_CHART_CONFIGS.pnl}
       />
+      {!isGlobalStats && (
+        <ComposedChart
+          data={combinedMetricsData}
+          title='Skew, Max Skew & Funding Rate'
+          loading={perpsStatsLoading}
+          config={PERPS_CHART_CONFIGS.combinedChart}
+          height='h-80'
+        />
+      )}
 
       {isGlobalStats && (
         <div className='flex gap-2'>
