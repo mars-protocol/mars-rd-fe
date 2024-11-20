@@ -6,28 +6,28 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
     data,
     PERPS_CHART_TRANSFORMATIONS.openInterest,
   )
-  const oiRatioData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.oiRatios)
   const fundingRateData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fundingRate)
   const pnlData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.pnl)
   const feesData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fees)
   const skewData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.skewData)
   const vaultData = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.vaultData)
-  const otherMetrics = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.singleMetrics)
-  const combinedMetricsData = usePerpsChartDataTransform(
-    data,
-    PERPS_CHART_TRANSFORMATIONS.combinedMetrics,
-  )
+  const singleMetrics = usePerpsChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.singleMetrics)
+  // const combinedMetricsData = usePerpsChartDataTransform(
+  //   data,
+  //   PERPS_CHART_TRANSFORMATIONS.combinedMetrics,
+  // )
+
+  console.log('singleMetrics', singleMetrics)
   return {
     openInterestData,
-    oiRatioData,
     fundingRateData,
     pnlData,
     feesData,
-    imbalanceRatioData: skewData,
     skewData,
-    notionalLiquidatedData: otherMetrics,
-    dailyTradingVolumeData: otherMetrics,
+    notionalLiquidatedData: singleMetrics,
+    dailyTradingVolumeData: singleMetrics,
+    imbalanceRatioData: singleMetrics,
     vaultData,
-    combinedMetricsData,
+    // combinedMetricsData,
   }
 }

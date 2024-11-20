@@ -9,10 +9,8 @@ export default function usePerpsStats(selectedOption: string, timeframe: string)
     ['perps/stats', selectedOption, timeframe],
     async () => {
       if (isGlobalStats) {
-        console.log('prvni IF')
         return getPerpsGlobalStats(timeframe)
       } else {
-        console.log('druhy IF')
         return getPerpsMarketStats(selectedOption, timeframe)
       }
     },

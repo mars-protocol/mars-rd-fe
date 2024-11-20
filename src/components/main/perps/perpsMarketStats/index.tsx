@@ -1,7 +1,6 @@
-import BarChart from 'components/common/Chart/BarChart'
 import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
 import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
-import SynchronizedAreaChart from 'components/common/Chart/SynchronizedAreaChart'
+import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import ChartError from 'components/common/Chart/common/ChartError'
 import Text from 'components/common/Text'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
@@ -12,7 +11,7 @@ import {
   DEFAULT_PERPS_GLOBAL_DATA,
   FUNDING_RATE_OPTIONS,
   FundingRateTimeBase,
-  PERPS_LINE_CONFIGS,
+  PERPS_CHART_CONFIGS,
 } from 'constants/perpsChartData'
 import MultipleAxisChart from 'components/common/Chart/MultipleAxisChart'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
@@ -35,16 +34,15 @@ export default function PerpsMarketStats(props: Props) {
 
   const {
     openInterestData,
-    oiRatioData,
     fundingRateData,
     pnlData,
     feesData,
-    imbalanceRatioData,
     skewData,
+    imbalanceRatioData,
     notionalLiquidatedData,
     dailyTradingVolumeData,
     vaultData,
-    combinedMetricsData,
+    // combinedMetricsData,
   } = usePerpsChartData(perpsStats || DEFAULT_PERPS_GLOBAL_DATA)
   const [timeBase, setTimeBase] = useState<FundingRateTimeBase>(FundingRateTimeBase.YEARLY)
 
@@ -52,6 +50,7 @@ export default function PerpsMarketStats(props: Props) {
     await mutate(['perps/stats', selectedOption, timeframe], undefined, { revalidate: true })
   }
 
+  const isGlobalStats = selectedOption === 'total'
   const transformedFundingRateData = useMemo(() => {
     return fundingRateData.map((item) => ({
       ...item,
@@ -67,7 +66,25 @@ export default function PerpsMarketStats(props: Props) {
     }))
   }, [fundingRateData, timeBase])
 
-  const isGlobalStats = selectedOption === 'total'
+  const transformedPnLData = useMemo(() => {
+    const { primaryChart, secondaryChart } = PERPS_CHART_CONFIGS.pnl
+
+    return pnlData.map((item, index) => {
+      const prevItem = index < pnlData.length - 1 ? pnlData[index + 1] : null
+
+      return {
+        date: item.date,
+        [primaryChart.line.dataKey]: item.realized,
+        [primaryChart.bar.dataKey]: prevItem
+          ? BN(item.realized).minus(prevItem.realized).toNumber()
+          : 0,
+        [secondaryChart.line.dataKey]: item.unrealized,
+        [secondaryChart.bar.dataKey]: prevItem
+          ? BN(item.unrealized).minus(prevItem.unrealized).toNumber()
+          : 0,
+      }
+    })
+  }, [pnlData])
 
   if (perpsStatsLoading)
     return (
@@ -89,7 +106,7 @@ export default function PerpsMarketStats(props: Props) {
         <div className='w-1/2 flex flex-col gap-2'>
           <DynamicLineChart
             data={dailyTradingVolumeData}
-            lines={PERPS_LINE_CONFIGS.tradingVolume}
+            lines={PERPS_CHART_CONFIGS.tradingVolume}
             height='h-70'
             title='Daily Trading Volume'
           />
@@ -98,7 +115,7 @@ export default function PerpsMarketStats(props: Props) {
               data={transformedFundingRateData}
               lines={[
                 {
-                  ...PERPS_LINE_CONFIGS.fundingRate[0],
+                  ...PERPS_CHART_CONFIGS.fundingRate[0],
                   name: `Funding Rate (${timeBase})`,
                 },
               ]}
@@ -111,7 +128,7 @@ export default function PerpsMarketStats(props: Props) {
                     selectedTimeframe={timeBase}
                     setSelectedTimeframe={(value) => setTimeBase(value as FundingRateTimeBase)}
                     size='xs'
-                    className='my-0'
+                    className='!my-0'
                   />
                 </div>
               }
@@ -120,7 +137,7 @@ export default function PerpsMarketStats(props: Props) {
           {isGlobalStats && (
             <DynamicLineChart
               data={notionalLiquidatedData}
-              lines={PERPS_LINE_CONFIGS.notional}
+              lines={PERPS_CHART_CONFIGS.notional}
               height='h-70'
               title='Notional Liquidated'
             />
@@ -129,245 +146,49 @@ export default function PerpsMarketStats(props: Props) {
         <div className='w-1/2 flex flex-col gap-2'>
           <DynamicLineChart
             data={feesData}
-            lines={PERPS_LINE_CONFIGS.tradingFees}
+            lines={PERPS_CHART_CONFIGS.tradingFees}
             height='h-70'
             title='Trading and Net Funding Fees'
           />
           <DynamicLineChart
             data={imbalanceRatioData}
-            lines={[PERPS_LINE_CONFIGS.imbalanceRatio[0]]} // Only imbalance ratio
+            lines={PERPS_CHART_CONFIGS.imbalanceRatio}
             height='h-70'
             title='Imbalance Long Ratio'
           />
-
-          {/* {!isGlobalStats && (
-            <DynamicLineChart
-              data={imbalanceRatioData}
-              lines={PERPS_LINE_CONFIGS.imbalanceRatio} //imbalance and max skew ratio
-              height='h-65'
-              title='Imbalance Long Ratio'
-            />
-          )} */}
         </div>
       </div>
-      <div className='flex gap-2'>
-        {isGlobalStats && (
-          <DynamicLineChart
-            data={notionalLiquidatedData}
-            lines={PERPS_LINE_CONFIGS.notional}
-            height='h-70'
-            title='Notional Liquidated'
-          />
-        )}
-        {!isGlobalStats && (
-          <DynamicLineChart
-            data={oiRatioData}
-            lines={PERPS_LINE_CONFIGS.oiRatios}
-            height='h-70'
-            title='OI to Max OI Ratios'
-          />
-        )}
-
-        <DynamicLineChart
-          data={skewData}
-          lines={PERPS_LINE_CONFIGS.skew}
-          height='h-70'
-          title='Skew'
-        />
-      </div>
-      <BarChart
-        data={openInterestData}
-        series={[
-          {
-            key: 'short',
-            dataKey: 'short',
-            displayName: 'Short',
-            color: 'rgba(171, 66, 188, 0.6)',
-          },
-          {
-            key: 'long',
-            dataKey: 'long',
-            displayName: 'Long',
-            color: 'rgba(48, 224, 161, 0.7)',
-          },
-        ]}
-        title='Open Interest Long/Short'
-        stacked={true}
-        height={300}
-      />
-
-      {/* <MultipleAxisChart
-        data={transformedPnlData}
-        title='Realized and Unrealized PnL'
-        loading={perpsStatsLoading}
-        primaryAxis={{
-          series: [
-            {
-              type: 'bar',
-              dataKey: 'Realized_daily',
-              name: 'Daily Realized PnL Change',
-              color: '#82ca9d',
-            },
-            {
-              type: 'bar',
-              dataKey: 'Unrealized_daily',
-              name: 'Daily Unrealized PnL Change',
-              color: '#AB47BC',
-            },
-          ],
-        }}
-        secondaryAxis={{
-          series: [
-            {
-              type: 'line',
-              dataKey: 'Realized',
-              name: 'Cumulative Realized PnL',
-              color: '#82ca9d',
-            },
-            {
-              type: 'line',
-              dataKey: 'Unrealized',
-              name: 'Cumulative Unrealized PnL',
-              color: '#AB47BC',
-            },
-          ],
-        }}
-        height='h-100'
-      /> */}
-      <SynchronizedAreaChart
-        data={pnlData}
-        title='Realized and Unrealized PnL'
-        loading={perpsStatsLoading}
-        dataKey1='Realized'
-        dataKey2='Unrealized'
+      <DynamicLineChart
+        data={skewData}
+        lines={PERPS_CHART_CONFIGS.skew}
+        height='h-70'
+        title='Skew'
       />
       <ComposedChart
-        data={pnlData}
+        data={openInterestData}
+        title='Open Interest and Max Net OI'
+        loading={perpsStatsLoading}
+        config={PERPS_CHART_CONFIGS.openInterest}
+        height='h-80'
+      />
+      <SynchronizedChart
+        data={transformedPnLData}
         title='Realized and Unrealized PnL'
         loading={perpsStatsLoading}
-        dataKey1='Realized'
-        dataKey2='Unrealized'
+        config={PERPS_CHART_CONFIGS.pnl}
       />
-
-      {/* {!isGlobalStats && (
-        <MultipleAxisChart
-          data={openInterestData}
-          primaryAxis={{
-            series: [
-              {
-                type: 'line',
-                dataKey: 'long',
-                name: 'Long',
-                color: '#30E0A1',
-              },
-              {
-                type: 'line',
-                dataKey: 'short',
-                name: 'Short',
-                color: '#AB47BC',
-              },
-            ],
-          }}
-          secondaryAxis={{
-            series: [
-              {
-                type: 'line',
-                dataKey: 'long_ratio',
-                name: 'Long/Max Ratio',
-                color: '#FAdf', // Added a new color for distinction
-                isPercentage: true,
-              },
-              {
-                type: 'line',
-                dataKey: 'short_ratio',
-                name: 'Short/Max Ratio',
-                color: '#FF8C00', // Added a new color for distinction
-                isPercentage: true,
-              },
-            ],
-          }}
-          height={'h-100'}
-          title='Open Interest and Max OI Ratios'
-        />
-      )} */}
-      {/* {!isGlobalStats && (
-        <MultipleAxisChart
-          data={skewData}
-          title='Skew and MaxSkew Ratio'
-          loading={perpsStatsLoading}
-          primaryAxis={{
-            series: [
-              {
-                type: 'line',
-                dataKey: 'skew',
-                name: 'Skew',
-                color: '#AB47BC',
-              },
-            ],
-          }}
-          secondaryAxis={{
-            series: [
-              {
-                type: 'line',
-                dataKey: 'maxskew_ratio',
-                name: 'MaxSkew Ratio',
-                color: '#30E0A1',
-                isPercentage: true,
-              },
-            ],
-          }}
-          height='h-100'
-        />
-      )} */}
-
-      {/* {!isGlobalStats && (
-        <MultipleAxisChart
-          data={combinedMetricsData}
-          title='Skew, MaxSkew Ratio and Funding Rate'
-          loading={perpsStatsLoading}
-          primaryAxis={{
-            series: [
-              {
-                type: 'line',
-                dataKey: 'skew',
-                name: 'Skew',
-                color: '#30E0A1',
-              },
-            ],
-          }}
-          secondaryAxis={{
-            series: [
-              {
-                type: 'line',
-                dataKey: 'maxskew_ratio',
-                name: 'MaxSkew Ratio',
-                color: '#AB47BC',
-                isPercentage: true,
-              },
-              {
-                type: 'line',
-                dataKey: 'funding_rate',
-                name: 'Funding Rate (Annualized)',
-                color: '#580DA3',
-                isPercentage: true,
-              },
-            ],
-          }}
-          height='h-100'
-        />
-      )} */}
 
       {isGlobalStats && (
         <div className='flex gap-2'>
           <DynamicLineChart
             data={vaultData}
-            lines={PERPS_LINE_CONFIGS.vault}
+            lines={PERPS_CHART_CONFIGS.vault}
             height='h-70'
             title='Vault'
           />
           <DynamicLineChart
             data={vaultData}
-            lines={PERPS_LINE_CONFIGS.vaultCollateralization}
+            lines={PERPS_CHART_CONFIGS.vaultCollateralization}
             height='h-70'
             title='Vault Collateralization Ratio'
           />

@@ -1,26 +1,24 @@
-import ChartCardWrapper from 'components/common/Chart/common/ChartWrapper/ChartCardWrapper'
-import SynchronizedAreaChartBody from 'components/common/Chart/SynchronizedAreaChart/SynchronizedAreaChartBody'
-import SynchronizedAreaChartLoading from 'components/common/Chart/SynchronizedAreaChart/SynchronizedAreaChartLoading'
 import React from 'react'
-import ComposedChartBody from './ComposedChartBody'
-
+import AreaChartLoading from 'components/common/Chart/common/AreaChartLoading'
+import ChartCardWrapper from 'components/common/Chart/common/ChartWrapper/ChartCardWrapper'
+import ComposedChartBody from 'components/common/Chart/ComposedChart/ComposedChartBody'
 interface Props {
   data: MergedChartData[]
   title: string | React.ReactNode
   loading?: boolean
-  dataKey1: string
-  dataKey2: string
+  config: ChartConfig
+  height?: string
 }
 
 export default function ComposedChart(props: Props) {
-  const { data, loading, title, dataKey1, dataKey2 } = props
+  const { data, loading, config, height, title } = props
 
   return (
     <ChartCardWrapper title={title}>
       {data === null || loading ? (
-        <SynchronizedAreaChartLoading />
+        <AreaChartLoading />
       ) : (
-        <ComposedChartBody data={data} dataKey1={dataKey1} dataKey2={dataKey2} />
+        <ComposedChartBody data={data} config={config} height={height} />
       )}
     </ChartCardWrapper>
   )

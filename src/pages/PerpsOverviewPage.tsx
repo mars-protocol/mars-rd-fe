@@ -1,35 +1,34 @@
+import AssetImage from 'components/common/assets/AssetImage'
 import Card from 'components/common/Card'
 import Divider from 'components/common/Divider'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import Text from 'components/common/Text'
 import useChainConfig from 'hooks/chain/useChainConfig'
-import { ChainInfoID } from 'types/enums'
-import { useMemo, useState } from 'react'
-import { TIMEFRAME } from 'constants/timeframe'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
+import { ChainInfoID } from 'types/enums'
 import { PERPS_ASSETS } from 'constants/perps'
-import AssetImage from 'components/common/assets/AssetImage'
-import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
-
-const perpsOptions = [
-  { value: 'total', label: 'Total Statistics' },
-  ...PERPS_ASSETS.map((asset) => ({
-    value: asset.denom,
-    label: `${asset.description} Statistics`,
-  })),
-].filter((option) => option.value === 'total' || !option.value.includes('UUSDC'))
+import { TIMEFRAME } from 'constants/timeframe'
+import { useMemo, useState } from 'react'
 
 export default function PerpsOverviewPage() {
   const chainConfig = useChainConfig()
   const isOsmosis = chainConfig.id === ChainInfoID.Osmosis1
-  const perpAssets = usePerpsEnabledAssets()
-  console.log(perpAssets, 'perpAssets')
-  const [selectedOption, setSelectedOption] = useState<string>(perpsOptions[0].value)
+  const [selectedOption, setSelectedOption] = useState<string>('total')
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
 
   const displayOptions = useMemo(
-    () =>
-      perpAssets.map((asset, index) => ({
+    () => [
+      {
+        label: (
+          <div className='flex w-full gap-2'>
+            <Text size='sm' className='leading-4'>
+              Total Statistics
+            </Text>
+          </div>
+        ),
+        value: 'total',
+      },
+      ...PERPS_ASSETS.map((asset) => ({
         label: (
           <div className='flex w-full gap-2'>
             <AssetImage asset={asset} className='w-4 h-4' />
@@ -40,6 +39,7 @@ export default function PerpsOverviewPage() {
         ),
         value: asset.denom,
       })),
+    ],
     [],
   )
 

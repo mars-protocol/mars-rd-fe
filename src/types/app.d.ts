@@ -1496,13 +1496,23 @@ interface TimeframeOption {
 
 interface MergedChartData {
   date: string
-  [key: string]: any
+  [key: string]: string | number
+}
+interface LineConfig {
+  dataKey: string
+  color: string
+  name: string
+  isPercentage?: boolean
+}
+
+interface ChartConfig {
+  bars: LineConfig[]
+  line?: LineConfig
 }
 interface DateValue {
   date: string
   value: string
 }
-
 interface PerpsOpenInterest {
   long: DateValue[]
   short: DateValue[]
@@ -1515,7 +1525,7 @@ interface PerpsSkewData {
   skew: DateValue[]
   imbalance_long_ratio: DateValue[]
   imbalance_short_ratio: DateValue[]
-  maxskew_ratio: DateValue[]
+  max_skew: DateValue[]
 }
 
 interface PerpsFundingAndPnL {

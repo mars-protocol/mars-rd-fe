@@ -134,9 +134,6 @@ export default function DynamicLineChartBody(props: Props) {
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
             {...(lines[0]?.isPercentage && { domain: [-1, 1] })}
-            // domain={[-1, 1]} // For percentages
-            // domain={['auto', 'auto']}
-            // domain={[(dataMin) => dataMin * 2.2, (dataMax) => dataMax * 1.2]}
             tickFormatter={(value) => {
               if (lines[0]?.isPercentage) {
                 return formatValue(value * 100, {

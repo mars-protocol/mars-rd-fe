@@ -2,13 +2,6 @@ import AreaChartLoading from 'components/common/Chart/common/AreaChartLoading'
 import ChartCardWrapper from 'components/common/Chart/common/ChartWrapper/ChartCardWrapper'
 import DynamicLineChartBody from 'components/common/Chart/DynamicLineChart/DynamicLineChartBody'
 
-interface LineConfig {
-  dataKey: string
-  color: string
-  name: string
-  isPercentage?: boolean
-}
-
 interface Props {
   data: MergedChartData[]
   title: string | React.ReactNode

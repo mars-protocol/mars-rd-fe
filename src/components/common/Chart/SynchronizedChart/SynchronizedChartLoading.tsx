@@ -24,7 +24,7 @@ function createLoadingData() {
   return data
 }
 
-export default function SynchronizedAreaChartLoading() {
+export default function SynchronizedChartLoading() {
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
