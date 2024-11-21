@@ -24,6 +24,9 @@ export default function LiquidationsTable() {
     setPage(newPage)
   }
 
+  const tableData = liquidityData ?? []
+  const isLoading = isLiquidityDataLoading || !liquidityData
+
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(
     () => [
       {
@@ -47,13 +50,13 @@ export default function LiquidationsTable() {
         },
       },
       // TODO: update this once we have the data
-      {
-        accessorKey: 'protocol_fee_coin',
-        header: 'Liquidation Price',
-        cell: ({ row }) => {
-          return <LiquidationPrice value={row.original.price_liquidated ?? 'N/A'} />
-        },
-      },
+      // {
+      //   accessorKey: 'protocol_fee_coin',
+      //   header: 'Liquidation Price',
+      //   cell: ({ row }) => {
+      //     return <LiquidationPrice value={row.original.price_liquidated ?? 'N/A'} />
+      //   },
+      // },
       {
         header: 'Protocol Fee',
         cell: ({ row }) => {
@@ -64,27 +67,37 @@ export default function LiquidationsTable() {
     [assetsData],
   )
 
+  if (isLoading) {
+    return (
+      <div className='flex flex-wrap justify-center w-full gap-4'>
+        <CircularProgress size={60} />
+        <Text className='w-full text-center' size='xl'>
+          Fetching data...
+        </Text>
+      </div>
+    )
+  }
+
+  if (!tableData.length) {
+    return (
+      <div className='flex flex-wrap justify-center w-full gap-4'>
+        <Text className='w-full text-center' size='xl'>
+          No liquidation data available
+        </Text>
+      </div>
+    )
+  }
+
   return (
     <>
-      {isLiquidityDataLoading || !liquidityData.data ? (
-        <div className='flex flex-wrap justify-center w-full gap-4'>
-          <CircularProgress size={60} />
-          <Text className='w-full text-center' size='xl'>
-            Fetching data...
-          </Text>
-        </div>
-      ) : (
-        <>
-          <Table
-            title='Recently Executed Liquidations'
-            columns={columns}
-            data={liquidityData.data}
-            tableBodyClassName='text-lg '
-            initialSorting={[]}
-          />
-          <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
-        </>
-      )}
+      <Table
+        title='Recently Executed Liquidations'
+        columns={columns}
+        data={liquidityData}
+        tableBodyClassName='text-lg '
+        initialSorting={[]}
+      />
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
     </>
   )
 }

@@ -10,17 +10,17 @@ import MobileNavigationToggle from 'components/header/navigation/mobile/MobileNa
 
 const menuTree = (): MenuTreeEntry[] => [
   {
-    pages: ['main'],
+    pages: ['perps'],
     label: 'Home',
   },
-  {
-    pages: ['liquidations'],
-    label: 'Liquidations',
-  },
-  {
-    pages: ['perps'],
-    label: 'Perps',
-  },
+  // {
+  //   pages: ['liquidations'],
+  //   label: 'Liquidations',
+  // },
+  // {
+  //   pages: ['perps'],
+  //   label: 'Perps',
+  // },
 ]
 
 export default function Header() {
@@ -34,7 +34,7 @@ export default function Header() {
       >
         <div className='flex items-center justify-between px-4 py-4 border-b h-18 border-white/20'>
           <div className='relative z-50 flex items-center flex-1'>
-            <NavLink isHome item={{ pages: ['main'], label: 'home' }}>
+            <NavLink isHome item={{ pages: ['perps'], label: 'home' }}>
               <span className='block w-10 h-10'>
                 <Logo className='text-white' />
               </span>
@@ -42,8 +42,8 @@ export default function Header() {
             {!isMobile && <DesktopNavigation menuTree={menuTree} />}
           </div>
           <div className='flex gap-4'>
-            {!isMobile && <ChainSelect className='hidden md:flex' />}
-            {isMobile && <MobileNavigationToggle className='md:hidden' />}
+            {/* {!isMobile && <ChainSelect className='hidden md:flex' />} */}
+            {/* {isMobile && <MobileNavigationToggle className='md:hidden' />} */}
           </div>
         </div>
       </header>

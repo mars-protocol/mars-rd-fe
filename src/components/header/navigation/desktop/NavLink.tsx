@@ -20,7 +20,7 @@ export const NavLink = (props: Props) => {
   const { isHome, item, className, onClick } = props
 
   const itemLink = item.externalUrl ? item.externalUrl : getRoute(item.pages[0], searchParams)
-  const link = isHome ? getRoute('main', searchParams) : itemLink
+  const link = isHome ? getRoute('perps', searchParams) : itemLink
 
   return (
     <Link

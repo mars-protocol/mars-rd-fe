@@ -15,9 +15,11 @@ export default function Routes() {
           </Layout>
         }
       >
-        <Route path='/main' element={<MainPage />} />
-        <Route path='/liquidations' element={<LiquidationsPage />} />
+        {/* TODO: enable once API works */}
+        {/* <Route path='/main' element={<MainPage />} /> */}
         <Route path='/perps' element={<PerpsOverviewPage />} />
+        {/* <Route path='/liquidations' element={<LiquidationsPage />} /> */}
+        {/* <Route path='/perps' element={<PerpsOverviewPage />} /> */}
 
         <Route path='/' element={<MainPage />} />
         <Route path='*' element={<Navigate to='/' />} />

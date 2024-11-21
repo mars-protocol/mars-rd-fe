@@ -47,7 +47,7 @@ export default function ChainSelect(props: Props) {
         mobileNavExpanded: false,
         chainConfig,
       })
-      navigate(getRoute('main', searchParams))
+      navigate(getRoute('perps', searchParams))
     },
     [setCurrentChainId, setShowMenu, mutate, navigate, searchParams],
   )

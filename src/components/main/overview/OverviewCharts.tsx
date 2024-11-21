@@ -39,6 +39,7 @@ export default function OverviewCharts() {
             timeframe={TIMEFRAME}
             selectedTimeframe={selectedTimeframe}
             setSelectedTimeframe={setSelectedTimeframe}
+            className='!my-0'
           />
         </div>
         <Divider />

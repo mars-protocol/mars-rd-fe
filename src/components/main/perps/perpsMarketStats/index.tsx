@@ -127,6 +127,7 @@ export default function PerpsMarketStats(props: Props) {
                     selectedTimeframe={timeBase}
                     setSelectedTimeframe={(value) => setTimeBase(value as FundingRateTimeBase)}
                     size='xs'
+                    className='!my-0'
                   />
                 </div>
               }
