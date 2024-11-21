@@ -1,3 +1,11 @@
+import { FundingRateTimeBase } from 'types/enums'
+
+export const CHART_COLORS = {
+  primary: '#30E0A1',
+  secondary: '#AB47BC',
+  tertiary: '#580DA3',
+}
+
 export const DEFAULT_PERPS_GLOBAL_DATA: PerpsGlobalData = {
   daily_trading_volume: [],
   open_interest: {
@@ -81,62 +89,56 @@ export const PERPS_CHART_TRANSFORMATIONS = {
   ],
 }
 
-export const PERPS_CHART_COLORS = {
-  primary: '#30E0A1',
-  secondary: '#AB47BC',
-  tertiary: '#580DA3',
-}
-
 export const PERPS_CHART_CONFIGS = {
   openInterest: {
     bars: [
       {
         dataKey: 'long',
         name: 'Long Positions',
-        color: PERPS_CHART_COLORS.tertiary,
+        color: CHART_COLORS.tertiary,
       },
       {
         dataKey: 'short',
         name: 'Short Positions',
-        color: PERPS_CHART_COLORS.secondary,
+        color: CHART_COLORS.secondary,
       },
     ],
     line: {
       dataKey: 'max_net_oi',
       name: 'Max Net OI',
-      color: PERPS_CHART_COLORS.primary,
+      color: CHART_COLORS.primary,
     },
   },
   tradingFees: [
-    { dataKey: 'trading_fees', color: PERPS_CHART_COLORS.secondary, name: 'Trading Fees' },
-    { dataKey: 'net_funding_fees', color: PERPS_CHART_COLORS.tertiary, name: 'Net Funding Fees' },
+    { dataKey: 'trading_fees', color: CHART_COLORS.secondary, name: 'Trading Fees' },
+    { dataKey: 'net_funding_fees', color: CHART_COLORS.tertiary, name: 'Net Funding Fees' },
   ],
   skew: [
-    { dataKey: 'skew', color: PERPS_CHART_COLORS.tertiary, name: 'Skew' },
+    { dataKey: 'skew', color: CHART_COLORS.tertiary, name: 'Skew' },
     {
       dataKey: 'max_skew',
-      color: PERPS_CHART_COLORS.secondary,
+      color: CHART_COLORS.secondary,
       name: 'Max Skew',
     },
   ],
   notional: [
     {
       dataKey: 'notional_liquidated',
-      color: PERPS_CHART_COLORS.secondary,
+      color: CHART_COLORS.secondary,
       name: 'Notional Liquidated',
     },
   ],
   tradingVolume: [
     {
       dataKey: 'daily_trading_volume',
-      color: PERPS_CHART_COLORS.primary,
+      color: CHART_COLORS.primary,
       name: 'Daily Trading Volume',
     },
   ],
   imbalanceRatio: [
     {
       dataKey: 'imbalance_long',
-      color: PERPS_CHART_COLORS.primary,
+      color: CHART_COLORS.primary,
       name: 'Imbalance Long Ratio',
       isPercentage: true,
     },
@@ -144,20 +146,20 @@ export const PERPS_CHART_CONFIGS = {
   fundingRate: [
     {
       dataKey: 'funding_rate',
-      color: PERPS_CHART_COLORS.secondary,
+      color: CHART_COLORS.secondary,
       name: 'Funding Rate',
       isPercentage: true,
       isFundingRate: true,
     },
   ],
   vault: [
-    { dataKey: 'deposit', color: PERPS_CHART_COLORS.secondary, name: 'Deposit' },
-    { dataKey: 'vault_value', color: PERPS_CHART_COLORS.tertiary, name: 'Value' },
+    { dataKey: 'deposit', color: CHART_COLORS.secondary, name: 'Deposit' },
+    { dataKey: 'vault_value', color: CHART_COLORS.tertiary, name: 'Value' },
   ],
   vaultCollateralization: [
     {
       dataKey: 'vault_collateralization_ratio',
-      color: PERPS_CHART_COLORS.primary,
+      color: CHART_COLORS.primary,
       name: 'Vault Collateralization Ratio',
       isPercentage: true,
     },
@@ -167,24 +169,24 @@ export const PERPS_CHART_CONFIGS = {
       bar: {
         dataKey: 'dailyRealizedChange',
         name: 'Daily Realized Change',
-        color: PERPS_CHART_COLORS.tertiary,
+        color: CHART_COLORS.tertiary,
       },
       line: {
         dataKey: 'cumulativeRealized',
         name: 'Cumulative Realized PnL',
-        color: PERPS_CHART_COLORS.primary,
+        color: CHART_COLORS.primary,
       },
     },
     secondaryChart: {
       bar: {
         dataKey: 'dailyUnrealizedChange',
         name: 'Daily Unrealized Change',
-        color: PERPS_CHART_COLORS.secondary,
+        color: CHART_COLORS.secondary,
       },
       line: {
         dataKey: 'cumulativeUnrealized',
         name: 'Cumulative Unrealized PnL',
-        color: PERPS_CHART_COLORS.primary,
+        color: CHART_COLORS.primary,
       },
     },
   },
@@ -192,26 +194,20 @@ export const PERPS_CHART_CONFIGS = {
     primary: [
       {
         dataKey: 'max_skew',
-        color: PERPS_CHART_COLORS.secondary,
+        color: CHART_COLORS.secondary,
         name: 'Max Skew',
       },
-      { dataKey: 'skew', color: PERPS_CHART_COLORS.tertiary, name: 'Skew' },
+      { dataKey: 'skew', color: CHART_COLORS.tertiary, name: 'Skew' },
     ],
     secondary: [
       {
         dataKey: 'funding_rate',
         name: 'Funding Rate (Annualized)',
-        color: PERPS_CHART_COLORS.primary,
+        color: CHART_COLORS.primary,
         isPercentage: true,
       },
     ],
   },
-}
-
-export enum FundingRateTimeBase {
-  HOURLY = '1h',
-  DAILY = '24h',
-  YEARLY = '1y',
 }
 
 export const FUNDING_RATE_OPTIONS: TimeframeOption[] = [
@@ -219,3 +215,46 @@ export const FUNDING_RATE_OPTIONS: TimeframeOption[] = [
   { value: FundingRateTimeBase.DAILY, label: '24H' },
   { value: FundingRateTimeBase.YEARLY, label: '1Y' },
 ]
+
+export const OVERVIEW_CHART_TRANSFORMATIONS = {
+  tvl: [
+    {
+      path: ['total_value_locked'],
+      targetKey: 'total_value_locked',
+    },
+  ],
+  supplyBorrow: [
+    {
+      path: ['total_supply'],
+      targetKey: 'supply',
+    },
+    {
+      path: ['total_borrow'],
+      targetKey: 'borrow',
+    },
+  ],
+}
+
+export const OVERVIEW_CHART_CONFIGS = {
+  tvl: [
+    {
+      dataKey: 'total_value_locked',
+      color: CHART_COLORS.primary,
+      name: 'Total Value Locked',
+    },
+  ],
+  supplyBorrow: {
+    bars: [
+      {
+        dataKey: 'supply',
+        name: 'Total Supply',
+        color: CHART_COLORS.tertiary,
+      },
+      {
+        dataKey: 'borrow',
+        name: 'Total Borrow',
+        color: CHART_COLORS.secondary,
+      },
+    ],
+  },
+}

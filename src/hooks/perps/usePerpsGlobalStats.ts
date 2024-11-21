@@ -4,7 +4,6 @@ import useSWR from 'swr'
 
 export default function usePerpsStats(selectedOption: string, timeframe: string) {
   const isGlobalStats = selectedOption === 'total'
-  console.log(selectedOption, 'selectedOption')
   return useSWR(
     ['perps/stats', selectedOption, timeframe],
     async () => {

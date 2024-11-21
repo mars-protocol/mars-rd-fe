@@ -10,13 +10,13 @@ import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
 import {
   DEFAULT_PERPS_GLOBAL_DATA,
   FUNDING_RATE_OPTIONS,
-  FundingRateTimeBase,
   PERPS_CHART_CONFIGS,
-} from 'constants/perpsChartData'
+} from 'constants/chartData'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import { useMemo, useState } from 'react'
 import { BN } from 'utils/helpers'
 import ComposedChart from 'components/common/Chart/ComposedChart'
+import { FundingRateTimeBase } from 'types/enums'
 
 interface Props {
   timeframe: string
@@ -127,7 +127,6 @@ export default function PerpsMarketStats(props: Props) {
                     selectedTimeframe={timeBase}
                     setSelectedTimeframe={(value) => setTimeBase(value as FundingRateTimeBase)}
                     size='xs'
-                    className='!my-0'
                   />
                 </div>
               }

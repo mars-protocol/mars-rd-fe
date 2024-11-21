@@ -56,3 +56,9 @@ export enum AstroportSwapPoolType {
   XYK = 'xyk',
   PCL = 'pcl',
 }
+
+export enum FundingRateTimeBase {
+  HOURLY = '1h',
+  DAILY = '24h',
+  YEARLY = '1y',
+}

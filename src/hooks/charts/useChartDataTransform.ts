@@ -8,7 +8,7 @@ interface ChartTransformation {
   formatFn?: (value: number) => number
 }
 
-export const usePerpsChartDataTransform = (
+export const useChartDataTransform = (
   data: PerpsGlobalData | PerpsMarketData,
   transformations: ChartTransformation[],
 ) => {

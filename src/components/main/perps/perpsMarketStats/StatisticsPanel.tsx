@@ -15,7 +15,12 @@ interface Props {
 export default function StatisticsPanel(props: Props) {
   const { data, loading } = props
 
-  if (!data) return <div>No data available</div>
+  if (!data)
+    return (
+      <div className='text-center'>
+        <Text size='sm'>No data available</Text>
+      </div>
+    )
 
   const getLatestValue = (dateValues: DateValue[] = []) => {
     if (!dateValues || dateValues.length === 0) return BN(0)
@@ -103,9 +108,6 @@ export default function StatisticsPanel(props: Props) {
             <Text size='xs' className='pt-1 text-white/40'>
               {metric.label}
             </Text>
-            {/* <Text size='xs' className={classNames('pt-1', 'text-profit')}>
-              +24k
-            </Text> */}
           </Card>
         )
       })}

@@ -1414,23 +1414,7 @@ interface PoolInfo {
   yield: PoolYield
   weight: PoolWeight
 }
-type ChartDataItem = { date: string; value: number }
-type ChartData = ChartDataItem[]
 
-type BarChartDataItem = { name: string; date: string; [key: string]: string | number }
-type BarChartData = BarChartDataItem[]
-
-interface DummyData {
-  [key: string]: {
-    [key: string]: DateDoubleValue[]
-  }
-}
-
-interface DateDoubleValue {
-  date: string
-  value: number
-  value2: number
-}
 interface TooltipContentProps {
   payload: ChartDataPayloadProps[]
   config?: ChartConfig
@@ -1515,6 +1499,21 @@ interface ChartConfig {
 interface DateValue {
   date: string
   value: string
+}
+
+interface OverviewData {
+  total_suppply: DateValue[]
+  total_borrow: DateValue[]
+  total_value_locked: DateValue[]
+  value_eligible_for_liquidation: string
+  accounts_for_liquidation: number
+  total_collateral_at_risk: string
+  accounts_at_risk: number
+  bad_debt: string
+}
+
+interface Overview {
+  data: OverviewData
 }
 interface PerpsOpenInterest {
   long: DateValue[]

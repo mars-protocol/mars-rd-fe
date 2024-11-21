@@ -1,11 +1,11 @@
-export default async function getOverviewData(days: number = 30, chain: string = 'neutron') {
+export default async function getOverviewData(timeframe: string = '30', chain: string = 'neutron') {
   try {
     const response = await fetch(
-      `https://api.marsprotocol.io/v1/overview?chain=${chain}&days=${days}`,
-      // `https://api.marsprotocol.io/v2/overview?chain=osmosis&days=30&product=creditmanager`,
+      `https://testnet-api.marsprotocol.io/v2/overview?chain=${chain}&days=${timeframe}&product=creditmanager`,
     )
-    const data = await response.json()
-    return data
+    const data = (await response.json()) as Overview
+
+    return data.data as OverviewData
   } catch (error) {
     console.error('Could not fetch overview data.', error)
     return null

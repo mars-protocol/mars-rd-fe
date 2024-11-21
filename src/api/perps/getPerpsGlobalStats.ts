@@ -1,4 +1,4 @@
-import { DEFAULT_PERPS_GLOBAL_DATA } from 'constants/perpsChartData'
+import { DEFAULT_PERPS_GLOBAL_DATA } from 'constants/chartData'
 
 export default async function getPerpsGlobalStats(timeframe: string = '7') {
   try {
