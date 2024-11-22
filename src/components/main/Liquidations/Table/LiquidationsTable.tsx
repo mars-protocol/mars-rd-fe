@@ -78,7 +78,7 @@ export default function LiquidationsTable() {
     )
   }
 
-  if (!tableData.length) {
+  if (!tableData.length || tableData === null) {
     return (
       <div className='flex flex-wrap justify-center w-full gap-4'>
         <Text className='w-full text-center' size='xl'>

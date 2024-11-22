@@ -1,8 +1,12 @@
+import { getApiBaseUrl } from 'utils/api'
+
 export default async function getOverviewData(timeframe: string = '30', chain: string = 'neutron') {
   try {
-    const response = await fetch(
-      `https://testnet-api.marsprotocol.io/v2/overview?chain=${chain}&days=${timeframe}&product=creditmanager`,
+    const baseUrl = getApiBaseUrl()
+    const url = new URL(
+      `${baseUrl}/v2/overview?chain=${chain}&days=${timeframe}&product=creditmanager`,
     )
+    const response = await fetch(url.toString())
     const data = (await response.json()) as Overview
 
     return data.data as OverviewData

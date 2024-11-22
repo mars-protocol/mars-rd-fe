@@ -3,16 +3,12 @@ import Card from 'components/common/Card'
 import Divider from 'components/common/Divider'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import Text from 'components/common/Text'
-import useChainConfig from 'hooks/chain/useChainConfig'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
-import { ChainInfoID } from 'types/enums'
 import { PERPS_ASSETS_TEST } from 'constants/perps'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useMemo, useState } from 'react'
 
 export default function PerpsOverviewPage() {
-  const chainConfig = useChainConfig()
-  const isOsmosis = chainConfig.id === ChainInfoID.Osmosis1
   const [selectedOption, setSelectedOption] = useState<string>('total')
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
 
@@ -45,29 +41,21 @@ export default function PerpsOverviewPage() {
 
   return (
     <div className='w-full'>
-      {isOsmosis ? (
-        <div className='flex items-center justify-center h-full'>
-          <Text size='2xl'>Please switch to the Neutron chain to see available data.</Text>
-        </div>
-      ) : (
-        <>
-          <Card className='mt-5 p-4 bg-white/5'>
-            <SelectionControlPanel
-              selectOptions={displayOptions}
-              defaultSelectValue={selectedOption}
-              onSelectChange={setSelectedOption}
-              timeframe={TIMEFRAME}
-              selectedTimeframe={selectedTimeframe}
-              onTimeframeSelect={setSelectedTimeframe}
-            />
-            <Divider className='mt-2' />
+      <Card className='mt-5 p-4 bg-white/5'>
+        <SelectionControlPanel
+          selectOptions={displayOptions}
+          defaultSelectValue={selectedOption}
+          onSelectChange={setSelectedOption}
+          timeframe={TIMEFRAME}
+          selectedTimeframe={selectedTimeframe}
+          onTimeframeSelect={setSelectedTimeframe}
+        />
+        <Divider className='mt-2' />
 
-            <div className='flex flex-col gap-4 mt-4'>
-              <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
-            </div>
-          </Card>
-        </>
-      )}
+        <div className='flex flex-col gap-4 mt-4'>
+          <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
+        </div>
+      </Card>
     </div>
   )
 }
