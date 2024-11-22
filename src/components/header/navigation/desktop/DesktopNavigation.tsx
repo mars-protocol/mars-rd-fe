@@ -7,9 +7,10 @@ import { NavLink } from 'components/header/navigation/desktop/NavLink'
 import { NavMenu } from 'components/header/navigation/desktop/NavMenu'
 import useToggle from 'hooks/common/useToggle'
 import useStore from 'store'
+import useChainConfig from 'hooks/chain/useChainConfig'
 
 interface Props {
-  menuTree: () => MenuTreeEntry[]
+  menuTree: (chainConfig: ChainConfig) => MenuTreeEntry[]
 }
 
 export function getIsActive(pages: string[]) {
@@ -20,10 +21,10 @@ export function getIsActive(pages: string[]) {
 export default function DesktopNavigation(props: Props) {
   const { menuTree } = props
   const [showMenu, setShowMenu] = useToggle()
+  const chainConfig = useChainConfig()
   const focusComponent = useStore((s) => s.focusComponent)
 
-  const menu = useMemo(() => menuTree(), [menuTree])
-
+  const menu = useMemo(() => menuTree(chainConfig), [chainConfig, menuTree])
   if (focusComponent) return null
 
   return (

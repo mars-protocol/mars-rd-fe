@@ -34,7 +34,6 @@ export default function ChainSelect(props: Props) {
   const { mutate } = useSWRConfig()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const isV1 = useStore((s) => s.isV1)
 
   const [_, setCurrentChainId] = useCurrentChainId()
 
@@ -47,7 +46,8 @@ export default function ChainSelect(props: Props) {
         mobileNavExpanded: false,
         chainConfig,
       })
-      navigate(getRoute('perps', searchParams))
+      // Navigate to perps if supported, otherwise main
+      navigate(getRoute(chainConfig.perps ? 'perps' : 'main', searchParams))
     },
     [setCurrentChainId, setShowMenu, mutate, navigate, searchParams],
   )
@@ -84,11 +84,12 @@ export default function ChainSelect(props: Props) {
   const availableChains = useMemo(() => {
     const currentNetworkType = process.env.NEXT_PUBLIC_NETWORK ?? NETWORK.TESTNET
     const availableChains: { chainId: ChainInfoID; name: string }[] = []
+
     Object.entries(chains).forEach(([chainId, chainConfig]) => {
       if (chainConfig.network !== currentNetworkType) return
       availableChains.push({ chainId: chainId as ChainInfoID, name: chainConfig.name })
     })
-    if (currentNetworkType === NETWORK.TESTNET) return availableChains
+
     return availableChains
   }, [])
 
@@ -98,7 +99,7 @@ export default function ChainSelect(props: Props) {
         leftIcon={<ChainLogo chainID={chainConfig.id} className='w-4' />}
         iconClassName='w-5 h-5'
         color='secondary'
-        text={props.withText ? `${chainConfig.name} ${isV1 ? 'v1' : 'v2'}` : undefined}
+        text={props.withText ? chainConfig.name : undefined}
         onClick={() => setShowMenu()}
         className={classNames(
           'flex items-center justify-center',
@@ -142,7 +143,7 @@ export default function ChainSelect(props: Props) {
               <ChainOption
                 chainConfig={chains[chain.chainId]}
                 onSelect={() => selectChain(chains[chain.chainId])}
-                active={chainConfig.name === chain.name && !isV1}
+                active={chainConfig.name === chain.name}
               />
             )}
           </React.Fragment>

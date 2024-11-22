@@ -1,12 +1,13 @@
 import getDexAssets from 'api/assets/getDexAssets'
 import getDexPools from 'api/assets/getDexPools'
 import USD from 'constants/USDollar'
-import { PRICE_STALE_TIME } from 'constants/query'
+import { ORACLE_DENOM } from 'constants/oracle'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import useAssetParams from 'hooks/params/useAssetParams'
-import useStore from 'store'
-import useSWR from 'swr'
-import { AssetParamsBaseForAddr } from 'types/generated/mars-params/MarsParams.types'
+import { useAllPerpsParamsSC } from 'hooks/perps/usePerpsParams'
+import useSWRImmutable from 'swr/immutable'
+import { BNCoin } from 'types/classes/BNCoin'
+import { AssetParamsBaseForAddr, PerpParams } from 'types/generated/mars-params/MarsParams.types'
 import { byDenom } from 'utils/array'
 import { BN } from 'utils/helpers'
 import { calculatePoolWeight } from 'utils/pools'
@@ -14,24 +15,15 @@ import { calculatePoolWeight } from 'utils/pools'
 export default function useAssetsNoOraclePrices() {
   const chainConfig = useChainConfig()
   const { data: assetParams } = useAssetParams()
-  /* PERPS
   const { data: perpsParams } = useAllPerpsParamsSC()
   const fetchedPerpsParams = chainConfig.perps ? perpsParams : ([] as PerpParams[])
-  */
 
-  return useSWR(
-    /* PERPS
+  return useSWRImmutable(
     assetParams && fetchedPerpsParams && `chains/${chainConfig.id}/noOraclePrices`,
     async () => fetchSortAndMapAllAssets(chainConfig, assetParams, fetchedPerpsParams),
-    */
-
-    assetParams && `chains/${chainConfig.id}/noOraclePrices`,
-    async () => fetchSortAndMapAllAssets(chainConfig, assetParams),
     {
       suspense: true,
       revalidateOnFocus: false,
-      staleTime: PRICE_STALE_TIME,
-      revalidateIfStale: true,
     },
   )
 }
@@ -39,18 +31,40 @@ export default function useAssetsNoOraclePrices() {
 async function fetchSortAndMapAllAssets(
   chainConfig: ChainConfig,
   assetParams: AssetParamsBaseForAddr[],
-  /* PERPS
-  perpsParams: PerpParams[], 
-  */
+  perpsParams: PerpParams[],
 ) {
   const [assets, pools] = await Promise.all([getDexAssets(chainConfig), getDexPools(chainConfig)])
+  const poolTokensIndexesInAssets: number[] = []
+  const poolAssets: Asset[] = pools.map((pool) => {
+    const indexOfPoolInAssets = assets.findIndex(byDenom(pool.lpAddress))
+    if (indexOfPoolInAssets >= 0) poolTokensIndexesInAssets.push(indexOfPoolInAssets)
+    return {
+      denom: pool.lpAddress,
+      name: `${pool.assets[0].symbol}-${pool.assets[1].symbol} LP`,
+      decimals: 6,
+      symbol: `${pool.assets[0].symbol}-${pool.assets[1].symbol}`,
+      price: BNCoin.fromDenomAndBigNumber(
+        ORACLE_DENOM,
+        BN(pool.totalLiquidityUSD).dividedBy(BN(pool.poolTotalShare).shiftedBy(-6)),
+      ),
+      campaigns: [],
+    }
+  })
 
-  const allAssets = chainConfig.lp ? [...assets, USD, ...chainConfig.lp] : [...assets, USD]
+  poolTokensIndexesInAssets.map((i) => assets.splice(i, 1))
 
-  const unsortedAssets = allAssets.map((asset) => {
+  const allAssets = chainConfig.lp
+    ? [...assets, ...poolAssets, USD, ...chainConfig.lp]
+    : [...assets, ...poolAssets, USD]
+
+  const uniqueAssets = allAssets.filter(
+    (asset, index, self) => index === self.findIndex((t) => t.denom === asset.denom),
+  )
+  const unsortedAssets = uniqueAssets.map((asset) => {
     const currentAssetParams = assetParams.find(byDenom(asset.denom))
     const currentAssetPoolParams = pools.find((pool) => pool.lpAddress === asset.denom)
 
+    const deprecatedAssets = chainConfig.deprecated ?? []
     let currentAssetPoolInfo: PoolInfo | undefined
 
     if (currentAssetPoolParams) {
@@ -91,32 +105,32 @@ async function fetchSortAndMapAllAssets(
       asset.name = `${symbol} LP`
     }
 
-    /* PERPS
-    const currentAssetPerpsParams = perpsParams ? perpsParams.find(byDenom(asset.denom)) : undefined 
-    */
+    const currentAssetPerpsParams = perpsParams ? perpsParams.find(byDenom(asset.denom)) : undefined
 
-    const isDepositEnabled = chainConfig.anyAsset
-      ? !currentAssetPoolInfo
-      : currentAssetParams?.red_bank.deposit_enabled
+    const isDeprecated = deprecatedAssets.includes(asset.denom)
+    const isAnyAssetAndNoPool = chainConfig.anyAsset && !currentAssetPoolInfo
+    const isDepositEnabled = isDeprecated ? false : currentAssetParams?.red_bank.deposit_enabled
+    const isTradeEnabled = isDeprecated
+      ? true
+      : asset.denom !== 'usd' &&
+        !currentAssetPoolInfo &&
+        (currentAssetParams?.red_bank.deposit_enabled || !currentAssetParams)
 
     return {
       ...asset,
       isPoolToken: !!currentAssetPoolInfo,
-      isWhitelisted: !!currentAssetParams,
+      isWhitelisted:
+        currentAssetParams && (currentAssetParams.credit_manager.whitelisted || isDeprecated),
       isAutoLendEnabled: currentAssetParams?.red_bank.borrow_enabled ?? false,
       isBorrowEnabled: currentAssetParams?.red_bank.borrow_enabled ?? false,
-      isDepositEnabled: isDepositEnabled,
+      isDepositEnabled: isAnyAssetAndNoPool ? true : isDepositEnabled,
       isDisplayCurrency: currentAssetParams?.red_bank.borrow_enabled || asset.denom === 'usd',
       isStable: chainConfig.stables.includes(asset.denom),
       isStaking:
         !!currentAssetParams?.credit_manager.hls && !currentAssetParams?.red_bank.borrow_enabled,
-      /* PERPS
       isPerpsEnabled: !!currentAssetPerpsParams,
-      */
-      isTradeEnabled:
-        asset.denom !== 'usd' &&
-        !currentAssetPoolInfo &&
-        (currentAssetParams?.red_bank.deposit_enabled || !currentAssetParams),
+      isDeprecated,
+      isTradeEnabled,
       poolInfo: currentAssetPoolInfo,
     }
   })
@@ -132,8 +146,6 @@ async function fetchSortAndMapAllAssets(
     return a.symbol.localeCompare(b.symbol)
   })
 
-  // We need to set the assets to the store to use them in the broadcast slice
-  useStore.setState({ assets: sortedAssets })
   if (!chainConfig.anyAsset)
     return sortedAssets.filter((asset) => asset.isWhitelisted || asset.denom === 'usd')
 

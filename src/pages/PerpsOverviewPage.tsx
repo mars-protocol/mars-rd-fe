@@ -6,7 +6,7 @@ import Text from 'components/common/Text'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
 import { ChainInfoID } from 'types/enums'
-import { PERPS_ASSETS } from 'constants/perps'
+import { PERPS_ASSETS_TEST } from 'constants/perps'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useMemo, useState } from 'react'
 
@@ -28,7 +28,7 @@ export default function PerpsOverviewPage() {
         ),
         value: 'total',
       },
-      ...PERPS_ASSETS.map((asset) => ({
+      ...PERPS_ASSETS_TEST.map((asset) => ({
         label: (
           <div className='flex w-full gap-2'>
             <AssetImage asset={asset} className='w-4 h-4' />
@@ -51,7 +51,7 @@ export default function PerpsOverviewPage() {
         </div>
       ) : (
         <>
-          <Card className='mt-5 bg-white/5 p-4 flex flex-col'>
+          <Card className='mt-5 p-4 bg-white/5'>
             <SelectionControlPanel
               selectOptions={displayOptions}
               defaultSelectValue={selectedOption}

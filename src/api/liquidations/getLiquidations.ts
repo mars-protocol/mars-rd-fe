@@ -1,8 +1,7 @@
 export default async function getLiquidations(page = 1, pageSize = 25) {
   try {
     const response = await fetch(
-      // `https://api.marsprotocol.io/v2/liquidations/osmosis/creditmanager/${page}/${pageSize}&orders={"block_height":"desc"}`,
-      `https://api.marsprotocol.io/v1/liquidations/osmosis/creditmanager/${page}/${pageSize}`,
+      `https://api.marsprotocol.io/v2/liquidations?chain=osmosis&product=creditmanager&page=${page}&limit=${pageSize}&orders={"block_height":"desc"}`,
     )
     const data = await response.json()
 

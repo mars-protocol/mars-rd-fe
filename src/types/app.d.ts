@@ -205,8 +205,11 @@ interface Bridge {
 }
 
 interface ChainConfig {
+  isOsmosis: boolean
   lp?: Asset[]
   stables: string[]
+  deprecated?: string[]
+  campaignAssets?: AssetCampaignInfo[]
   defaultTradingPair: TradingPair
   bech32Config: import('@keplr-wallet/types').Bech32Config
   contracts: {
@@ -224,24 +227,21 @@ interface ChainConfig {
     coinMinimalDenom: string
     coinDecimals: number
     coinGeckoId: string
-    gasPriceStep: {
-      low: number
-      average: number
-      high: number
-    }
   }
   endpoints: {
     rest: string
     rpc: string
+    fallbackRpc: string
     swap: string
     explorer: string
     pools?: string
     routes: string
     dexAssets: string
     dexPools?: string
+    gasPrices?: string
     aprs: {
       vaults: string
-      stride: string
+      perpsVault?: string
     }
   }
   dexName: string
@@ -252,9 +252,7 @@ interface ChainConfig {
   name: string
   network: 'mainnet' | 'testnet'
   vaults: VaultMetaData[]
-  hls: boolean
   perps: boolean
-  farm: boolean
   anyAsset: boolean
 }
 
@@ -1318,8 +1316,15 @@ interface AstroportAsset {
   totalLiquidityUSD: number
   dayVolumeUSD: number
 }
+interface AstroportAssetsCached {
+  tokens: AstroportAsset[]
+}
 
 type PoolType = 'xyk' | 'concentrated' | 'stable' | 'transmuter' | 'astroport-pair-xyk-sale-tax'
+
+interface AstroportPoolsCached {
+  pools: AstroportPool[]
+}
 
 interface AstroportPool {
   chainId: string
