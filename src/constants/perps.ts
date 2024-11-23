@@ -1,3 +1,7 @@
+import { ActionKind } from 'types/generated/mars-perps/MarsPerps.types'
+
+export const PERPS_DEFAULT_ACTION: { action: ActionKind } = { action: 'default' }
+
 export const PERPS_ASSETS_TEST = [
   {
     denom: 'factory/neutron166t9ww3p6flv7c86376fy0r92r88t3492xxj2h/ubtc',

@@ -7,4 +7,5 @@ export enum LocalStorageKeys {
   RPC_ENDPOINT = 'rpcEndpoint',
   REST_ENDPOINT = 'restEndpoint',
   PERPS_ASSET = 'perpsAsset',
+  SLIPPAGE = 'slippage',
 }

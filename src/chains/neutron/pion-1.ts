@@ -51,6 +51,7 @@ const Pion1: ChainConfig = {
   features: ['ibc-transfer', 'ibc-go'],
   gasPrice: '0.025untrn',
   perps: true,
+  farm: true,
   anyAsset: true,
 }
 

@@ -97,6 +97,7 @@ const Osmosis1: ChainConfig = {
   network: NETWORK.MAINNET,
   vaults: VAULTS_META_DATA,
   perps: false,
+  farm: true,
   anyAsset: false,
 }
 

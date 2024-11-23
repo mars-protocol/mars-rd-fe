@@ -21,7 +21,7 @@ type ActionCoin = import('types/generated/mars-credit-manager/MarsCreditManager.
 
 type BNCoin = import('types/classes/BNCoin').BNCoin
 
-type PositionType = 'deposit' | 'borrow' | 'lend' | 'vault' | 'perp'
+type PositionType = 'deposit' | 'borrow' | 'lend' | 'vault' | 'perp' | 'market' | 'limit' | 'stop'
 type TableType = 'balances' | 'strategies' | 'perps'
 type AccountKind = import('types/generated/mars-credit-manager/MarsCreditManager.types').AccountKind
 
@@ -32,7 +32,7 @@ interface Account {
   lends: BNCoin[]
   vaults: DepositedVault[]
   stakedAstroLps: BNCoin[]
-  perps?: PerpsPosition[]
+  perps: PerpsPosition[]
   perpsVault?: PerpsVaultPositions | null
   kind: AccountKind
 }
@@ -253,6 +253,7 @@ interface ChainConfig {
   network: 'mainnet' | 'testnet'
   vaults: VaultMetaData[]
   perps: boolean
+  farm: boolean
   anyAsset: boolean
 }
 
@@ -305,7 +306,8 @@ interface PerpsPosition {
   pnl: PerpsPnL
   currentPrice: BigNumber
   entryPrice: BigNumber
-  closingFeeRate: BigNumber
+  type: PositionType
+  reduce_only?: boolean
 }
 
 interface PerpPositionRow extends PerpsPosition {
@@ -1583,5 +1585,14 @@ interface PerpsMarketData {
 interface PerpsMarketOverview {
   market_overview: {
     data: PerpsMarketData[]
+  }
+}
+
+interface PerpsTradingFee {
+  baseDenom: string
+  price: BigNumber
+  fee: {
+    opening: BigNumber
+    closing: BigNumber
   }
 }

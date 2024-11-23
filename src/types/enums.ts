@@ -58,6 +58,11 @@ export enum AstroportSwapPoolType {
   PCL = 'pcl',
 }
 
+export enum RewardsCenterType {
+  Token = 'token',
+  Position = 'position',
+}
+
 export enum FundingRateTimeBase {
   HOURLY = '1h',
   DAILY = '24h',
