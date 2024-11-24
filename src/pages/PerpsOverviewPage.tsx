@@ -4,13 +4,14 @@ import Divider from 'components/common/Divider'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import Text from 'components/common/Text'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
-import { PERPS_ASSETS_TEST } from 'constants/perps'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useMemo, useState } from 'react'
+import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 
 export default function PerpsOverviewPage() {
   const [selectedOption, setSelectedOption] = useState<string>('total')
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
+  const perpsAssets = usePerpsEnabledAssets()
 
   const displayOptions = useMemo(
     () => [
@@ -24,7 +25,7 @@ export default function PerpsOverviewPage() {
         ),
         value: 'total',
       },
-      ...PERPS_ASSETS_TEST.map((asset) => ({
+      ...(perpsAssets || []).map((asset) => ({
         label: (
           <div className='flex w-full gap-2'>
             <AssetImage asset={asset} className='w-4 h-4' />
@@ -36,7 +37,7 @@ export default function PerpsOverviewPage() {
         value: asset.denom,
       })),
     ],
-    [],
+    [perpsAssets],
   )
 
   return (

@@ -255,6 +255,7 @@ interface ChainConfig {
   perps: boolean
   farm: boolean
   anyAsset: boolean
+  slinky: boolean
 }
 
 interface ContractClients {
