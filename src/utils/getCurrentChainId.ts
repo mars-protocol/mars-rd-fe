@@ -5,12 +5,7 @@ import { ChainInfoID } from 'types/enums'
 export const getCurrentChainId = () => {
   const defaultChainId = chains[ChainInfoID.Osmosis1].id
   let chainId = defaultChainId
-  let subdomain = ''
   const localStorageChainId = localStorage.getItem(LocalStorageKeys.CURRENT_CHAIN_ID) as ChainInfoID
-
-  if (window) {
-    subdomain = window.location.hostname.split('.')[0]
-  }
 
   if (!localStorageChainId || localStorageChainId === null) {
     if (chainId !== defaultChainId) return chainId
