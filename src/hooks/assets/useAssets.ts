@@ -27,7 +27,7 @@ async function mapPricesToAllAssets(assets: Asset[], chainConfig: ChainConfig) {
       price:
         asset.denom === 'usd'
           ? BNCoin.fromCoin({ denom: 'usd', amount: '1' })
-          : prices.find((price) => price.denom === asset.denom) ?? asset.price,
+          : (prices.find((price) => price.denom === asset.denom) ?? asset.price),
     }
   })
 }

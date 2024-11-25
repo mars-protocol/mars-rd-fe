@@ -1,12 +1,12 @@
 import AssetImage from 'components/common/assets/AssetImage'
 import Card from 'components/common/Card'
-import Divider from 'components/common/Divider'
-import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
-import Text from 'components/common/Text'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
+import Divider from 'components/common/Divider'
+import Text from 'components/common/Text'
+import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import { TIMEFRAME } from 'constants/timeframe'
-import { useMemo, useState } from 'react'
 import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
+import { useMemo, useState } from 'react'
 
 export default function PerpsOverviewPage() {
   const [selectedOption, setSelectedOption] = useState<string>('total')
@@ -30,7 +30,7 @@ export default function PerpsOverviewPage() {
           <div className='flex w-full gap-2'>
             <AssetImage asset={asset} className='w-4 h-4' />
             <Text size='sm' className='leading-4'>
-              {asset.name} Statistics
+              {asset.symbol}
             </Text>
           </div>
         ),
@@ -42,7 +42,7 @@ export default function PerpsOverviewPage() {
 
   return (
     <div className='w-full'>
-      <Card className='mt-5 p-1 md:p-4 bg-white/5'>
+      <Card className='p-1 mt-5 md:p-4 bg-white/5'>
         <SelectionControlPanel
           selectOptions={displayOptions}
           defaultSelectValue={selectedOption}

@@ -20,17 +20,6 @@ export default function StatsMetrics() {
           label: 'Volume',
           isCurrency: true,
           formatOptions: {
-            suffix: '+',
-            maxDecimals: 0,
-            thousandSeparator: false,
-            abbreviated: true,
-          },
-        },
-        {
-          value: BN(433000),
-          label: 'Transactions',
-          formatOptions: {
-            suffix: '+',
             maxDecimals: 0,
             thousandSeparator: false,
             abbreviated: true,
@@ -40,7 +29,6 @@ export default function StatsMetrics() {
           value: BN(43303485),
           label: 'Unique Wallets',
           formatOptions: {
-            suffix: '+',
             maxDecimals: 0,
             thousandSeparator: false,
             abbreviated: true,
@@ -51,14 +39,13 @@ export default function StatsMetrics() {
           label: 'Treasury',
           isCurrency: true,
           formatOptions: {
-            suffix: '+',
             maxDecimals: 0,
             thousandSeparator: false,
             abbreviated: true,
           },
         },
       ]}
-      className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
+      className='w-full gap-5 mx-auto sm:gap-10 md:gap-18 sm:p-10'
       numberClassName='text-2xl md:text-5xl'
     />
   )
