@@ -5,10 +5,10 @@ import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { CircularProgress } from 'components/common/CircularProgress'
 import Text from 'components/common/Text'
-import Pagination from 'components/main/liquidations/table/Pagination'
-import Account from 'components/main/liquidations/table/cell/Account'
-import Asset from 'components/main/liquidations/table/cell/Asset'
-import LiquidationPrice from 'components/main/liquidations/table/cell/LiquidationPrice'
+import Pagination from 'components/main/liquidations/Table/Pagination'
+import Account from 'components/main/liquidations/Table/Cell/Account'
+import Asset from 'components/main/liquidations/Table/Cell/Asset'
+import LiquidationPrice from 'components/main/liquidations/Table/Cell/LiquidationPrice'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)

@@ -99,17 +99,31 @@ export default function PerpsMarketStats(props: Props) {
   if (!perpsStats || error) return <ChartError handleRefetch={handleRefetch} />
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='w-full flex flex-col gap-4'>
       <StatisticsPanel data={perpsStats} loading={perpsStatsLoading} />
-      <div className='flex gap-2'>
-        <div className='w-1/2 flex flex-col gap-2'>
+
+      <div className='flex flex-col md:flex-row gap-4'>
+        <div className='w-full md:w-1/2'>
           <DynamicLineChart
             data={dailyTradingVolumeData}
             lines={PERPS_CHART_CONFIGS.tradingVolume}
             height='h-70'
             title='Daily Trading Volume'
           />
-          {!isGlobalStats && (
+        </div>
+        <div className='w-full md:w-1/2'>
+          <DynamicLineChart
+            data={feesData}
+            lines={PERPS_CHART_CONFIGS.tradingFees}
+            height='h-70'
+            title='Trading and Net Funding Fees'
+          />
+        </div>
+      </div>
+
+      <div className='flex flex-col md:flex-row gap-4'>
+        <div className='w-full md:w-1/2'>
+          {!isGlobalStats ? (
             <DynamicLineChart
               data={transformedFundingRateData}
               lines={[
@@ -132,8 +146,7 @@ export default function PerpsMarketStats(props: Props) {
                 </div>
               }
             />
-          )}
-          {isGlobalStats && (
+          ) : (
             <DynamicLineChart
               data={notionalLiquidatedData}
               lines={PERPS_CHART_CONFIGS.notional}
@@ -142,13 +155,7 @@ export default function PerpsMarketStats(props: Props) {
             />
           )}
         </div>
-        <div className='w-1/2 flex flex-col gap-2'>
-          <DynamicLineChart
-            data={feesData}
-            lines={PERPS_CHART_CONFIGS.tradingFees}
-            height='h-70'
-            title='Trading and Net Funding Fees'
-          />
+        <div className='w-full md:w-1/2'>
           <DynamicLineChart
             data={imbalanceRatioData}
             lines={PERPS_CHART_CONFIGS.imbalanceRatio}
@@ -157,12 +164,14 @@ export default function PerpsMarketStats(props: Props) {
           />
         </div>
       </div>
+
       <DynamicLineChart
         data={skewData}
         lines={PERPS_CHART_CONFIGS.skew}
         height='h-80'
         title='Skew and Max Skew'
       />
+
       <ComposedChart
         data={openInterestData}
         title='Open Interest and Max Open Interest'
@@ -170,36 +179,42 @@ export default function PerpsMarketStats(props: Props) {
         config={PERPS_CHART_CONFIGS.openInterest}
         height='h-80'
       />
+
       <SynchronizedChart
         data={transformedPnLData}
         title='Realized and Unrealized PnL'
         loading={perpsStatsLoading}
         config={PERPS_CHART_CONFIGS.pnl}
       />
+
       {!isGlobalStats && (
         <ComposedChart
           data={combinedMetricsData}
           title='Skew, Max Skew & Funding Rate'
           loading={perpsStatsLoading}
           config={PERPS_CHART_CONFIGS.combinedChart}
-          height='h-80'
+          height='h-90'
         />
       )}
 
       {isGlobalStats && (
-        <div className='flex gap-2'>
-          <DynamicLineChart
-            data={vaultData}
-            lines={PERPS_CHART_CONFIGS.vault}
-            height='h-70'
-            title='Vault'
-          />
-          <DynamicLineChart
-            data={vaultData}
-            lines={PERPS_CHART_CONFIGS.vaultCollateralization}
-            height='h-70'
-            title='Vault Collateralization Ratio'
-          />
+        <div className='flex flex-col md:flex-row gap-4'>
+          <div className='w-full md:w-1/2'>
+            <DynamicLineChart
+              data={vaultData}
+              lines={PERPS_CHART_CONFIGS.vault}
+              height='h-70'
+              title='Vault'
+            />
+          </div>
+          <div className='w-full md:w-1/2'>
+            <DynamicLineChart
+              data={vaultData}
+              lines={PERPS_CHART_CONFIGS.vaultCollateralization}
+              height='h-70'
+              title='Vault Collateralization Ratio'
+            />
+          </div>
         </div>
       )}
     </div>

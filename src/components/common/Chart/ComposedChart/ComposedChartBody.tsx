@@ -93,7 +93,7 @@ export default function ComposedChartBody(props: Props) {
   const hasSecondaryAxis = config.secondary && config.secondary.length > 0
 
   return (
-    <div className={classNames('w-full', height, hasSecondaryAxis ? 'ml-1' : '-ml-2')}>
+    <div className={classNames(height, hasSecondaryAxis ? 'ml-0' : '-ml-4')}>
       <ResponsiveContainer width='100%' height='100%'>
         <ComposedChart
           data={reversedData}

@@ -42,7 +42,7 @@ export default function PerpsOverviewPage() {
 
   return (
     <div className='w-full'>
-      <Card className='mt-5 p-4 bg-white/5'>
+      <Card className='mt-5 p-1 md:p-4 bg-white/5'>
         <SelectionControlPanel
           selectOptions={displayOptions}
           defaultSelectValue={selectedOption}
@@ -51,11 +51,8 @@ export default function PerpsOverviewPage() {
           selectedTimeframe={selectedTimeframe}
           onTimeframeSelect={setSelectedTimeframe}
         />
-        <Divider className='mt-2' />
-
-        <div className='flex flex-col gap-4 mt-4'>
-          <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
-        </div>
+        <Divider className='mt-2 mb-4' />
+        <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
       </Card>
     </div>
   )

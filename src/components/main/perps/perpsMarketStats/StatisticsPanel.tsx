@@ -80,10 +80,10 @@ export default function StatisticsPanel(props: Props) {
   ]
 
   return (
-    <div className='flex items-center justify-center gap-2'>
+    <div className='flex flex-wrap md:flex-nowrap items-center justify-center gap-2'>
       {metrics.map((metric, index) => {
         return (
-          <Card className='text-center py-3 w-45 bg-white/5' key={index}>
+          <Card className='text-center py-3 w-[calc(50%-0.5rem)] md:w-45 bg-white/5' key={index}>
             {loading ? (
               <div className='flex items-center justify-center px-8 w-full h-8'>
                 <Loading />
