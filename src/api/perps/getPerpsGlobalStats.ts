@@ -1,7 +1,12 @@
+import chains from 'chains'
 import { DEFAULT_PERPS_GLOBAL_DATA } from 'constants/chartData'
 import { getApiBaseUrl } from 'utils/api'
+import { getCurrentChainId } from 'utils/getCurrentChainId'
 
 export default async function getPerpsGlobalStats(timeframe: string = '7') {
+  const chainId = getCurrentChainId()
+  const chainConfig = chains[chainId]
+  if (!chainConfig.perps) return
   try {
     const baseUrl = getApiBaseUrl()
     const url = new URL(

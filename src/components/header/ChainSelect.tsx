@@ -5,16 +5,15 @@ import { useSWRConfig } from 'swr'
 
 import chains from 'chains'
 import Button from 'components/common/Button'
-import { ChevronDown, Cross } from 'components/common/Icons'
+import { ChevronDown } from 'components/common/Icons'
 import Overlay from 'components/common/Overlay'
-import Radio from 'components/common/Radio'
 import Text from 'components/common/Text'
 import ChainLogo from 'components/common/chain/ChainLogo'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import useToggle from 'hooks/common/useToggle'
 import useCurrentChainId from 'hooks/localStorage/useCurrentChainId'
 import useStore from 'store'
-import { ChainInfoID, NETWORK } from 'types/enums'
+import { ChainInfoID } from 'types/enums'
 import { getRoute } from 'utils/route'
 
 interface Props {
@@ -23,17 +22,17 @@ interface Props {
 }
 
 interface ChainOptionProps {
-  chainConfig?: ChainConfig
-  onSelect?: (chain: ChainConfig) => void
+  chain: ChainConfig
   active: boolean
+  index: number
 }
 
 export default function ChainSelect(props: Props) {
   const [showMenu, setShowMenu] = useToggle()
-  const chainConfig = useChainConfig()
   const { mutate } = useSWRConfig()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const chainConfig = useChainConfig()
 
   const [_, setCurrentChainId] = useCurrentChainId()
 
@@ -43,9 +42,11 @@ export default function ChainSelect(props: Props) {
       setCurrentChainId(chainConfig.id)
       mutate(() => true)
       useStore.setState({
+        client: undefined,
         mobileNavExpanded: false,
         chainConfig,
       })
+      console.log('chainConfig', chainConfig.perps)
       // Navigate to perps if supported, otherwise main
       navigate(getRoute(chainConfig.perps ? 'perps' : 'main', searchParams))
     },
@@ -53,46 +54,34 @@ export default function ChainSelect(props: Props) {
   )
 
   const ChainOption = (props: ChainOptionProps) => {
-    const { onSelect, active, chainConfig } = props
+    const { active, chain, index } = props
     return (
       <div
         className={classNames(
-          'w-full px-4 py-3 flex gap-3 group/chain text-white items-center',
-          active ? 'pointer-events-none' : 'opacity-60 hover:opacity-100',
+          'flex items-center gap-2 px-4 py-3 bg-white/10 border-white/20 relative',
+          active ? 'bg-white/30 pointer-events-none' : 'hover:bg-white/20',
+          index > 0 && 'border-t',
         )}
         role='button'
-        onClick={
-          onSelect && chainConfig
-            ? () => onSelect(chainConfig)
-            : () => {
-                if (chainConfig) {
-                  setCurrentChainId(chainConfig.id)
-                  useStore.setState({
-                    chainConfig,
-                    mobileNavExpanded: false,
-                  })
-                }
-              }
-        }
+        onClick={() => selectChain(chain)}
       >
-        <Radio active={active} className='group-hover/account:opacity-100' />
-        <Text size='sm'>Dashboard</Text>
+        <ChainLogo chainID={chain.id} className='w-5' />
+        <Text>{chain.name}</Text>
       </div>
     )
   }
 
   const availableChains = useMemo(() => {
-    const currentNetworkType = process.env.NEXT_PUBLIC_NETWORK ?? NETWORK.TESTNET
     const availableChains: { chainId: ChainInfoID; name: string }[] = []
 
     Object.entries(chains).forEach(([chainId, chainConfig]) => {
-      if (chainConfig.network !== currentNetworkType) return
       availableChains.push({ chainId: chainId as ChainInfoID, name: chainConfig.name })
     })
 
     return availableChains
   }, [])
 
+  if (!chainConfig) return null
   return (
     <div className={classNames('relative', props.className)}>
       <Button
@@ -118,31 +107,10 @@ export default function ChainSelect(props: Props) {
       >
         {availableChains.map((chain, index) => (
           <React.Fragment key={chain.chainId}>
-            <div
-              className={classNames(
-                'flex items-center gap-2 px-4 py-3 border-b bg-white/10 border-white/20 relative',
-                index > 0 && 'border-t',
-              )}
-            >
-              <ChainLogo chainID={chain.chainId} className='w-5' />
-              <Text>{chain.name}</Text>
-              {props.withText && index === 0 && (
-                <div className='absolute top-2 right-2'>
-                  <Button
-                    onClick={() => setShowMenu(false)}
-                    leftIcon={<Cross />}
-                    iconClassName='w-3'
-                    color='tertiary'
-                    className='w-8 h-8 '
-                    size='xs'
-                  />
-                </div>
-              )}
-            </div>
             {!!chains[chain.chainId] && (
               <ChainOption
-                chainConfig={chains[chain.chainId]}
-                onSelect={() => selectChain(chains[chain.chainId])}
+                index={index}
+                chain={chains[chain.chainId]}
                 active={chainConfig.name === chain.name}
               />
             )}

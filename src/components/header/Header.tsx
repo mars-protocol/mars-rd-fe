@@ -1,11 +1,11 @@
 import classNames from 'classnames'
-import { isMobile } from 'react-device-detect'
 import { Logo } from 'components/common/Icons'
 import ChainSelect from 'components/header/ChainSelect'
 import DesktopNavigation from 'components/header/navigation/desktop/DesktopNavigation'
 import { NavLink } from 'components/header/navigation/desktop/NavLink'
 import MobileNavigation from 'components/header/navigation/mobile/MobileNavigation'
 import MobileNavigationToggle from 'components/header/navigation/mobile/MobileNavigationToggle'
+import { isMobile } from 'react-device-detect'
 
 const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
   {

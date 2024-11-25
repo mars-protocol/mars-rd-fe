@@ -1,9 +1,10 @@
 import chains from 'chains'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
-import { getCurrentChainId } from 'utils/getCurrentChainId'
+import useStore from 'store'
 
 export default function useChainConfig() {
-  const chainId = getCurrentChainId()
+  const chainConfig = useStore((s) => s.chainConfig)
+  const chainId = chainConfig.id
 
   const rpcEndpoint =
     localStorage.getItem(`${chainId}/${LocalStorageKeys.RPC_ENDPOINT}`) ??
@@ -13,9 +14,9 @@ export default function useChainConfig() {
     chains[chainId].endpoints.rest
 
   return {
-    ...chains[chainId],
+    ...chainConfig,
     endpoints: {
-      ...chains[chainId].endpoints,
+      ...chainConfig.endpoints,
       rpc: rpcEndpoint,
       rest: restEndpoint,
     },

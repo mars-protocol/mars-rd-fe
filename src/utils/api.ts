@@ -1,7 +1,9 @@
 import { API_BASE_URLS } from 'constants/endpoints'
-import { NETWORK } from 'types/enums'
+import { ChainInfoID, NETWORK } from 'types/enums'
+import { getCurrentChainId } from 'utils/getCurrentChainId'
 
 export function getApiBaseUrl() {
-  const networkType = process.env.NEXT_PUBLIC_NETWORK ?? NETWORK.TESTNET
+  const chainId = getCurrentChainId()
+  const networkType = chainId === ChainInfoID.Pion1 ? NETWORK.TESTNET : NETWORK.MAINNET
   return networkType === NETWORK.MAINNET ? API_BASE_URLS.MAINNET : API_BASE_URLS.TESTNET
 }
