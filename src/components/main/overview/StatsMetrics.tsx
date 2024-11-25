@@ -1,6 +1,5 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
 import { GridGlobe } from 'components/common/Icons'
-import { BN } from 'utils/helpers'
 
 export default function StatsMetrics() {
   return (
@@ -13,10 +12,11 @@ export default function StatsMetrics() {
       }
       title='MARS PROTOCOL'
       copy='Explore the Mars Protocol Stats Dashboard to track key performance metrics.'
-      metrics={[
-        // TODO: Replace with actual data
-        {
-          value: BN(121422433),
+      metrics={
+        [
+          // TODO: Replace with actual data
+          /*{
+          value: BN(0),
           label: 'Volume',
           isCurrency: true,
           formatOptions: {
@@ -26,7 +26,7 @@ export default function StatsMetrics() {
           },
         },
         {
-          value: BN(43303485),
+          value: BN(0),
           label: 'Unique Wallets',
           formatOptions: {
             maxDecimals: 0,
@@ -35,7 +35,7 @@ export default function StatsMetrics() {
           },
         },
         {
-          value: BN(539093),
+          value: BN(0),
           label: 'Treasury',
           isCurrency: true,
           formatOptions: {
@@ -43,8 +43,9 @@ export default function StatsMetrics() {
             thousandSeparator: false,
             abbreviated: true,
           },
-        },
-      ]}
+        },*/
+        ]
+      }
       className='w-full gap-5 mx-auto sm:gap-10 md:gap-18 sm:p-10'
       numberClassName='text-2xl md:text-5xl'
     />
