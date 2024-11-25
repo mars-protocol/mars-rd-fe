@@ -25,13 +25,6 @@ import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 
-interface LineConfig {
-  dataKey: string
-  color: string
-  name: string
-  isPercentage?: boolean
-}
-
 interface Props {
   data: MergedChartData[]
   lines: LineConfig[]
@@ -119,6 +112,7 @@ export default function DynamicLineChartBody(props: Props) {
               dot={false}
               strokeWidth={2}
               isAnimationActive={!reduceMotion}
+              strokeDasharray={lineConfig.strokeDasharray}
             />
           ))}
 

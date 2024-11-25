@@ -161,11 +161,11 @@ export default function PerpsMarketStats(props: Props) {
         data={skewData}
         lines={PERPS_CHART_CONFIGS.skew}
         height='h-80'
-        title='Skew'
+        title='Skew and Max Skew'
       />
       <ComposedChart
         data={openInterestData}
-        title='Open Interest and Max Net OI'
+        title='Open Interest and Max Open Interest'
         loading={perpsStatsLoading}
         config={PERPS_CHART_CONFIGS.openInterest}
         height='h-80'

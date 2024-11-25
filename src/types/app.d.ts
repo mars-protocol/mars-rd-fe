@@ -1496,6 +1496,7 @@ interface LineConfig {
   color: string
   name: string
   isPercentage?: boolean
+  strokeDasharray?: string
 }
 
 interface ChartConfig {
@@ -1527,8 +1528,9 @@ interface PerpsOpenInterest {
   long: DateValue[]
   short: DateValue[]
   total: DateValue[]
-  oi_max_oi_long_ratio: DateValue[]
-  oi_max_oi_short_ratio: DateValue[]
+  max_oi_long: DateValue[]
+  max_oi_short: DateValue[]
+  max_oi_net: DateValue[]
 }
 
 interface PerpsSkewData {

@@ -209,6 +209,7 @@ export default function ComposedChartBody(props: Props) {
               strokeWidth={2}
               dot={false}
               isAnimationActive={!reduceMotion}
+              strokeDasharray={config.line.strokeDasharray}
             />
           )}
 
@@ -223,6 +224,7 @@ export default function ComposedChartBody(props: Props) {
               strokeWidth={2}
               dot={false}
               isAnimationActive={!reduceMotion}
+              strokeDasharray={line.strokeDasharray}
             />
           ))}
           {config.secondary?.map((line) => (
@@ -236,6 +238,7 @@ export default function ComposedChartBody(props: Props) {
               strokeWidth={2}
               dot={false}
               isAnimationActive={!reduceMotion}
+              strokeDasharray={line.strokeDasharray}
             />
           ))}
         </ComposedChart>
