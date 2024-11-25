@@ -1,15 +1,13 @@
 import StatsMetrics from 'components/main/overview/StatsMetrics'
 import TokenMetrics from 'components/main/overview/TokenMetrics'
-import DropdownChart from 'components/main/overview/Chart/DropdownChart'
-import TabChart from 'components/main/overview/Chart/TabChart'
+import OverviewCharts from 'components/main/overview/OverviewCharts'
 
 export default function MainPage() {
   return (
-    <div className='flex w-full flex-wrap'>
+    <div className='flex w-full flex-wrap gap-6'>
       <StatsMetrics />
       <TokenMetrics />
-      <TabChart />
-      <DropdownChart className='mt-10 w-full' />
+      <OverviewCharts />
     </div>
   )
 }

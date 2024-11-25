@@ -72,3 +72,28 @@ export function getGovernanceUrl(walletId: WalletID) {
       return DocURL.COUNCIL_KEPLR
   }
 }
+
+export function transformDateValueArray(
+  data: DateValue[],
+  key: string,
+  formatFn?: (value: number) => number,
+) {
+  return data.map((item) => ({
+    date: item.date,
+    [key]: formatFn ? formatFn(Number(item.value)) : Number(item.value),
+  }))
+}
+
+export function mergeDateValueArrays(...arrays: MergedChartData[][]): MergedChartData[] {
+  const mergedData: { [date: string]: MergedChartData } = {}
+
+  arrays.forEach((array) => {
+    array.forEach((entry) => {
+      const date = String(entry.date)
+      mergedData[date] ||= { date }
+      Object.assign(mergedData[date], entry)
+    })
+  })
+
+  return Object.values(mergedData)
+}

@@ -7,9 +7,10 @@ import Text from 'components/common/Text'
 import ChainSelect from 'components/header/ChainSelect'
 import useStore from 'store'
 import { getPage, getRoute } from 'utils/route'
+import useChainConfig from 'hooks/chain/useChainConfig'
 
 interface Props {
-  menuTree: () => MenuTreeEntry[]
+  menuTree: (chainConfig: ChainConfig) => MenuTreeEntry[]
 }
 
 export default function MobileNavigation(props: Props) {
@@ -19,8 +20,9 @@ export default function MobileNavigation(props: Props) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const currentPage = getPage(pathname)
+  const chainConfig = useChainConfig()
 
-  const menu = useMemo(() => menuTree(), [menuTree])
+  const menu = useMemo(() => menuTree(chainConfig), [menuTree, chainConfig])
 
   useEffect(() => {
     if (mobileNavExpanded) {

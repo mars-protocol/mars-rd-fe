@@ -34,7 +34,7 @@ export default function MetricsCard(props: Props) {
 
   return (
     <Card
-      className={classNames('flex flex-col justify-between mx-auto my-5 p-5', className)}
+      className={classNames('flex flex-col justify-between mx-auto p-5', className)}
       title={<h1 className='text-4xl md:text-5xl font-bold'>{title}</h1>}
     >
       {!hideBackground && (

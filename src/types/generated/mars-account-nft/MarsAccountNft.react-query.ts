@@ -12,7 +12,6 @@ import {
   Uint128,
   InstantiateMsg,
   ExecuteMsg,
-  MigrateV1ToV2,
   Binary,
   Expiration,
   Timestamp,
@@ -455,12 +454,12 @@ export function useMarsAccountNftOwnerOfQuery<TData = OwnerOfResponse>({
     },
   )
 }
-export interface MarsAccountNftNextIdQuery<TData> extends MarsAccountNftReactQuery<string, TData> {}
-export function useMarsAccountNftNextIdQuery<TData = string>({
+export interface MarsAccountNftNextIdQuery<TData> extends MarsAccountNftReactQuery<String, TData> {}
+export function useMarsAccountNftNextIdQuery<TData = String>({
   client,
   options,
 }: MarsAccountNftNextIdQuery<TData>) {
-  return useQuery<string, Error, TData>(
+  return useQuery<String, Error, TData>(
     marsAccountNftQueryKeys.nextId(client?.contractAddress),
     () => (client ? client.nextId() : Promise.reject(new Error('Invalid client'))),
     {
@@ -644,26 +643,6 @@ export function useMarsAccountNftTransferNftMutation(
     options,
   )
 }
-export interface MarsAccountNftMigrateMutation {
-  client: MarsAccountNftClient
-  msg: MigrateV1ToV2
-  args?: {
-    fee?: number | StdFee | 'auto'
-    memo?: string
-    funds?: Coin[]
-  }
-}
-export function useMarsAccountNftMigrateMutation(
-  options?: Omit<
-    UseMutationOptions<ExecuteResult, Error, MarsAccountNftMigrateMutation>,
-    'mutationFn'
-  >,
-) {
-  return useMutation<ExecuteResult, Error, MarsAccountNftMigrateMutation>(
-    ({ client, msg, args: { fee, memo, funds } = {} }) => client.migrate(msg, fee, memo, funds),
-    options,
-  )
-}
 export interface MarsAccountNftBurnMutation {
   client: MarsAccountNftClient
   msg: {
@@ -689,7 +668,6 @@ export function useMarsAccountNftBurnMutation(
 export interface MarsAccountNftMintMutation {
   client: MarsAccountNftClient
   msg: {
-    tokenId?: string
     user: string
   }
   args?: {

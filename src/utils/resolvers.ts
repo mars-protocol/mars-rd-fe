@@ -108,56 +108,56 @@ export function resolvePerpsPositions(
 
   return perpPositions.map((position) => {
     return {
+      type: 'market',
       denom: position.denom,
       baseDenom: position.base_denom,
       amount: BN(position.size as any), // Amount is negative for SHORT positions
       tradeDirection: BN(position.size as any).isNegative() ? 'short' : 'long',
-      closingFeeRate: BN(position.closing_fee_rate),
       entryPrice: BN(position.entry_exec_price),
       currentPrice: BN(position.current_exec_price),
       pnl: {
         net: BNCoin.fromDenomAndBigNumber(
           position.base_denom,
-          BN(position.unrealised_pnl.pnl as any)
+          BN(position.unrealized_pnl.pnl as any)
             .div(basePrice)
-            .plus(position.realised_pnl.pnl as any),
+            .plus(position.realized_pnl.pnl as any),
         ),
         realized: {
           net: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.realised_pnl.pnl as any),
+            BN(position.realized_pnl.pnl as any),
           ),
           price: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.realised_pnl.price_pnl as any),
+            BN(position.realized_pnl.price_pnl as any),
           ),
           funding: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.realised_pnl.accrued_funding as any),
+            BN(position.realized_pnl.accrued_funding as any),
           ),
           fees: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.realised_pnl.closing_fee as any).plus(
-              position.realised_pnl.opening_fee as any,
+            BN(position.realized_pnl.closing_fee as any).plus(
+              position.realized_pnl.opening_fee as any,
             ),
           ),
         },
         unrealized: {
           net: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.unrealised_pnl.pnl as any),
+            BN(position.unrealized_pnl.pnl as any),
           ),
           price: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.unrealised_pnl.price_pnl as any),
+            BN(position.unrealized_pnl.price_pnl as any),
           ),
           funding: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.unrealised_pnl.accrued_funding as any),
+            BN(position.unrealized_pnl.accrued_funding as any),
           ),
           fees: BNCoin.fromDenomAndBigNumber(
             position.base_denom,
-            BN(position.unrealised_pnl.closing_fee as any),
+            BN(position.unrealized_pnl.closing_fee as any),
           ),
         },
       },

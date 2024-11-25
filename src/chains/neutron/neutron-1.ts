@@ -4,12 +4,18 @@ import { ChainInfoID, NETWORK } from 'types/enums'
 
 const Neutron1: ChainConfig = {
   id: ChainInfoID.Neutron1,
-  stables: ['ibc/F082B65C88E4B6D5EF1DB243CDA1D331D002759E938A0F5CD3FFDC5D53B3E349'],
+  isOsmosis: false,
+  name: 'Neutron',
+  stables: ['ibc/B559A80D62249C8AA07A380E2A2BEA6E5CA9A6F079C912C3A9E9B494105E4F81'],
+  campaignAssets: [],
+  deprecated: [
+    'ibc/3649CE0C8A2C79048D8C6F31FF18FA69C9BC7EB193512E0BD03B733011290445',
+    'ibc/F082B65C88E4B6D5EF1DB243CDA1D331D002759E938A0F5CD3FFDC5D53B3E349',
+  ],
   defaultTradingPair: {
     buy: 'untrn',
-    sell: 'ibc/F082B65C88E4B6D5EF1DB243CDA1D331D002759E938A0F5CD3FFDC5D53B3E349',
+    sell: 'ibc/B559A80D62249C8AA07A380E2A2BEA6E5CA9A6F079C912C3A9E9B494105E4F81',
   },
-  name: 'Neutron',
   contracts: {
     redBank: 'neutron1n97wnm7q6d2hrcna3rqlnyqw2we6k0l8uqvmyqq6gsml92epdu7quugyph',
     incentives: 'neutron1aszpdh35zsaz0yj80mz7f5dtl9zq5jfl8hgm094y0j0vsychfekqxhzd39',
@@ -23,14 +29,15 @@ const Neutron1: ChainConfig = {
   endpoints: {
     routes: 'https://app.astroport.fi/api/routes',
     rpc: process.env.NEXT_PUBLIC_NEUTRON_RPC ?? 'https://rpc-kralum.neutron-1.neutron.org',
+    fallbackRpc: 'https://rpc.novel.remedy.tm.p2p.org',
     rest: process.env.NEXT_PUBLIC_NEUTRON_REST ?? 'https://rest-kralum.neutron-1.neutron.org',
     swap: 'https://neutron.astroport.fi/swap',
-    pools: '', //TODO: ⛓️ Implement this
     explorer: 'https://mintscan.io/neutron',
-    dexAssets: 'https://api.astroport.fi/api/tokens?chainId=neutron-1',
+    dexAssets: 'https://neutron-cache-api.onrender.com/neutron-1/tokens',
+    dexPools: 'https://neutron-cache-api.onrender.com/neutron-1/pools',
+    gasPrices: '/feemarket/v1/gas_price/untrn',
     aprs: {
       vaults: '',
-      stride: 'https://edge.stride.zone/api/stake-stats',
     },
   },
   network: NETWORK.MAINNET,
@@ -43,18 +50,13 @@ const Neutron1: ChainConfig = {
     coinMinimalDenom: 'untrn',
     coinDecimals: 6,
     coinGeckoId: 'neutron',
-    gasPriceStep: {
-      low: 0,
-      average: 0.015,
-      high: 0.025,
-    },
   },
   features: ['ibc-transfer', 'ibc-go'],
   gasPrice: '0.015untrn',
-  hls: false,
   perps: false,
-  farm: false,
+  farm: true,
   anyAsset: true,
+  slinky: false,
 }
 
 export default Neutron1

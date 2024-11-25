@@ -12,7 +12,7 @@ export default async function getMarsTokenPrice() {
     }
 
     const data = await response.json()
-    const marsToken = data.find((token: Token) => token.denom === MARS_DENOM)
+    const marsToken = data.tokens.find((token: Token) => token.denom === MARS_DENOM)
 
     if (!marsToken) {
       console.error('MARS token not found in the dataset.')

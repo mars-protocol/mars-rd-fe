@@ -78,7 +78,7 @@ export default function DisplayCurrency(props: Props) {
   const prefix = useMemo(() => {
     let positiveOrNegativePrefix = ''
     if (amount && amount > 0 && showSignPrefix) positiveOrNegativePrefix = '+'
-    if (amount && amount > 0 && showSignPrefix) positiveOrNegativePrefix = '-'
+    if (amount && amount < 0 && showSignPrefix) positiveOrNegativePrefix = '-'
     const approximationPrefix = isApproximation ? '~ ' : ''
     const smallerThanPrefix = isLessThanACent && !showDetailedPrice && !showZero ? '< ' : ''
 
@@ -113,7 +113,7 @@ export default function DisplayCurrency(props: Props) {
         isProfitOrLoss && amount && amount < 0 && 'text-loss',
         isProfitOrLoss && amount && amount > 0 && 'text-profit',
       )}
-      amount={isLessThanACent && !showDetailedPrice ? 0.01 : absoluteAmount ?? 0}
+      amount={isLessThanACent && !showDetailedPrice ? 0.01 : (absoluteAmount ?? 0)}
       options={{
         minDecimals: isUSD ? 2 : 0,
         maxDecimals: isLessThanACent && showDetailedPrice ? 6 : 2,

@@ -5,16 +5,11 @@ import { BN } from 'utils/helpers'
 
 export default function LiquidationsMetrics() {
   const { data: liquidityOverviewData, isLoading: isLiquidityOverviewDataLoading } =
-    useOverviewData()
-
-  const badDebt = liquidityOverviewData?.data[0].bad_debt
-  const walletsForLiquidation = liquidityOverviewData?.data[0].wallets_for_liquidation
-  const walletsAtRisk = liquidityOverviewData?.data[0].wallets_at_risk
-  const valueForLiquidation = liquidityOverviewData?.data[0].value_eligible_for_liquidation
+    useOverviewData('30')
 
   const liquidationMetrics: Metric[] = [
     {
-      value: BN(badDebt),
+      value: BN(liquidityOverviewData?.bad_debt || 0),
       label: 'Bad Debt',
       isCurrency: true,
       formatOptions: {
@@ -25,8 +20,8 @@ export default function LiquidationsMetrics() {
       tooltipContent: 'Borrowings with Collateral Ratio below 1',
     },
     {
-      value: BN(walletsForLiquidation),
-      label: 'Wallets For Liquidation',
+      value: BN(liquidityOverviewData?.accounts_for_liquidation || 0),
+      label: 'Accounts For Liquidation',
       formatOptions: {
         maxDecimals: 0,
         minDecimals: 0,
@@ -34,8 +29,8 @@ export default function LiquidationsMetrics() {
       tooltipContent: 'Wallets with Health Factor below 1',
     },
     {
-      value: BN(walletsAtRisk),
-      label: 'Wallets At Risk',
+      value: BN(liquidityOverviewData?.accounts_at_risk || 0),
+      label: 'Accounts At Risk',
       formatOptions: {
         maxDecimals: 0,
         minDecimals: 0,
@@ -44,7 +39,7 @@ export default function LiquidationsMetrics() {
       tooltipContent: 'Wallets with Health Factor below 1.2',
     },
     {
-      value: BN(valueForLiquidation),
+      value: BN(liquidityOverviewData?.value_eligible_for_liquidation || 0),
       label: 'Value Eligible For Liquidation',
       isCurrency: true,
       formatOptions: {
@@ -67,7 +62,7 @@ export default function LiquidationsMetrics() {
       copy='Explore the Mars Protocol Liquidation Dashboard to track performance metrics.'
       metrics={liquidationMetrics}
       isLoading={isLiquidityOverviewDataLoading}
-      className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto'
+      className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto mb-4'
       numberClassName='text-2xl md:text-5xl'
     />
   )

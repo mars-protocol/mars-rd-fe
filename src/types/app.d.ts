@@ -21,7 +21,7 @@ type ActionCoin = import('types/generated/mars-credit-manager/MarsCreditManager.
 
 type BNCoin = import('types/classes/BNCoin').BNCoin
 
-type PositionType = 'deposit' | 'borrow' | 'lend' | 'vault' | 'perp'
+type PositionType = 'deposit' | 'borrow' | 'lend' | 'vault' | 'perp' | 'market' | 'limit' | 'stop'
 type TableType = 'balances' | 'strategies' | 'perps'
 type AccountKind = import('types/generated/mars-credit-manager/MarsCreditManager.types').AccountKind
 
@@ -32,7 +32,7 @@ interface Account {
   lends: BNCoin[]
   vaults: DepositedVault[]
   stakedAstroLps: BNCoin[]
-  perps?: PerpsPosition[]
+  perps: PerpsPosition[]
   perpsVault?: PerpsVaultPositions | null
   kind: AccountKind
 }
@@ -205,8 +205,11 @@ interface Bridge {
 }
 
 interface ChainConfig {
+  isOsmosis: boolean
   lp?: Asset[]
   stables: string[]
+  deprecated?: string[]
+  campaignAssets?: AssetCampaignInfo[]
   defaultTradingPair: TradingPair
   bech32Config: import('@keplr-wallet/types').Bech32Config
   contracts: {
@@ -224,24 +227,21 @@ interface ChainConfig {
     coinMinimalDenom: string
     coinDecimals: number
     coinGeckoId: string
-    gasPriceStep: {
-      low: number
-      average: number
-      high: number
-    }
   }
   endpoints: {
     rest: string
     rpc: string
+    fallbackRpc: string
     swap: string
     explorer: string
     pools?: string
     routes: string
     dexAssets: string
     dexPools?: string
+    gasPrices?: string
     aprs: {
       vaults: string
-      stride: string
+      perpsVault?: string
     }
   }
   dexName: string
@@ -252,10 +252,10 @@ interface ChainConfig {
   name: string
   network: 'mainnet' | 'testnet'
   vaults: VaultMetaData[]
-  hls: boolean
   perps: boolean
   farm: boolean
   anyAsset: boolean
+  slinky: boolean
 }
 
 interface ContractClients {
@@ -307,7 +307,8 @@ interface PerpsPosition {
   pnl: PerpsPnL
   currentPrice: BigNumber
   entryPrice: BigNumber
-  closingFeeRate: BigNumber
+  type: PositionType
+  reduce_only?: boolean
 }
 
 interface PerpPositionRow extends PerpsPosition {
@@ -361,7 +362,7 @@ interface PythUpdateExecuteMsg {
   update_price_feeds: { data: string[] }
 }
 
-type Page = 'main' | 'liquidations'
+type Page = 'main' | 'liquidations' | 'perps'
 
 type OsmosisRouteResponse = {
   amount_in: {
@@ -1318,8 +1319,15 @@ interface AstroportAsset {
   totalLiquidityUSD: number
   dayVolumeUSD: number
 }
+interface AstroportAssetsCached {
+  tokens: AstroportAsset[]
+}
 
 type PoolType = 'xyk' | 'concentrated' | 'stable' | 'transmuter' | 'astroport-pair-xyk-sale-tax'
+
+interface AstroportPoolsCached {
+  pools: AstroportPool[]
+}
 
 interface AstroportPool {
   chainId: string
@@ -1414,25 +1422,10 @@ interface PoolInfo {
   yield: PoolYield
   weight: PoolWeight
 }
-type ChartDataItem = { date: string; value: number }
-type ChartData = ChartDataItem[]
 
-type BarChartDataItem = { name: string; date: string; [key: string]: string | number }
-type BarChartData = BarChartDataItem[]
-
-interface DummyData {
-  [key: string]: {
-    [key: string]: DateDoubleValue[]
-  }
-}
-
-interface DateDoubleValue {
-  date: string
-  value: number
-  value2: number
-}
 interface TooltipContentProps {
   payload: ChartDataPayloadProps[]
+  config?: ChartConfig
 }
 interface ChartDataPayloadProps {
   chartType?: string
@@ -1446,6 +1439,7 @@ interface ChartDataPayloadProps {
     date: string
     value: number
     label: string
+    isPercentage?: boolean
   }
   value: string | number
   stroke?: string
@@ -1473,6 +1467,7 @@ interface LiquidationDataItem {
   collateral_asset_won?: BNCoin
   debt_asset_repaid?: BNCoin
   protocol_fee_coin?: BNCoin
+  price_liquidated?: string
 }
 
 interface Token {
@@ -1485,4 +1480,122 @@ interface Token {
   priceUSD: number
   totalLiquidityUSD: number
   dayVolumeUSD: number
+}
+
+interface TimeframeOption {
+  value: string
+  label: string
+}
+
+interface MergedChartData {
+  date: string
+  [key: string]: string | number
+}
+interface LineConfig {
+  dataKey: string
+  color: string
+  name: string
+  isPercentage?: boolean
+  strokeDasharray?: string
+}
+
+interface ChartConfig {
+  bars?: LineConfig[]
+  line?: LineConfig
+  primary?: LineConfig[]
+  secondary?: LineConfig[]
+}
+interface DateValue {
+  date: string
+  value: string
+}
+
+interface OverviewData {
+  total_suppply: DateValue[]
+  total_borrow: DateValue[]
+  total_value_locked: DateValue[]
+  value_eligible_for_liquidation: string
+  accounts_for_liquidation: number
+  total_collateral_at_risk: string
+  accounts_at_risk: number
+  bad_debt: string
+}
+
+interface Overview {
+  data: OverviewData
+}
+interface PerpsOpenInterest {
+  long: DateValue[]
+  short: DateValue[]
+  total: DateValue[]
+  max_oi_long: DateValue[]
+  max_oi_short: DateValue[]
+  max_oi_net: DateValue[]
+}
+
+interface PerpsSkewData {
+  skew: DateValue[]
+  imbalance_long_ratio: DateValue[]
+  imbalance_short_ratio: DateValue[]
+  max_skew: DateValue[]
+}
+
+interface PerpsFundingAndPnL {
+  funding_rate: DateValue[]
+  unrealized_pnl: DateValue[]
+  realized_pnl: DateValue[]
+}
+
+interface PerpsFees {
+  trading_fee: DateValue[]
+  net_funding_fee: DateValue[]
+}
+
+interface PerpsVaultData {
+  deposit: DateValue[]
+  vault_value: DateValue[]
+  vault_collateralization_ratio: DateValue[]
+}
+
+interface PerpsGlobalData {
+  daily_trading_volume: DateValue[]
+  open_interest: PerpsOpenInterest
+  skew_data: PerpsSkewData
+  funding_and_pnl: PerpsFundingAndPnL
+  fees: PerpsFees
+  vault_data: PerpsVaultData
+  notional_liquidated: DateValue[]
+  notional_at_risk: string
+  accounts_at_risk: string
+  total_accounts: string
+}
+
+interface PerpsGlobalOverview {
+  global_overview: PerpsGlobalData
+}
+interface PerpsMarketData {
+  denom: string
+  daily_trading_volume: DateValue[]
+  open_interest: PerpsOpenInterest
+  skew_data: PerpsSkewData
+  funding_and_pnl: PerpsFundingAndPnL
+  fees: PerpsFees
+  notional_at_risk: string
+  accounts_at_risk: string
+  total_accounts: string
+}
+
+interface PerpsMarketOverview {
+  market_overview: {
+    data: PerpsMarketData[]
+  }
+}
+
+interface PerpsTradingFee {
+  baseDenom: string
+  price: BigNumber
+  fee: {
+    opening: BigNumber
+    closing: BigNumber
+  }
 }

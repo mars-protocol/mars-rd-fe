@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 
 import { BN_ZERO } from 'constants/math'
 import { ORACLE_DENOM } from 'constants/oracle'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import { BNCoin } from 'types/classes/BNCoin'
 import { VaultPosition } from 'types/generated/mars-credit-manager/MarsCreditManager.types'
 import { Positions } from 'types/generated/mars-rover-health-computer/MarsRoverHealthComputer.types'
@@ -214,7 +215,27 @@ export function accumulateAmounts(denom: string, coins: BNCoin[]): BigNumber {
   return coins.reduce((acc, coin) => acc.plus(getAmount(denom, [coin.toCoin()])), BN_ZERO)
 }
 
-export function convertAccountToPositions(account: Account): Positions {
+export function convertAccountToPositions(account: Account, assets: Asset[]): Positions {
+  const vaults = account.vaults.map(
+    (vault) =>
+      ({
+        vault: {
+          address: vault.address,
+        },
+        amount: {
+          locking: {
+            locked: vault.amounts.locked.toString(),
+            unlocking: [
+              {
+                id: 0,
+                coin: { amount: vault.amounts.unlocking.toString(), denom: vault.denoms.lp },
+              },
+            ],
+          },
+        },
+      }) as VaultPosition,
+  )
+
   return {
     account_kind: account.kind,
     account_id: account.id,
@@ -230,63 +251,38 @@ export function convertAccountToPositions(account: Account): Positions {
       denom: lend.denom,
     })),
     staked_astro_lps: account.stakedAstroLps?.map((stakedAstroLp) => stakedAstroLp.toCoin()) ?? [],
-    /* PERPS
     perps: account.perps.map((perpPosition) => {
+      const perpAsset = assets.find(byDenom(perpPosition.denom))
+      const perpAssetDecimals = perpAsset?.decimals ?? PRICE_ORACLE_DECIMALS
       return {
         base_denom: perpPosition.baseDenom,
-        closing_fee_rate: perpPosition.closingFeeRate.toString(),
-        current_price: perpPosition.currentPrice.toString(),
+        current_price: perpPosition.currentPrice.decimalPlaces(perpAssetDecimals).toString(),
         current_exec_price: perpPosition.currentPrice.toString(),
         denom: perpPosition.denom,
-        entry_price: perpPosition.entryPrice.toString(),
+        entry_price: perpPosition.entryPrice.decimalPlaces(perpAssetDecimals).toString(),
         entry_exec_price: perpPosition.entryPrice.toString(),
         size: perpPosition.amount.toString() as any,
-        unrealised_pnl: {
+        unrealized_pnl: {
           accrued_funding: perpPosition.pnl.unrealized.funding.amount
             .integerValue()
             .toString() as any,
           // TODO: There is now a double fee applied. This might be inaccurate (on the conservative side)
-          opening_fee: perpPosition.pnl.unrealized.fees.amount
-            .abs()
-            .integerValue()
-            .toString() as any,
-          closing_fee: perpPosition.pnl.unrealized.fees.amount
-            .abs()
-            .integerValue()
-            .toString() as any,
+          opening_fee: '0' as any,
+          closing_fee: perpPosition.pnl.unrealized.fees.amount.integerValue().toString() as any,
           pnl: perpPosition.pnl.unrealized.net.amount.integerValue().toString() as any,
           price_pnl: perpPosition.pnl.unrealized.price.amount.integerValue().toString() as any,
         },
-        realised_pnl: {
+        realized_pnl: {
           // This does not matter for the health calculation
           accrued_funding: perpPosition.pnl.realized.funding.amount.toString() as any,
-          closing_fee: perpPosition.pnl.realized.fees.amount.toString() as any,
+          closing_fee: '0' as any,
           opening_fee: perpPosition.pnl.realized.fees.amount.toString() as any,
           pnl: perpPosition.pnl.realized.net.amount.toString() as any,
           price_pnl: perpPosition.pnl.realized.price.amount.toString() as any,
         },
       }
     }),
-    */
-    vaults: account.vaults.map(
-      (vault) =>
-        ({
-          vault: {
-            address: vault.address,
-          },
-          amount: {
-            locking: {
-              locked: vault.amounts.locked.toString(),
-              unlocking: [
-                {
-                  id: 0,
-                  coin: { amount: vault.amounts.unlocking.toString(), denom: vault.denoms.lp },
-                },
-              ],
-            },
-          },
-        }) as VaultPosition,
-    ),
+    vaults,
   }
 }
 
@@ -327,7 +323,6 @@ export function cloneAccount(account: Account): Account {
     })),
     stakedAstroLps:
       account.stakedAstroLps?.map((stakedAstroLp) => new BNCoin(stakedAstroLp.toCoin())) ?? [],
-    /* PERPS
     perps: account.perps.map((perpPosition) => ({
       ...perpPosition,
       amount: perpPosition.amount,
@@ -347,7 +342,6 @@ export function cloneAccount(account: Account): Account {
           })),
         }
       : null,
-    */
   }
 }
 

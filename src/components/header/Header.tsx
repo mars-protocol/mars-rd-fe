@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import { isMobile } from 'react-device-detect'
-
 import { Logo } from 'components/common/Icons'
 import ChainSelect from 'components/header/ChainSelect'
 import DesktopNavigation from 'components/header/navigation/desktop/DesktopNavigation'
@@ -8,15 +7,23 @@ import { NavLink } from 'components/header/navigation/desktop/NavLink'
 import MobileNavigation from 'components/header/navigation/mobile/MobileNavigation'
 import MobileNavigationToggle from 'components/header/navigation/mobile/MobileNavigationToggle'
 
-const menuTree = (): MenuTreeEntry[] => [
+const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
   {
-    pages: ['main'],
+    pages: ['main' as Page],
     label: 'Home',
   },
   {
-    pages: ['liquidations'],
+    pages: ['liquidations' as Page],
     label: 'Liquidations',
   },
+  ...(chainConfig.perps
+    ? [
+        {
+          pages: ['perps' as Page],
+          label: 'Perps',
+        },
+      ]
+    : []),
 ]
 
 export default function Header() {

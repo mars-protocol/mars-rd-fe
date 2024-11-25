@@ -31,7 +31,7 @@ export default function Asset(props: Props) {
   return (
     <TitleAndSubCell
       title={
-        <div className='flex align-center justify-end'>
+        <div className='flex items-center justify-end'>
           <AssetImage asset={asset} className='w-4 h-4 mr-1' />
           <FormattedNumber
             amount={displayAmount}

@@ -1,1 +1,5 @@
-export const TIMEFRAME = ['1D', '7D', '1M', '1Y']
+export const TIMEFRAME = [
+  { value: '7', label: '7D' },
+  { value: '30', label: '30D' },
+  { value: '90', label: '90D' },
+]
