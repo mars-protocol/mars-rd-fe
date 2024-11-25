@@ -4,15 +4,15 @@ import { isMobile } from 'react-device-detect'
 import { SWRConfig } from 'swr'
 
 import Background from 'components/common/Background'
+import { CircularProgress } from 'components/common/CircularProgress'
 import Footer from 'components/common/Footer'
 import PageMetadata from 'components/common/PageMetadata'
+import Text from 'components/common/Text'
 import Header from 'components/header/Header'
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
 import useStore from 'store'
 import { debugSWR } from 'utils/middleware'
-import { CircularProgress } from 'components/common/CircularProgress'
-import Text from 'components/common/Text'
 
 interface Props {
   focusComponent: FocusComponent | null
@@ -21,7 +21,7 @@ interface Props {
 
 function PageContainer(props: Props) {
   return (
-    <div className={classNames('mx-auto flex justify-center w-full max-w-content')}>
+    <div className={classNames('mx-auto flex justify-center w-full max-w-content items-start')}>
       {props.children}
     </div>
   )
