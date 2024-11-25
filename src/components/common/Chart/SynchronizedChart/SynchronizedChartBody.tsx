@@ -118,7 +118,7 @@ export default function SynchronizedChartBody(props: Props) {
             stroke='rgba(255, 255, 255, 0.4)'
             axisLine={false}
             tickLine={false}
-            fontSize={10}
+            fontSize={8}
             tickCount={6}
             tickFormatter={(value) => {
               const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()

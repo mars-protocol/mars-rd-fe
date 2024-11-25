@@ -139,7 +139,7 @@ export default function ComposedChartBody(props: Props) {
             yAxisId='left'
             axisLine={false}
             tickLine={false}
-            fontSize={10}
+            fontSize={8}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
@@ -160,7 +160,7 @@ export default function ComposedChartBody(props: Props) {
               orientation='right'
               axisLine={false}
               tickLine={false}
-              fontSize={10}
+              fontSize={8}
               tickCount={8}
               stroke='rgba(255, 255, 255, 0.4)'
               tickFormatter={(value) =>

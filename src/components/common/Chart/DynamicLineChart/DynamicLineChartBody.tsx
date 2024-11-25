@@ -131,7 +131,7 @@ export default function DynamicLineChartBody(props: Props) {
           <YAxis
             axisLine={false}
             tickLine={false}
-            fontSize={10}
+            fontSize={8}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
             {...(lines[0]?.isPercentage && { domain: [-1, 1] })}
@@ -146,7 +146,7 @@ export default function DynamicLineChartBody(props: Props) {
               const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
               return formatValue(adjustedValue, {
                 minDecimals: 0,
-                maxDecimals: 0,
+                maxDecimals: 2,
                 prefix: '$',
                 abbreviated: true,
               })
