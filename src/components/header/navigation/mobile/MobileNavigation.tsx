@@ -5,9 +5,9 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { ChevronDown } from 'components/common/Icons'
 import Text from 'components/common/Text'
 import ChainSelect from 'components/header/ChainSelect'
+import useChainConfig from 'hooks/chain/useChainConfig'
 import useStore from 'store'
 import { getPage, getRoute } from 'utils/route'
-import useChainConfig from 'hooks/chain/useChainConfig'
 
 interface Props {
   menuTree: (chainConfig: ChainConfig) => MenuTreeEntry[]
