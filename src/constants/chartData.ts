@@ -65,13 +65,13 @@ export const PERPS_CHART_TRANSFORMATIONS = {
   skewData: [
     { path: ['skew_data', 'skew'], targetKey: 'skew' },
     {
-      path: ['skew_data', 'max_skew'],
-      targetKey: 'max_skew_positive',
+      path: ['open_interest', 'max_oi_net'],
+      targetKey: 'max_oi_positive',
       formatFn: (value: number) => Math.abs(value),
     },
     {
-      path: ['skew_data', 'max_skew'],
-      targetKey: 'max_skew_negative',
+      path: ['open_interest', 'max_oi_net'],
+      targetKey: 'max_oi_negative',
       formatFn: (value: number) => -Math.abs(value),
     },
   ],
@@ -134,15 +134,15 @@ export const PERPS_CHART_CONFIGS = {
   skew: [
     { dataKey: 'skew', color: CHART_COLORS.tertiary, name: 'Skew' },
     {
-      dataKey: 'max_skew_positive',
+      dataKey: 'max_oi_positive',
       color: CHART_COLORS.secondary,
-      name: 'Max Skew',
+      name: 'Max OI Net',
       strokeDasharray: '5 8',
     },
     {
-      dataKey: 'max_skew_negative',
+      dataKey: 'max_oi_negative',
       color: CHART_COLORS.secondary,
-      name: 'Max Skew (Negative)',
+      name: 'Max OI Net (Negative)',
       strokeDasharray: '5 8',
     },
   ],
