@@ -86,14 +86,14 @@ export default function DynamicLineChartBody(props: Props) {
           }}
         >
           <defs>
-            {lines.map((lineConfig) => (
+            {lines.map((lineConfig, index) => (
               <linearGradient
                 id={`gradient-${lineConfig.color}`}
                 x1='0'
                 y1='0'
                 x2='0'
                 y2='1'
-                key={`gradient-${lineConfig.color}`}
+                key={`gradient-${index}`}
               >
                 <stop offset='0%' stopColor={lineConfig.color} stopOpacity={0.2} />
                 <stop offset='100%' stopColor={lineConfig.color} stopOpacity={0.02} />
