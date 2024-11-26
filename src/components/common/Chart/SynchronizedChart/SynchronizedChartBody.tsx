@@ -141,7 +141,7 @@ export default function SynchronizedChartBody(props: Props) {
               />
             }
           />
-          <Legend content={<ChartLegend payload={[]} />} verticalAlign='top' />
+          <Legend content={<ChartLegend payload={[]} data={reversedData} />} verticalAlign='top' />
           <Bar
             dataKey={config.primaryChart.bar.dataKey}
             name={config.primaryChart.bar.name}

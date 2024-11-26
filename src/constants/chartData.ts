@@ -91,12 +91,12 @@ export const PERPS_CHART_TRANSFORMATIONS = {
   combinedMetrics: [
     { path: ['skew_data', 'skew'], targetKey: 'skew' },
     {
-      path: ['skew_data', 'max_skew'],
-      targetKey: 'max_skew_positive',
+      path: ['open_interest', 'max_oi_net'],
+      targetKey: 'max_oi_positive',
     },
     {
-      path: ['skew_data', 'max_skew'],
-      targetKey: 'max_skew_negative',
+      path: ['open_interest', 'max_oi_net'],
+      targetKey: 'max_oi_negative',
       formatFn: (value: number) => -value,
     },
     {
@@ -136,13 +136,13 @@ export const PERPS_CHART_CONFIGS = {
     {
       dataKey: 'max_oi_positive',
       color: CHART_COLORS.secondary,
-      name: 'Max OI Net',
+      name: 'Max Net OI',
       strokeDasharray: '5 8',
     },
     {
       dataKey: 'max_oi_negative',
       color: CHART_COLORS.secondary,
-      name: 'Max OI Net (Negative)',
+      name: 'Max Net OI',
       strokeDasharray: '5 8',
     },
   ],
@@ -218,15 +218,15 @@ export const PERPS_CHART_CONFIGS = {
   combinedChart: {
     primary: [
       {
-        dataKey: 'max_skew_positive',
+        dataKey: 'max_oi_positive',
         color: CHART_COLORS.secondary,
-        name: 'Max Skew',
+        name: 'Max Net OI',
         strokeDasharray: '5 8',
       },
       {
-        dataKey: 'max_skew_negative',
+        dataKey: 'max_oi_negative',
         color: CHART_COLORS.secondary,
-        name: 'Max Skew (Negative)',
+        name: 'Max Net OI',
         strokeDasharray: '5 8',
       },
       {
