@@ -38,8 +38,16 @@ const TooltipContent = ({
   payload: ChartDataPayloadProps[]
   lines: LineConfig[]
 }) => {
+  const uniqueEntries = new Map()
+
   return payload.map((item, index) => {
     const lineConfig = lines.find((line) => line.dataKey === item.dataKey)
+
+    if (uniqueEntries.has(item.name)) {
+      return null
+    }
+    uniqueEntries.set(item.name, true)
+
     const value = typeof item.value === 'string' ? parseFloat(item.value) : item.value
 
     return (

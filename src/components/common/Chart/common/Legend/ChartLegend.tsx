@@ -25,9 +25,16 @@ interface Props {
 export default function ChartLegend(props: Props) {
   const { payload, data = [] } = props
 
-  const filteredPayload = payload.filter((entry) => {
-    return data.some((item) => item[entry.dataKey] != null)
-  })
+  const uniqueEntries = new Map()
+  const filteredPayload = payload
+    .filter((entry) => data.some((item) => item[entry.dataKey] != null))
+    .filter((entry) => {
+      if (uniqueEntries.has(entry.value)) {
+        return false
+      }
+      uniqueEntries.set(entry.value, true)
+      return true
+    })
 
   return (
     <div className='flex justify-end gap-1 sm:gap-4 mb-3 ml-3'>
