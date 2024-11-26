@@ -54,39 +54,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <SWRConfig value={{ use: [debugSWR] }}>
-      <Suspense
-        fallback={
-          <div className='flex items-center justify-center w-full h-screen-full'>
-            <div className='flex flex-wrap justify-center w-full gap-4'>
-              <CircularProgress size={60} />
-              <Text className='w-full text-center' size='2xl'>
-                Fetching on-chain data...
-              </Text>
-            </div>
-          </div>
-        }
+      <PageMetadata />
+      <Background />
+      <Header />
+      <main
+        className={classNames(
+          'md:min-h-[calc(100dvh-81px)]',
+          'mt-[73px]',
+          'flex',
+          'min-h-screen-full w-full relative',
+          'gap-4 p-2 pb-20',
+          'md:gap-6 md:px-4 md:py-6',
+          'justify-center',
+          focusComponent && 'items-center',
+          isMobile && 'items-start transition-all duration-500',
+          mobileNavExpanded && isMobile && '-ml-full',
+        )}
       >
-        <PageMetadata />
-        <Background />
-        <Header />
-        <main
-          className={classNames(
-            'md:min-h-[calc(100dvh-81px)]',
-            'mt-[73px]',
-            'flex',
-            'min-h-screen-full w-full relative',
-            'gap-4 p-2 pb-20',
-            'md:gap-6 md:px-4 md:py-6',
-            'justify-center',
-            focusComponent && 'items-center',
-            isMobile && 'items-start transition-all duration-500',
-            mobileNavExpanded && isMobile && '-ml-full',
-          )}
+        <Suspense
+          fallback={
+            <div className='flex items-center justify-center w-full h-screen-full'>
+              <div className='flex flex-wrap justify-center w-full gap-4'>
+                <CircularProgress size={60} />
+                <Text className='w-full text-center' size='2xl'>
+                  Fetching on-chain data...
+                </Text>
+              </div>
+            </div>
+          }
         >
           <PageContainer focusComponent={focusComponent}>{children}</PageContainer>
-        </main>
-        <Footer />
-      </Suspense>
+        </Suspense>
+      </main>
+      <Footer />
     </SWRConfig>
   )
 }
