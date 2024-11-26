@@ -163,7 +163,7 @@ export default function DynamicLineChartBody(props: Props) {
               />
             }
           />
-          <Legend content={<ChartLegend payload={[]} />} verticalAlign='top' />
+          <Legend content={<ChartLegend payload={[]} data={reversedData} />} verticalAlign='top' />
 
           <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
         </AreaChart>

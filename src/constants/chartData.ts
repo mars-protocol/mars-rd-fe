@@ -67,11 +67,12 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     {
       path: ['skew_data', 'max_skew'],
       targetKey: 'max_skew_positive',
+      formatFn: (value: number) => Math.abs(value),
     },
     {
       path: ['skew_data', 'max_skew'],
       targetKey: 'max_skew_negative',
-      formatFn: (value: number) => -value,
+      formatFn: (value: number) => -Math.abs(value),
     },
   ],
   vaultData: [
