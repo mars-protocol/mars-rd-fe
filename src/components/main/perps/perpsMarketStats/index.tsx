@@ -169,12 +169,12 @@ export default function PerpsMarketStats(props: Props) {
         data={skewData}
         lines={PERPS_CHART_CONFIGS.skew}
         height='h-80'
-        title='Skew and Max Skew'
+        title='Skew and Max Net Open Interest'
       />
 
       <ComposedChart
         data={openInterestData}
-        title='Open Interest and Max Open Interest'
+        title={isGlobalStats ? 'Open Interest' : 'Open Interest and Max Open Interest'}
         loading={perpsStatsLoading}
         config={PERPS_CHART_CONFIGS.openInterest}
         height='h-80'
@@ -190,7 +190,7 @@ export default function PerpsMarketStats(props: Props) {
       {!isGlobalStats && (
         <ComposedChart
           data={combinedMetricsData}
-          title='Skew, Max Skew & Funding Rate'
+          title='Skew, Max Net Open Interest & Funding Rate'
           loading={perpsStatsLoading}
           config={PERPS_CHART_CONFIGS.combinedChart}
           height='h-90'

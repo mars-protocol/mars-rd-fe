@@ -35,10 +35,16 @@ function TooltipContent(props: TooltipContentProps) {
   const { payload, config } = props
 
   if (!payload || !payload.length) return null
+  const uniqueEntries = new Map()
 
   return (
     <div className='flex flex-col gap-2 p-2 rounded'>
       {payload.map((entry, index) => {
+        if (uniqueEntries.has(entry.name)) {
+          return null
+        }
+        uniqueEntries.set(entry.name, true)
+
         const seriesConfig = [...(config?.primary || []), ...(config?.secondary || [])].find(
           (s) => s.dataKey === entry.dataKey,
         )
@@ -139,7 +145,7 @@ export default function ComposedChartBody(props: Props) {
             yAxisId='left'
             axisLine={false}
             tickLine={false}
-            fontSize={10}
+            fontSize={8}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
@@ -160,7 +166,7 @@ export default function ComposedChartBody(props: Props) {
               orientation='right'
               axisLine={false}
               tickLine={false}
-              fontSize={10}
+              fontSize={8}
               tickCount={8}
               stroke='rgba(255, 255, 255, 0.4)'
               tickFormatter={(value) =>
@@ -184,7 +190,7 @@ export default function ComposedChartBody(props: Props) {
             }
           />
 
-          <Legend content={<ChartLegend payload={[]} />} verticalAlign='top' />
+          <Legend content={<ChartLegend payload={[]} data={reversedData} />} verticalAlign='top' />
 
           {config.bars?.map((bar, index) => (
             <Bar

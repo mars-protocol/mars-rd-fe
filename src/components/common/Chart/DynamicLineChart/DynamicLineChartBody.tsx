@@ -38,8 +38,16 @@ const TooltipContent = ({
   payload: ChartDataPayloadProps[]
   lines: LineConfig[]
 }) => {
+  const uniqueEntries = new Map()
+
   return payload.map((item, index) => {
     const lineConfig = lines.find((line) => line.dataKey === item.dataKey)
+
+    if (uniqueEntries.has(item.name)) {
+      return null
+    }
+    uniqueEntries.set(item.name, true)
+
     const value = typeof item.value === 'string' ? parseFloat(item.value) : item.value
 
     return (
@@ -86,14 +94,14 @@ export default function DynamicLineChartBody(props: Props) {
           }}
         >
           <defs>
-            {lines.map((lineConfig) => (
+            {lines.map((lineConfig, index) => (
               <linearGradient
                 id={`gradient-${lineConfig.color}`}
                 x1='0'
                 y1='0'
                 x2='0'
                 y2='1'
-                key={`gradient-${lineConfig.color}`}
+                key={`gradient-${index}`}
               >
                 <stop offset='0%' stopColor={lineConfig.color} stopOpacity={0.2} />
                 <stop offset='100%' stopColor={lineConfig.color} stopOpacity={0.02} />
@@ -131,7 +139,7 @@ export default function DynamicLineChartBody(props: Props) {
           <YAxis
             axisLine={false}
             tickLine={false}
-            fontSize={10}
+            fontSize={8}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
             {...(lines[0]?.isPercentage && { domain: [-1, 1] })}
@@ -146,7 +154,7 @@ export default function DynamicLineChartBody(props: Props) {
               const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
               return formatValue(adjustedValue, {
                 minDecimals: 0,
-                maxDecimals: 0,
+                maxDecimals: 2,
                 prefix: '$',
                 abbreviated: true,
               })
@@ -163,7 +171,7 @@ export default function DynamicLineChartBody(props: Props) {
               />
             }
           />
-          <Legend content={<ChartLegend payload={[]} />} verticalAlign='top' />
+          <Legend content={<ChartLegend payload={[]} data={reversedData} />} verticalAlign='top' />
 
           <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
         </AreaChart>
