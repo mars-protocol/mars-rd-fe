@@ -1,14 +1,13 @@
 import { Navigate, Outlet, Route, Routes as RoutesWrapper } from 'react-router-dom'
 
-import MainPage from 'pages/MainPage'
+import useChainConfig from 'hooks/chain/useChainConfig'
 import Layout from 'pages/_layout'
 import LiquidationsPage from 'pages/LiquidationsPage'
+import MainPage from 'pages/MainPage'
 import PerpsOverviewPage from 'pages/PerpsOverviewPage'
-import useChainConfig from 'hooks/chain/useChainConfig'
 
 export default function Routes() {
   const chainConfig = useChainConfig()
-
   return (
     <RoutesWrapper>
       <Route
@@ -23,7 +22,7 @@ export default function Routes() {
 
         <Route path='/main' element={<MainPage />} />
         <Route path='/liquidations' element={<LiquidationsPage />} />
-        {chainConfig.perps && <Route path='/perps' element={<PerpsOverviewPage />} />}
+        <Route path='/perps' element={chainConfig.perps ? <PerpsOverviewPage /> : <MainPage />} />
       </Route>
     </RoutesWrapper>
   )

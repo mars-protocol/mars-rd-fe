@@ -46,9 +46,8 @@ export default function ChainSelect(props: Props) {
         mobileNavExpanded: false,
         chainConfig,
       })
-      console.log('chainConfig', chainConfig.perps)
       // Navigate to perps if supported, otherwise main
-      navigate(getRoute(chainConfig.perps ? 'perps' : 'main', searchParams))
+      navigate(getRoute('main', searchParams))
     },
     [setCurrentChainId, setShowMenu, mutate, navigate, searchParams],
   )

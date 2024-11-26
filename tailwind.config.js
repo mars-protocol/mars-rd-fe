@@ -274,7 +274,7 @@ module.exports = {
         'screen/10': '10dvh',
       },
       maxWidth: {
-        content: '1024px',
+        content: '1280px',
         v1: '1248px',
         modal: '895px',
         'modal-md': '556px',

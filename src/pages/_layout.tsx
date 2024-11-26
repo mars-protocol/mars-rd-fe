@@ -3,6 +3,7 @@ import { Suspense, useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 import { SWRConfig } from 'swr'
 
+import chains from 'chains'
 import Background from 'components/common/Background'
 import { CircularProgress } from 'components/common/CircularProgress'
 import Footer from 'components/common/Footer'
@@ -47,6 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (currentChainId !== chainConfig.id) {
       setCurrentChainId(chainConfig.id)
+      useStore.setState({ chainConfig: chains[currentChainId] })
     }
   }, [chainConfig.id, currentChainId, setCurrentChainId])
 
