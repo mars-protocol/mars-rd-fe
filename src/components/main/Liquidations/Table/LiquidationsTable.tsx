@@ -1,15 +1,15 @@
-import { ColumnDef } from '@tanstack/react-table'
-import { CircularProgress } from 'components/common/CircularProgress'
-import Table from 'components/common/Table'
-import Text from 'components/common/Text'
 import Account from 'components/main/Liquidations/Table/Cell/Account'
 import Asset from 'components/main/Liquidations/Table/Cell/Asset'
+import Table from 'components/common/Table'
 import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
 import Pagination from 'components/main/Liquidations/Table/Pagination'
+import Text from 'components/common/Text'
 import Timestamp from 'components/main/Liquidations/Table/Cell/Timestamp'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useMemo, useState } from 'react'
+import { CircularProgress } from 'components/common/CircularProgress'
+import { ColumnDef } from '@tanstack/react-table'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
@@ -64,6 +64,7 @@ export default function LiquidationsTable() {
       },
       {
         header: 'Time',
+        meta: { className: 'min-w-30' },
         cell: ({ row }) => {
           return <Timestamp value={row.original.timestamp as string} />
         },

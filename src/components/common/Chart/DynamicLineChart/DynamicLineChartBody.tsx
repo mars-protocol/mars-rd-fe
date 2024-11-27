@@ -143,7 +143,8 @@ export default function DynamicLineChartBody(props: Props) {
             fontSize={8}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
-            {...(lines[0]?.isPercentage && { domain: [-1, 1] })}
+            // this might need to be removed - observe with higher / lower numbers in funding rate
+            // {...(lines[0]?.isPercentage && { domain: [-1, 1] })}
             tickFormatter={(value) => {
               if (lines[0]?.isPercentage) {
                 return formatValue(value * 100, {

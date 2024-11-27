@@ -4,9 +4,10 @@ import SelectionControlPanel from 'components/common/Chart/common/SelectionContr
 import Divider from 'components/common/Divider'
 import Text from 'components/common/Text'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
+import PerpsMetrics from 'components/main/perps/PerpsMetrics'
 import { TIMEFRAME } from 'constants/timeframe'
-import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 import { useMemo, useState } from 'react'
+import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 
 export default function PerpsOverviewPage() {
   const [selectedOption, setSelectedOption] = useState<string>('total')
@@ -42,6 +43,7 @@ export default function PerpsOverviewPage() {
 
   return (
     <div className='w-full'>
+      <PerpsMetrics />
       <Card className='p-1 mt-5 md:p-4 bg-white/5'>
         <SelectionControlPanel
           selectOptions={displayOptions}

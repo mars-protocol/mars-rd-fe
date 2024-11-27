@@ -1,8 +1,8 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
+import { BN } from 'utils/helpers'
 import { GridPlanet } from 'components/common/Icons'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
-import { BN } from 'utils/helpers'
 
 export default function LiquidationsMetrics() {
   const { data: liquidityOverviewData, isLoading: isLiquidityOverviewDataLoading } =
@@ -51,22 +51,34 @@ export default function LiquidationsMetrics() {
         abbreviated: true,
       },
     },
+    {
+      value: BN(liquidityOverviewData?.total_collateral_at_risk || 0).shiftedBy(
+        -PRICE_ORACLE_DECIMALS,
+      ),
+      label: 'Collateral at Risk',
+      isCurrency: true,
+      formatOptions: {
+        maxDecimals: 2,
+        minDecimals: 0,
+        abbreviated: true,
+      },
+    },
   ]
 
   return (
     <MetricsCard
       hideBackground={false}
       background={
-        <div className='absolute right-0 top-0 md:w-[500px] transform scale-y-[-1]'>
+        <div className='absolute right-0 top-0 md:w-180'>
           <GridPlanet />
         </div>
       }
-      title='LIQUIDATION DATA'
+      title='LIQUIDATION STATS'
       copy='Explore the Mars Protocol Liquidation Dashboard to track performance metrics.'
       metrics={liquidationMetrics}
       isLoading={isLiquidityOverviewDataLoading}
-      className='w-full gap-5 sm:gap-10 md:gap-18 sm:p-10 mx-auto mb-4'
-      numberClassName='text-2xl md:text-5xl'
+      className='w-full gap-5 sm:gap-10 md:gap-18 mb-4'
+      numberClassName='text-2xl md:text-4xl'
     />
   )
 }

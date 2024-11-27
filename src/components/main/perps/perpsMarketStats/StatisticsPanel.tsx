@@ -57,7 +57,7 @@ export default function StatisticsPanel(props: Props) {
     },
     {
       value: getLatestValue(data.fees.trading_fee || []),
-      label: 'Daily Trading Fees',
+      label: 'Trading Fees',
       isCurrency: true,
       formatOptions: { abbreviated: true },
     },

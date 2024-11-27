@@ -1460,6 +1460,7 @@ interface Metric {
   }
   tooltipContent?: React.ReactNode
   isCurrency?: boolean
+  showSignPrefix?: boolean
 }
 
 interface LiquidationDataItem {

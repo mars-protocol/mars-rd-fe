@@ -1,22 +1,22 @@
-import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
 import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
-import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import ChartError from 'components/common/Chart/common/ChartError'
+import ComposedChart from 'components/common/Chart/ComposedChart'
+import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
+import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import Text from 'components/common/Text'
+import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
+import { BN } from 'utils/helpers'
 import { CircularProgress } from 'components/common/CircularProgress'
+import { FundingRateTimeBase } from 'types/enums'
 import { mutate } from 'swr'
+import { useMemo, useState } from 'react'
 import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
 import {
   DEFAULT_PERPS_GLOBAL_DATA,
   FUNDING_RATE_OPTIONS,
   PERPS_CHART_CONFIGS,
 } from 'constants/chartData'
-import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
-import { useMemo, useState } from 'react'
-import { BN } from 'utils/helpers'
-import ComposedChart from 'components/common/Chart/ComposedChart'
-import { FundingRateTimeBase } from 'types/enums'
 
 interface Props {
   timeframe: string
@@ -116,7 +116,7 @@ export default function PerpsMarketStats(props: Props) {
             data={feesData}
             lines={PERPS_CHART_CONFIGS.tradingFees}
             height='h-70'
-            title='Trading and Net Funding Fees'
+            title='Cumulative Realized Trading and Net Funding Fees'
           />
         </div>
       </div>
