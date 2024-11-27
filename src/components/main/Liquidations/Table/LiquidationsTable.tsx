@@ -32,7 +32,7 @@ export default function LiquidationsTable() {
       {
         header: 'Account ID',
         cell: ({ row }) => {
-          return <Account value={row.original.account_id as string} />
+          return <Account value={row.original.liquidatee_account_id as string} />
         },
       },
       {

@@ -1463,7 +1463,7 @@ interface Metric {
 }
 
 interface LiquidationDataItem {
-  account_id: string
+  liquidatee_account_id: string
   collateral_asset_won?: BNCoin
   debt_asset_repaid?: BNCoin
   protocol_fee_coin?: BNCoin

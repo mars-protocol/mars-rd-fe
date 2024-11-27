@@ -6,6 +6,7 @@ import { BNCoin } from 'types/classes/BNCoin'
 import { ORACLE_DENOM } from 'constants/oracle'
 import { useMemo } from 'react'
 import { BN_ZERO } from 'constants/math'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 
 interface Props {
   value: LiquidationDataItem
@@ -18,7 +19,6 @@ export default function LiquidationPrice(props: Props) {
     if (!value.price_liquidated || !value.collateral_asset_won?.amount) {
       return BN_ZERO
     }
-
     const price = BN(value.price_liquidated)
     const amount = BN(value.collateral_asset_won.amount)
 
@@ -39,7 +39,10 @@ export default function LiquidationPrice(props: Props) {
         <div className='flex items-center justify-end space-x-1'>
           <Text size='xs'>Total: </Text>
           <DisplayCurrency
-            coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, totalValue)}
+            coin={BNCoin.fromDenomAndBigNumber(
+              ORACLE_DENOM,
+              totalValue.shiftedBy(-PRICE_ORACLE_DECIMALS),
+            )}
             className='text-xs'
             options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
             animate={false}

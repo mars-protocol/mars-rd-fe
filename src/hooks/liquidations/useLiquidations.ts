@@ -9,9 +9,11 @@ export default function useLiquidations(page = 1, pageSize = 25) {
 
   return useSWR(
     ['liquidations/liquidationsData', simplifiedChainId, page, pageSize],
-    async () => getLiquidations(simplifiedChainId, page, pageSize),
+    async () => {
+      return getLiquidations(simplifiedChainId, page, pageSize)
+    },
     {
-      refreshInterval: 60_000,
+      refreshInterval: 120_000,
     },
   )
 }

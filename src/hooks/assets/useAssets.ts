@@ -14,7 +14,7 @@ export default function useAssets() {
     {
       suspense: true,
       revalidateOnFocus: true,
-      refreshInterval: 5_000,
+      refreshInterval: 60_000,
     },
   )
 }
