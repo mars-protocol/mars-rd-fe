@@ -165,20 +165,25 @@ export default function PerpsMarketStats(props: Props) {
         </div>
       </div>
 
-      <DynamicLineChart
-        data={skewData}
-        lines={PERPS_CHART_CONFIGS.skew}
-        height='h-80'
-        title='Skew and Max Net Open Interest'
-      />
-
-      <ComposedChart
-        data={openInterestData}
-        title={isGlobalStats ? 'Open Interest' : 'Open Interest and Max Open Interest'}
-        loading={perpsStatsLoading}
-        config={PERPS_CHART_CONFIGS.openInterest}
-        height='h-80'
-      />
+      <div className='flex flex-col md:flex-row gap-4'>
+        <div className='w-full md:w-1/2'>
+          <DynamicLineChart
+            data={skewData}
+            lines={PERPS_CHART_CONFIGS.skew}
+            height='h-80'
+            title='Skew and Max Net Open Interest'
+          />
+        </div>
+        <div className='w-full md:w-1/2'>
+          <ComposedChart
+            data={openInterestData}
+            title={isGlobalStats ? 'Open Interest' : 'Open Interest and Max Open Interest'}
+            loading={perpsStatsLoading}
+            config={PERPS_CHART_CONFIGS.openInterest}
+            height='h-80'
+          />
+        </div>
+      </div>
 
       <SynchronizedChart
         data={transformedPnLData}

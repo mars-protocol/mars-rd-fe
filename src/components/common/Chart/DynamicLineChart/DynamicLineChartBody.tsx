@@ -4,6 +4,7 @@ import {
   AreaChart,
   CartesianGrid,
   Legend,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -173,7 +174,8 @@ export default function DynamicLineChartBody(props: Props) {
           />
           <Legend content={<ChartLegend payload={[]} data={reversedData} />} verticalAlign='top' />
 
-          <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
+          <CartesianGrid opacity={0.1} vertical={false} />
+          <ReferenceLine y={0} stroke='rgba(255, 255, 255, 0.2)' strokeWidth={2} />
         </AreaChart>
       </ResponsiveContainer>
     </div>

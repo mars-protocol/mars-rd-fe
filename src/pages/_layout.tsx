@@ -25,7 +25,7 @@ function PageContainer(props: Props) {
     return (
       <div
         className={classNames(
-          'mx-auto flex items-start w-full max-w-screen-full ',
+          'mx-auto flex items-start w-full max-w-screen-full',
           'md:max-w-content',
         )}
       >

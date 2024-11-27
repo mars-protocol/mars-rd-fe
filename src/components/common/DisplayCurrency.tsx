@@ -24,6 +24,7 @@ interface Props {
   showSignPrefix?: boolean
   showDetailedPrice?: boolean
   allowZeroAmount?: boolean
+  animate?: boolean
 }
 
 export default function DisplayCurrency(props: Props) {
@@ -38,6 +39,7 @@ export default function DisplayCurrency(props: Props) {
     isProfitOrLoss,
     showDetailedPrice,
     allowZeroAmount,
+    animate = true,
   } = props
   const displayCurrencies = useDisplayCurrencyAssets()
   const { data: assets } = useAssets()
@@ -122,7 +124,7 @@ export default function DisplayCurrency(props: Props) {
         ...options,
         prefix,
       }}
-      animate
+      animate={animate}
     />
   )
 }

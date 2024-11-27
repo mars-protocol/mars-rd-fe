@@ -46,7 +46,6 @@ export default function ChainSelect(props: Props) {
         mobileNavExpanded: false,
         chainConfig,
       })
-      // Navigate to perps if supported, otherwise main
       navigate(getRoute('main', searchParams))
     },
     [setCurrentChainId, setShowMenu, mutate, navigate, searchParams],

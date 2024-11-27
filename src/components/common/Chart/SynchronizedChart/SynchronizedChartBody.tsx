@@ -9,6 +9,7 @@ import {
   ComposedChart,
   Legend,
   Line,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -82,7 +83,7 @@ export default function SynchronizedChartBody(props: Props) {
 
   return (
     <div className={`-ml-4 w-full h-[560px]`}>
-      <ResponsiveContainer width='100%' height={'50%'}>
+      <ResponsiveContainer width='100%' height='50%'>
         <ComposedChart
           data={reversedData}
           syncId='chart'
@@ -100,7 +101,8 @@ export default function SynchronizedChartBody(props: Props) {
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
+          <CartesianGrid opacity={0.1} vertical={false} />
+          <ReferenceLine y={0} stroke='rgba(255, 255, 255, 0.2)' strokeWidth={2} />
 
           <XAxis
             stroke='rgba(255, 255, 255, 0.4)'
@@ -162,7 +164,7 @@ export default function SynchronizedChartBody(props: Props) {
         </ComposedChart>
       </ResponsiveContainer>
 
-      <ResponsiveContainer width='100%' height={'50%'}>
+      <ResponsiveContainer width='100%' height='50%'>
         <ComposedChart
           data={reversedData}
           syncId='chart'
@@ -180,7 +182,8 @@ export default function SynchronizedChartBody(props: Props) {
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
+          <CartesianGrid opacity={0.1} vertical={false} />
+          <ReferenceLine y={0} stroke='rgba(255, 255, 255, 0.2)' strokeWidth={2} />
 
           <XAxis
             stroke='rgba(255, 255, 255, 0.4)'
