@@ -14,10 +14,19 @@ export default function Pagination(props: Props) {
     <div className='flex justify-end mt-2'>
       <div className='text-right'>
         <div className='flex space-x-2'>
+          {currentPage > 1 && (
+            <Button
+              variant='solid'
+              color='tertiary'
+              text='First'
+              size='sm'
+              onClick={() => onPageChange(1)}
+            />
+          )}
           <Button
             variant='solid'
             color='tertiary'
-            text={'Prev'}
+            text='Prev'
             size='sm'
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -25,11 +34,20 @@ export default function Pagination(props: Props) {
           <Button
             variant='solid'
             color='tertiary'
-            text={'Next'}
+            text='Next'
             size='sm'
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           />
+          {currentPage < totalPages && (
+            <Button
+              variant='solid'
+              color='tertiary'
+              text='Last'
+              size='sm'
+              onClick={() => onPageChange(totalPages)}
+            />
+          )}
         </div>
         <Text size='xs' className='mt-2'>
           Page {currentPage} out of {totalPages}

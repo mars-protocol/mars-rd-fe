@@ -1,5 +1,6 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
 import { GridPlanet } from 'components/common/Icons'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { BN } from 'utils/helpers'
 
@@ -39,7 +40,9 @@ export default function LiquidationsMetrics() {
       tooltipContent: 'Wallets with Health Factor below 1.2',
     },
     {
-      value: BN(liquidityOverviewData?.value_eligible_for_liquidation || 0),
+      value: BN(liquidityOverviewData?.value_eligible_for_liquidation || 0).shiftedBy(
+        -PRICE_ORACLE_DECIMALS,
+      ),
       label: 'Value Eligible For Liquidation',
       isCurrency: true,
       formatOptions: {

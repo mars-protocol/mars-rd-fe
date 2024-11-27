@@ -1468,6 +1468,7 @@ interface LiquidationDataItem {
   debt_asset_repaid?: BNCoin
   protocol_fee_coin?: BNCoin
   price_liquidated?: string
+  timestamp: string
 }
 
 interface Token {
@@ -1522,7 +1523,7 @@ interface OverviewData {
 }
 
 interface Overview {
-  data: OverviewData
+  data: OverviewData[]
 }
 interface PerpsOpenInterest {
   long: DateValue[]

@@ -6,6 +6,7 @@ import Account from 'components/main/Liquidations/Table/Cell/Account'
 import Asset from 'components/main/Liquidations/Table/Cell/Asset'
 import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
 import Pagination from 'components/main/Liquidations/Table/Pagination'
+import Timestamp from 'components/main/Liquidations/Table/Cell/Timestamp'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useMemo, useState } from 'react'
@@ -13,7 +14,7 @@ import { useMemo, useState } from 'react'
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
   const pageSize = 25
-  const maxEntries = 1_000
+  const maxEntries = 200
 
   const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations(page, pageSize)
   const { data: assetsData } = useAssets()
@@ -59,6 +60,12 @@ export default function LiquidationsTable() {
         header: 'Protocol Fee',
         cell: ({ row }) => {
           return <Asset value={row.original.protocol_fee_coin as BNCoin} assetData={assetsData} />
+        },
+      },
+      {
+        header: 'Time',
+        cell: ({ row }) => {
+          return <Timestamp value={row.original.timestamp as string} />
         },
       },
     ],
