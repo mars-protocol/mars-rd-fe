@@ -6,6 +6,6 @@ export default async function getTotalSupply() {
     })
   } catch (e) {
     console.error(e)
-    return 699993510.532
+    return 699992780.223
   }
 }

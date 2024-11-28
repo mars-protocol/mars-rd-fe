@@ -31,7 +31,6 @@ export default function PerpsMetrics() {
         abbreviated: true,
       },
       showSignPrefix: true,
-      tooltipContent: 'Total realized profit and loss across all closed positions',
     },
     {
       value: BN(perpsStats?.fees.trading_fee[0]?.value || 0).shiftedBy(-PRICE_ORACLE_DECIMALS),
@@ -42,7 +41,6 @@ export default function PerpsMetrics() {
         minDecimals: 0,
         abbreviated: true,
       },
-      tooltipContent: 'Cumulative trading fees collected from all transactions',
     },
     {
       // TODO: change to users

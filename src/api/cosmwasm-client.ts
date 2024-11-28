@@ -1,5 +1,5 @@
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate'
-
+import { MarsAccountNftQueryClient } from 'types/generated/mars-account-nft/MarsAccountNft.client'
 import { MarsCreditManagerQueryClient } from 'types/generated/mars-credit-manager/MarsCreditManager.client'
 import { MarsIncentivesQueryClient } from 'types/generated/mars-incentives/MarsIncentives.client'
 import { MarsMockVaultQueryClient } from 'types/generated/mars-mock-vault/MarsMockVault.client'
@@ -17,6 +17,7 @@ const _paramsQueryClient: Map<string, MarsParamsQueryClient> = new Map()
 const _incentivesQueryClient: Map<string, MarsIncentivesQueryClient> = new Map()
 const _perpsClient: Map<string, MarsPerpsQueryClient> = new Map()
 const _redBankQueryClient: Map<string, MarsRedBankQueryClient> = new Map()
+const _accountNftQueryClient: Map<string, MarsAccountNftQueryClient> = new Map()
 
 const getClient = async (rpc: string) => {
   try {
@@ -157,6 +158,23 @@ const getRedBankQueryClient = async (chainConfig: ChainConfig) => {
   }
 }
 
+const getAccountNftQueryClient = async (chainConfig: ChainConfig) => {
+  try {
+    const contract = chainConfig.contracts.accountNft
+    const rpc = getUrl(chainConfig.endpoints.rpc)
+    const key = rpc + contract
+
+    if (!_accountNftQueryClient.get(key)) {
+      const client = await getClient(rpc)
+      _accountNftQueryClient.set(key, new MarsAccountNftQueryClient(client, contract))
+    }
+
+    return _accountNftQueryClient.get(key)!
+  } catch (error) {
+    throw error
+  }
+}
+
 export {
   getClient,
   getCreditManagerQueryClient,
@@ -167,4 +185,5 @@ export {
   getPerpsQueryClient,
   getRedBankQueryClient,
   getVaultQueryClient,
+  getAccountNftQueryClient,
 }
