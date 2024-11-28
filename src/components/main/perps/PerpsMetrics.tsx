@@ -1,16 +1,21 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
 import { BN } from 'utils/helpers'
+import { BN_ZERO } from 'constants/math'
 import { GridLandscape } from 'components/common/Icons'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
 
 export default function PerpsMetrics() {
-  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '1')
+  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '30')
+
+  const totalTradingVolume = perpsStats?.daily_trading_volume.reduce(
+    (acc, day) => acc.plus(BN(day.value || 0)),
+    BN_ZERO,
+  )
 
   const perpsMetrics: Metric[] = [
     {
-      // this needs to be cumulative
-      value: BN(perpsStats?.daily_trading_volume[0]?.value || 0).shiftedBy(-PRICE_ORACLE_DECIMALS),
+      value: totalTradingVolume?.shiftedBy(-PRICE_ORACLE_DECIMALS) || BN(0),
       label: 'Total Trading Volume',
       isCurrency: true,
       formatOptions: {
@@ -38,17 +43,6 @@ export default function PerpsMetrics() {
       isCurrency: true,
       formatOptions: {
         maxDecimals: 2,
-        minDecimals: 0,
-        abbreviated: true,
-      },
-    },
-    {
-      // TODO: change to users
-      // this is accounts atm and not users
-      value: BN(perpsStats?.total_accounts || 0),
-      label: 'Total Accounts',
-      formatOptions: {
-        maxDecimals: 0,
         minDecimals: 0,
         abbreviated: true,
       },
