@@ -1,14 +1,15 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
-import { GridGlobe } from 'components/common/Icons'
-import useTotalAccounts from 'hooks/accounts/useTotalAccounts'
-import useAssetParams from 'hooks/params/useAssetParams'
 import { BN } from 'utils/helpers'
+import { GridGlobe } from 'components/common/Icons'
+import useAssetParams from 'hooks/params/useAssetParams'
+import useTotalAccounts from 'hooks/accounts/useTotalAccounts'
+import useTvl from 'hooks/tokenomics/useTvl'
 
 export default function StatsMetrics() {
   const { data: assetParams } = useAssetParams()
   const { data: totalAccounts } = useTotalAccounts()
+  const { data: tvl } = useTvl()
 
-  console.log('accounts STATS ======', totalAccounts)
   const listedAssetsCount = assetParams
     ? assetParams.filter((asset) => !asset.denom.includes('/UUSDC')).length
     : 0
@@ -25,11 +26,11 @@ export default function StatsMetrics() {
       copy='Explore the Mars Protocol Stats Dashboard to track key performance metrics.'
       metrics={[
         {
-          value: BN(0),
-          label: 'TVL',
+          value: tvl,
+          label: 'Total Value Locked',
           isCurrency: true,
           formatOptions: {
-            maxDecimals: 0,
+            maxDecimals: 2,
             minDecimals: 0,
             abbreviated: true,
           },
@@ -51,8 +52,8 @@ export default function StatsMetrics() {
           },
         },
       ]}
-      className='w-full gap-5 mx-auto sm:gap-10 md:gap-18 sm:p-10'
-      numberClassName='text-2xl md:text-5xl'
+      className='w-full gap-5 sm:gap-10 md:gap-18'
+      numberClassName='text-2xl md:text-4xl'
     />
   )
 }
