@@ -18,7 +18,7 @@ export default function StatsMetrics() {
     <MetricsCard
       hideBackground={false}
       background={
-        <div className='absolute right-0 top-0 md:w-[500px] transform scale-y-[-1]'>
+        <div className='absolute right-0 top-0 md:w-180 transform scale-y-[-1]'>
           <GridGlobe />
         </div>
       }
