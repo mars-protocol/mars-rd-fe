@@ -1,14 +1,15 @@
 import Card from 'components/common/Card'
 import ChartError from 'components/common/Chart/common/ChartError'
-import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import ComposedChart from 'components/common/Chart/ComposedChart'
-import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
 import Divider from 'components/common/Divider'
+import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
 import Text from 'components/common/Text'
+import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
+import useOverviewData from 'hooks/tokenomics/useOverviewData'
+import { CircularProgress } from 'components/common/CircularProgress'
 import { OVERVIEW_CHART_CONFIGS } from 'constants/chartData'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useOverviewChartData } from 'hooks/tokenomics/useOverviewChartData'
-import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { useState } from 'react'
 
 export default function OverviewCharts() {
@@ -17,7 +18,6 @@ export default function OverviewCharts() {
   const {
     data: overviewData,
     isLoading: isOverviewDataLoading,
-    isValidating,
     error,
     mutate,
   } = useOverviewData(selectedTimeframe)
@@ -26,9 +26,51 @@ export default function OverviewCharts() {
   const handleRefetch = async () => {
     await mutate()
   }
-  const isDataEmpty =
-    (!isOverviewDataLoading && overviewData === null) ||
-    (tvlData?.length === 0 && supplyBorrowData?.length === 0)
+
+  const renderContent = () => {
+    if (isOverviewDataLoading) {
+      return (
+        <div className='h-100 w-full flex items-center justify-center'>
+          <div className='flex flex-wrap items-center justify-center'>
+            <CircularProgress size={60} />
+            <Text size='xl' className='w-full text-center'>
+              Fetching data...
+            </Text>
+          </div>
+        </div>
+      )
+    }
+
+    if (error) {
+      return <ChartError handleRefetch={handleRefetch} />
+    }
+
+    if (!overviewData) {
+      return (
+        <div className='flex items-center justify-center h-64'>
+          <Text className='text-white/60'>No data available</Text>
+        </div>
+      )
+    }
+
+    return (
+      <>
+        <DynamicLineChart
+          data={tvlData}
+          lines={OVERVIEW_CHART_CONFIGS.tvl}
+          height='h-100'
+          title='Total Value Locked'
+        />
+
+        <ComposedChart
+          data={supplyBorrowData}
+          title='Supply/Borrow'
+          config={OVERVIEW_CHART_CONFIGS.supplyBorrow}
+          height='h-100'
+        />
+      </>
+    )
+  }
 
   return (
     <Card className='w-full p-6 bg-white/5'>
@@ -43,31 +85,7 @@ export default function OverviewCharts() {
           />
         </div>
         <Divider />
-        {error ? (
-          <ChartError handleRefetch={handleRefetch} />
-        ) : isDataEmpty ? (
-          <div className='flex items-center justify-center h-64'>
-            <Text className='text-white/60'>No data available</Text>
-          </div>
-        ) : (
-          <>
-            <DynamicLineChart
-              data={tvlData}
-              lines={OVERVIEW_CHART_CONFIGS.tvl}
-              height='h-100'
-              title='Total Value Locked'
-              loading={isValidating || isOverviewDataLoading}
-            />
-
-            <ComposedChart
-              data={supplyBorrowData}
-              title='Supply/Borrow'
-              loading={isValidating || isOverviewDataLoading}
-              config={OVERVIEW_CHART_CONFIGS.supplyBorrow}
-              height='h-100'
-            />
-          </>
-        )}
+        {renderContent()}
       </div>
     </Card>
   )
