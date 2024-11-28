@@ -10,6 +10,7 @@ import {
   ComposedChart,
   Legend,
   Line,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -128,7 +129,8 @@ export default function ComposedChartBody(props: Props) {
             </defs>
           )}
 
-          <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
+          <CartesianGrid opacity={0.1} vertical={false} />
+          <ReferenceLine y={0} stroke='rgba(255, 255, 255, 0.2)' strokeWidth={2} yAxisId='left' />
 
           <XAxis
             dataKey='date'

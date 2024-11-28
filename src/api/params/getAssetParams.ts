@@ -17,6 +17,6 @@ export default async function getAssetParams(
       600,
     )
   } catch (ex) {
-    throw ex
+    return []
   }
 }

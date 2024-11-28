@@ -1460,14 +1460,16 @@ interface Metric {
   }
   tooltipContent?: React.ReactNode
   isCurrency?: boolean
+  showSignPrefix?: boolean
 }
 
 interface LiquidationDataItem {
-  account_id: string
+  liquidatee_account_id: string
   collateral_asset_won?: BNCoin
   debt_asset_repaid?: BNCoin
   protocol_fee_coin?: BNCoin
   price_liquidated?: string
+  timestamp: string
 }
 
 interface Token {
@@ -1522,7 +1524,7 @@ interface OverviewData {
 }
 
 interface Overview {
-  data: OverviewData
+  data: OverviewData[]
 }
 interface PerpsOpenInterest {
   long: DateValue[]

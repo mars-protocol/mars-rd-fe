@@ -4,6 +4,7 @@ import {
   AreaChart,
   CartesianGrid,
   Legend,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -81,6 +82,30 @@ export default function DynamicLineChartBody(props: Props) {
   )
   const reversedData = [...data].reverse()
 
+  // domain setting for large percentage values
+  const getYAxisDomain = () => {
+    if (!lines[0]?.isPercentage) return undefined
+
+    const values = reversedData
+      .map((item) =>
+        lines.map((line) => {
+          const value = item[line.dataKey]
+          if (typeof value === 'string') {
+            return parseFloat(value)
+          }
+          return typeof value === 'number' ? value : 0
+        }),
+      )
+      .flat()
+
+    const maxValue = Math.max(...values)
+    const minValue = Math.min(...values)
+
+    // Add 10% padding to the domain y-axis
+    const padding = (maxValue - minValue) * 0.1
+    return [Math.min(0, minValue - padding), maxValue + padding]
+  }
+
   return (
     <div className={classNames('-ml-6', height)}>
       <ResponsiveContainer width='100%' height='100%'>
@@ -142,7 +167,7 @@ export default function DynamicLineChartBody(props: Props) {
             fontSize={8}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
-            {...(lines[0]?.isPercentage && { domain: [-1, 1] })}
+            domain={getYAxisDomain()}
             tickFormatter={(value) => {
               if (lines[0]?.isPercentage) {
                 return formatValue(value * 100, {
@@ -173,7 +198,8 @@ export default function DynamicLineChartBody(props: Props) {
           />
           <Legend content={<ChartLegend payload={[]} data={reversedData} />} verticalAlign='top' />
 
-          <CartesianGrid strokeDasharray='6 3' opacity={0.1} vertical={false} />
+          <CartesianGrid opacity={0.1} vertical={false} />
+          <ReferenceLine y={0} stroke='rgba(255, 255, 255, 0.2)' strokeWidth={2} />
         </AreaChart>
       </ResponsiveContainer>
     </div>

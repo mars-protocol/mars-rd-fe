@@ -1,22 +1,22 @@
-import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
 import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
-import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import ChartError from 'components/common/Chart/common/ChartError'
+import ComposedChart from 'components/common/Chart/ComposedChart'
+import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
+import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import Text from 'components/common/Text'
+import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
+import { BN } from 'utils/helpers'
 import { CircularProgress } from 'components/common/CircularProgress'
+import { FundingRateTimeBase } from 'types/enums'
 import { mutate } from 'swr'
+import { useMemo, useState } from 'react'
 import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
 import {
   DEFAULT_PERPS_GLOBAL_DATA,
   FUNDING_RATE_OPTIONS,
   PERPS_CHART_CONFIGS,
 } from 'constants/chartData'
-import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
-import { useMemo, useState } from 'react'
-import { BN } from 'utils/helpers'
-import ComposedChart from 'components/common/Chart/ComposedChart'
-import { FundingRateTimeBase } from 'types/enums'
 
 interface Props {
   timeframe: string
@@ -116,7 +116,7 @@ export default function PerpsMarketStats(props: Props) {
             data={feesData}
             lines={PERPS_CHART_CONFIGS.tradingFees}
             height='h-70'
-            title='Trading and Net Funding Fees'
+            title='Cumulative Realized Trading and Net Funding Fees'
           />
         </div>
       </div>
@@ -165,20 +165,25 @@ export default function PerpsMarketStats(props: Props) {
         </div>
       </div>
 
-      <DynamicLineChart
-        data={skewData}
-        lines={PERPS_CHART_CONFIGS.skew}
-        height='h-80'
-        title='Skew and Max Net Open Interest'
-      />
-
-      <ComposedChart
-        data={openInterestData}
-        title={isGlobalStats ? 'Open Interest' : 'Open Interest and Max Open Interest'}
-        loading={perpsStatsLoading}
-        config={PERPS_CHART_CONFIGS.openInterest}
-        height='h-80'
-      />
+      <div className='flex flex-col md:flex-row gap-4'>
+        <div className='w-full md:w-1/2'>
+          <DynamicLineChart
+            data={skewData}
+            lines={PERPS_CHART_CONFIGS.skew}
+            height='h-80'
+            title='Skew and Max Net Open Interest'
+          />
+        </div>
+        <div className='w-full md:w-1/2'>
+          <ComposedChart
+            data={openInterestData}
+            title={isGlobalStats ? 'Open Interest' : 'Open Interest and Max Open Interest'}
+            loading={perpsStatsLoading}
+            config={PERPS_CHART_CONFIGS.openInterest}
+            height='h-80'
+          />
+        </div>
+      </div>
 
       <SynchronizedChart
         data={transformedPnLData}

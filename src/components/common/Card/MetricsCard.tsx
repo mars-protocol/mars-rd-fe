@@ -34,8 +34,12 @@ export default function MetricsCard(props: Props) {
 
   return (
     <Card
-      className={classNames('flex flex-col justify-between mx-auto p-5', className)}
-      title={<h1 className='text-4xl md:text-5xl font-bold'>{title}</h1>}
+      className={classNames('p-5 sm:p-10', className)}
+      title={
+        <Text tag='h1' className='text-4xl md:text-5xl font-bold'>
+          {title}
+        </Text>
+      }
     >
       {!hideBackground && (
         <div className='absolute inset-0 w-full h-full opacity-10 -z-10'>{background}</div>
@@ -45,7 +49,7 @@ export default function MetricsCard(props: Props) {
           {copy}
         </Text>
       )}
-      <div className='flex flex-wrap justify-evenly gap-3 text-center'>
+      <div className='flex flex-wrap justify-evenly text-center'>
         {metrics.map((metric: Metric, index: number) => (
           <div className='min-w-28 p-2' key={index}>
             {isLoading ? (
@@ -55,13 +59,14 @@ export default function MetricsCard(props: Props) {
                 className={classNames(`w-full ${numberClassName}`)}
                 coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, metric.value)}
                 options={metric.formatOptions}
+                showSignPrefix={metric.showSignPrefix}
+                animate={false}
               />
             ) : (
               <FormattedNumber
                 className={classNames(`w-full ${numberClassName}`)}
                 amount={metric.value.toNumber()}
                 options={metric.formatOptions}
-                animate
               />
             )}
             <div className='flex items-center justify-center space-x-1'>

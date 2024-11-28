@@ -1,19 +1,21 @@
-import { ColumnDef } from '@tanstack/react-table'
-import { CircularProgress } from 'components/common/CircularProgress'
-import Table from 'components/common/Table'
-import Text from 'components/common/Text'
 import Account from 'components/main/Liquidations/Table/Cell/Account'
 import Asset from 'components/main/Liquidations/Table/Cell/Asset'
+import Table from 'components/common/Table'
 import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
 import Pagination from 'components/main/Liquidations/Table/Pagination'
+import Text from 'components/common/Text'
+import Timestamp from 'components/main/Liquidations/Table/Cell/Timestamp'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useMemo, useState } from 'react'
+import { CircularProgress } from 'components/common/CircularProgress'
+import { ColumnDef, Row } from '@tanstack/react-table'
+import { BN_ZERO } from 'constants/math'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
   const pageSize = 25
-  const maxEntries = 1_000
+  const maxEntries = 200
 
   const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations(page, pageSize)
   const { data: assetsData } = useAssets()
@@ -24,46 +26,64 @@ export default function LiquidationsTable() {
     setPage(newPage)
   }
 
-  const tableData = liquidityData ?? []
   const isLoading = isLiquidityDataLoading || !liquidityData
 
-  const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(
-    () => [
+  const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
+    const hasNonZeroDebt =
+      liquidityData?.some(
+        (item: LiquidationDataItem) =>
+          item.debt_asset_repaid?.amount && item.debt_asset_repaid.amount !== BN_ZERO,
+      ) ?? false
+
+    const baseColumns = [
       {
         header: 'Account ID',
-        cell: ({ row }) => {
-          return <Account value={row.original.account_id as string} />
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
+          return <Account value={row.original.liquidatee_account_id as string} />
         },
       },
       {
         header: 'Liquidated Collateral',
-        cell: ({ row }) => {
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
           return (
             <Asset value={row.original.collateral_asset_won as BNCoin} assetData={assetsData} />
           )
         },
       },
-      {
-        header: 'Repaid Debt',
-        cell: ({ row }) => {
-          return <Asset value={row.original.debt_asset_repaid as BNCoin} assetData={assetsData} />
-        },
-      },
+      ...(!hasNonZeroDebt
+        ? [
+            {
+              header: 'Repaid Debt',
+              cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
+                return (
+                  <Asset value={row.original.debt_asset_repaid as BNCoin} assetData={assetsData} />
+                )
+              },
+            },
+          ]
+        : []),
       {
         header: 'Liquidation Price',
-        cell: ({ row }) => {
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
           return <LiquidationPrice value={row.original ?? 'N/A'} />
         },
       },
       {
         header: 'Protocol Fee',
-        cell: ({ row }) => {
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
           return <Asset value={row.original.protocol_fee_coin as BNCoin} assetData={assetsData} />
         },
       },
-    ],
-    [assetsData],
-  )
+      {
+        header: 'Time',
+        meta: { className: 'min-w-30' },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
+          return <Timestamp value={row.original.timestamp as string} />
+        },
+      },
+    ]
+    return baseColumns
+  }, [assetsData, liquidityData])
 
   if (isLoading) {
     return (
@@ -76,7 +96,7 @@ export default function LiquidationsTable() {
     )
   }
 
-  if (!tableData.length || tableData === null) {
+  if (!liquidityData.length || liquidityData === null) {
     return (
       <div className='flex flex-wrap justify-center w-full gap-4'>
         <Text className='w-full text-center' size='xl'>
