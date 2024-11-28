@@ -6,11 +6,14 @@ export default async function getOverviewData(timeframe: string = '30') {
   try {
     const chainId = getCurrentChainId()
     const baseUrl = getApiBaseUrl()
-    const v1 = chainId !== ChainInfoID.Pion1
-    const chain = chainId === ChainInfoID.Osmosis1 ? 'osmosis' : 'neutron'
-    const url = v1
-      ? new URL(`${baseUrl}/v1/overview?chain=${chain}&days=${timeframe}&product=creditmanager`)
-      : new URL(`${baseUrl}/v2/overview?chain=${chain}&days=${timeframe}&product=creditmanager`)
+
+    if (chainId === ChainInfoID.Osmosis1 || chainId === ChainInfoID.Neutron1) {
+      return null
+    }
+
+    const url = new URL(
+      `${baseUrl}/v2/overview?chain=neutron&days=${timeframe}&product=creditmanager`,
+    )
     const response = await fetch(url.toString())
     const data = (await response.json()) as Overview
 

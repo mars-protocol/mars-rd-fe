@@ -1,16 +1,18 @@
+import { ChainInfoID } from 'types/enums'
 import { getApiBaseUrl } from 'utils/api'
+import { getCurrentChainId } from 'utils/getCurrentChainId'
 
-export default async function getLiquidations(chainId: string, page = 1, pageSize = 25) {
+export default async function getLiquidations(page = 1, pageSize = 25) {
   try {
-    if (chainId !== 'neutron') {
+    const chainId = getCurrentChainId()
+    const baseUrl = getApiBaseUrl()
+
+    if (chainId === ChainInfoID.Osmosis1 || chainId === ChainInfoID.Neutron1) {
       return []
     }
-
-    const baseUrl = getApiBaseUrl()
     const url = new URL(
-      `${baseUrl}/v2/liquidations?chain=${chainId}&product=creditmanager&page=${page}&limit=${pageSize}&orders={"block_height":"desc"}`,
+      `${baseUrl}/v2/liquidations?chain=neutron&product=creditmanager&page=${page}&limit=${pageSize}&orders={"block_height":"desc"}`,
     )
-
     const response = await fetch(url.toString())
     const data = await response.json()
 
