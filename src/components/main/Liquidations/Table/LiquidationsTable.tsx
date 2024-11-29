@@ -37,6 +37,13 @@ export default function LiquidationsTable() {
 
     const baseColumns = [
       {
+        header: 'Time',
+        meta: { className: 'min-w-20' },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
+          return <Timestamp value={row.original.timestamp as string} />
+        },
+      },
+      {
         header: 'Account ID',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
           return <Account value={row.original.liquidatee_account_id as string} />
@@ -74,13 +81,6 @@ export default function LiquidationsTable() {
           return <Asset value={row.original.protocol_fee_coin as BNCoin} assetData={assetsData} />
         },
       },
-      {
-        header: 'Time',
-        meta: { className: 'min-w-30' },
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return <Timestamp value={row.original.timestamp as string} />
-        },
-      },
     ]
     return baseColumns
   }, [assetsData, liquidityData])
@@ -112,7 +112,7 @@ export default function LiquidationsTable() {
         title='Recently Executed Liquidations'
         columns={columns}
         data={liquidityData}
-        tableBodyClassName='text-lg '
+        tableBodyClassName='text-lg'
         initialSorting={[]}
       />
       <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
