@@ -74,7 +74,12 @@ export default function MetricsCard(props: Props) {
                 {metric.label}
               </Text>
               {metric.tooltipContent && (
-                <Tooltip type='info' content={<Text size='xs'>{metric.tooltipContent}</Text>} />
+                <Tooltip
+                  type='info'
+                  content={<Text size='xs'>{metric.tooltipContent}</Text>}
+                  key={`tooltip-${index}`}
+                  disabled={isLoading}
+                />
               )}
             </div>
           </div>

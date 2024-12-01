@@ -5,7 +5,5 @@ import getTvl from 'api/tokenomics/getTvl'
 export default function useTvl() {
   const chainConfig = useChainConfig()
 
-  return useSWRImmutable(`chains/${chainConfig.id}/tvl`, () => getTvl(chainConfig), {
-    suspense: true,
-  })
+  return useSWRImmutable(`chains/${chainConfig.id}/tvl`, () => getTvl(chainConfig))
 }
