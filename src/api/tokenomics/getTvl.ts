@@ -1,11 +1,12 @@
 import getDexAssets from 'api/assets/getDexAssets'
-import { getRedBankQueryClient } from 'api/cosmwasm-client'
+import { getOracleQueryClientNeutron, getRedBankQueryClient } from 'api/cosmwasm-client'
 import { BN_ZERO } from 'constants/math'
 import { BN } from 'utils/helpers'
 
 export default async function getTvl(chainConfig: ChainConfig): Promise<BigNumber> {
   try {
     const redBankQueryClient = await getRedBankQueryClient(chainConfig)
+    const oracleQueryClient = await getOracleQueryClientNeutron(chainConfig)
     const [markets, dexAssets] = await Promise.all([
       redBankQueryClient.markets({}),
       getDexAssets(chainConfig),
@@ -16,8 +17,19 @@ export default async function getTvl(chainConfig: ChainConfig): Promise<BigNumbe
     for (const market of markets) {
       const asset = dexAssets.find((a) => a.denom === market.denom)
 
-      if (!asset?.price) continue
-      const price = BN(asset.price.amount)
+      // Try to get price from oracle if dexAssets price is missing
+      let price
+      if (asset?.price) {
+        price = BN(asset.price.amount)
+      } else {
+        const oraclePrice = await oracleQueryClient.price({ denom: market.denom })
+        price = BN(oraclePrice.price)
+      }
+
+      if (!price) {
+        console.log(`No price found for ${market.denom} in either dexAssets or oracle`)
+        continue
+      }
 
       const collateralScaled = BN(market.collateral_total_scaled)
       const collateralAmount = await redBankQueryClient.underlyingLiquidityAmount({
@@ -30,8 +42,9 @@ export default async function getTvl(chainConfig: ChainConfig): Promise<BigNumbe
         denom: market.denom,
       })
 
-      const collateralValue = BN(collateralAmount).multipliedBy(price).shiftedBy(-asset.decimals)
-      const debtValue = BN(debtAmount).multipliedBy(price).shiftedBy(-asset.decimals)
+      const decimals = asset?.decimals ?? 6
+      const collateralValue = BN(collateralAmount).multipliedBy(price).shiftedBy(-decimals)
+      const debtValue = BN(debtAmount).multipliedBy(price).shiftedBy(-decimals)
 
       totalValue = totalValue.plus(collateralValue).minus(debtValue)
     }

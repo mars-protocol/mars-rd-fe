@@ -34,6 +34,7 @@ export default function StatsMetrics() {
             minDecimals: 0,
             abbreviated: true,
           },
+          tooltipContent: 'Total value of assets locked in Mars Protocol Red Bank',
         },
         {
           value: BN(totalAccounts),
