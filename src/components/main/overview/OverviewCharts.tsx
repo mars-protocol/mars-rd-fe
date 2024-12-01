@@ -18,7 +18,6 @@ export default function OverviewCharts() {
   const {
     data: overviewData,
     isLoading: isOverviewDataLoading,
-    isValidating,
     error,
     mutate,
   } = useOverviewData(selectedTimeframe)
@@ -29,7 +28,7 @@ export default function OverviewCharts() {
   }
 
   const renderContent = () => {
-    if (isOverviewDataLoading || isValidating) {
+    if (isOverviewDataLoading) {
       return (
         <div className='h-100 w-full flex items-center justify-center'>
           <div className='flex flex-wrap items-center justify-center'>
