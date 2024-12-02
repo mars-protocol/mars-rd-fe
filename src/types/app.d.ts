@@ -1470,6 +1470,7 @@ interface LiquidationDataItem {
   protocol_fee_coin?: BNCoin
   price_liquidated?: string
   timestamp: string
+  tx_hash: string
 }
 
 interface Token {

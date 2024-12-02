@@ -11,6 +11,7 @@ import { useMemo, useState } from 'react'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { BN_ZERO } from 'constants/math'
+import Transaction from 'components/main/Liquidations/Table/Cell/Transaction'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
@@ -79,6 +80,12 @@ export default function LiquidationsTable() {
         header: 'Protocol Fee',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
           return <Asset value={row.original.protocol_fee_coin as BNCoin} assetData={assetsData} />
+        },
+      },
+      {
+        header: 'Transaction',
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
+          return <Transaction value={row.original.tx_hash as string} />
         },
       },
     ]
