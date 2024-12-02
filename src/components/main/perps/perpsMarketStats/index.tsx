@@ -74,13 +74,21 @@ export default function PerpsMarketStats(props: Props) {
       return {
         date: item.date,
         [primaryChart.line.dataKey]: item.realized,
-        [primaryChart.bar.dataKey]: prevItem
-          ? BN(item.realized).minus(prevItem.realized).toNumber()
-          : 0,
+        [primaryChart.bar.dataKey]: prevItem ? BN(item.realized).minus(prevItem.realized) : BN(0),
         [secondaryChart.line.dataKey]: item.unrealized,
         [secondaryChart.bar.dataKey]: prevItem
-          ? BN(item.unrealized).minus(prevItem.unrealized).toNumber()
-          : 0,
+          ? BN(item.unrealized).minus(prevItem.unrealized)
+          : BN(0),
+      }
+    })
+  }, [pnlData])
+
+  const totalPnlData = useMemo(() => {
+    return pnlData.map((item) => {
+      const netTotal = BN(item.realized).plus(BN(item.unrealized)).toNumber()
+      return {
+        ...item,
+        netTotal,
       }
     })
   }, [pnlData])
@@ -107,7 +115,7 @@ export default function PerpsMarketStats(props: Props) {
           <DynamicLineChart
             data={dailyTradingVolumeData}
             lines={PERPS_CHART_CONFIGS.tradingVolume}
-            height='h-70'
+            height='h-80'
             title='Daily Trading Volume'
           />
         </div>
@@ -115,7 +123,7 @@ export default function PerpsMarketStats(props: Props) {
           <DynamicLineChart
             data={feesData}
             lines={PERPS_CHART_CONFIGS.tradingFees}
-            height='h-70'
+            height='h-80'
             title='Cumulative Realized Trading and Net Funding Fees'
           />
         </div>
@@ -132,7 +140,7 @@ export default function PerpsMarketStats(props: Props) {
                   name: `Funding Rate (${timeBase})`,
                 },
               ]}
-              height='h-70'
+              height='h-80'
               title={
                 <div className='flex w-full justify-between items-center'>
                   <Text size='sm'>Funding Rate</Text>
@@ -150,7 +158,7 @@ export default function PerpsMarketStats(props: Props) {
             <DynamicLineChart
               data={notionalLiquidatedData}
               lines={PERPS_CHART_CONFIGS.notional}
-              height='h-70'
+              height='h-80'
               title='Notional Liquidated'
             />
           )}
@@ -159,7 +167,7 @@ export default function PerpsMarketStats(props: Props) {
           <DynamicLineChart
             data={imbalanceRatioData}
             lines={PERPS_CHART_CONFIGS.imbalanceRatio}
-            height='h-70'
+            height='h-80'
             title='Imbalance Long Ratio'
           />
         </div>
@@ -192,6 +200,13 @@ export default function PerpsMarketStats(props: Props) {
         config={PERPS_CHART_CONFIGS.pnl}
       />
 
+      <DynamicLineChart
+        data={totalPnlData}
+        lines={PERPS_CHART_CONFIGS.totalPnl}
+        height='h-80'
+        title='Cumulative Total PnL'
+      />
+
       {!isGlobalStats && (
         <ComposedChart
           data={combinedMetricsData}
@@ -208,7 +223,7 @@ export default function PerpsMarketStats(props: Props) {
             <DynamicLineChart
               data={vaultData}
               lines={PERPS_CHART_CONFIGS.vault}
-              height='h-70'
+              height='h-80'
               title='Vault'
             />
           </div>
@@ -216,7 +231,7 @@ export default function PerpsMarketStats(props: Props) {
             <DynamicLineChart
               data={vaultData}
               lines={PERPS_CHART_CONFIGS.vaultCollateralization}
-              height='h-70'
+              height='h-80'
               title='Vault Collateralization Ratio'
             />
           </div>

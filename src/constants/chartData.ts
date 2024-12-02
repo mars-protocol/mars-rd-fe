@@ -93,11 +93,12 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     {
       path: ['open_interest', 'max_oi_net'],
       targetKey: 'max_oi_positive',
+      formatFn: (value: number) => Math.abs(value),
     },
     {
       path: ['open_interest', 'max_oi_net'],
       targetKey: 'max_oi_negative',
-      formatFn: (value: number) => -value,
+      formatFn: (value: number) => -Math.abs(value),
     },
     {
       path: ['funding_and_pnl', 'funding_rate'],
@@ -187,6 +188,23 @@ export const PERPS_CHART_CONFIGS = {
       color: CHART_COLORS.primary,
       name: 'Vault Collateralization Ratio',
       isPercentage: true,
+    },
+  ],
+  totalPnl: [
+    {
+      dataKey: 'realized',
+      color: CHART_COLORS.tertiary,
+      name: 'Cumulative Realized PnL',
+    },
+    {
+      dataKey: 'unrealized',
+      color: CHART_COLORS.secondary,
+      name: 'Cumulative Unrealized PnL',
+    },
+    {
+      dataKey: 'netTotal',
+      color: CHART_COLORS.primary,
+      name: 'Net Total PnL',
     },
   ],
   pnl: {

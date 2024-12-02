@@ -1,18 +1,23 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
-import { BN } from 'utils/helpers'
-import { GridGlobe } from 'components/common/Icons'
 import useAssetParams from 'hooks/params/useAssetParams'
 import useTotalAccounts from 'hooks/accounts/useTotalAccounts'
-import useTvl from 'hooks/tokenomics/useTvl'
+import useOverviewData from 'hooks/tokenomics/useOverviewData'
+import { BN } from 'utils/helpers'
+import { BN_ZERO } from 'constants/math'
+import { GridGlobe } from 'components/common/Icons'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 
 export default function StatsMetrics() {
-  const { data: assetParams } = useAssetParams()
-  const { data: totalAccounts } = useTotalAccounts()
-  const { data: tvl } = useTvl()
+  const { data: assetParams, isLoading: assetLoading } = useAssetParams()
+  const { data: totalAccounts, isLoading: accountsLoading } = useTotalAccounts()
+  const { data: overviewData, isLoading: tvlLoading } = useOverviewData('1')
+  const latestTvl = overviewData?.total_value_locked?.[0].value
 
   const listedAssetsCount = assetParams
     ? assetParams.filter((asset) => !asset.denom.includes('/UUSDC')).length
     : 0
+
+  const loading = assetLoading || accountsLoading || tvlLoading
 
   return (
     <MetricsCard
@@ -24,9 +29,10 @@ export default function StatsMetrics() {
       }
       title='MARS PROTOCOL'
       copy='Explore the Mars Protocol Stats Dashboard to track key performance metrics.'
+      isLoading={loading}
       metrics={[
         {
-          value: tvl,
+          value: latestTvl ? BN(latestTvl).shiftedBy(-PRICE_ORACLE_DECIMALS) : BN_ZERO,
           label: 'Total Value Locked',
           isCurrency: true,
           formatOptions: {

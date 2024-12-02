@@ -1491,7 +1491,7 @@ interface TimeframeOption {
 
 interface MergedChartData {
   date: string
-  [key: string]: string | number
+  [key: string]: string | number | BigNumber
 }
 interface LineConfig {
   dataKey: string
