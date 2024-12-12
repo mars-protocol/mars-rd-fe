@@ -1540,18 +1540,19 @@ interface PerpsSkewData {
   skew: DateValue[]
   imbalance_long_ratio: DateValue[]
   imbalance_short_ratio: DateValue[]
-  max_skew: DateValue[]
 }
 
 interface PerpsFundingAndPnL {
   funding_rate: DateValue[]
   unrealized_pnl: DateValue[]
   realized_pnl: DateValue[]
+  realized_price_pnl: DateValue[]
 }
 
 interface PerpsFees {
-  trading_fee: DateValue[]
-  net_funding_fee: DateValue[]
+  realized_trading_fee: DateValue[]
+  realized_net_funding_fee: DateValue[]
+  unrealized_net_funding_fee: DateValue[]
 }
 
 interface PerpsVaultData {
@@ -1561,13 +1562,14 @@ interface PerpsVaultData {
 }
 
 interface PerpsGlobalData {
-  daily_trading_volume: DateValue[]
+  trading_volume: DateValue[]
   open_interest: PerpsOpenInterest
   skew_data: PerpsSkewData
   funding_and_pnl: PerpsFundingAndPnL
   fees: PerpsFees
   vault_data: PerpsVaultData
   notional_liquidated: DateValue[]
+  cumulative_trading_volume: string
   notional_at_risk: string
   accounts_at_risk: string
   total_accounts: string
@@ -1583,6 +1585,7 @@ interface PerpsMarketData {
   skew_data: PerpsSkewData
   funding_and_pnl: PerpsFundingAndPnL
   fees: PerpsFees
+  cumulative_trading_volume: string
   notional_at_risk: string
   accounts_at_risk: string
   total_accounts: string

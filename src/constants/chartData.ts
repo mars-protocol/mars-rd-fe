@@ -7,7 +7,7 @@ export const CHART_COLORS = {
 }
 
 export const DEFAULT_PERPS_GLOBAL_DATA: PerpsGlobalData = {
-  daily_trading_volume: [],
+  trading_volume: [],
   open_interest: {
     long: [],
     short: [],
@@ -20,16 +20,17 @@ export const DEFAULT_PERPS_GLOBAL_DATA: PerpsGlobalData = {
     skew: [],
     imbalance_long_ratio: [],
     imbalance_short_ratio: [],
-    max_skew: [],
   },
   funding_and_pnl: {
     funding_rate: [],
     unrealized_pnl: [],
     realized_pnl: [],
+    realized_price_pnl: [],
   },
   fees: {
-    trading_fee: [],
-    net_funding_fee: [],
+    realized_trading_fee: [],
+    realized_net_funding_fee: [],
+    unrealized_net_funding_fee: [],
   },
   vault_data: {
     deposit: [],
@@ -59,8 +60,8 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     { path: ['funding_and_pnl', 'realized_pnl'], targetKey: 'realized' },
   ],
   fees: [
-    { path: ['fees', 'trading_fee'], targetKey: 'trading_fees' },
-    { path: ['fees', 'net_funding_fee'], targetKey: 'net_funding_fees' },
+    { path: ['fees', 'realized_trading_fee'], targetKey: 'realized_trading_fees' },
+    { path: ['fees', 'realized_net_funding_fee'], targetKey: 'realized_net_funding_fees' },
   ],
   skewData: [
     { path: ['skew_data', 'skew'], targetKey: 'skew' },
@@ -85,7 +86,7 @@ export const PERPS_CHART_TRANSFORMATIONS = {
   ],
   singleMetrics: [
     { path: ['notional_liquidated'], targetKey: 'notional_liquidated' },
-    { path: ['daily_trading_volume'], targetKey: 'daily_trading_volume' },
+    { path: ['trading_volume'], targetKey: 'trading_volume' },
     { path: ['skew_data', 'imbalance_long_ratio'], targetKey: 'imbalance_long' },
   ],
   combinedMetrics: [
@@ -129,8 +130,12 @@ export const PERPS_CHART_CONFIGS = {
     },
   },
   tradingFees: [
-    { dataKey: 'trading_fees', color: CHART_COLORS.secondary, name: 'Trading Fees' },
-    { dataKey: 'net_funding_fees', color: CHART_COLORS.tertiary, name: 'Net Funding Fees' },
+    { dataKey: 'realized_trading_fees', color: CHART_COLORS.secondary, name: 'Trading Fees' },
+    {
+      dataKey: 'realized_net_funding_fees',
+      color: CHART_COLORS.tertiary,
+      name: 'Net Funding Fees',
+    },
   ],
   skew: [
     { dataKey: 'skew', color: CHART_COLORS.tertiary, name: 'Skew' },
@@ -156,7 +161,7 @@ export const PERPS_CHART_CONFIGS = {
   ],
   tradingVolume: [
     {
-      dataKey: 'daily_trading_volume',
+      dataKey: 'trading_volume',
       color: CHART_COLORS.primary,
       name: 'Daily Trading Volume',
     },
