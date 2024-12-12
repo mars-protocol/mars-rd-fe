@@ -18,10 +18,6 @@ export const getCurrentChainId = () => {
       case ChainInfoID.Neutron1:
         chainId = ChainInfoID.Neutron1
         break
-
-      case ChainInfoID.Pion1:
-        chainId = ChainInfoID.Pion1
-        break
     }
   }
 
