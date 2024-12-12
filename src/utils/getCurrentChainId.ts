@@ -3,7 +3,7 @@ import { LocalStorageKeys } from 'constants/localStorageKeys'
 import { ChainInfoID } from 'types/enums'
 
 export const getCurrentChainId = () => {
-  const defaultChainId = chains[ChainInfoID.Osmosis1].id
+  const defaultChainId = chains[ChainInfoID.Neutron1].id
   let chainId = defaultChainId
   const localStorageChainId = localStorage.getItem(LocalStorageKeys.CURRENT_CHAIN_ID) as ChainInfoID
 
