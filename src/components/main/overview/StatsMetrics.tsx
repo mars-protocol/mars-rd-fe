@@ -10,8 +10,10 @@ import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 export default function StatsMetrics() {
   const { data: assetParams, isLoading: assetLoading } = useAssetParams()
   const { data: totalAccounts, isLoading: accountsLoading } = useTotalAccounts()
-  const { data: overviewData, isLoading: tvlLoading } = useOverviewData('1')
-  const latestTvl = overviewData?.total_value_locked?.[0].value
+  const { data: overviewData, isLoading: tvlLoading } = useOverviewData('30')
+  const latestTvl = overviewData?.total_value_locked?.length
+    ? overviewData.total_value_locked[0]?.value || 0
+    : 0
 
   const listedAssetsCount = assetParams
     ? assetParams.filter((asset) => !asset.denom.includes('/UUSDC')).length
