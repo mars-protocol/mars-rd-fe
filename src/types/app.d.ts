@@ -1489,7 +1489,6 @@ interface TimeframeOption {
   value: string
   label: string
   granularity?: string
-  unit?: number
 }
 
 interface MergedChartData {

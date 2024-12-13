@@ -5,9 +5,9 @@ import Divider from 'components/common/Divider'
 import Text from 'components/common/Text'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import PerpsMetrics from 'components/main/perps/PerpsMetrics'
+import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 import { TIMEFRAME } from 'constants/timeframe'
 import { useMemo, useState } from 'react'
-import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 
 export default function PerpsOverviewPage() {
   const [selectedOption, setSelectedOption] = useState<string>('total')

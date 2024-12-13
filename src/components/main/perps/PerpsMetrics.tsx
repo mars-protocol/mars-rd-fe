@@ -1,9 +1,8 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
+import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
 import { BN } from 'utils/helpers'
-import { BN_ZERO } from 'constants/math'
 import { GridLandscape } from 'components/common/Icons'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
-import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
 
 export default function PerpsMetrics() {
   const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '30')
@@ -50,7 +49,7 @@ export default function PerpsMetrics() {
     <MetricsCard
       hideBackground={false}
       background={
-        <div className='absolute right-0 bottom-0 md:w-190'>
+        <div className='absolute right-0 bottom-0 w-90 sm:w-160 md:w-190'>
           <GridLandscape />
         </div>
       }
