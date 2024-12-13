@@ -12,7 +12,7 @@ export default async function getPerpsMarketStats(
       value: Number(timeframe),
     }
     const url = new URL(
-      `${baseUrl}/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&product=creditmanager&market=${market}&response_type=market`,
+      `${baseUrl}/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&market=${market}&response_type=market`,
     )
     const response = await fetch(url.toString())
     const data = (await response.json()) as PerpsMarketOverview

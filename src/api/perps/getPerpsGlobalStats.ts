@@ -16,7 +16,7 @@ export default async function getPerpsGlobalStats(timeframe: string = '30') {
     }
 
     const url = new URL(
-      `${baseUrl}/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&product=creditmanager&response_type=global`,
+      `${baseUrl}/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&response_type=global`,
     )
     const response = await fetch(url.toString())
     const data = (await response.json()) as PerpsGlobalOverview
