@@ -1488,6 +1488,8 @@ interface Token {
 interface TimeframeOption {
   value: string
   label: string
+  granularity?: string
+  unit?: number
 }
 
 interface MergedChartData {
@@ -1580,7 +1582,7 @@ interface PerpsGlobalOverview {
 }
 interface PerpsMarketData {
   denom: string
-  daily_trading_volume: DateValue[]
+  trading_volume: DateValue[]
   open_interest: PerpsOpenInterest
   skew_data: PerpsSkewData
   funding_and_pnl: PerpsFundingAndPnL

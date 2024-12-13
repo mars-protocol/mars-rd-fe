@@ -11,7 +11,7 @@ import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 
 export default function PerpsOverviewPage() {
   const [selectedOption, setSelectedOption] = useState<string>('total')
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2].value)
   const perpsAssets = usePerpsEnabledAssets()
 
   const displayOptions = useMemo(

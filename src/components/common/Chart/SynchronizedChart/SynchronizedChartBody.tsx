@@ -82,7 +82,7 @@ export default function SynchronizedChartBody(props: Props) {
   const reversedData = [...data].reverse()
 
   return (
-    <div className={`-ml-4 w-full h-[560px]`}>
+    <div className='-ml-4 w-full h-140'>
       <ResponsiveContainer width='100%' height='50%'>
         <ComposedChart
           data={reversedData}

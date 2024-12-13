@@ -4,6 +4,7 @@ export const CHART_COLORS = {
   primary: '#30E0A1',
   secondary: '#AB47BC',
   tertiary: '#580DA3',
+  quaternary: '#3DB2FF',
 }
 
 export const DEFAULT_PERPS_GLOBAL_DATA: PerpsGlobalData = {
@@ -38,6 +39,7 @@ export const DEFAULT_PERPS_GLOBAL_DATA: PerpsGlobalData = {
     vault_collateralization_ratio: [],
   },
   notional_liquidated: [],
+  cumulative_trading_volume: '0',
   notional_at_risk: '0',
   accounts_at_risk: '0',
   total_accounts: '0',
@@ -59,9 +61,15 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     { path: ['funding_and_pnl', 'unrealized_pnl'], targetKey: 'unrealized' },
     { path: ['funding_and_pnl', 'realized_pnl'], targetKey: 'realized' },
   ],
+  realizedPnlBreakdown: [
+    { path: ['fees', 'realized_trading_fee'], targetKey: 'realized_trading_fees' },
+    { path: ['fees', 'realized_net_funding_fee'], targetKey: 'realized_net_funding_fees' },
+    { path: ['funding_and_pnl', 'realized_price_pnl'], targetKey: 'realized_price_pnl' },
+  ],
   fees: [
     { path: ['fees', 'realized_trading_fee'], targetKey: 'realized_trading_fees' },
     { path: ['fees', 'realized_net_funding_fee'], targetKey: 'realized_net_funding_fees' },
+    { path: ['fees', 'unrealized_net_funding_fee'], targetKey: 'unrealized_net_funding_fees' },
   ],
   skewData: [
     { path: ['skew_data', 'skew'], targetKey: 'skew' },
@@ -130,11 +138,15 @@ export const PERPS_CHART_CONFIGS = {
     },
   },
   tradingFees: [
-    { dataKey: 'realized_trading_fees', color: CHART_COLORS.secondary, name: 'Trading Fees' },
+    {
+      dataKey: 'realized_trading_fees',
+      color: CHART_COLORS.secondary,
+      name: 'Realized Trading Fees',
+    },
     {
       dataKey: 'realized_net_funding_fees',
       color: CHART_COLORS.tertiary,
-      name: 'Net Funding Fees',
+      name: 'Realized Funding Fees',
     },
   ],
   skew: [
@@ -163,7 +175,7 @@ export const PERPS_CHART_CONFIGS = {
     {
       dataKey: 'trading_volume',
       color: CHART_COLORS.primary,
-      name: 'Daily Trading Volume',
+      name: 'Trading Volume',
     },
   ],
   imbalanceRatio: [
@@ -193,6 +205,45 @@ export const PERPS_CHART_CONFIGS = {
       color: CHART_COLORS.primary,
       name: 'Vault Collateralization Ratio',
       isPercentage: true,
+    },
+  ],
+  netFundingFees: [
+    {
+      dataKey: 'realized_net_funding_fees',
+      color: CHART_COLORS.tertiary,
+      name: 'Realized Funding Fees',
+    },
+    {
+      dataKey: 'unrealized_net_funding_fees',
+      color: CHART_COLORS.secondary,
+      name: 'Unrealized Funding Fees',
+    },
+    {
+      dataKey: 'netTotal',
+      color: CHART_COLORS.primary,
+      name: 'Net Funding Fees',
+    },
+  ],
+  realizedPnlBreakdown: [
+    {
+      dataKey: 'realized_trading_fees',
+      color: CHART_COLORS.tertiary,
+      name: 'Realized Trading Fees',
+    },
+    {
+      dataKey: 'realized_net_funding_fees',
+      color: CHART_COLORS.secondary,
+      name: 'Realized Funding Fees',
+    },
+    {
+      dataKey: 'realized_price_pnl',
+      color: CHART_COLORS.quaternary,
+      name: 'Realized Price PnL',
+    },
+    {
+      dataKey: 'total',
+      color: CHART_COLORS.primary,
+      name: 'Total',
     },
   ],
   totalPnl: [

@@ -35,11 +35,12 @@ export default function PerpsMarketStats(props: Props) {
     openInterestData,
     fundingRateData,
     pnlData,
+    realizedPnlBreakdown,
     feesData,
     skewData,
     imbalanceRatioData,
     notionalLiquidatedData,
-    dailyTradingVolumeData,
+    tradingVolumeData,
     vaultData,
     combinedMetricsData,
   } = usePerpsChartData(perpsStats || DEFAULT_PERPS_GLOBAL_DATA)
@@ -93,6 +94,33 @@ export default function PerpsMarketStats(props: Props) {
     })
   }, [pnlData])
 
+  const netFundingFeesData = useMemo(() => {
+    return feesData.map((item) => {
+      const netFundingFees = BN(item.realized_net_funding_fees)
+        .plus(BN(item.unrealized_net_funding_fees))
+        .toNumber()
+
+      return {
+        ...item,
+        netTotal: netFundingFees,
+      }
+    })
+  }, [feesData])
+
+  const realizedPnlBreakdownData = useMemo(() => {
+    return realizedPnlBreakdown.map((item) => {
+      const total = BN(item.realized_net_funding_fees)
+        .plus(BN(item.realized_trading_fees))
+        .plus(BN(item.realized_price_pnl))
+        .toNumber()
+
+      return {
+        ...item,
+        total,
+      }
+    })
+  }, [realizedPnlBreakdown])
+
   if (perpsStatsLoading)
     return (
       <div className='h-100 w-full flex items-center justify-center'>
@@ -113,10 +141,10 @@ export default function PerpsMarketStats(props: Props) {
       <div className='flex flex-col md:flex-row gap-4'>
         <div className='w-full md:w-1/2'>
           <DynamicLineChart
-            data={dailyTradingVolumeData}
+            data={tradingVolumeData}
             lines={PERPS_CHART_CONFIGS.tradingVolume}
             height='h-80'
-            title='Daily Trading Volume'
+            title='Trading Volume'
           />
         </div>
         <div className='w-full md:w-1/2'>
@@ -124,7 +152,7 @@ export default function PerpsMarketStats(props: Props) {
             data={feesData}
             lines={PERPS_CHART_CONFIGS.tradingFees}
             height='h-80'
-            title='Cumulative Realized Trading and Net Funding Fees'
+            title='Cumulative Realized Trading and Funding Fees'
           />
         </div>
       </div>
@@ -200,11 +228,29 @@ export default function PerpsMarketStats(props: Props) {
         config={PERPS_CHART_CONFIGS.pnl}
       />
 
+      <div className='flex flex-col md:flex-row gap-4'>
+        <div className='w-full md:w-1/2'>
+          <DynamicLineChart
+            data={totalPnlData}
+            lines={PERPS_CHART_CONFIGS.totalPnl}
+            height='h-80'
+            title='Cumulative Total PnL'
+          />
+        </div>
+        <div className='w-full md:w-1/2'>
+          <DynamicLineChart
+            data={netFundingFeesData}
+            lines={PERPS_CHART_CONFIGS.netFundingFees}
+            height='h-80'
+            title='Cumulative Net Funding Fees'
+          />
+        </div>
+      </div>
       <DynamicLineChart
-        data={totalPnlData}
-        lines={PERPS_CHART_CONFIGS.totalPnl}
+        data={realizedPnlBreakdownData}
+        lines={PERPS_CHART_CONFIGS.realizedPnlBreakdown}
         height='h-80'
-        title='Cumulative Total PnL'
+        title='Cumulative Realized Pnl Breakdown'
       />
 
       {!isGlobalStats && (

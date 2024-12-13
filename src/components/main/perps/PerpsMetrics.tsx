@@ -8,14 +8,10 @@ import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
 export default function PerpsMetrics() {
   const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '30')
 
-  const totalTradingVolume = perpsStats?.daily_trading_volume.reduce(
-    (acc, day) => acc.plus(BN(day.value || 0)),
-    BN_ZERO,
-  )
-
   const perpsMetrics: Metric[] = [
     {
-      value: totalTradingVolume?.shiftedBy(-PRICE_ORACLE_DECIMALS) || BN(0),
+      value:
+        BN(perpsStats?.cumulative_trading_volume || 0).shiftedBy(-PRICE_ORACLE_DECIMALS) || BN(0),
       label: 'Total Trading Volume',
       isCurrency: true,
       formatOptions: {
@@ -38,7 +34,9 @@ export default function PerpsMetrics() {
       showSignPrefix: true,
     },
     {
-      value: BN(perpsStats?.fees.trading_fee[0]?.value || 0).shiftedBy(-PRICE_ORACLE_DECIMALS),
+      value: BN(perpsStats?.fees.realized_trading_fee[0]?.value || 0).shiftedBy(
+        -PRICE_ORACLE_DECIMALS,
+      ),
       label: 'Total Trading Fees',
       isCurrency: true,
       formatOptions: {
