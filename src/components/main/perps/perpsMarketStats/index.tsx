@@ -214,7 +214,6 @@ export default function PerpsMarketStats(props: Props) {
           <ComposedChart
             data={openInterestData}
             title={isGlobalStats ? 'Open Interest' : 'Open Interest and Max Open Interest'}
-            loading={perpsStatsLoading}
             config={PERPS_CHART_CONFIGS.openInterest}
             height='h-80'
           />

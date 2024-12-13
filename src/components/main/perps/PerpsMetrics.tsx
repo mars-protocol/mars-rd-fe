@@ -10,8 +10,7 @@ export default function PerpsMetrics() {
 
   const perpsMetrics: Metric[] = [
     {
-      value:
-        BN(perpsStats?.cumulative_trading_volume || 0).shiftedBy(-PRICE_ORACLE_DECIMALS) || BN(0),
+      value: BN(perpsStats?.cumulative_trading_volume || 0).shiftedBy(-PRICE_ORACLE_DECIMALS),
       label: 'Total Trading Volume',
       isCurrency: true,
       formatOptions: {
@@ -34,7 +33,7 @@ export default function PerpsMetrics() {
       showSignPrefix: true,
     },
     {
-      value: BN(perpsStats?.fees.realized_trading_fee[0]?.value || 0).shiftedBy(
+      value: BN(perpsStats?.fees?.realized_trading_fee?.[0]?.value || 0).shiftedBy(
         -PRICE_ORACLE_DECIMALS,
       ),
       label: 'Total Trading Fees',
