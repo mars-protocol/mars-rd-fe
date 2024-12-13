@@ -7,7 +7,7 @@ export default async function getLiquidations(page = 1, pageSize = 25) {
     const chainId = getCurrentChainId()
     const baseUrl = getApiBaseUrl()
 
-    if (chainId === ChainInfoID.Osmosis1 || chainId === ChainInfoID.Neutron1) {
+    if (chainId === ChainInfoID.Osmosis1) {
       return []
     }
     const url = new URL(

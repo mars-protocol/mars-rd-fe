@@ -23,14 +23,14 @@ const Neutron1: ChainConfig = {
     params: 'neutron1x4rgd7ry23v2n49y7xdzje0743c5tgrnqrqsvwyya2h6m48tz4jqqex06x',
     creditManager: 'neutron1qdzn3l4kn7gsjna2tfpg3g3mwd6kunx4p50lfya59k02846xas6qslgs3r',
     accountNft: 'neutron184kvu96rqtetmunkkmhu5hru8yaqg7qfhd8ldu5avjnamdqu69squrh3f5',
-    perps: 'neutron14v9g7regs90qvful7djcajsvrfep5pg9qau7qm6wya6c2lzcpnms692dlt',
+    perps: 'neutron1g3catxyv0fk8zzsra2mjc0v4s69a7xygdjt85t54l7ym3gv0un4q2xhaf6',
     pyth: 'neutron1m2emc93m9gpwgsrsf2vylv9xvgqh654630v7dfrhrkmr5slly53spg85wv',
   },
   endpoints: {
     routes: 'https://app.astroport.fi/api/routes',
-    rpc: process.env.NEXT_PUBLIC_NEUTRON_RPC ?? 'https://rpc-kralum.neutron-1.neutron.org',
-    fallbackRpc: 'https://rpc.novel.remedy.tm.p2p.org',
-    rest: process.env.NEXT_PUBLIC_NEUTRON_REST ?? 'https://rest-kralum.neutron-1.neutron.org',
+    rpc: process.env.NEXT_PUBLIC_NEUTRON_RPC ?? 'https://rpc-lb.neutron.org',
+    fallbackRpc: 'https://neutron-rpc.cosmos-apis.com',
+    rest: process.env.NEXT_PUBLIC_NEUTRON_REST ?? 'https://rest-lb.neutron.org',
     swap: 'https://neutron.astroport.fi/swap',
     explorer: 'https://mintscan.io/neutron',
     dexAssets: 'https://neutron-cache-api.onrender.com/neutron-1/tokens',
@@ -53,10 +53,10 @@ const Neutron1: ChainConfig = {
   },
   features: ['ibc-transfer', 'ibc-go'],
   gasPrice: '0.015untrn',
-  perps: false,
+  perps: true,
   farm: true,
   anyAsset: true,
-  slinky: false,
+  slinky: true,
 }
 
 export default Neutron1

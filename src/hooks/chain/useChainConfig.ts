@@ -4,7 +4,7 @@ import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import { ChainInfoID } from 'types/enums'
 
 export default function useChainConfig() {
-  const [chainId] = useLocalStorage(LocalStorageKeys.CURRENT_CHAIN_ID, ChainInfoID.Osmosis1)
+  const [chainId] = useLocalStorage(LocalStorageKeys.CURRENT_CHAIN_ID, ChainInfoID.Neutron1)
 
   const rpcEndpoint =
     localStorage.getItem(`${chainId}/${LocalStorageKeys.RPC_ENDPOINT}`) ??
