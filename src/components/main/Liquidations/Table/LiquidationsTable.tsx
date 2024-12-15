@@ -1,20 +1,22 @@
 import Account from 'components/main/Liquidations/Table/Cell/Account'
 import Asset from 'components/main/Liquidations/Table/Cell/Asset'
-import Table from 'components/common/Table'
 import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
 import Pagination from 'components/main/Liquidations/Table/Pagination'
+import Table from 'components/common/Table'
 import Text from 'components/common/Text'
 import Timestamp from 'components/main/Liquidations/Table/Cell/Timestamp'
+import Transaction from 'components/main/Liquidations/Table/Cell/Transaction'
 import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
-import { useMemo, useState } from 'react'
+import { BN_ZERO } from 'constants/math'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import { BN_ZERO } from 'constants/math'
-import Transaction from 'components/main/Liquidations/Table/Cell/Transaction'
+import { useEffect, useMemo, useState } from 'react'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
+  const [hasMore, setHasMore] = useState<boolean>(true)
+
   const pageSize = 25
   const maxEntries = 200
 
@@ -22,6 +24,12 @@ export default function LiquidationsTable() {
   const { data: assetsData } = useAssets()
 
   const totalPages = Math.ceil(maxEntries / pageSize)
+
+  useEffect(() => {
+    if (liquidityData) {
+      setHasMore(liquidityData.length === pageSize)
+    }
+  }, [liquidityData])
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
@@ -122,7 +130,14 @@ export default function LiquidationsTable() {
         tableBodyClassName='text-lg'
         initialSorting={[]}
       />
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
+
+      {hasMore && liquidityData?.length > 0 && (
+        <Pagination
+          currentPage={page}
+          totalPages={page + (hasMore ? 1 : 0)}
+          onPageChange={handlePageChange}
+        />
+      )}
     </>
   )
 }
