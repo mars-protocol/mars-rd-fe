@@ -1,5 +1,7 @@
-import { ExternalLink } from 'components/common/Icons'
 import Text from 'components/common/Text'
+import { ChainInfoID } from 'types/enums'
+import { ExternalLink } from 'components/common/Icons'
+import { getCurrentChainId } from 'utils/getCurrentChainId'
 import { TextLink } from 'components/common/TextLink'
 
 interface Props {
@@ -8,7 +10,13 @@ interface Props {
 
 export default function Account(props: Props) {
   const { value } = props
-  const url = `https://app.marsprotocol.io/wallets/osmosiswallet/portfolio/${value}`
+  const chainId = getCurrentChainId()
+  const baseUrl =
+    chainId === ChainInfoID.Osmosis1
+      ? 'osmosis.marsprotocol.io/wallets/osmosiswallet'
+      : 'neutron.marsprotocol.io/wallets/neutronwallet'
+
+  const url = `${baseUrl}/portfolio/${value}`
 
   return (
     <div
