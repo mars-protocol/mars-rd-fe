@@ -28,8 +28,7 @@ export default function PerpsOverviewPage() {
     if (value === 'total') {
       navigate(getRoute('perps', searchParams))
     } else {
-      const assetParam = value.replace('perps/', '')
-      navigate(getRoute(`perps/${assetParam}` as Page, searchParams))
+      navigate(getRoute(value as Page, searchParams))
     }
     setSelectedOption(value)
   }
