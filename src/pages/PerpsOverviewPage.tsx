@@ -7,7 +7,7 @@ import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import PerpsMetrics from 'components/main/perps/PerpsMetrics'
 import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 import { getRoute } from 'utils/route'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { TIMEFRAME } from 'constants/timeframe'
 
@@ -19,10 +19,6 @@ export default function PerpsOverviewPage() {
 
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
   const [selectedOption, setSelectedOption] = useState<string>(asset ? `perps/${asset}` : 'total')
-
-  useEffect(() => {
-    setSelectedOption(asset ? `perps/${asset}` : 'total')
-  }, [asset])
 
   const handleSelectChange = (value: string) => {
     if (value === 'total') {
