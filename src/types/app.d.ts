@@ -362,7 +362,7 @@ interface PythUpdateExecuteMsg {
   update_price_feeds: { data: string[] }
 }
 
-type Page = 'main' | 'liquidations' | 'perps'
+type Page = 'main' | 'liquidations' | 'perps' | 'perps/{asset}'
 
 type OsmosisRouteResponse = {
   amount_in: {

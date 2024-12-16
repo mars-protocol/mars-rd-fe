@@ -5,14 +5,34 @@ import Divider from 'components/common/Divider'
 import Text from 'components/common/Text'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import PerpsMetrics from 'components/main/perps/PerpsMetrics'
-import { TIMEFRAME } from 'constants/timeframe'
-import { useMemo, useState } from 'react'
 import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
+import { getRoute } from 'utils/route'
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { TIMEFRAME } from 'constants/timeframe'
 
 export default function PerpsOverviewPage() {
-  const [selectedOption, setSelectedOption] = useState<string>('total')
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
+  const navigate = useNavigate()
+  const { asset } = useParams()
   const perpsAssets = usePerpsEnabledAssets()
+  const [searchParams] = useSearchParams()
+
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
+  const [selectedOption, setSelectedOption] = useState<string>(asset ? `perps/${asset}` : 'total')
+
+  useEffect(() => {
+    setSelectedOption(asset ? `perps/${asset}` : 'total')
+  }, [asset])
+
+  const handleSelectChange = (value: string) => {
+    if (value === 'total') {
+      navigate(getRoute('perps', searchParams))
+    } else {
+      const assetParam = value.replace('perps/', '')
+      navigate(getRoute(`perps/${assetParam}` as Page, searchParams))
+    }
+    setSelectedOption(value)
+  }
 
   const displayOptions = useMemo(
     () => [
@@ -48,7 +68,7 @@ export default function PerpsOverviewPage() {
         <SelectionControlPanel
           selectOptions={displayOptions}
           defaultSelectValue={selectedOption}
-          onSelectChange={setSelectedOption}
+          onSelectChange={handleSelectChange}
           timeframe={TIMEFRAME}
           selectedTimeframe={selectedTimeframe}
           onTimeframeSelect={setSelectedTimeframe}
