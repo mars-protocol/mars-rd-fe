@@ -129,6 +129,7 @@ interface AssetMetaData {
   isStable?: boolean
   isStaking?: boolean
   isPerpsEnabled?: boolean
+  isDeprecated?: boolean
   logo?: string | null
   prefix?: string
   pythPriceFeedId?: string
