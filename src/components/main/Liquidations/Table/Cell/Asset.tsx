@@ -24,28 +24,22 @@ export default function Asset(props: Props) {
 
   if (!asset) return null
 
+  const assetAmount = demagnify(value.amount.toString(), asset)
+  const isZero = assetAmount === 0
+  const isBelowMinAmount = assetAmount < MIN_AMOUNT
+  const displayAmount = isBelowMinAmount ? MIN_AMOUNT : assetAmount
+
   const calculateValue = () => {
     if (!value.amount || value.amount === BN_ZERO) {
       return BN_ZERO
     }
 
     if (historicalPrice) {
-      const totalValue = BN(historicalPrice).multipliedBy(value.amount)
-      const assetAmount = demagnify(totalValue.toString(), asset)
-
-      return assetAmount
+      return BN(historicalPrice).multipliedBy(assetAmount)
     }
-
     return getCoinValue(value, assetData)
   }
-
   const assetValue = calculateValue()
-  if (!asset) return null
-  const assetAmount = demagnify(value.amount.toString(), asset)
-
-  const isZero = assetAmount === 0
-  const isBelowMinAmount = assetAmount < MIN_AMOUNT
-  const displayAmount = isBelowMinAmount ? MIN_AMOUNT : assetAmount
 
   return (
     <TitleAndSubCell
@@ -67,7 +61,7 @@ export default function Asset(props: Props) {
       sub={
         <div className='flex items-center justify-end gap-1'>
           <DisplayCurrency
-            coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, BN(assetValue))}
+            coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, assetValue)}
             className='text-xs'
             options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
             animate={false}
