@@ -1,7 +1,7 @@
 import Button from 'components/common/Button'
 import Text from 'components/common/Text'
 import useClipboard from 'react-use-clipboard'
-import { Chain, Check } from 'components/common/Icons'
+import { Check, Copy } from 'components/common/Icons'
 import { Tooltip } from 'components/common/Tooltip'
 import { truncate } from 'utils/formatters'
 
@@ -28,7 +28,7 @@ export default function Transaction(props: Props) {
           variant='transparent'
           iconClassName='w-3.5 h-3.5'
           className='!px-2'
-          leftIcon={isCopied ? <Check /> : <Chain />}
+          leftIcon={isCopied ? <Check /> : <Copy />}
           onClick={setCopied}
         />
       </Tooltip>

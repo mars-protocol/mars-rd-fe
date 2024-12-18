@@ -14,6 +14,7 @@ export default function StatsMetrics() {
   const latestTvl = overviewData?.total_value_locked?.length
     ? overviewData.total_value_locked[0]?.value || 0
     : 0
+
   const listedAssetsCount = assetParams
     ? assetParams.filter((asset) => !asset.denom.includes('/UUSDC')).length
     : 0
@@ -24,7 +25,7 @@ export default function StatsMetrics() {
     <MetricsCard
       hideBackground={false}
       background={
-        <div className='absolute right-0 top-0 md:w-180 transform scale-y-[-1]'>
+        <div className='absolute right-0 top-0 w-90 sm:w-160 md:w-180 transform scale-y-[-1]'>
           <GridGlobe />
         </div>
       }
