@@ -89,7 +89,7 @@ const getOracleQueryClientNeutron = async (chainConfig: ChainConfig) => {
     const rpc = getUrl(chainConfig.endpoints.rpc)
     const key = rpc + contract
 
-    if (!_oracleQueryClient.get(key)) {
+    if (!_oracleQueryClient.get(key) && contract) {
       const client = await getClient(rpc)
       _oracleQueryClient.set(key, new MarsOracleWasmQueryClient(client, contract))
     }
