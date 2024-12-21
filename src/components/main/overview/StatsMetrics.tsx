@@ -1,6 +1,5 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
 import useAssets from 'hooks/assets/useAssets'
-import useLendingMarkets from 'hooks/markets/useLendingMarkets'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 import useTotalAccounts from 'hooks/accounts/useTotalAccounts'
@@ -20,7 +19,6 @@ export default function StatsMetrics() {
   const chainId = getCurrentChainId()
   const isNeutron = chainId === ChainInfoID.Neutron1
   const perpsAssets = usePerpsEnabledAssets()
-  const markets = useLendingMarkets()
 
   const latestTvl = useMemo(() => {
     return overviewData?.total_value_locked?.length
@@ -28,22 +26,21 @@ export default function StatsMetrics() {
       : 0
   }, [overviewData])
 
-  const activeMarkets = useMemo(() => {
-    return (
-      markets?.filter(
-        (market) =>
-          !market.asset.isDeprecated &&
-          !market.asset.symbol.includes('USDC') &&
-          !market.asset.symbol.includes('USDT.kava'),
-      ) ?? []
-    )
-  }, [markets])
+  const { listedAssets, activeStrategies } = useMemo(() => {
+    if (!assets) return { listedAssets: [], activeStrategies: [] }
 
-  const activeStrategies = useMemo(() => {
-    if (!assets) return []
-    return isNeutron
-      ? assets.filter((asset) => asset.isWhitelisted && asset.denom.includes('share'))
-      : assets.filter((asset) => asset.isWhitelisted && asset.denom.includes('gamm'))
+    return {
+      listedAssets: assets.filter(
+        (asset) =>
+          asset.isTradeEnabled &&
+          !asset.isDeprecated &&
+          !asset.symbol.includes('USDC') &&
+          !asset.symbol.includes('USDT'),
+      ),
+      activeStrategies: isNeutron
+        ? assets.filter((asset) => asset.isWhitelisted && asset.denom.includes('share'))
+        : assets.filter((asset) => asset.isWhitelisted && asset.denom.includes('gamm')),
+    }
   }, [assets, isNeutron])
 
   const loading = accountsLoading || tvlLoading || assetsLoading
@@ -79,7 +76,7 @@ export default function StatsMetrics() {
           },
         },
         {
-          value: BN(activeMarkets?.length || 0),
+          value: BN(listedAssets?.length || 0),
           label: 'Listed Assets',
           formatOptions: {
             maxDecimals: 0,
