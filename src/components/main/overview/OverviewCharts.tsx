@@ -13,7 +13,7 @@ import { useOverviewChartData } from 'hooks/tokenomics/useOverviewChartData'
 import { useState } from 'react'
 
 export default function OverviewCharts() {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[0].value)
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[1].value)
 
   const {
     data: overviewData,
