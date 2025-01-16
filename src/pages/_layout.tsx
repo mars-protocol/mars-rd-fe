@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     >
       <PageMetadata />
       <Background />
-      {!isIframeView && <Header />}
+      <Header />
       <main
         className={classNames(
           'md:min-h-[calc(100dvh-81px)]',
