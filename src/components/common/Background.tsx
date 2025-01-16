@@ -1,15 +1,6 @@
 import classNames from 'classnames'
 
-import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
-import { LocalStorageKeys } from 'constants/localStorageKeys'
-import useLocalStorage from 'hooks/localStorage/useLocalStorage'
-
 export default function Background() {
-  const [reduceMotion] = useLocalStorage<boolean>(
-    LocalStorageKeys.REDUCE_MOTION,
-    DEFAULT_SETTINGS.reduceMotion,
-  )
-
   return (
     <div
       className={classNames(
@@ -17,7 +8,7 @@ export default function Background() {
         'w-screen-full h-screen-full',
         'overflow-hidden pointer-events-none background',
         'bg-body',
-        !reduceMotion && 'transition-bg duration-1000 delay-300',
+        'transition-bg duration-1000 delay-300',
       )}
     >
       <div
@@ -30,8 +21,8 @@ export default function Background() {
           'blur-orb-primary',
           'bg-orb-primary',
           'translate-x-0 translate-y-0 rounded-full opacity-20',
-          !reduceMotion && 'animate-[float_120s_ease-in-out_infinite_2s]',
-          !reduceMotion && 'transition-bg duration-1000 delay-300',
+          'animate-[float_120s_ease-in-out_infinite_2s]',
+          'transition-bg duration-1000 delay-300',
         )}
       />
       <div
@@ -44,7 +35,7 @@ export default function Background() {
           'blur-orb-secondary',
           'bg-orb-secondary',
           'translate-x-0 translate-y-0  rounded-full opacity-30',
-          !reduceMotion && 'transition-bg duration-1000 delay-300',
+          'transition-bg duration-1000 delay-300',
         )}
       />
       <div
@@ -57,8 +48,8 @@ export default function Background() {
           'blur-orb-tertiary ',
           'bg-orb-tertiary',
           'translate-x-0 translate-y-0 rounded-full opacity-20',
-          !reduceMotion && 'animate-[float_180s_ease-in_infinite]',
-          !reduceMotion && 'transition-bg duration-1000 delay-300',
+          'animate-[float_180s_ease-in_infinite]',
+          'transition-bg duration-1000 delay-300',
         )}
       />
     </div>
