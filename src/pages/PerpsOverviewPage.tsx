@@ -10,6 +10,7 @@ import { getRoute } from 'utils/route'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { TIMEFRAME } from 'constants/timeframe'
+import classNames from 'classnames'
 
 export default function PerpsOverviewPage() {
   const navigate = useNavigate()
@@ -59,8 +60,10 @@ export default function PerpsOverviewPage() {
 
   return (
     <div className='w-full'>
-      <PerpsMetrics />
-      <Card className='p-1 mt-5 md:p-4 bg-white/5'>
+      {!isIframeView && <PerpsMetrics />}
+      <Card
+        className={classNames('p-1 md:p-4 bg-white/5', isIframeView ? 'bg-transparent' : 'mt-5')}
+      >
         <SelectionControlPanel
           {...(!isIframeView && {
             selectOptions: displayOptions,
