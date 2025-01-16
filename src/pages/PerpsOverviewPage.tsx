@@ -58,18 +58,29 @@ export default function PerpsOverviewPage() {
     [perpsAssets],
   )
 
+  if (isIframeView) {
+    return (
+      <div className='w-full '>
+        <SelectionControlPanel
+          timeframe={TIMEFRAME}
+          selectedTimeframe={selectedTimeframe}
+          onTimeframeSelect={setSelectedTimeframe}
+        />
+        <Divider className='mt-2 mb-4' />
+        <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
+      </div>
+    )
+  }
   return (
     <div className='w-full'>
-      {!isIframeView && <PerpsMetrics />}
+      <PerpsMetrics />
       <Card
         className={classNames('p-1 md:p-4 bg-white/5', isIframeView ? 'bg-transparent' : 'mt-5')}
       >
         <SelectionControlPanel
-          {...(!isIframeView && {
-            selectOptions: displayOptions,
-            defaultSelectValue: selectedOption,
-            onSelectChange: handleSelectChange,
-          })}
+          selectOptions={displayOptions}
+          defaultSelectValue={selectedOption}
+          onSelectChange={handleSelectChange}
           timeframe={TIMEFRAME}
           selectedTimeframe={selectedTimeframe}
           onTimeframeSelect={setSelectedTimeframe}

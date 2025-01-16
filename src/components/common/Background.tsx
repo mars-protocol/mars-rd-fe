@@ -1,6 +1,12 @@
 import classNames from 'classnames'
+import { useSearchParams } from 'react-router-dom'
 
 export default function Background() {
+  const [searchParams] = useSearchParams()
+  const isIframeView = searchParams.get('iframeView') === 'on'
+
+  if (isIframeView) return null
+
   return (
     <div
       className={classNames(

@@ -19,13 +19,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <Suspense
       fallback={
         <>
-          {!isIframeView && <Background />}
-          {!isIframeView && <Header />}
+          <Background />
+          <Header />
         </>
       }
     >
       <PageMetadata />
-      {!isIframeView && <Background />}
+      <Background />
       {!isIframeView && <Header />}
       <main
         className={classNames(
