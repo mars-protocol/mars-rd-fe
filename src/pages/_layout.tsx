@@ -14,6 +14,7 @@ import useChainConfig from 'hooks/chain/useChainConfig'
 import useCurrentChainId from 'hooks/localStorage/useCurrentChainId'
 import useStore from 'store'
 import { debugSWR } from 'utils/middleware'
+import { useRouter } from 'next/router'
 
 interface Props {
   focusComponent: FocusComponent | null
@@ -51,16 +52,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       useStore.setState({ chainConfig: chains[currentChainId] })
     }
   }, [chainConfig.id, currentChainId, setCurrentChainId])
+  const router = useRouter()
+  const isIframeView = router.query.iframeView === 'on'
 
   return (
     <SWRConfig value={{ use: [debugSWR] }}>
       <PageMetadata />
-      <Background />
-      <Header />
+      {!isIframeView && <Background />}
+      {!isIframeView && <Header />}
       <main
         className={classNames(
           'md:min-h-[calc(100dvh-81px)]',
-          'mt-[73px]',
+          !isIframeView && 'mt-[73px]',
           'flex',
           'min-h-screen-full w-full relative',
           'gap-4 p-2 pb-20',
@@ -83,7 +86,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           }
         >
-          <PageContainer focusComponent={focusComponent}>{children}</PageContainer>
+          {isIframeView ? (
+            children
+          ) : (
+            <PageContainer focusComponent={focusComponent}>{children}</PageContainer>
+          )}
         </Suspense>
       </main>
       <Footer />

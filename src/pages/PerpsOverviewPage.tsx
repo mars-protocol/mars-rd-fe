@@ -16,6 +16,7 @@ export default function PerpsOverviewPage() {
   const { asset } = useParams()
   const perpsAssets = usePerpsEnabledAssets()
   const [searchParams] = useSearchParams()
+  const isIframeView = searchParams.get('iframeView') === 'on'
 
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[1].value)
   const [selectedOption, setSelectedOption] = useState<string>(asset ? `perps/${asset}` : 'total')
@@ -61,9 +62,11 @@ export default function PerpsOverviewPage() {
       <PerpsMetrics />
       <Card className='p-1 mt-5 md:p-4 bg-white/5'>
         <SelectionControlPanel
-          selectOptions={displayOptions}
-          defaultSelectValue={selectedOption}
-          onSelectChange={handleSelectChange}
+          {...(!isIframeView && {
+            selectOptions: displayOptions,
+            defaultSelectValue: selectedOption,
+            onSelectChange: handleSelectChange,
+          })}
           timeframe={TIMEFRAME}
           selectedTimeframe={selectedTimeframe}
           onTimeframeSelect={setSelectedTimeframe}
