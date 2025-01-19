@@ -16,7 +16,7 @@ export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
 
   const pageSize = 25
-  const maxEntries = 200
+  const maxEntries = 100
 
   const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations(page, pageSize)
   const { data: assetsData } = useAssets()

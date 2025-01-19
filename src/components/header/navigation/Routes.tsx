@@ -18,8 +18,7 @@ export default function Routes() {
         }
       >
         <Route path='*' element={<Navigate to='/' />} />
-        <Route path='/' element={<MainPage />} />
-
+        <Route path='/' element={<Navigate to='/main' replace />} />
         <Route path='/main' element={<MainPage />} />
         <Route path='/liquidations' element={<LiquidationsPage />} />
         <Route path='/perps' element={chainConfig.perps ? <PerpsOverviewPage /> : <MainPage />}>
