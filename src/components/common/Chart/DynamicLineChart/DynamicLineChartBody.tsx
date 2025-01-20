@@ -119,7 +119,7 @@ export default function DynamicLineChartBody(props: Props) {
           data={reversedData}
           margin={{
             top: 10,
-            right: 0,
+            right: 10,
             left: 0,
             bottom: 0,
           }}
@@ -166,6 +166,7 @@ export default function DynamicLineChartBody(props: Props) {
             tickFormatter={(value) => {
               return moment(value).format('DD MMM')
             }}
+            interval={reversedData.length > 10 ? Math.floor(reversedData.length / 7) : 0}
           />
           <YAxis
             axisLine={false}

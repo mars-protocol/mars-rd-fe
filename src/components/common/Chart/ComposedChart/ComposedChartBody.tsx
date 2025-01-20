@@ -140,6 +140,7 @@ export default function ComposedChartBody(props: Props) {
             tickLine={false}
             fontSize={10}
             dy={10}
+            interval={reversedData.length > 10 ? Math.floor(reversedData.length / 7) : 0}
           />
 
           {/* Primary Y-axis */}
