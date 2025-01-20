@@ -1,12 +1,12 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
-import { BN } from 'utils/helpers'
-import { BN_ZERO } from 'constants/math'
 import { GridLandscape } from 'components/common/Icons'
+import { BN_ZERO } from 'constants/math'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
+import { BN } from 'utils/helpers'
 
 export default function PerpsMetrics() {
-  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '30')
+  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '90')
 
   const totalTradingVolume = perpsStats?.daily_trading_volume.reduce(
     (acc, day) => acc.plus(BN(day.value || 0)),
@@ -66,7 +66,7 @@ export default function PerpsMetrics() {
     <MetricsCard
       hideBackground={false}
       background={
-        <div className='absolute right-0 bottom-0 md:w-190'>
+        <div className='absolute bottom-0 right-0 md:w-190'>
           <GridLandscape />
         </div>
       }
