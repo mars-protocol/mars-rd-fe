@@ -95,9 +95,11 @@ export default function ComposedChartBody(props: Props) {
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
   )
-
   const reversedData = [...data].reverse()
-  const hasSecondaryAxis = config.secondary && config.secondary.length > 0
+  const hasSecondaryAxis =
+    (config.secondary && config.secondary.length > 0) ||
+    config.bars?.some((bar) => bar.yAxisId === 'right')
+  const isPercentageAxis = config.secondary && config.secondary.some((line) => line.isPercentage)
 
   return (
     <div className={classNames(height, hasSecondaryAxis ? 'ml-0' : '-ml-4')}>
@@ -162,7 +164,7 @@ export default function ComposedChartBody(props: Props) {
             }}
           />
 
-          {/* Secondary Y-axis for percentages */}
+          {/* Secondary Y-axis */}
           {hasSecondaryAxis && (
             <YAxis
               yAxisId='right'
@@ -172,13 +174,22 @@ export default function ComposedChartBody(props: Props) {
               fontSize={8}
               tickCount={8}
               stroke='rgba(255, 255, 255, 0.4)'
-              tickFormatter={(value) =>
-                formatValue(value * 100, {
+              tickFormatter={(value) => {
+                if (isPercentageAxis) {
+                  return formatValue(value * 100, {
+                    minDecimals: 0,
+                    maxDecimals: 0,
+                    suffix: '%',
+                  })
+                }
+                const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
+                return formatValue(adjustedValue, {
                   minDecimals: 0,
-                  maxDecimals: 0,
-                  suffix: '%',
+                  maxDecimals: 2,
+                  prefix: '$',
+                  abbreviated: true,
                 })
-              }
+              }}
             />
           )}
 
@@ -198,7 +209,7 @@ export default function ComposedChartBody(props: Props) {
           {config.bars?.map((bar, index) => (
             <Bar
               key={bar.dataKey}
-              yAxisId='left'
+              yAxisId={bar.yAxisId || 'left'}
               dataKey={bar.dataKey}
               name={bar.name}
               stackId='positions'
@@ -210,7 +221,7 @@ export default function ComposedChartBody(props: Props) {
 
           {config.line && (
             <Line
-              yAxisId='left'
+              yAxisId={config.line.yAxisId || 'left'}
               type='monotone'
               dataKey={config.line.dataKey}
               name={config.line.name}
