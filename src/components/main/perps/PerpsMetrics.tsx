@@ -6,7 +6,7 @@ import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
 
 export default function PerpsMetrics() {
-  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '30')
+  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '90')
 
   const totalTradingVolume = perpsStats?.daily_trading_volume.reduce(
     (acc, day) => acc.plus(BN(day.value || 0)),
