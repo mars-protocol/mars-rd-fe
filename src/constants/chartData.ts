@@ -131,6 +131,20 @@ export const PERPS_CHART_CONFIGS = {
       yAxisId: 'left',
     },
   },
+  openInterestGlobal: {
+    bars: [
+      {
+        dataKey: 'long',
+        name: 'Long Positions',
+        color: CHART_COLORS.tertiary,
+      },
+      {
+        dataKey: 'short',
+        name: 'Short Positions',
+        color: CHART_COLORS.secondary,
+      },
+    ],
+  },
   tradingFees: [
     { dataKey: 'trading_fees', color: CHART_COLORS.secondary, name: 'Trading Fees' },
     { dataKey: 'net_funding_fees', color: CHART_COLORS.tertiary, name: 'Net Funding Fees' },
