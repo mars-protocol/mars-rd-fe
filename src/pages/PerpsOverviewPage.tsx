@@ -10,12 +10,14 @@ import { getRoute } from 'utils/route'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { TIMEFRAME } from 'constants/timeframe'
+import classNames from 'classnames'
 
 export default function PerpsOverviewPage() {
   const navigate = useNavigate()
   const { asset } = useParams()
   const perpsAssets = usePerpsEnabledAssets()
   const [searchParams] = useSearchParams()
+  const isIframeView = searchParams.get('iframeView') === 'on'
 
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2].value)
   const [selectedOption, setSelectedOption] = useState<string>(asset ? `perps/${asset}` : 'total')
@@ -56,10 +58,25 @@ export default function PerpsOverviewPage() {
     [perpsAssets],
   )
 
+  if (isIframeView) {
+    return (
+      <div className='w-full '>
+        <SelectionControlPanel
+          timeframe={TIMEFRAME}
+          selectedTimeframe={selectedTimeframe}
+          onTimeframeSelect={setSelectedTimeframe}
+        />
+        <Divider className='mt-2 mb-4' />
+        <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
+      </div>
+    )
+  }
   return (
     <div className='w-full'>
       <PerpsMetrics />
-      <Card className='p-1 mt-5 md:p-4 bg-white/5'>
+      <Card
+        className={classNames('p-1 md:p-4 bg-white/5', isIframeView ? 'bg-transparent' : 'mt-5')}
+      >
         <SelectionControlPanel
           selectOptions={displayOptions}
           defaultSelectValue={selectedOption}

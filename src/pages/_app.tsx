@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <DefaultPageHead />
       <div suppressHydrationWarning>
-        {typeof window === 'undefined' ? null : <PageComponent {...pageProps} />}
+        <PageComponent {...pageProps} />
       </div>
     </>
   )

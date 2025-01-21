@@ -6,6 +6,7 @@ import { NavLink } from 'components/header/navigation/desktop/NavLink'
 import MobileNavigation from 'components/header/navigation/mobile/MobileNavigation'
 import MobileNavigationToggle from 'components/header/navigation/mobile/MobileNavigationToggle'
 import { isMobile } from 'react-device-detect'
+import { useSearchParams } from 'react-router-dom'
 
 const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
   {
@@ -27,6 +28,11 @@ const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
 ]
 
 export default function Header() {
+  const [searchParams] = useSearchParams()
+  const isIframeView = searchParams.get('iframeView') === 'on'
+
+  if (isIframeView) return null
+
   return (
     <>
       <header

@@ -93,6 +93,8 @@ export default function StatsMetrics() {
             maxDecimals: 0,
             minDecimals: 0,
           },
+          tooltipContent:
+            'This includes Liquidity Pool (LP) farming and High Leverage farming strategies',
         },
         ...(isNeutron
           ? [

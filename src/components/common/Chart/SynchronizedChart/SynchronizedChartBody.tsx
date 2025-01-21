@@ -81,6 +81,23 @@ export default function SynchronizedChartBody(props: Props) {
   )
   const reversedData = [...data].reverse()
 
+  const getYAxisDomain = (data: MergedChartData[]) => {
+    const allValues = data.flatMap((item) => [
+      Number(item[config.primaryChart.bar.dataKey]),
+      Number(item[config.primaryChart.line.dataKey]),
+      Number(item[config.secondaryChart.bar.dataKey]),
+      Number(item[config.secondaryChart.line.dataKey]),
+    ])
+
+    const maxValue = Math.max(...allValues)
+    const minValue = Math.min(...allValues)
+
+    // Add 1% padding to ensure bars are visible
+    const padding = (maxValue - minValue) * 0.01
+
+    return [Math.min(0, minValue - padding), maxValue + padding]
+  }
+
   return (
     <div className='-ml-4 w-full h-140'>
       <ResponsiveContainer width='100%' height='50%'>
@@ -122,6 +139,7 @@ export default function SynchronizedChartBody(props: Props) {
             tickLine={false}
             fontSize={8}
             tickCount={6}
+            domain={getYAxisDomain(reversedData)}
             tickFormatter={(value) => {
               const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
               return formatValue(adjustedValue, {
@@ -202,6 +220,7 @@ export default function SynchronizedChartBody(props: Props) {
             tickLine={false}
             fontSize={8}
             tickCount={6}
+            domain={getYAxisDomain(reversedData)}
             tickFormatter={(value) => {
               const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
               return formatValue(adjustedValue, {

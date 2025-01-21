@@ -14,20 +14,14 @@ import { useEffect, useMemo, useState } from 'react'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
-  const [hasMore, setHasMore] = useState<boolean>(true)
 
   const pageSize = 25
-  const maxEntries = 200
+  const maxEntries = 100
 
   const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations(page, pageSize)
   const { data: assetsData } = useAssets()
-  const totalPages = Math.ceil(maxEntries / pageSize)
-
-  useEffect(() => {
-    if (liquidityData) {
-      setHasMore(liquidityData.length === pageSize)
-    }
-  }, [liquidityData])
+  const maxPossiblePages = Math.ceil(maxEntries / pageSize)
+  const hasNextPage = liquidityData?.length === pageSize && page < maxPossiblePages
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
@@ -130,11 +124,12 @@ export default function LiquidationsTable() {
         initialSorting={[]}
       />
 
-      {hasMore && liquidityData?.length > 0 && (
+      {liquidityData?.length > 0 && (
         <Pagination
           currentPage={page}
-          totalPages={page + (hasMore ? 1 : 0)}
           onPageChange={handlePageChange}
+          maxKnownPage={maxPossiblePages}
+          hasNextPage={hasNextPage}
         />
       )}
     </>
