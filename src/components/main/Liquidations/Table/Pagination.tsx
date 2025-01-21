@@ -3,13 +3,12 @@ import Text from 'components/common/Text'
 
 interface Props {
   currentPage: number
-  maxKnownPage: number
-  hasNextPage: boolean
+  totalPages: number
   onPageChange: (newPage: number) => void
 }
 
 export default function Pagination(props: Props) {
-  const { currentPage, maxKnownPage, hasNextPage, onPageChange } = props
+  const { currentPage, totalPages, onPageChange } = props
 
   return (
     <div className='flex justify-end mt-2'>
@@ -38,11 +37,20 @@ export default function Pagination(props: Props) {
             text='Next'
             size='sm'
             onClick={() => onPageChange(currentPage + 1)}
-            disabled={!hasNextPage}
+            disabled={currentPage === totalPages}
           />
+          {currentPage < totalPages && (
+            <Button
+              variant='solid'
+              color='tertiary'
+              text='Last'
+              size='sm'
+              onClick={() => onPageChange(totalPages)}
+            />
+          )}
         </div>
         <Text size='xs' className='mt-2'>
-          Page {currentPage} of {maxKnownPage}
+          Page {currentPage} of {totalPages}
         </Text>
       </div>
     </div>

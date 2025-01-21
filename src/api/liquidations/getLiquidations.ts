@@ -8,7 +8,7 @@ export default async function getLiquidations(page = 1, pageSize = 25) {
     const baseUrl = getApiBaseUrl()
 
     if (chainId === ChainInfoID.Osmosis1) {
-      return []
+      return { data: [], total: 0 }
     }
     const url = new URL(
       `${baseUrl}/v2/liquidations?chain=neutron&product=creditmanager&page=${page}&limit=${pageSize}&orders={"block_height":"desc"}`,
@@ -16,9 +16,9 @@ export default async function getLiquidations(page = 1, pageSize = 25) {
     const response = await fetch(url.toString())
     const data = await response.json()
 
-    return data.data
+    return { data: data.data, total: data.total } as LiquidationsResponse
   } catch (error) {
     console.error('Could not fetch liquidations data.', error)
-    return []
+    return { data: [], total: 0 }
   }
 }
