@@ -1475,6 +1475,10 @@ interface LiquidationDataItem {
   timestamp: string
   tx_hash: string
 }
+interface LiquidationsResponse {
+  data: LiquidationDataItem[]
+  total: number
+}
 
 interface Token {
   chainId: string
