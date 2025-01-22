@@ -1503,6 +1503,7 @@ interface LineConfig {
   name: string
   isPercentage?: boolean
   strokeDasharray?: string
+  yAxisId?: string
 }
 
 interface ChartConfig {
