@@ -10,24 +10,26 @@ import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
-
   const pageSize = 25
-  const maxEntries = 100
 
-  const { data: liquidityData, isLoading: isLiquidityDataLoading } = useLiquidations(page, pageSize)
+  const { data: liquidations, isLoading: isLiquidationsDataLoading } = useLiquidations(
+    page,
+    pageSize,
+  )
   const { data: assetsData } = useAssets()
-  const maxPossiblePages = Math.ceil(maxEntries / pageSize)
-  const hasNextPage = liquidityData?.length === pageSize && page < maxPossiblePages
+
+  const maxEntries = liquidations?.total ?? 0
+  const totalPages = Math.ceil(maxEntries / pageSize)
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
   }
 
-  const isLoading = isLiquidityDataLoading || !liquidityData
+  const isLoading = isLiquidationsDataLoading || !liquidations
 
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
     const baseColumns = [
@@ -104,7 +106,7 @@ export default function LiquidationsTable() {
     )
   }
 
-  if (!liquidityData.length || liquidityData === null) {
+  if (!liquidations?.data?.length) {
     return (
       <div className='flex flex-wrap justify-center w-full gap-4'>
         <Text className='w-full text-center' size='xl'>
@@ -119,18 +121,13 @@ export default function LiquidationsTable() {
       <Table
         title='Recently Executed Liquidations'
         columns={columns}
-        data={liquidityData}
+        data={liquidations.data}
         tableBodyClassName='text-lg'
         initialSorting={[]}
       />
 
-      {liquidityData?.length > 0 && (
-        <Pagination
-          currentPage={page}
-          onPageChange={handlePageChange}
-          maxKnownPage={maxPossiblePages}
-          hasNextPage={hasNextPage}
-        />
+      {totalPages > 1 && (
+        <Pagination currentPage={page} onPageChange={handlePageChange} totalPages={totalPages} />
       )}
     </>
   )

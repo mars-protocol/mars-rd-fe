@@ -124,6 +124,28 @@ export const PERPS_CHART_CONFIGS = {
         dataKey: 'long',
         name: 'Long Positions',
         color: CHART_COLORS.tertiary,
+        yAxisId: 'right',
+      },
+      {
+        dataKey: 'short',
+        name: 'Short Positions',
+        color: CHART_COLORS.secondary,
+        yAxisId: 'right',
+      },
+    ],
+    line: {
+      dataKey: 'max_oi_long',
+      name: 'Max OI',
+      color: CHART_COLORS.primary,
+      yAxisId: 'left',
+    },
+  },
+  openInterestGlobal: {
+    bars: [
+      {
+        dataKey: 'long',
+        name: 'Long Positions',
+        color: CHART_COLORS.tertiary,
       },
       {
         dataKey: 'short',
@@ -131,11 +153,6 @@ export const PERPS_CHART_CONFIGS = {
         color: CHART_COLORS.secondary,
       },
     ],
-    line: {
-      dataKey: 'max_oi_long',
-      name: 'Max OI',
-      color: CHART_COLORS.primary,
-    },
   },
   tradingFees: [
     {

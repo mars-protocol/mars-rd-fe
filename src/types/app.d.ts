@@ -1475,6 +1475,10 @@ interface LiquidationDataItem {
   timestamp: string
   tx_hash: string
 }
+interface LiquidationsResponse {
+  data: LiquidationDataItem[]
+  total: number
+}
 
 interface Token {
   chainId: string
@@ -1504,6 +1508,7 @@ interface LineConfig {
   name: string
   isPercentage?: boolean
   strokeDasharray?: string
+  yAxisId?: string
 }
 
 interface ChartConfig {

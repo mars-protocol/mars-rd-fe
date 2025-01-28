@@ -131,6 +131,7 @@ export default function SynchronizedChartBody(props: Props) {
             tickFormatter={(value) => {
               return moment(value).format('DD MMM')
             }}
+            interval={reversedData.length > 10 ? Math.floor(reversedData.length / 7) : 0}
           />
 
           <YAxis
@@ -213,6 +214,7 @@ export default function SynchronizedChartBody(props: Props) {
             tickFormatter={(value) => {
               return moment(value).format('DD MMM')
             }}
+            interval={reversedData.length > 10 ? Math.floor(data.length / 7) : 0}
           />
           <YAxis
             stroke='rgba(255, 255, 255, 0.4)'
