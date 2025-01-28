@@ -192,6 +192,7 @@ module.exports = {
         65: '250px',
         75: '300px',
         100: '400px',
+        140: '560px',
         'screen-full': '100dvh',
         'screen/90': '90dvh',
         'screen/80': '80dvh',

@@ -69,7 +69,7 @@ export default function LiquidationsMetrics() {
     <MetricsCard
       hideBackground={false}
       background={
-        <div className='absolute right-0 top-0 md:w-180'>
+        <div className='absolute right-0 top-0 w-90 sm:w-160 md:w-180'>
           <GridPlanet />
         </div>
       }

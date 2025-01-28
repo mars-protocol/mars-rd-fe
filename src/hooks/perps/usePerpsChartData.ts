@@ -7,12 +7,12 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
 
   const validDates = useMemo(() => {
     const daysWithActivity = rawFeesData.filter(
-      (day) => day.trading_fees !== 0 || day.net_funding_fees !== 0,
+      (day) => day.realized_trading_fees !== 0 || day.realized_net_funding_fees !== 0,
     )
     return new Set(
       daysWithActivity.length > 1
         ? rawFeesData
-            .filter((day) => day.trading_fees !== 0 || day.net_funding_fees !== 0)
+            .filter((day) => day.realized_trading_fees !== 0 || day.realized_net_funding_fees !== 0)
             .map((day) => day.date)
         : rawFeesData.map((day) => day.date),
     )
@@ -29,6 +29,9 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
     useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fundingRate),
   )
   const pnlData = filterData(useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.pnl))
+  const realizedPnlBreakdown = filterData(
+    useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.realizedPnlBreakdown),
+  )
   const feesData = filterData(useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fees))
   const skewData = filterData(useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.skewData))
   const vaultData = filterData(useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.vaultData))
@@ -43,10 +46,11 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
     openInterestData,
     fundingRateData,
     pnlData,
+    realizedPnlBreakdown,
     feesData,
     skewData,
     notionalLiquidatedData: singleMetrics,
-    dailyTradingVolumeData: singleMetrics,
+    tradingVolumeData: singleMetrics,
     imbalanceRatioData: singleMetrics,
     vaultData,
     combinedMetricsData,
