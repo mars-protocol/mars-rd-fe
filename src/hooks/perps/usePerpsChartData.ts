@@ -29,7 +29,7 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
     useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fundingRate),
   )
   const pnlData = filterData(useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.pnl))
-    const realizedPnlBreakdown = filterData(
+  const realizedPnlBreakdown = filterData(
     useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.realizedPnlBreakdown),
   )
   const feesData = filterData(useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fees))
