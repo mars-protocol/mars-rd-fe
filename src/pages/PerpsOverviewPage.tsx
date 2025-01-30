@@ -19,7 +19,7 @@ export default function PerpsOverviewPage() {
   const [searchParams] = useSearchParams()
   const isIframeView = searchParams.get('iframeView') === 'on'
 
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[1].value)
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2].value)
   const [selectedOption, setSelectedOption] = useState<string>(asset ? `perps/${asset}` : 'total')
 
   const handleSelectChange = (value: string) => {

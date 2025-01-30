@@ -40,7 +40,7 @@ export default function StatisticsPanel(props: Props) {
 
   const metrics: Metric[] = [
     {
-      value: getLatestValue(data.daily_trading_volume),
+      value: getLatestValue(data.trading_volume),
       label: 'Daily Trading Volume',
       isCurrency: true,
       formatOptions: { maxDecimals: 2, minDecimals: 2, abbreviated: true },
@@ -56,7 +56,7 @@ export default function StatisticsPanel(props: Props) {
       },
     },
     {
-      value: getLatestValue(data.fees.trading_fee || []),
+      value: getLatestValue(data.fees.realized_trading_fee || []),
       label: 'Trading Fees',
       isCurrency: true,
       formatOptions: { abbreviated: true },
