@@ -2,11 +2,10 @@ import MetricsCard from 'components/common/Card/MetricsCard'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
 import { BN } from 'utils/helpers'
 import { GridLandscape } from 'components/common/Icons'
-import { BN_ZERO } from 'constants/math'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 
 export default function PerpsMetrics() {
-  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '90')
+  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '365')
 
   const perpsMetrics: Metric[] = [
     {
