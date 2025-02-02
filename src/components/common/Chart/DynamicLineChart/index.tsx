@@ -9,10 +9,11 @@ interface Props {
   lines: LineConfig[]
   height?: string
   customYAxisDomain?: (values: number[]) => [number, number]
+  timeframe?: string
 }
 
 export default function DynamicLineChart(props: Props) {
-  const { data, loading, lines, height = 'h-65', title, customYAxisDomain } = props
+  const { data, loading, lines, height = 'h-65', title, customYAxisDomain, timeframe } = props
 
   return (
     <ChartCardWrapper title={title}>
@@ -24,6 +25,7 @@ export default function DynamicLineChart(props: Props) {
           lines={lines}
           height={height}
           customYAxisDomain={customYAxisDomain}
+          timeframe={timeframe}
         />
       )}
     </ChartCardWrapper>

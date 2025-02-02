@@ -36,6 +36,7 @@ interface ChartConfig {
 interface Props {
   data: MergedChartData[]
   config: ChartConfig
+  timeframe?: string
 }
 
 function TooltipContent(props: TooltipContentProps) {
@@ -74,7 +75,7 @@ function TooltipContent(props: TooltipContentProps) {
 }
 
 export default function SynchronizedChartBody(props: Props) {
-  const { data, config } = props
+  const { data, config, timeframe = '' } = props
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
@@ -129,6 +130,9 @@ export default function SynchronizedChartBody(props: Props) {
             dataKey='date'
             dy={10}
             tickFormatter={(value) => {
+              if (timeframe === '24') {
+                return moment(value).format('HH:mm')
+              }
               return moment(value).format('DD MMM')
             }}
             interval={reversedData.length > 10 ? Math.floor(reversedData.length / 7) : 0}
@@ -212,6 +216,9 @@ export default function SynchronizedChartBody(props: Props) {
             dataKey='date'
             dy={10}
             tickFormatter={(value) => {
+              if (timeframe === '24') {
+                return moment(value).format('HH:mm')
+              }
               return moment(value).format('DD MMM')
             }}
             interval={reversedData.length > 10 ? Math.floor(data.length / 7) : 0}

@@ -31,6 +31,7 @@ interface Props {
   lines: LineConfig[]
   height?: string
   customYAxisDomain?: (values: number[]) => [number, number]
+  timeframe?: string
 }
 
 const TooltipContent = ({
@@ -76,7 +77,7 @@ const TooltipContent = ({
 }
 
 export default function DynamicLineChartBody(props: Props) {
-  const { data, lines, height = 'h-65', customYAxisDomain } = props
+  const { data, lines, height = 'h-65', customYAxisDomain, timeframe = '' } = props
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
@@ -164,6 +165,9 @@ export default function DynamicLineChartBody(props: Props) {
             dy={10}
             stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
+              if (timeframe === '24') {
+                return moment(value).format('HH:mm')
+              }
               return moment(value).format('DD MMM')
             }}
             interval={reversedData.length > 10 ? Math.floor(reversedData.length / 7) : 0}
