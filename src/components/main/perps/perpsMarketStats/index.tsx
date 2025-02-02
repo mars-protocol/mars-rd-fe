@@ -145,6 +145,7 @@ export default function PerpsMarketStats(props: Props) {
             lines={PERPS_CHART_CONFIGS.tradingVolume}
             height='h-80'
             title='Trading Volume'
+            timeframe={timeframe}
           />
         </div>
         <div className='w-full md:w-1/2'>
@@ -153,6 +154,7 @@ export default function PerpsMarketStats(props: Props) {
             lines={PERPS_CHART_CONFIGS.tradingFees}
             height='h-80'
             title='Cumulative Realized Trading and Funding Fees'
+            timeframe={timeframe}
           />
         </div>
       </div>
@@ -169,6 +171,7 @@ export default function PerpsMarketStats(props: Props) {
                 },
               ]}
               height='h-80'
+              timeframe={timeframe}
               title={
                 <div className='flex w-full justify-between items-center'>
                   <Text size='sm'>Funding Rate</Text>
@@ -188,6 +191,7 @@ export default function PerpsMarketStats(props: Props) {
               lines={PERPS_CHART_CONFIGS.notional}
               height='h-80'
               title='Notional Liquidated'
+              timeframe={timeframe}
             />
           )}
         </div>
@@ -197,6 +201,7 @@ export default function PerpsMarketStats(props: Props) {
             lines={PERPS_CHART_CONFIGS.imbalanceRatio}
             height='h-80'
             title='Imbalance Long Ratio'
+            timeframe={timeframe}
           />
         </div>
       </div>
@@ -208,6 +213,7 @@ export default function PerpsMarketStats(props: Props) {
             lines={PERPS_CHART_CONFIGS.skew}
             height='h-80'
             title='Skew and Max Net Open Interest'
+            timeframe={timeframe}
           />
         </div>
         <div className='w-full md:w-1/2'>
@@ -220,6 +226,7 @@ export default function PerpsMarketStats(props: Props) {
                 : PERPS_CHART_CONFIGS.openInterest
             }
             height='h-80'
+            timeframe={timeframe}
           />
         </div>
       </div>
@@ -229,6 +236,7 @@ export default function PerpsMarketStats(props: Props) {
         title='Realized and Unrealized PnL'
         loading={perpsStatsLoading}
         config={PERPS_CHART_CONFIGS.pnl}
+        timeframe={timeframe}
       />
 
       <div className='flex flex-col md:flex-row gap-4'>
@@ -238,6 +246,7 @@ export default function PerpsMarketStats(props: Props) {
             lines={PERPS_CHART_CONFIGS.totalPnl}
             height='h-80'
             title='Cumulative Total PnL'
+            timeframe={timeframe}
           />
         </div>
         <div className='w-full md:w-1/2'>
@@ -246,6 +255,7 @@ export default function PerpsMarketStats(props: Props) {
             lines={PERPS_CHART_CONFIGS.netFundingFees}
             height='h-80'
             title='Cumulative Net Funding Fees'
+            timeframe={timeframe}
           />
         </div>
       </div>
@@ -253,7 +263,8 @@ export default function PerpsMarketStats(props: Props) {
         data={realizedPnlBreakdownData}
         lines={PERPS_CHART_CONFIGS.realizedPnlBreakdown}
         height='h-80'
-        title='Cumulative Realized Pnl Breakdown'
+        title='Vault Cumulative PnL Breakdown'
+        timeframe={timeframe}
       />
 
       {!isGlobalStats && (
@@ -263,6 +274,7 @@ export default function PerpsMarketStats(props: Props) {
           loading={perpsStatsLoading}
           config={PERPS_CHART_CONFIGS.combinedChart}
           height='h-90'
+          timeframe={timeframe}
         />
       )}
 
@@ -280,6 +292,7 @@ export default function PerpsMarketStats(props: Props) {
                 const padding = (max - min) * 0.1 // 10% padding
                 return [min - padding, max + padding]
               }}
+              timeframe={timeframe}
             />
           </div>
           <div className='w-full md:w-1/2'>
@@ -288,6 +301,7 @@ export default function PerpsMarketStats(props: Props) {
               lines={PERPS_CHART_CONFIGS.vaultCollateralization}
               height='h-80'
               title='Vault Collateralization Ratio'
+              timeframe={timeframe}
             />
           </div>
         </div>

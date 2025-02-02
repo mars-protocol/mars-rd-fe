@@ -18,17 +18,18 @@ interface Props {
   title: string | React.ReactNode
   loading?: boolean
   config: ChartConfig
+  timeframe?: string
 }
 
 export default function SynchronizedChart(props: Props) {
-  const { data, loading, title, config } = props
+  const { data, loading, title, config, timeframe } = props
 
   return (
     <ChartCardWrapper title={title}>
       {data === null || loading ? (
         <SynchronizedChartLoading />
       ) : (
-        <SynchronizedChartBody data={data} config={config} />
+        <SynchronizedChartBody data={data} config={config} timeframe={timeframe} />
       )}
     </ChartCardWrapper>
   )

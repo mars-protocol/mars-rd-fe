@@ -8,17 +8,18 @@ interface Props {
   loading?: boolean
   config: ChartConfig
   height?: string
+  timeframe?: string
 }
 
 export default function ComposedChart(props: Props) {
-  const { data, loading, config, height, title } = props
+  const { data, loading, config, height, title, timeframe } = props
 
   return (
     <ChartCardWrapper title={title}>
       {data === null || loading ? (
         <AreaChartLoading />
       ) : (
-        <ComposedChartBody data={data} config={config} height={height} />
+        <ComposedChartBody data={data} config={config} height={height} timeframe={timeframe} />
       )}
     </ChartCardWrapper>
   )

@@ -30,6 +30,7 @@ interface Props {
   data: MergedChartData[]
   config: ChartConfig
   height?: string
+  timeframe?: string
 }
 
 function TooltipContent(props: TooltipContentProps) {
@@ -90,7 +91,7 @@ function TooltipContent(props: TooltipContentProps) {
 }
 
 export default function ComposedChartBody(props: Props) {
-  const { data, config, height } = props
+  const { data, config, height, timeframe = '' } = props
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
@@ -137,7 +138,12 @@ export default function ComposedChartBody(props: Props) {
           <XAxis
             dataKey='date'
             stroke='rgba(255, 255, 255, 0.4)'
-            tickFormatter={(value) => moment(value).format('DD MMM')}
+            tickFormatter={(value) => {
+              if (timeframe === '24') {
+                return moment(value).format('HH:mm')
+              }
+              return moment(value).format('DD MMM')
+            }}
             axisLine={false}
             tickLine={false}
             fontSize={10}
