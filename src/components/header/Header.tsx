@@ -10,7 +10,7 @@ import { useSearchParams } from 'react-router-dom'
 
 const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
   {
-    pages: ['' as Page],
+    pages: ['main' as Page],
     label: 'Home',
   },
   {
