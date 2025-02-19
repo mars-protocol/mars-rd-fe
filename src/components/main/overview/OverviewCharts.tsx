@@ -8,12 +8,12 @@ import TimeframeSelector from 'components/common/Chart/common/SelectionControlPa
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { OVERVIEW_CHART_CONFIGS } from 'constants/chartData'
-import { TIMEFRAME } from 'constants/timeframe'
+import { OVERVIEW_TIMEFRAME } from 'constants/timeframe'
 import { useOverviewChartData } from 'hooks/tokenomics/useOverviewChartData'
 import { useState } from 'react'
 
 export default function OverviewCharts() {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2].value)
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(OVERVIEW_TIMEFRAME[1].value)
 
   const {
     data: overviewData,
@@ -78,7 +78,7 @@ export default function OverviewCharts() {
         <div className='flex justify-between items-center'>
           <Text>Overview Data</Text>
           <TimeframeSelector
-            timeframe={TIMEFRAME}
+            timeframe={OVERVIEW_TIMEFRAME}
             selectedTimeframe={selectedTimeframe}
             setSelectedTimeframe={setSelectedTimeframe}
             className='!my-0'
