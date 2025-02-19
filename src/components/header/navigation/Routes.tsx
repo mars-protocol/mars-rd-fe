@@ -17,14 +17,14 @@ export default function Routes() {
           </Layout>
         }
       >
-        <Route path='*' element={<Navigate to='/' />} />
-        <Route path='/' element={<Navigate to='/main' replace />} />
+        <Route path='/' element={<MainPage />} />
         <Route path='/main' element={<MainPage />} />
         <Route path='/liquidations' element={<LiquidationsPage />} />
         <Route path='/perps' element={chainConfig.perps ? <PerpsOverviewPage /> : <MainPage />}>
           <Route path=':asset' element={<PerpsOverviewPage />} />
         </Route>
       </Route>
+      <Route path='*' element={<Navigate to='/' />} />
     </RoutesWrapper>
   )
 }
