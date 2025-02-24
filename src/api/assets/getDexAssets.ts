@@ -1,4 +1,3 @@
-import { PERPS_ASSETS } from 'constants/perps'
 import { convertAstroportAssetsResponse } from 'utils/assets'
 
 export default async function getDexAssets(chainConfig: ChainConfig) {
@@ -7,7 +6,22 @@ export default async function getDexAssets(chainConfig: ChainConfig) {
     const assets = await fetch(uri.toString()).then(async (res) => {
       const data = (await res.json()) as AstroportAssetsCached
 
-      if (chainConfig.perps) data.tokens.push(...PERPS_ASSETS)
+      if (chainConfig.perps) {
+        try {
+          const network = chainConfig.id.toLowerCase()
+
+          const response = await fetch(
+            `https://raw.githubusercontent.com/mars-protocol/perps-markets/main/markets/${network}.json`,
+          )
+
+          if (response.ok) {
+            const perpAssets = await response.json()
+            data.tokens.push(...perpAssets)
+          }
+        } catch (error) {
+          console.error('Error fetching perp assets:', error)
+        }
+      }
       return convertAstroportAssetsResponse(data.tokens)
     })
     return assets

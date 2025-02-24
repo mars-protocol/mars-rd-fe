@@ -15,6 +15,9 @@ interface Props {
 
 export function getIsActive(pages: string[]) {
   const segments = location.pathname.split('/')
+  if (location.pathname === '/' && pages.includes('main')) {
+    return true
+  }
   return pages.some((page) => segments.includes(page))
 }
 
