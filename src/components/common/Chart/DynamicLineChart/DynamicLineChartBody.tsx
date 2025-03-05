@@ -61,7 +61,6 @@ const TooltipContent = ({
           <FormattedNumber
             amount={value * 100}
             options={{ maxDecimals: 3, minDecimals: 0, suffix: '%' }}
-            animate
             className='text-xs'
           />
         ) : (

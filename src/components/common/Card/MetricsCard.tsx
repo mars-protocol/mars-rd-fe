@@ -60,7 +60,6 @@ export default function MetricsCard(props: Props) {
                 coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, metric.value)}
                 options={metric.formatOptions}
                 showSignPrefix={metric.showSignPrefix}
-                animate={false}
               />
             ) : (
               <FormattedNumber

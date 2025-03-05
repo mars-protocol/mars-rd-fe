@@ -95,7 +95,6 @@ export default function TokenMetrics() {
                 className='w-full text-sm'
                 amount={metric.value.toNumber()}
                 options={metric.formatOptions}
-                animate
               />
             )}
             <Text size='xs' className='w-full text-white/40'>
