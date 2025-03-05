@@ -65,7 +65,6 @@ function TooltipContent(props: TooltipContentProps) {
                   maxDecimals: 0,
                   suffix: '%',
                 }}
-                animate
                 className='text-xs'
               />
             ) : (

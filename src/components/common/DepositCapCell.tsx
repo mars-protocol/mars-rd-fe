@@ -24,7 +24,6 @@ export default function DepositCapCell(props: Props) {
           amount={props.depositCap.max.toNumber()}
           options={{ minDecimals: 2, abbreviated: true, decimals }}
           className='text-xs'
-          animate
         />
       }
       sub={
@@ -35,7 +34,6 @@ export default function DepositCapCell(props: Props) {
             'text-xs',
             depositCapUsed >= 100 ? 'text-loss/60' : depositCapUsed > 90 ? 'text-info/60' : '',
           )}
-          animate
         />
       }
     />

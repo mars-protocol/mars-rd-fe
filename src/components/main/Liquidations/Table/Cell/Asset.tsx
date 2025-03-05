@@ -51,7 +51,6 @@ export default function Asset(props: Props) {
             smallerThanThreshold={!isZero && isBelowMinAmount}
             options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
             className='text-xs'
-            animate={false}
           />
           <Text size='xs' className='text-white/60 pl-0.5'>
             {asset ? asset.symbol : 'Unknown Asset'}
@@ -64,7 +63,6 @@ export default function Asset(props: Props) {
             coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, assetValue)}
             className='text-xs'
             options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
-            animate={false}
           />
           <Tooltip
             type='info'

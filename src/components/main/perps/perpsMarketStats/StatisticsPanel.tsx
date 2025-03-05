@@ -101,7 +101,6 @@ export default function StatisticsPanel(props: Props) {
               <FormattedNumber
                 amount={metric.value.toNumber()}
                 options={metric.formatOptions}
-                animate
                 className='text-sm'
               />
             )}

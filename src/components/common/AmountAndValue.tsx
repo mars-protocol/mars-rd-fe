@@ -21,7 +21,6 @@ export default function AmountAndValue(props: Props) {
         amount={isZero ? 0 : displayAmount}
         smallerThanThreshold={!isZero && isBelowMinAmount}
         options={{ abbreviated: true, maxDecimals: MAX_AMOUNT_DECIMALS }}
-        animate
       />
       <DisplayCurrency
         className='justify-end text-xs text-white/50'

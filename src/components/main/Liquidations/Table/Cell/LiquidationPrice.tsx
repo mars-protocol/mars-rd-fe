@@ -32,7 +32,6 @@ export default function LiquidationPrice(props: Props) {
           coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, BN(value.price_liquidated))}
           className='text-xs'
           options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
-          animate={false}
         />
       }
       sub={
@@ -45,7 +44,6 @@ export default function LiquidationPrice(props: Props) {
             )}
             className='text-xs'
             options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
-            animate={false}
           />
         </div>
       }

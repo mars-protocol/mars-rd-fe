@@ -26,7 +26,6 @@ export default function AssetBalanceRow(props: Props) {
           amount={demagnify(props.coin.amount, props.asset)}
           className='w-full text-sm text-right text-white/50'
           options={{ suffix: ` ${props.asset.symbol}`, maxDecimals: props.asset.decimals }}
-          animate
         />
       </div>
     </div>
