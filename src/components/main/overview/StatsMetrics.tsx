@@ -13,8 +13,8 @@ import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import { useMemo } from 'react'
 
 export default function StatsMetrics() {
-  const { data: totalAccounts, isLoading: accountsLoading } = useTotalAccounts()
-  const { data: overviewData, isLoading: tvlLoading } = useOverviewData('30')
+  const { data: totalAccounts, isLoading: totalAccountsLoading } = useTotalAccounts()
+  const { data: overviewData, isLoading: overviewDataLoading } = useOverviewData('30')
   const { data: assets, isLoading: assetsLoading } = useAssets()
 
   const chainId = getCurrentChainId()
@@ -46,7 +46,7 @@ export default function StatsMetrics() {
       : assets.filter((asset) => asset.isWhitelisted && asset.denom.includes('gamm'))
   }, [assets, isNeutron])
 
-  const loading = accountsLoading || tvlLoading || assetsLoading
+  const loading = totalAccountsLoading || overviewDataLoading || assetsLoading
 
   return (
     <MetricsCard
