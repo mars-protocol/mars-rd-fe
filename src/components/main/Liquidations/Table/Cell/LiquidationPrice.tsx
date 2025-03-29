@@ -15,21 +15,29 @@ interface Props {
 export default function LiquidationPrice(props: Props) {
   const { value } = props
 
+  const isInvalidPrice =
+    !value.price_liquidated ||
+    value.price_liquidated === 'null' ||
+    !value.collateral_asset_won?.amount
+
   const totalValue = useMemo(() => {
-    if (!value.price_liquidated || !value.collateral_asset_won?.amount) {
+    if (isInvalidPrice) {
       return BN_ZERO
     }
-    const price = BN(value.price_liquidated)
-    const amount = BN(value.collateral_asset_won.amount)
+    return BN(value.price_liquidated!)
+      .multipliedBy(BN(value.collateral_asset_won!.amount))
+      .shiftedBy(-PRICE_ORACLE_DECIMALS)
+  }, [value.price_liquidated, value.collateral_asset_won, isInvalidPrice])
 
-    return price.multipliedBy(amount)
-  }, [value.price_liquidated, value.collateral_asset_won])
+  if (isInvalidPrice) {
+    return <Text size='xs'>N/A</Text>
+  }
 
-  return value.price_liquidated && value.collateral_asset_won?.amount ? (
+  return (
     <TitleAndSubCell
       title={
         <DisplayCurrency
-          coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, BN(value.price_liquidated))}
+          coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, BN(value.price_liquidated!))}
           className='text-xs'
           options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
         />
@@ -38,17 +46,12 @@ export default function LiquidationPrice(props: Props) {
         <div className='flex items-center justify-end space-x-1'>
           <Text size='xs'>Total: </Text>
           <DisplayCurrency
-            coin={BNCoin.fromDenomAndBigNumber(
-              ORACLE_DENOM,
-              totalValue.shiftedBy(-PRICE_ORACLE_DECIMALS),
-            )}
+            coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, totalValue)}
             className='text-xs'
             options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
           />
         </div>
       }
     />
-  ) : (
-    <Text size='xs'>N/A</Text>
   )
 }

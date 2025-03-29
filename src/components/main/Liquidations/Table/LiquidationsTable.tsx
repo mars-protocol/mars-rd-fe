@@ -36,60 +36,54 @@ export default function LiquidationsTable() {
       {
         header: 'Time',
         meta: { className: 'min-w-20' },
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return <Timestamp value={row.original.timestamp as string} />
-        },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
+          <Timestamp value={row.original.timestamp as string} />
+        ),
       },
       {
         header: 'Account ID',
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return <Account value={row.original.liquidatee_account_id as string} />
-        },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
+          <Account value={row.original.liquidatee_account_id as string} />
+        ),
       },
       {
         header: 'Liquidated Collateral',
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return (
-            <Asset value={row.original.collateral_asset_won as BNCoin} assetData={assetsData} />
-          )
-        },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
+          <Asset value={row.original.collateral_asset_won as BNCoin} assetData={assetsData} />
+        ),
       },
       {
         header: 'Liquidation Price',
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return <LiquidationPrice value={row.original ?? 'N/A'} />
-        },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
+          <LiquidationPrice value={row.original} />
+        ),
       },
 
       {
         header: 'Repaid Debt',
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return (
-            <Asset
-              value={row.original.debt_asset_repaid as BNCoin}
-              assetData={assetsData}
-              historicalPrice={row.original.price_debt_repaid}
-            />
-          )
-        },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
+          <Asset
+            value={row.original.debt_asset_repaid as BNCoin}
+            assetData={assetsData}
+            historicalPrice={row.original.price_debt_repaid}
+          />
+        ),
       },
       {
         header: 'Protocol Fee',
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return (
-            <Asset
-              value={row.original.protocol_fee_coin as BNCoin}
-              assetData={assetsData}
-              historicalPrice={row.original.price_protocol_fee_coin}
-            />
-          )
-        },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
+          <Asset
+            value={row.original.protocol_fee_coin as BNCoin}
+            assetData={assetsData}
+            historicalPrice={row.original.price_protocol_fee_coin}
+          />
+        ),
       },
       {
         header: 'Transaction',
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => {
-          return <Transaction value={row.original.tx_hash as string} />
-        },
+        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
+          <Transaction value={row.original.tx_hash as string} />
+        ),
       },
     ]
     return baseColumns

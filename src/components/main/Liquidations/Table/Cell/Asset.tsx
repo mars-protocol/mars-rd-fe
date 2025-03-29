@@ -34,6 +34,10 @@ export default function Asset(props: Props) {
       return BN_ZERO
     }
 
+    if (historicalPrice === 'null') {
+      return 'N/A'
+    }
+
     if (historicalPrice) {
       return BN(historicalPrice).multipliedBy(assetAmount)
     }
@@ -59,11 +63,17 @@ export default function Asset(props: Props) {
       }
       sub={
         <div className='flex items-center justify-end gap-1'>
-          <DisplayCurrency
-            coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, assetValue)}
-            className='text-xs'
-            options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
-          />
+          {assetValue === 'N/A' ? (
+            <Text size='xs' className='text-white/60'>
+              N/A
+            </Text>
+          ) : (
+            <DisplayCurrency
+              coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, assetValue)}
+              className='text-xs'
+              options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
+            />
+          )}
           <Tooltip
             type='info'
             content={
