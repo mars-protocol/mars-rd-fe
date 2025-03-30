@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, { useCallback, useMemo } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
 import chains from 'chains'
@@ -32,6 +32,7 @@ export default function ChainSelect(props: Props) {
   const { mutate } = useSWRConfig()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const location = useLocation()
   const chainConfig = useChainConfig()
 
   const [_, setCurrentChainId] = useCurrentChainId()
@@ -46,9 +47,15 @@ export default function ChainSelect(props: Props) {
         mobileNavExpanded: false,
         chainConfig,
       })
-      navigate(getRoute('main', searchParams))
+
+      const currentPage = location.pathname.split('/').pop() || 'main'
+      if (currentPage === 'perps' && !chainConfig.perps) {
+        navigate(getRoute('main', searchParams))
+      } else {
+        navigate(getRoute(currentPage as Page, searchParams))
+      }
     },
-    [setCurrentChainId, setShowMenu, mutate, navigate, searchParams],
+    [setCurrentChainId, setShowMenu, mutate, navigate, searchParams, location],
   )
 
   const ChainOption = (props: ChainOptionProps) => {
