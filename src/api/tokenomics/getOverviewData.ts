@@ -1,10 +1,9 @@
+import { ChainInfoID } from 'types/enums'
 import { getApiBaseUrl } from 'utils/api'
 import { getChainName } from 'utils/getChainName'
-import { getCurrentChainId } from 'utils/getCurrentChainId'
 
-export default async function getOverviewData(timeframe: string = '30') {
+export default async function getOverviewData(chainId: ChainInfoID, timeframe: string = '30') {
   try {
-    const chainId = getCurrentChainId()
     const baseUrl = getApiBaseUrl()
     const chain = getChainName(chainId)
 

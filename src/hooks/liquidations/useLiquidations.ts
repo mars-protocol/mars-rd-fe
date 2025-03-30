@@ -8,7 +8,7 @@ export default function useLiquidations(page = 1, pageSize = 25) {
   return useSWR(
     chainConfig && ['liquidations/liquidationsData', chainConfig.id, page, pageSize],
     async () => {
-      return getLiquidations(page, pageSize)
+      return getLiquidations(chainConfig.id, page, pageSize)
     },
     {
       refreshInterval: 120_000,
