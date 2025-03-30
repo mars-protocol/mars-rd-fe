@@ -10,20 +10,15 @@ import { useRouter } from 'next/router'
 import { Suspense } from 'react'
 import useStore from 'store'
 import { debugSWR } from 'utils/middleware'
+import { CircularProgress } from 'components/common/CircularProgress'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const mobileNavExpanded = useStore((s) => s.mobileNavExpanded)
   const router = useRouter()
   const isIframeView = router.query.iframeView === 'on'
+
   return (
-    <Suspense
-      fallback={
-        <>
-          <Background />
-          <Header />
-        </>
-      }
-    >
+    <>
       <PageMetadata />
       <Background />
       <Header />
@@ -47,11 +42,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               'md:max-w-content',
             )}
           >
-            {children}
+            <Suspense
+              fallback={
+                <div className='flex items-center justify-center w-full h-full'>
+                  <CircularProgress size={50} />
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
           </div>
         </SWRConfig>
       </main>
       <Footer />
-    </Suspense>
+    </>
   )
 }

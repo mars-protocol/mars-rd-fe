@@ -9,7 +9,7 @@ export default function useTotalAccounts() {
     `chains/${chainConfig.id}/totalAccounts`,
     () => getTotalAccounts(chainConfig),
     {
-      suspense: true,
+      suspense: false,
     },
   )
 }
