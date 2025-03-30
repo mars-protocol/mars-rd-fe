@@ -10,17 +10,27 @@ import useAssets from 'hooks/assets/useAssets'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { ColumnDef, Row } from '@tanstack/react-table'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import useChainConfig from 'hooks/chain/useChainConfig'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
   const pageSize = 25
+  const chainConfig = useChainConfig()
+
+  useEffect(() => {
+    setPage(1)
+  }, [chainConfig.id])
 
   const { data: liquidations, isLoading: isLiquidationsDataLoading } = useLiquidations(
     page,
     pageSize,
   )
-  const { data: assetsData } = useAssets()
+  const {
+    data: assetsData,
+    isLoading: isAssetsLoading,
+    isValidating: isAssetsValidating,
+  } = useAssets()
 
   const maxEntries = liquidations?.total ?? 0
   const totalPages = Math.ceil(maxEntries / pageSize)
@@ -29,7 +39,8 @@ export default function LiquidationsTable() {
     setPage(newPage)
   }
 
-  const isLoading = isLiquidationsDataLoading || !liquidations
+  const isLoading =
+    isLiquidationsDataLoading || !liquidations || isAssetsLoading || isAssetsValidating
 
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
     const baseColumns = [

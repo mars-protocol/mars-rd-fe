@@ -11,6 +11,7 @@ import { demagnify, getCoinValue } from 'utils/formatters'
 import { InfoCircle } from 'components/common/Icons'
 import { ORACLE_DENOM } from 'constants/oracle'
 import { Tooltip } from 'components/common/Tooltip'
+import { useMemo } from 'react'
 
 interface Props {
   value: BNCoin
@@ -22,14 +23,12 @@ export default function Asset(props: Props) {
   const { value, assetData, historicalPrice } = props
   const asset = useAsset(value.denom)
 
-  if (!asset) return null
-
-  const assetAmount = demagnify(value.amount.toString(), asset)
+  const assetAmount = asset ? demagnify(value.amount.toString(), asset) : 0
   const isZero = assetAmount === 0
   const isBelowMinAmount = assetAmount < MIN_AMOUNT
   const displayAmount = isBelowMinAmount ? MIN_AMOUNT : assetAmount
 
-  const calculateValue = () => {
+  const calculateValue = useMemo(() => {
     if (!value.amount || value.amount === BN_ZERO) {
       return BN_ZERO
     }
@@ -42,8 +41,11 @@ export default function Asset(props: Props) {
       return BN(historicalPrice).multipliedBy(assetAmount)
     }
     return getCoinValue(value, assetData)
-  }
-  const assetValue = calculateValue()
+  }, [historicalPrice, assetAmount, value, assetData])
+
+  const assetValue = calculateValue
+
+  if (!asset) return null
 
   return (
     <TitleAndSubCell
