@@ -45,7 +45,7 @@ export default function OverviewCharts() {
       return <ChartError handleRefetch={handleRefetch} />
     }
 
-    if (!overviewData) {
+    if (!tvlData || !supplyBorrowData) {
       return (
         <div className='flex items-center justify-center h-64'>
           <Text className='text-white/60'>No data available</Text>

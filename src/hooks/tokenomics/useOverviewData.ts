@@ -8,7 +8,7 @@ export default function useOverviewData(timeframe: string) {
     chainConfig && [`${chainConfig.id}/tokenomics/overviewData`, timeframe],
     async () => getOverviewData(chainConfig.id, timeframe),
     {
-      refreshInterval: 60_000,
+      refreshInterval: 120_000,
     },
   )
 }
