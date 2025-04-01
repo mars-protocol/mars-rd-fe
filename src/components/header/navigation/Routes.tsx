@@ -27,7 +27,7 @@ export default function Routes() {
           <Route path=':asset' element={<PerpsOverviewPage />} />
         </Route>
       </Route>
-      <Route path='*' element={<Navigate to='/' />} />
+      <Route path='*' element={<Navigate to='/' replace />} />
     </RoutesWrapper>
   )
 }

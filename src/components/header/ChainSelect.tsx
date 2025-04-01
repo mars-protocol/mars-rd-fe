@@ -11,10 +11,10 @@ import Text from 'components/common/Text'
 import ChainLogo from 'components/common/chain/ChainLogo'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import useToggle from 'hooks/common/useToggle'
-import useCurrentChainId from 'hooks/localStorage/useCurrentChainId'
 import useStore from 'store'
 import { ChainInfoID } from 'types/enums'
 import { getRoute } from 'utils/route'
+import { getChainName } from 'utils/getChainName'
 
 interface Props {
   className?: string
@@ -35,27 +35,23 @@ export default function ChainSelect(props: Props) {
   const location = useLocation()
   const chainConfig = useChainConfig()
 
-  const [_, setCurrentChainId] = useCurrentChainId()
-
   const selectChain = useCallback(
-    async (chainConfig: ChainConfig) => {
+    (chainConfig: ChainConfig) => {
       setShowMenu(false)
-      setCurrentChainId(chainConfig.id)
-      mutate(() => true)
+
+      mutate(() => true, undefined, { revalidate: false })
       useStore.setState({
         client: undefined,
         mobileNavExpanded: false,
-        chainConfig,
       })
 
+      const newParams = new URLSearchParams(searchParams)
+      newParams.set('chain', getChainName(chainConfig.id))
+
       const currentPage = location.pathname.split('/').pop() || 'main'
-      if (currentPage === 'perps' && !chainConfig.perps) {
-        navigate(getRoute('main', searchParams))
-      } else {
-        navigate(getRoute(currentPage as Page, searchParams))
-      }
+      navigate(getRoute(currentPage as Page, newParams))
     },
-    [setCurrentChainId, setShowMenu, mutate, navigate, searchParams, location],
+    [navigate, searchParams, location, setShowMenu, mutate],
   )
 
   const ChainOption = (props: ChainOptionProps) => {

@@ -26,11 +26,7 @@ export default function LiquidationsTable() {
     page,
     pageSize,
   )
-  const {
-    data: assetsData,
-    isLoading: isAssetsLoading,
-    isValidating: isAssetsValidating,
-  } = useAssets()
+  const { data: assetsData, isLoading: isAssetsLoading } = useAssets()
 
   const maxEntries = liquidations?.total ?? 0
   const totalPages = Math.ceil(maxEntries / pageSize)
@@ -39,8 +35,7 @@ export default function LiquidationsTable() {
     setPage(newPage)
   }
 
-  const isLoading =
-    isLiquidationsDataLoading || !liquidations || isAssetsLoading || isAssetsValidating
+  const isLoading = (!liquidations && isLiquidationsDataLoading) || (!assetsData && isAssetsLoading)
 
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
     const baseColumns = [
@@ -69,7 +64,6 @@ export default function LiquidationsTable() {
           <LiquidationPrice value={row.original} />
         ),
       },
-
       {
         header: 'Repaid Debt',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (

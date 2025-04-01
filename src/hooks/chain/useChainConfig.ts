@@ -1,10 +1,12 @@
 import chains from 'chains'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
-import useLocalStorage from 'hooks/localStorage/useLocalStorage'
+import { useSearchParams } from 'react-router-dom'
 import { ChainInfoID } from 'types/enums'
 
 export default function useChainConfig() {
-  const [chainId] = useLocalStorage(LocalStorageKeys.CURRENT_CHAIN_ID, ChainInfoID.Neutron1)
+  const [searchParams] = useSearchParams()
+  const urlChain = searchParams.get('chain')
+  const chainId = urlChain === 'osmosis' ? ChainInfoID.Osmosis1 : ChainInfoID.Neutron1
 
   const rpcEndpoint =
     localStorage.getItem(`${chainId}/${LocalStorageKeys.RPC_ENDPOINT}`) ??

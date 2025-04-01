@@ -19,42 +19,46 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <PageMetadata />
-      <Background />
-      <Header />
-      <main
-        className={classNames(
-          'md:min-h-[calc(100dvh-81px)]',
-          !isIframeView && 'mt-[73px]',
-          'flex',
-          'min-h-screen-full w-full relative',
-          'gap-4 p-2 pb-20',
-          'md:gap-6 md:px-4 md:py-6',
-          'justify-center',
-          isMobile && 'items-start transition-all duration-500',
-          mobileNavExpanded && isMobile && '-ml-full',
-        )}
+      <Suspense
+        fallback={
+          <>
+            <Background />
+            <Header />
+            <div className='flex items-center justify-center w-full h-screen'>
+              <CircularProgress size={50} />
+            </div>
+          </>
+        }
       >
-        <SWRConfig value={{ use: [debugSWR] }}>
-          <div
-            className={classNames(
-              'mx-auto flex items-start w-full max-w-screen-full',
-              'md:max-w-content',
-            )}
-          >
-            <Suspense
-              fallback={
-                <div className='flex items-center justify-center w-full h-full'>
-                  <CircularProgress size={50} />
-                </div>
-              }
+        <PageMetadata />
+        <Background />
+        <Header />
+        <main
+          className={classNames(
+            'md:min-h-[calc(100dvh-81px)]',
+            !isIframeView && 'mt-[73px]',
+            'flex',
+            'min-h-screen-full w-full relative',
+            'gap-4 p-2 pb-20',
+            'md:gap-6 md:px-4 md:py-6',
+            'justify-center',
+            isMobile && 'items-start transition-all duration-500',
+            mobileNavExpanded && isMobile && '-ml-full',
+          )}
+        >
+          <SWRConfig value={{ use: [debugSWR] }}>
+            <div
+              className={classNames(
+                'mx-auto flex items-start w-full max-w-screen-full',
+                'md:max-w-content',
+              )}
             >
               {children}
-            </Suspense>
-          </div>
-        </SWRConfig>
-      </main>
-      <Footer />
+            </div>
+          </SWRConfig>
+        </main>
+        <Footer />
+      </Suspense>
     </>
   )
 }
