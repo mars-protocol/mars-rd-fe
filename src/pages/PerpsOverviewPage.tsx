@@ -7,10 +7,11 @@ import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import PerpsMetrics from 'components/main/perps/PerpsMetrics'
 import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
 import { getRoute } from 'utils/route'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { TIMEFRAME } from 'constants/timeframe'
 import classNames from 'classnames'
+import useChainConfig from 'hooks/chain/useChainConfig'
 
 export default function PerpsOverviewPage() {
   const navigate = useNavigate()
@@ -18,6 +19,13 @@ export default function PerpsOverviewPage() {
   const perpsAssets = usePerpsEnabledAssets()
   const [searchParams] = useSearchParams()
   const isIframeView = searchParams.get('iframeView') === 'on'
+  const chainConfig = useChainConfig()
+
+  useEffect(() => {
+    if (!chainConfig.perps) {
+      navigate('/main?chain=osmosis', { replace: true })
+    }
+  }, [chainConfig.perps, navigate])
 
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2].value)
   const [selectedOption, setSelectedOption] = useState<string>(asset ? `perps/${asset}` : 'total')
