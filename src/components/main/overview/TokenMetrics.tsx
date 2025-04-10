@@ -1,17 +1,17 @@
 import classNames from 'classnames'
 import Card from 'components/common/Card'
 import DisplayCurrency from 'components/common/DisplayCurrency'
+import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
+import { BN_ZERO } from 'constants/math'
+import { ORACLE_DENOM } from 'constants/oracle'
 import useCirculatingSupply from 'hooks/tokenomics/useCirculatingSupply'
 import useMarsTokenPrice from 'hooks/tokenomics/useMarsTokenPrice'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
-import { BN } from 'utils/helpers'
-import { BNCoin } from 'types/classes/BNCoin'
-import { BN_ZERO } from 'constants/math'
-import { FormattedNumber } from 'components/common/FormattedNumber'
-import { ORACLE_DENOM } from 'constants/oracle'
 import { useMemo } from 'react'
+import { BNCoin } from 'types/classes/BNCoin'
+import { BN } from 'utils/helpers'
 
 export default function TokenMetrics() {
   const { data: circulatingSupplyData, isLoading: isLoadingCirculatingSupply } =
@@ -37,7 +37,7 @@ export default function TokenMetrics() {
       value: marsTokenPrice,
       label: 'MARS Token Price',
       isCurrency: true,
-      formatOptions: { maxDecimals: 4, minDecimals: 2, abbreviated: true },
+      formatOptions: { maxDecimals: 4, minDecimals: 4, abbreviated: true },
     },
     {
       value: marketCap,
@@ -70,7 +70,7 @@ export default function TokenMetrics() {
   const isLoading = isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingMarsTokenPrice
 
   return (
-    <div className='w-full grid grid-cols-2 md:grid-cols-5 gap-4'>
+    <div className='grid w-full grid-cols-2 gap-4 md:grid-cols-5'>
       {metrics.map((metric, index) => {
         return (
           <Card
@@ -81,7 +81,7 @@ export default function TokenMetrics() {
             key={index}
           >
             {isLoading ? (
-              <div className='w-full h-8 px-6 flex justify-center items-center'>
+              <div className='flex items-center justify-center w-full h-8 px-6'>
                 <Loading />
               </div>
             ) : metric.isCurrency ? (

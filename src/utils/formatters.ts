@@ -89,11 +89,13 @@ export const formatValue = (amount: number | string, options?: FormatOptions): s
   }
 
   if (thousandSeparator) {
-    convertedAmount = BN(convertedAmount).toNumber().toLocaleString('en', {
-      useGrouping: true,
-      minimumFractionDigits: minDecimals,
-      maximumFractionDigits: enforcedDecimals,
-    })
+    convertedAmount = BN(convertedAmount)
+      .toNumber()
+      .toLocaleString('en', {
+        useGrouping: true,
+        minimumFractionDigits: enforcedDecimals < minDecimals ? enforcedDecimals : minDecimals,
+        maximumFractionDigits: enforcedDecimals,
+      })
   }
 
   let returnValue = ''

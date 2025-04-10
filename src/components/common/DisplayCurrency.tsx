@@ -5,6 +5,7 @@ import { FormattedNumber } from 'components/common/FormattedNumber'
 import { InfoCircle } from 'components/common/Icons'
 import Text from 'components/common/Text'
 import { Tooltip } from 'components/common/Tooltip'
+import { BN_ONE } from 'constants/math'
 import { ORACLE_DENOM } from 'constants/oracle'
 import useAssets from 'hooks/assets/useAssets'
 import useDisplayCurrencyAssets from 'hooks/assets/useDisplayCurrencyAssets'
@@ -70,9 +71,11 @@ export default function DisplayCurrency(props: Props) {
     return [amount, Math.abs(amount)]
   }, [assets, displayCurrency, displayCurrencyAsset.decimals, coin, allowZeroAmount])
 
+  const threshold = BN_ONE.shiftedBy(-(options?.minDecimals ?? 2)).toNumber()
+
   const isLessThanACent = useMemo(
-    () => isUSD && absoluteAmount && absoluteAmount < 0.01 && absoluteAmount > 0,
-    [absoluteAmount, isUSD],
+    () => isUSD && absoluteAmount && absoluteAmount < threshold && absoluteAmount > 0,
+    [absoluteAmount, isUSD, threshold],
   )
 
   const prefix = useMemo(() => {
