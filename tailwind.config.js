@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-const plugin = require('tailwindcss/plugin')
+import plugin from 'tailwindcss/plugin'
+import scrollbarHide from 'tailwind-scrollbar-hide'
+import containerQueries from '@tailwindcss/container-queries'
 
 module.exports = {
   content: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
@@ -382,8 +384,8 @@ module.exports = {
     },
   },
   plugins: [
-    require('tailwind-scrollbar-hide'),
-    require('@tailwindcss/container-queries'),
+    scrollbarHide,
+    containerQueries,
     plugin(function ({ addBase, addUtilities, theme }) {
       addBase({
         h1: { fontSize: '61px', lineHeight: '80px', fontWeight: theme('fontWeight.light') },

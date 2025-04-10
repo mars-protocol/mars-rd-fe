@@ -74,20 +74,20 @@ const Osmosis1: ChainConfig = {
     coinGeckoId: 'osmosis',
   },
   endpoints: {
-    rpc: process.env.NEXT_PUBLIC_OSMOSIS_RPC ?? 'https://rpc-osmosis.blockapsis.com',
+    rpc: process.env.NEXT_PUBLIC_OSMOSIS_RPC ?? 'https://osmosis-rpc.polkachu.com',
     fallbackRpc: 'https://osmosis-rpc.polkachu.com',
-    rest: process.env.NEXT_PUBLIC_OSMOSIS_REST ?? 'https://lcd-osmosis.blockapsis.com',
+    rest: process.env.NEXT_PUBLIC_OSMOSIS_REST ?? 'https://osmosis-api.polkachu.com',
     swap: 'https://app.osmosis.zone',
     explorer: 'https://www.mintscan.io/osmosis',
-    routes: 'https://sqs.osmosis.zone/router',
+    routes: 'https://sqsprod.osmosis.zone/router',
     pools: getUrl(
-      process.env.NEXT_PUBLIC_OSMOSIS_REST ?? 'https://lcd-osmosis.blockapsis.com',
+      process.env.NEXT_PUBLIC_OSMOSIS_REST ?? 'https://osmosis-api.polkachu.com',
       'osmosis/gamm/v1beta1/pools/POOL_ID',
     ),
     dexAssets: 'https://neutron-cache-api.onrender.com/osmosis-1/tokens',
-    gasPrices: 'https://osmosis-api.polkachu.com/osmosis/txfees/v1beta1/cur_eip_base_fee',
+    gasPrices: '/osmosis/txfees/v1beta1/cur_eip_base_fee',
     aprs: {
-      vaults: 'https://api.marsprotocol.io/v1/vaults/osmosis',
+      vaults: 'https://backend.prod.mars-dev.net/v1/vaults/osmosis',
     },
   },
   dexName: 'Osmosis Dex',
@@ -99,7 +99,7 @@ const Osmosis1: ChainConfig = {
   vaults: VAULTS_META_DATA,
   perps: false,
   farm: true,
-  anyAsset: false,
+  anyAsset: true,
   slinky: false,
 }
 

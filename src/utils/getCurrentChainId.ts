@@ -1,25 +1,15 @@
-import chains from 'chains'
-import { LocalStorageKeys } from 'constants/localStorageKeys'
 import { ChainInfoID } from 'types/enums'
 
-export const getCurrentChainId = () => {
-  const defaultChainId = chains[ChainInfoID.Neutron1].id
-  let chainId = defaultChainId
-  const localStorageChainId = localStorage.getItem(LocalStorageKeys.CURRENT_CHAIN_ID) as ChainInfoID
+export const getCurrentChainId = (urlSearchParams?: URLSearchParams): ChainInfoID => {
+  const searchParams = urlSearchParams || new URLSearchParams(window.location.search)
+  const urlChain = searchParams.get('chain')?.toLowerCase()
 
-  if (!localStorageChainId || localStorageChainId === null) {
-    if (chainId !== defaultChainId) return chainId
-  } else {
-    switch (localStorageChainId) {
-      case ChainInfoID.Osmosis1:
-        chainId = ChainInfoID.Osmosis1
-        break
-
-      case ChainInfoID.Neutron1:
-        chainId = ChainInfoID.Neutron1
-        break
-    }
+  switch (urlChain) {
+    case 'osmosis':
+      return ChainInfoID.Osmosis1
+    case 'neutron':
+      return ChainInfoID.Neutron1
+    default:
+      return ChainInfoID.Neutron1
   }
-
-  return chainId
 }
