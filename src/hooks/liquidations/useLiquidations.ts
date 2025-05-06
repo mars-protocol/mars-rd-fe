@@ -12,7 +12,6 @@ export default function useLiquidations(page = 1, pageSize = 25) {
     },
     {
       refreshInterval: 120_000,
-      suspense: true,
     },
   )
 }
