@@ -1,7 +1,8 @@
 import { convertAstroportAssetsResponse } from 'utils/assets'
+import { getUrl } from 'utils/url'
 
 export default async function getDexAssets(chainConfig: ChainConfig) {
-  const uri = new URL(chainConfig.endpoints.dexAssets)
+  const uri = getUrl(chainConfig.endpoints.dexAssets, '')
   try {
     const assets = await fetch(uri.toString()).then(async (res) => {
       const data = (await res.json()) as AstroportAssetsCached
