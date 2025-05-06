@@ -3,6 +3,7 @@ import { DEFAULT_PERPS_GLOBAL_DATA } from 'constants/chartData'
 import { TIMEFRAME } from 'constants/timeframe'
 import { getApiBaseUrl } from 'utils/api'
 import { getCurrentChainId } from 'utils/getCurrentChainId'
+import { getUrl } from 'utils/url'
 
 export default async function getPerpsGlobalStats(timeframe: string = '30') {
   const chainId = getCurrentChainId()
@@ -15,10 +16,11 @@ export default async function getPerpsGlobalStats(timeframe: string = '30') {
       value: Number(timeframe),
     }
 
-    const url = new URL(
-      `${baseUrl}/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&response_type=global`,
+    const url = getUrl(
+      baseUrl,
+      `/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&response_type=global`,
     )
-    const response = await fetch(url.toString())
+    const response = await fetch(url)
     const data = (await response.json()) as PerpsGlobalOverview
 
     return data.global_overview

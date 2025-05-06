@@ -1,6 +1,6 @@
 import { TIMEFRAME } from 'constants/timeframe'
 import { getApiBaseUrl } from 'utils/api'
-
+import { getUrl } from 'utils/url'
 export default async function getPerpsMarketStats(
   market: string = 'untrn',
   timeframe: string = '30',
@@ -11,10 +11,11 @@ export default async function getPerpsMarketStats(
       granularity: 'day',
       value: Number(timeframe),
     }
-    const url = new URL(
-      `${baseUrl}/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&market=${market}&response_type=market`,
+    const url = getUrl(
+      baseUrl,
+      `/v2/perps_overview?chain=neutron&granularity=${timeframeConfig.granularity}&unit=${timeframeConfig.value}&market=${market}&response_type=market`,
     )
-    const response = await fetch(url.toString())
+    const response = await fetch(url)
     const data = (await response.json()) as PerpsMarketOverview
 
     return data.market_overview.data[0]
