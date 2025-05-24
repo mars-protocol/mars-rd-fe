@@ -115,6 +115,7 @@ export const PERPS_CHART_TRANSFORMATIONS = {
       formatFn: (value: number) => value * 365,
     },
   ],
+  vaultApy: [{ path: ['apy'], targetKey: 'apy' }],
 }
 
 export const PERPS_CHART_CONFIGS = {
@@ -335,6 +336,14 @@ export const PERPS_CHART_CONFIGS = {
       },
     ],
   },
+  vaultApy: [
+    {
+      dataKey: 'apy',
+      name: 'Vault APY',
+      color: CHART_COLORS.primary,
+      isPercentage: true,
+    },
+  ],
 }
 
 export const FUNDING_RATE_OPTIONS: TimeframeOption[] = [

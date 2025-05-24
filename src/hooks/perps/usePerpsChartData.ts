@@ -2,7 +2,10 @@ import { PERPS_CHART_TRANSFORMATIONS } from 'constants/chartData'
 import { useChartDataTransform } from 'hooks/charts/useChartDataTransform'
 import { useMemo } from 'react'
 
-export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
+export const usePerpsChartData = (
+  data: PerpsGlobalData | PerpsMarketData,
+  perpsVaultApyData: PerpsVaultApyData,
+) => {
   const rawFeesData = useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.fees)
 
   const validDates = useMemo(() => {
@@ -41,6 +44,9 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
   const combinedMetricsData = filterData(
     useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.combinedMetrics),
   )
+  const vaultApyData = filterData(
+    useChartDataTransform(perpsVaultApyData, PERPS_CHART_TRANSFORMATIONS.vaultApy),
+  )
 
   return {
     openInterestData,
@@ -54,5 +60,6 @@ export const usePerpsChartData = (data: PerpsGlobalData | PerpsMarketData) => {
     imbalanceRatioData: singleMetrics,
     vaultData,
     combinedMetricsData,
+    vaultApyData,
   }
 }
