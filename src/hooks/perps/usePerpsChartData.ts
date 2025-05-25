@@ -44,8 +44,9 @@ export const usePerpsChartData = (
   const combinedMetricsData = filterData(
     useChartDataTransform(data, PERPS_CHART_TRANSFORMATIONS.combinedMetrics),
   )
-  const vaultApyData = filterData(
-    useChartDataTransform(perpsVaultApyData, PERPS_CHART_TRANSFORMATIONS.vaultApy),
+  const vaultApyData = useChartDataTransform(
+    perpsVaultApyData,
+    PERPS_CHART_TRANSFORMATIONS.vaultApy,
   )
 
   return {

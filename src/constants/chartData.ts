@@ -55,6 +55,7 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     {
       path: ['funding_and_pnl', 'funding_rate'],
       targetKey: 'funding_rate',
+      formatFn: (value: number) => value * 100,
     },
   ],
   pnl: [
@@ -90,12 +91,17 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     {
       path: ['vault_data', 'vault_collateralization_ratio'],
       targetKey: 'vault_collateralization_ratio',
+      formatFn: (value: number) => value * 100,
     },
   ],
   singleMetrics: [
     { path: ['notional_liquidated'], targetKey: 'notional_liquidated' },
     { path: ['trading_volume'], targetKey: 'trading_volume' },
-    { path: ['skew_data', 'imbalance_long_ratio'], targetKey: 'imbalance_long' },
+    {
+      path: ['skew_data', 'imbalance_long_ratio'],
+      targetKey: 'imbalance_long',
+      formatFn: (value: number) => value * 100,
+    },
   ],
   combinedMetrics: [
     { path: ['skew_data', 'skew'], targetKey: 'skew' },
@@ -112,7 +118,7 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     {
       path: ['funding_and_pnl', 'funding_rate'],
       targetKey: 'funding_rate',
-      formatFn: (value: number) => value * 365,
+      formatFn: (value: number) => value * 365 * 100,
     },
   ],
   vaultApy: [{ path: ['apy'], targetKey: 'apy' }],
@@ -342,6 +348,7 @@ export const PERPS_CHART_CONFIGS = {
       name: 'Vault APY',
       color: CHART_COLORS.primary,
       isPercentage: true,
+      multiplyBy100: false,
     },
   ],
 }

@@ -50,7 +50,10 @@ export default function PerpsMarketStats(props: Props) {
   const [timeBase, setTimeBase] = useState<FundingRateTimeBase>(FundingRateTimeBase.YEARLY)
 
   const handleRefetch = async () => {
-    await mutate(['perps/stats', selectedOption, timeframe], undefined, { revalidate: true })
+    await Promise.all([
+      mutate(['perps/stats', selectedOption, timeframe], undefined, { revalidate: true }),
+      mutate(['perps/vault-stats', timeframe], undefined, { revalidate: true }),
+    ])
   }
 
   const isGlobalStats = selectedOption === 'total'

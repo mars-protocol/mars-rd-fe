@@ -59,7 +59,7 @@ const TooltipContent = ({
         <Text size='xs'>{item.name}: </Text>
         {lineConfig?.isPercentage ? (
           <FormattedNumber
-            amount={value * 100}
+            amount={value}
             options={{ maxDecimals: 3, minDecimals: 0, suffix: '%' }}
             className='text-xs'
           />
@@ -180,7 +180,7 @@ export default function DynamicLineChartBody(props: Props) {
             domain={getYAxisDomain()}
             tickFormatter={(value) => {
               if (lines[0]?.isPercentage) {
-                return formatValue(value * 100, {
+                return formatValue(value, {
                   minDecimals: 0,
                   maxDecimals: 0,
                   suffix: '%',
