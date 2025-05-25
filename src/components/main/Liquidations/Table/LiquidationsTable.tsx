@@ -1,5 +1,6 @@
 import Account from 'components/main/Liquidations/Table/Cell/Account'
 import Asset from 'components/main/Liquidations/Table/Cell/Asset'
+import LiquidationFees from 'components/main/Liquidations/Table/Cell/LiquidationFees'
 import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
 import Pagination from 'components/main/Liquidations/Table/Pagination'
 import Table from 'components/common/Table'
@@ -12,6 +13,8 @@ import { CircularProgress } from 'components/common/CircularProgress'
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { useEffect, useMemo, useState } from 'react'
 import useChainConfig from 'hooks/chain/useChainConfig'
+import { InfoCircle } from 'components/common/Icons'
+import { Tooltip } from 'components/common/Tooltip'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
@@ -75,13 +78,45 @@ export default function LiquidationsTable() {
         ),
       },
       {
-        header: 'Protocol Fee',
+        header: () => (
+          <div className='flex items-center gap-1'>
+            Protocol Fee
+            <Tooltip
+              type='info'
+              content={
+                <div className='flex flex-col gap-1'>
+                  <Text size='xs' className='font-bold'>
+                    Total liquidation fee is split as follows:
+                  </Text>
+                  <Text size='xs'>• 75% goes to the liquidator</Text>
+                  <Text size='xs'>• 25% is protocol fee, which is further split:</Text>
+                  <div className='pl-4'>
+                    <Text size='xs'>- 45% Safety Fund</Text>
+                    <Text size='xs'>- 45% Mars Buybacks</Text>
+                    <Text size='xs'>- 10% Revenue Share</Text>
+                  </div>
+                </div>
+              }
+            >
+              <InfoCircle className='w-3.5 h-3.5 text-white/40' />
+            </Tooltip>
+          </div>
+        ),
+        accessorKey: 'protocol_fee_coin',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
-          <Asset
-            value={row.original.protocol_fee_coin as BNCoin}
-            assetData={assetsData}
-            historicalPrice={row.original.price_protocol_fee_coin}
-          />
+          <div className='flex justify-end items-start gap-1'>
+            <Asset
+              value={row.original.protocol_fee_coin as BNCoin}
+              assetData={assetsData}
+              historicalPrice={row.original.price_protocol_fee_coin}
+            />
+            <Tooltip
+              type='info'
+              content={<LiquidationFees protocolFee={row.original.protocol_fee_coin as BNCoin} />}
+            >
+              <InfoCircle className='w-3.5 h-3.5 text-white/40' />
+            </Tooltip>
+          </div>
         ),
       },
       {

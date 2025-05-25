@@ -40,7 +40,7 @@ function TooltipContent(props: TooltipContentProps) {
   const uniqueEntries = new Map()
 
   return (
-    <div className='flex flex-col gap-2 p-2 rounded'>
+    <div className='flex flex-col gap-1 py-2'>
       {payload.map((entry, index) => {
         if (uniqueEntries.has(entry.name)) {
           return null

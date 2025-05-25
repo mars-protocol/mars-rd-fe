@@ -6,6 +6,7 @@ import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import Text from 'components/common/Text'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
+import usePerpsVaultStats from 'hooks/perps/usePerpsVaultStats'
 import { BN } from 'utils/helpers'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { FundingRateTimeBase } from 'types/enums'
@@ -30,6 +31,7 @@ export default function PerpsMarketStats(props: Props) {
     isLoading: perpsStatsLoading,
     error,
   } = usePerpsStats(selectedOption, timeframe)
+  const { data: perpsVaultApyData } = usePerpsVaultStats(timeframe)
 
   const {
     openInterestData,
@@ -43,11 +45,15 @@ export default function PerpsMarketStats(props: Props) {
     tradingVolumeData,
     vaultData,
     combinedMetricsData,
-  } = usePerpsChartData(perpsStats || DEFAULT_PERPS_GLOBAL_DATA)
+    vaultApyData,
+  } = usePerpsChartData(perpsStats || DEFAULT_PERPS_GLOBAL_DATA, perpsVaultApyData || { apy: [] })
   const [timeBase, setTimeBase] = useState<FundingRateTimeBase>(FundingRateTimeBase.YEARLY)
 
   const handleRefetch = async () => {
-    await mutate(['perps/stats', selectedOption, timeframe], undefined, { revalidate: true })
+    await Promise.all([
+      mutate(['perps/stats', selectedOption, timeframe], undefined, { revalidate: true }),
+      mutate(['perps/vault-stats', timeframe], undefined, { revalidate: true }),
+    ])
   }
 
   const isGlobalStats = selectedOption === 'total'
@@ -279,32 +285,41 @@ export default function PerpsMarketStats(props: Props) {
       )}
 
       {isGlobalStats && (
-        <div className='flex flex-col md:flex-row gap-4'>
-          <div className='w-full md:w-1/2'>
-            <DynamicLineChart
-              data={vaultData}
-              lines={PERPS_CHART_CONFIGS.vault}
-              height='h-80'
-              title='Vault'
-              customYAxisDomain={(values) => {
-                const max = Math.max(...values)
-                const min = Math.min(...values)
-                const padding = (max - min) * 0.1 // 10% padding
-                return [min - padding, max + padding]
-              }}
-              timeframe={timeframe}
-            />
+        <>
+          <div className='flex flex-col md:flex-row gap-4'>
+            <div className='w-full md:w-1/2'>
+              <DynamicLineChart
+                data={vaultData}
+                lines={PERPS_CHART_CONFIGS.vault}
+                height='h-80'
+                title='Vault'
+                customYAxisDomain={(values) => {
+                  const max = Math.max(...values)
+                  const min = Math.min(...values)
+                  const padding = (max - min) * 0.1 // 10% padding
+                  return [min - padding, max + padding]
+                }}
+                timeframe={timeframe}
+              />
+            </div>
+            <div className='w-full md:w-1/2'>
+              <DynamicLineChart
+                data={vaultData}
+                lines={PERPS_CHART_CONFIGS.vaultCollateralization}
+                height='h-80'
+                title='Vault Collateralization Ratio'
+                timeframe={timeframe}
+              />
+            </div>
           </div>
-          <div className='w-full md:w-1/2'>
-            <DynamicLineChart
-              data={vaultData}
-              lines={PERPS_CHART_CONFIGS.vaultCollateralization}
-              height='h-80'
-              title='Vault Collateralization Ratio'
-              timeframe={timeframe}
-            />
-          </div>
-        </div>
+          <DynamicLineChart
+            data={vaultApyData}
+            lines={PERPS_CHART_CONFIGS.vaultApy}
+            height='h-80'
+            title='Vault APY'
+            timeframe={timeframe}
+          />
+        </>
       )}
     </div>
   )
