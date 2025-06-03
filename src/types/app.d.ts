@@ -1569,6 +1569,10 @@ interface PerpsVaultData {
   vault_collateralization_ratio: DateValue[]
 }
 
+interface PerpsVaultApyData {
+  apy: DateValue[]
+}
+
 interface PerpsGlobalData {
   trading_volume: DateValue[]
   open_interest: PerpsOpenInterest

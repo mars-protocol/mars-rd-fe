@@ -45,7 +45,7 @@ function TooltipContent(props: TooltipContentProps) {
   if (!payload || !payload.length) return null
 
   return (
-    <div className='flex flex-col gap-2 p-2 rounded'>
+    <div className='flex flex-col gap-1 py-2'>
       {payload.map((entry, index) => {
         const amount = Number(entry.value) ?? 0
         const label = entry.name

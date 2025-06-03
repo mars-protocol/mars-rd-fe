@@ -43,36 +43,43 @@ const TooltipContent = ({
 }) => {
   const uniqueEntries = new Map()
 
-  return payload.map((item, index) => {
-    const lineConfig = lines.find((line) => line.dataKey === item.dataKey)
+  return (
+    <div className='flex flex-col gap-1 py-2'>
+      {payload.map((item, index) => {
+        const lineConfig = lines.find((line) => line.dataKey === item.dataKey)
 
-    if (uniqueEntries.has(item.name)) {
-      return null
-    }
-    uniqueEntries.set(item.name, true)
+        if (uniqueEntries.has(item.name)) {
+          return null
+        }
+        uniqueEntries.set(item.name, true)
 
-    const value = typeof item.value === 'string' ? parseFloat(item.value) : item.value
+        const value = typeof item.value === 'string' ? parseFloat(item.value) : item.value
 
-    return (
-      <div key={index} className='flex items-center gap-1'>
-        <Circle className='fill-current h-2 w-2' color={item.color} />
-        <Text size='xs'>{item.name}: </Text>
-        {lineConfig?.isPercentage ? (
-          <FormattedNumber
-            amount={value * 100}
-            options={{ maxDecimals: 3, minDecimals: 0, suffix: '%' }}
-            className='text-xs'
-          />
-        ) : (
-          <DisplayCurrency
-            coin={BNCoin.fromDenomAndBigNumber('usd', BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS))}
-            className='text-xs'
-            showSignPrefix
-          />
-        )}
-      </div>
-    )
-  })
+        return (
+          <div key={index} className='flex items-center gap-1'>
+            <Circle className='fill-current h-2 w-2' color={item.color} />
+            <Text size='xs'>{item.name}: </Text>
+            {lineConfig?.isPercentage ? (
+              <FormattedNumber
+                amount={value}
+                options={{ maxDecimals: 3, minDecimals: 0, suffix: '%' }}
+                className='text-xs'
+              />
+            ) : (
+              <DisplayCurrency
+                coin={BNCoin.fromDenomAndBigNumber(
+                  'usd',
+                  BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS),
+                )}
+                className='text-xs'
+                showSignPrefix
+              />
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 export default function DynamicLineChartBody(props: Props) {
@@ -180,7 +187,7 @@ export default function DynamicLineChartBody(props: Props) {
             domain={getYAxisDomain()}
             tickFormatter={(value) => {
               if (lines[0]?.isPercentage) {
-                return formatValue(value * 100, {
+                return formatValue(value, {
                   minDecimals: 0,
                   maxDecimals: 0,
                   suffix: '%',
