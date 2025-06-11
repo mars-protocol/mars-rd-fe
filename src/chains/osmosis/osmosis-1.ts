@@ -84,7 +84,7 @@ const Osmosis1: ChainConfig = {
       process.env.NEXT_PUBLIC_OSMOSIS_REST ?? 'https://osmosis-api.polkachu.com',
       'osmosis/gamm/v1beta1/pools/POOL_ID',
     ),
-    dexAssets: 'https://neutron-cache-api.onrender.com/osmosis-1/tokens',
+    dexAssets: 'https://cache.marsprotocol.io/api/osmosis-1/tokens',
     gasPrices: '/osmosis/txfees/v1beta1/cur_eip_base_fee',
     aprs: {
       vaults: 'https://backend.prod.mars-dev.net/v1/vaults/osmosis',
