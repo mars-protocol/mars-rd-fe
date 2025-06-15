@@ -6,8 +6,5 @@ export const getUrl = (baseUrl: string, path: string = ''): string => {
   let url = new URL(baseUrl)
   if (path !== '') url = new URL(path, url)
 
-  if (process.env.NEXT_PUBLIC_API_KEY)
-    url.searchParams.append('x-apikey', process.env.NEXT_PUBLIC_API_KEY)
-
   return url.toString()
 }
