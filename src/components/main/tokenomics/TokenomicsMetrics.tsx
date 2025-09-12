@@ -34,13 +34,13 @@ export default function TokenomicsMetrics() {
       value: marketCap,
       label: 'Fully Diluted Valuation',
       isCurrency: true,
-      formatOptions: { maxDecimals: 0, minDecimals: 0, abbreviated: false },
+      formatOptions: { abbreviated: true },
     },
     {
       value: circulatingMarketCap,
       label: 'Market Cap',
       isCurrency: true,
-      formatOptions: { maxDecimals: 0, minDecimals: 0, abbreviated: false },
+      formatOptions: { abbreviated: true },
     },
     {
       value: BN(totalSupply),
@@ -72,7 +72,7 @@ export default function TokenomicsMetrics() {
       copy='Explore MARS tokenomics overview.'
       isLoading={isLoading}
       metrics={metrics}
-      className='w-full gap-5 sm:gap-10 md:gap-18'
+      className='gap-5 w-full sm:gap-10 md:gap-18'
       numberClassName='text-2xl md:text-4xl'
     />
   )
