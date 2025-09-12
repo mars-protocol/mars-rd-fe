@@ -12,19 +12,19 @@ const burnSources: BurnSource[] = [
   {
     title: 'Non-Migrated MARS Tokens',
     description:
-      'Legacy MARS tokens that were not migrated from the Mars Hub (mars-1) to Neutron (neutron-1) during the migration window got burned.',
+      'Legacy MARS tokens left unmigrated from Mars Hub (mars-1) to Neutron (neutron-1) during the migration window were permanently burned.',
     url: 'https://daodao.zone/dao/neutron1n3yey5yvlrtzgjam3x0k5auqwf0kealzyeu8zcq7adkjcmys2u5s6wcj9a/proposals/A16',
   },
   {
     title: 'Community Pool Fund Burn',
     description:
-      'The Community Pool Fund was burned, since it did not serve any purpose as the Mars Protocol contributors decided to not give out grants to third party builders.',
+      'The Community Pool Fund was burned after contributors decided not to allocate grants to third-party builders, ensuring unused funds were permanently removed.',
     url: 'https://daodao.zone/dao/neutron1pxjszcmmdxwtw9kv533u3hcudl6qahsa42chcs24gervf4ge40usaw3pcr/proposals/A47',
   },
   {
     title: 'Buyback and Burn Program',
     description:
-      "40% of Mars Protocol's revenue is used for systematic token buybacks and burns, creating deflationary pressure.",
+      "40% of Mars Protocol's revenue is allocated to systematic buybacks and burns, driving ongoing deflationary pressure.",
     url: 'https://daodao.zone/dao/neutron1pxjszcmmdxwtw9kv533u3hcudl6qahsa42chcs24gervf4ge40usaw3pcr/proposals/A64',
   },
 ]
@@ -38,8 +38,8 @@ export default function BurnSources() {
             Deflationary Burn Mechanisms
           </Text>
           <Text size='lg' className='text-white/60'>
-            Multiple burn sources create sustained deflationary pressure, reducing supply and
-            supporting token value
+            Multiple burn mechanisms continuously reduce MARS supply, creating lasting deflationary
+            pressure and supporting long-term token value.
           </Text>
         </div>
 
@@ -83,9 +83,9 @@ export default function BurnSources() {
               Revenue-Driven Deflation
             </Text>
             <Text className='mx-auto max-w-3xl text-white/80'>
-              The buyback and burn program ensures that as Mars Protocol grows and generates more
-              revenue, more MARS tokens are permanently removed from circulation. This creates a
-              direct correlation between protocol success and token scarcity.
+              As Mars Protocol grows, its buyback and burn program ensures more MARS tokens are
+              permanently removed from circulation, directly linking protocol success to token
+              scarcity.
             </Text>
             <div className='flex justify-center items-center pt-4 space-x-8'>
               <div className='text-center'>
@@ -106,7 +106,7 @@ export default function BurnSources() {
                   MARS
                 </Text>
                 <Text size='sm' className='text-white/60'>
-                  Burned Forever
+                  Permanently Burned
                 </Text>
               </div>
             </div>

@@ -93,7 +93,7 @@ export default function TokenomicsCharts() {
               loading={isLoadingCharts}
               lines={TOKENOMICS_CHART_CONFIGS.liquidity}
               height='h-100'
-              title='On-Chain Liquidity'
+              title='MARS On-Chain Liquidity on Astroport'
               customYAxisDomain={customYAxisDomain}
               timeframe={selectedTimeframe}
               baselineRight={liquidityBaselineRight}
