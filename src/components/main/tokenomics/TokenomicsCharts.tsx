@@ -20,7 +20,7 @@ export default function TokenomicsCharts() {
     error,
     mutate,
   } = useTokenomicsData(selectedTimeframe)
-  const { burnedData, liquidityData, treasuryData } = useTokenomicsChartData(tokenomicsData)
+  const { burnedData, liquidityData, treasuryData } = useTokenomicsChartData(tokenomicsData ?? null)
 
   // Custom Y-axis domain function (no zero clamp)
   const customYAxisDomain = useMemo(() => {

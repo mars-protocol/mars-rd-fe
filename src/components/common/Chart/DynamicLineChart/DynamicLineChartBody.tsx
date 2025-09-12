@@ -55,8 +55,8 @@ const TooltipContent = ({
         const value = typeof item.value === 'string' ? parseFloat(item.value) : item.value
 
         return (
-          <div key={index} className='flex items-center gap-1'>
-            <Circle className='fill-current h-2 w-2' color={item.color} />
+          <div key={index} className='flex gap-1 items-center'>
+            <Circle className='w-2 h-2 fill-current' color={item.color} />
             <Text size='xs'>{item.name}: </Text>
             {lineConfig?.isPercentage ? (
               <FormattedNumber
@@ -136,14 +136,22 @@ export default function DynamicLineChartBody(props: Props) {
     .map((item) =>
       lines
         .filter((l) => (l.yAxisId ?? 'left') === 'left')
-        .map((l) => (typeof item[l.dataKey] === 'string' ? parseFloat(item[l.dataKey] as string) : (item[l.dataKey] as number))),
+        .map((l) =>
+          typeof item[l.dataKey] === 'string'
+            ? parseFloat(item[l.dataKey] as string)
+            : (item[l.dataKey] as number),
+        ),
     )
     .flat()
   const rightValues = reversedData
     .map((item) =>
       lines
         .filter((l) => l.yAxisId === 'right')
-        .map((l) => (typeof item[l.dataKey] === 'string' ? parseFloat(item[l.dataKey] as string) : (item[l.dataKey] as number))),
+        .map((l) =>
+          typeof item[l.dataKey] === 'string'
+            ? parseFloat(item[l.dataKey] as string)
+            : (item[l.dataKey] as number),
+        ),
     )
     .flat()
   const leftDomain = leftDomainFn && leftValues.length ? leftDomainFn(leftValues) : undefined

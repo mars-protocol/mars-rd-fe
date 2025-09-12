@@ -10,7 +10,7 @@ import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import { BNCoin } from 'types/classes/BNCoin'
-
+const denom = 'factory/neutron1ndu2wvkrxtane8se2tr48gv7nsm46y5gcqjhux/MARS'
 export default function MarsTokenCard() {
   const [copiedDenom, setCopiedDenom] = useState(false)
   const { data: marsTokenPriceData, isLoading: isLoadingMarsTokenPrice } = useMarsTokenPrice()
@@ -41,7 +41,6 @@ export default function MarsTokenCard() {
   const isLoading = isLoadingMarsTokenPrice || isLoadingTokenomicsData
 
   const copyDenom = async () => {
-    const denom = 'factory/neutron1ndu2wvkrxtane8se2tr48gv7nsm46y5gcqjhux/MARS'
     try {
       await navigator.clipboard.writeText(denom)
       setCopiedDenom(true)
@@ -58,61 +57,61 @@ export default function MarsTokenCard() {
       {/* Header card moved to TokenomicsMetrics */}
 
       {/* MARS Token Card */}
-      <Card className='p-6 bg-white/5'>
-        <div className='flex justify-between items-center'>
-          <div className='flex items-center space-x-4'>
-            <div className='flex justify-center items-center w-16 h-16 rounded-full'>
+      <Card className='p-4 sm:p-6 bg-white/5'>
+        <div className='flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center sm:space-y-0'>
+          <div className='flex items-center space-x-3 sm:space-x-4'>
+            <div className='flex flex-shrink-0 justify-center items-center w-12 h-12 rounded-full sm:w-16 sm:h-16'>
               <Image
                 src='/token/MARS.svg'
                 alt='MARS Token'
-                width={64}
-                height={64}
-                className='rounded-full'
+                width={48}
+                height={48}
+                className='rounded-full sm:w-16 sm:h-16'
               />
             </div>
-            <div>
+            <div className='flex-1 min-w-0'>
               <div className='flex items-center space-x-2'>
-                <Text size='xl' className='font-bold text-white'>
+                <Text size='lg' className='font-bold text-white sm:text-xl'>
                   Mars Protocol
                 </Text>
-                <Text size='lg' className='font-medium text-white/60'>
+                <Text size='base' className='font-medium text-white/60 sm:text-lg'>
                   MARS
                 </Text>
               </div>
-              <div className='flex items-center mt-1 space-x-2'>
-                <Text size='sm' className='font-mono text-white/60'>
-                  factory/neutron1ndu2wvkrxtane8se2tr48gv7nsm46y5gcqjhux/MARS
+              <div className='flex items-center mt-1 space-x-2 min-w-0'>
+                <Text size='xs' className='font-mono truncate text-white/60 sm:text-sm'>
+                  {denom}
                 </Text>
                 <button
                   onClick={copyDenom}
-                  className='p-1 rounded transition-colors hover:bg-white/10'
+                  className='p-1.5 rounded transition-colors hover:bg-white/10 flex-shrink-0'
                   title='Copy denom'
                 >
                   <Copy className='w-4 h-4 text-white/60 hover:text-white' />
                 </button>
                 {copiedDenom && (
-                  <Text size='xs' className='text-primary'>
+                  <Text size='xs' className='whitespace-nowrap text-primary'>
                     Copied!
                   </Text>
                 )}
               </div>
             </div>
           </div>
-          <div className='text-right'>
+          <div className='text-center sm:text-right'>
             {isLoading ? (
-              <Loading className='w-40 h-10' />
+              <Loading className='mx-auto w-32 h-8 sm:w-40 sm:h-10 sm:mx-0' />
             ) : (
               <DisplayCurrency
                 coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, marsTokenPrice)}
-                className='text-3xl font-semibold text-white'
+                className='text-2xl font-semibold text-white sm:text-3xl'
                 options={{ maxDecimals: 4, minDecimals: 4 }}
               />
             )}
             {isLoading ? (
-              <Loading className='mt-2 w-48 h-4' />
+              <Loading className='mx-auto mt-2 w-40 h-4 sm:w-48 sm:mx-0' />
             ) : (
               priceChange && (
-                <div className='flex justify-end items-center mt-1 space-x-2'>
+                <div className='flex justify-center items-center mt-1 space-x-2 sm:justify-end'>
                   <Text
                     size='sm'
                     className={`font-medium ${
