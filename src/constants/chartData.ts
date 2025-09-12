@@ -298,7 +298,7 @@ export const PERPS_CHART_CONFIGS = {
     {
       dataKey: 'unrealized',
       color: CHART_COLORS.secondary,
-      name: 'Cumulative Unrealized PnL',
+      name: 'Unrealized PnL',
       isUSD: true,
     },
     {
