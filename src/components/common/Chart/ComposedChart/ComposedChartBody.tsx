@@ -1,9 +1,15 @@
-import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
+import classNames from 'classnames'
 import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
+import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
 import DisplayCurrency from 'components/common/DisplayCurrency'
-import moment from 'moment'
+import { FormattedNumber } from 'components/common/FormattedNumber'
+import { Circle } from 'components/common/Icons'
 import Text from 'components/common/Text'
+import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
+import { LocalStorageKeys } from 'constants/localStorageKeys'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import useLocalStorage from 'hooks/localStorage/useLocalStorage'
+import moment from 'moment'
 import {
   Bar,
   CartesianGrid,
@@ -17,24 +23,19 @@ import {
   YAxis,
 } from 'recharts'
 import { BNCoin } from 'types/classes/BNCoin'
-import { BN } from 'utils/helpers'
-import { Circle } from 'components/common/Icons'
-import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { formatValue } from 'utils/formatters'
-import { LocalStorageKeys } from 'constants/localStorageKeys'
-import { PRICE_ORACLE_DECIMALS } from 'constants/query'
-import classNames from 'classnames'
-import { FormattedNumber } from 'components/common/FormattedNumber'
+import { BN } from 'utils/helpers'
 
 interface Props {
   data: MergedChartData[]
   config: ChartConfig
   height?: string
   timeframe?: string
+  requiresOracleAdjustment?: boolean
 }
 
-function TooltipContent(props: TooltipContentProps) {
-  const { payload, config } = props
+function TooltipContent(props: TooltipContentProps & { requiresOracleAdjustment?: boolean }) {
+  const { payload, config, requiresOracleAdjustment } = props
 
   if (!payload || !payload.length) return null
   const uniqueEntries = new Map()
@@ -47,15 +48,18 @@ function TooltipContent(props: TooltipContentProps) {
         }
         uniqueEntries.set(entry.name, true)
 
-        const seriesConfig = [...(config?.primary || []), ...(config?.secondary || [])].find(
-          (s) => s.dataKey === entry.dataKey,
-        )
+        const seriesConfig = [
+          ...(config?.primary || []),
+          ...(config?.secondary || []),
+          ...(config?.bars || []),
+          ...(config?.line ? [config.line] : []),
+        ].find((s) => s.dataKey === entry.dataKey)
         const amount = Number(entry.value) ?? 0
         const label = entry.name
 
         return (
-          <div key={index} className='flex items-center gap-1'>
-            <Circle className='fill-current h-2 w-2' color={entry.stroke || entry.fill} />
+          <div key={index} className='flex gap-1 items-center'>
+            <Circle className='w-2 h-2 fill-current' color={entry.stroke || entry.fill} />
             <Text size='xs'>{label}: </Text>
             {seriesConfig?.isPercentage ? (
               <FormattedNumber
@@ -67,11 +71,13 @@ function TooltipContent(props: TooltipContentProps) {
                 }}
                 className='text-xs'
               />
-            ) : (
+            ) : seriesConfig?.isUSD ? (
               <DisplayCurrency
                 coin={BNCoin.fromDenomAndBigNumber(
                   'usd',
-                  BN(amount).shiftedBy(-PRICE_ORACLE_DECIMALS),
+                  seriesConfig?.isNormalized || !requiresOracleAdjustment
+                    ? BN(amount)
+                    : BN(amount).shiftedBy(-PRICE_ORACLE_DECIMALS),
                 )}
                 options={{
                   minDecimals: 0,
@@ -80,6 +86,12 @@ function TooltipContent(props: TooltipContentProps) {
                 }}
                 className='text-xs'
                 showSignPrefix
+              />
+            ) : (
+              <FormattedNumber
+                amount={amount}
+                options={{ maxDecimals: 0, minDecimals: 0, thousandSeparator: true }}
+                className='text-xs'
               />
             )}
           </div>
@@ -90,7 +102,7 @@ function TooltipContent(props: TooltipContentProps) {
 }
 
 export default function ComposedChartBody(props: Props) {
-  const { data, config, height, timeframe = '' } = props
+  const { data, config, height, timeframe = '', requiresOracleAdjustment } = props
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
@@ -204,7 +216,13 @@ export default function ComposedChartBody(props: Props) {
               <ChartTooltip
                 payload={[]}
                 label={''}
-                renderContent={(payload) => <TooltipContent payload={payload} config={config} />}
+                renderContent={(payload) => (
+                  <TooltipContent
+                    payload={payload}
+                    config={config}
+                    requiresOracleAdjustment={requiresOracleAdjustment}
+                  />
+                )}
               />
             }
           />

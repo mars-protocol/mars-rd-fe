@@ -1,23 +1,23 @@
-import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
 import ChartError from 'components/common/Chart/common/ChartError'
-import ComposedChart from 'components/common/Chart/ComposedChart'
-import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
-import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
-import Text from 'components/common/Text'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
-import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
-import usePerpsVaultStats from 'hooks/perps/usePerpsVaultStats'
-import { BN } from 'utils/helpers'
+import ComposedChart from 'components/common/Chart/ComposedChart'
+import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
+import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import { CircularProgress } from 'components/common/CircularProgress'
-import { FundingRateTimeBase } from 'types/enums'
-import { mutate } from 'swr'
-import { useMemo, useState } from 'react'
-import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
+import Text from 'components/common/Text'
+import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
 import {
   DEFAULT_PERPS_GLOBAL_DATA,
   FUNDING_RATE_OPTIONS,
   PERPS_CHART_CONFIGS,
 } from 'constants/chartData'
+import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
+import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
+import usePerpsVaultStats from 'hooks/perps/usePerpsVaultStats'
+import { useMemo, useState } from 'react'
+import { mutate } from 'swr'
+import { FundingRateTimeBase } from 'types/enums'
+import { BN } from 'utils/helpers'
 
 interface Props {
   timeframe: string
@@ -233,6 +233,7 @@ export default function PerpsMarketStats(props: Props) {
             }
             height='h-80'
             timeframe={timeframe}
+            requiresOracleAdjustment={true}
           />
         </div>
       </div>
@@ -281,6 +282,7 @@ export default function PerpsMarketStats(props: Props) {
           config={PERPS_CHART_CONFIGS.combinedChart}
           height='h-90'
           timeframe={timeframe}
+          requiresOracleAdjustment={true}
         />
       )}
 

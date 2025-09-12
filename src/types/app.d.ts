@@ -1508,6 +1508,8 @@ interface LineConfig {
   isPercentage?: boolean
   strokeDasharray?: string
   yAxisId?: string
+  isUSD?: boolean
+  isNormalized?: boolean
 }
 
 interface ChartConfig {

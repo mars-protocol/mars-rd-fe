@@ -1,11 +1,13 @@
 import classNames from 'classnames'
 import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
 import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
+import DisplayCurrency from 'components/common/DisplayCurrency'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import { Circle } from 'components/common/Icons'
 import Text from 'components/common/Text'
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import useLocalStorage from 'hooks/localStorage/useLocalStorage'
 import moment from 'moment'
 import {
@@ -19,7 +21,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { BNCoin } from 'types/classes/BNCoin'
 import { formatValue } from 'utils/formatters'
+import { BN } from 'utils/helpers'
 
 interface Props {
   data: MergedChartData[]
@@ -61,13 +65,18 @@ const TooltipContent = ({
             {lineConfig?.isPercentage ? (
               <FormattedNumber
                 amount={value}
-                options={{ maxDecimals: 3, minDecimals: 0, suffix: '%' }}
+                options={{ maxDecimals: 2, minDecimals: 0, suffix: '%' }}
                 className='text-xs'
               />
-            ) : lineConfig?.yAxisId === 'right' || String(item.dataKey).endsWith('_usd') ? (
-              <FormattedNumber
-                amount={value}
-                options={{ maxDecimals: 2, minDecimals: 0, prefix: '$', thousandSeparator: true }}
+            ) : lineConfig?.isUSD ? (
+              <DisplayCurrency
+                coin={BNCoin.fromDenomAndBigNumber(
+                  'usd',
+                  lineConfig?.isNormalized
+                    ? BN(value)
+                    : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS),
+                )}
+                options={{ maxDecimals: 2, minDecimals: 2, abbreviated: true }}
                 className='text-xs'
               />
             ) : (
@@ -233,6 +242,24 @@ export default function DynamicLineChartBody(props: Props) {
                   suffix: '%',
                 })
               }
+              // Check if any left axis line is USD
+              const hasUSDOnLeft = lines.some(
+                (line) => (line.yAxisId ?? 'left') === 'left' && line.isUSD,
+              )
+              if (hasUSDOnLeft) {
+                const hasNormalizedData = lines.some(
+                  (line) => (line.yAxisId ?? 'left') === 'left' && line.isUSD && line.isNormalized,
+                )
+                const adjustedValue = hasNormalizedData
+                  ? value
+                  : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
+                return formatValue(adjustedValue, {
+                  minDecimals: 0,
+                  maxDecimals: 2,
+                  prefix: '$',
+                  abbreviated: true,
+                })
+              }
               return formatValue(value, {
                 minDecimals: 0,
                 maxDecimals: 0,
@@ -251,14 +278,30 @@ export default function DynamicLineChartBody(props: Props) {
               tickCount={8}
               stroke='rgba(255, 255, 255, 0.4)'
               domain={rightDomain}
-              tickFormatter={(value) =>
-                formatValue(value, {
+              tickFormatter={(value) => {
+                // Check if any right axis line is USD
+                const hasUSDOnRight = lines.some((line) => line.yAxisId === 'right' && line.isUSD)
+                if (hasUSDOnRight) {
+                  const hasNormalizedData = lines.some(
+                    (line) => line.yAxisId === 'right' && line.isUSD && line.isNormalized,
+                  )
+                  const adjustedValue = hasNormalizedData
+                    ? value
+                    : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
+                  return formatValue(adjustedValue, {
+                    minDecimals: 0,
+                    maxDecimals: 2,
+                    prefix: '$',
+                    abbreviated: true,
+                  })
+                }
+                return formatValue(value, {
                   minDecimals: 0,
                   maxDecimals: 2,
                   prefix: '$',
                   abbreviated: true,
                 })
-              }
+              }}
             />
           )}
 
