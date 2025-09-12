@@ -3,6 +3,7 @@ import { isMobile } from 'react-device-detect'
 import { SWRConfig } from 'swr'
 
 import Background from 'components/common/Background'
+import { CircularProgress } from 'components/common/CircularProgress'
 import Footer from 'components/common/Footer'
 import PageMetadata from 'components/common/PageMetadata'
 import Header from 'components/header/Header'
@@ -10,7 +11,6 @@ import { useRouter } from 'next/router'
 import { Suspense } from 'react'
 import useStore from 'store'
 import { debugSWR } from 'utils/middleware'
-import { CircularProgress } from 'components/common/CircularProgress'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const mobileNavExpanded = useStore((s) => s.mobileNavExpanded)
@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <>
             <Background />
             <Header />
-            <div className='flex items-center justify-center w-full h-screen'>
+            <div className='flex justify-center items-center w-full h-screen'>
               <CircularProgress size={50} />
             </div>
           </>
@@ -49,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <SWRConfig value={{ use: [debugSWR] }}>
             <div
               className={classNames(
-                'mx-auto flex items-start w-full max-w-screen-full',
+                'flex items-start mx-auto w-full max-w-screen-full',
                 'md:max-w-content',
               )}
             >

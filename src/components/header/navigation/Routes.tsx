@@ -4,6 +4,7 @@ import Layout from 'pages/_layout'
 import LiquidationsPage from 'pages/LiquidationsPage'
 import MainPage from 'pages/MainPage'
 import PerpsOverviewPage from 'pages/PerpsOverviewPage'
+import TokenomicsPage from 'pages/TokenomicsPage'
 
 export default function Routes() {
   return (
@@ -18,6 +19,7 @@ export default function Routes() {
         <Route path='/' element={<MainPage />} />
         <Route path='/main' element={<MainPage />} />
         <Route path='/liquidations' element={<LiquidationsPage />} />
+        <Route path='/tokenomics' element={<TokenomicsPage />} />
         <Route path='/perps' element={<PerpsOverviewPage />}>
           <Route path=':asset' element={<PerpsOverviewPage />} />
         </Route>

@@ -17,6 +17,10 @@ const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
     pages: ['liquidations' as Page],
     label: 'Liquidations',
   },
+  {
+    pages: ['tokenomics' as Page],
+    label: 'Tokenomics',
+  },
   ...(chainConfig.perps
     ? [
         {

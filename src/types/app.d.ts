@@ -363,7 +363,7 @@ interface PythUpdateExecuteMsg {
   update_price_feeds: { data: string[] }
 }
 
-type Page = 'main' | 'liquidations' | 'perps' | 'perps/{asset}'
+type Page = 'main' | 'liquidations' | 'perps' | 'perps/{asset}' | 'tokenomics'
 
 type OsmosisRouteResponse = {
   amount_in: {
@@ -1616,4 +1616,45 @@ interface PerpsTradingFee {
     opening: BigNumber
     closing: BigNumber
   }
+}
+
+interface TokenomicsDataPoint {
+  date: string
+  amount: string
+  value_usd: number
+}
+
+interface TokenomicsPriceDataPoint {
+  date: string
+  value_usd: number
+}
+
+interface TokenomicsLiquidityDataPoint {
+  date: string
+  value_usd: number
+}
+
+interface TokenomicsData {
+  burned_supply: TokenomicsDataPoint[]
+  treasury_supply: TokenomicsDataPoint[]
+  price_usd: TokenomicsPriceDataPoint[]
+  on_chain_liquidity_usd: TokenomicsLiquidityDataPoint[]
+}
+
+interface TokenomicsToken {
+  symbol: string
+  denom: string
+  decimals: number
+}
+
+interface TokenomicsMeta {
+  token: TokenomicsToken
+  last_updated: string
+  total_records: number
+  days_requested: number
+}
+
+interface TokenomicsApiResponse {
+  data: TokenomicsData
+  meta: TokenomicsMeta
 }

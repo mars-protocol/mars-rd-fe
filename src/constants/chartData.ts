@@ -401,3 +401,63 @@ export const OVERVIEW_CHART_CONFIGS = {
     ],
   },
 }
+
+export const TOKENOMICS_CHART_TRANSFORMATIONS = {
+  burned: [
+    {
+      path: ['burned_supply'],
+      targetKey: 'burned_amount',
+      formatFn: (value: any) => parseFloat(value.amount),
+    },
+    {
+      path: ['burned_supply'],
+      targetKey: 'burned_value_usd',
+      formatFn: (value: any) => value.value_usd,
+    },
+  ],
+  liquidity: [
+    {
+      path: ['on_chain_liquidity_usd'],
+      targetKey: 'liquidity_usd',
+      formatFn: (value: any) => value.value_usd,
+    },
+  ],
+}
+
+export const TOKENOMICS_CHART_CONFIGS = {
+  burned: [
+    {
+      dataKey: 'burned_amount',
+      color: CHART_COLORS.secondary,
+      name: 'Burned Amount (MARS)',
+      yAxisId: 'left',
+    },
+    {
+      dataKey: 'burned_value_usd',
+      color: CHART_COLORS.tertiary,
+      name: 'Burned Value (USD)',
+      yAxisId: 'right',
+    },
+  ],
+  liquidity: [
+    {
+      dataKey: 'liquidity_usd',
+      color: CHART_COLORS.primary,
+      name: 'On-Chain Liquidity (USD)',
+    },
+  ],
+  treasury: [
+    {
+      dataKey: 'treasury_amount',
+      color: CHART_COLORS.secondary,
+      name: 'Treasury Amount (MARS)',
+      yAxisId: 'left',
+    },
+    {
+      dataKey: 'treasury_value_usd',
+      color: CHART_COLORS.tertiary,
+      name: 'Treasury Value (USD)',
+      yAxisId: 'right',
+    },
+  ],
+}
