@@ -5,18 +5,21 @@ import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import { BN_ZERO } from 'constants/math'
 import { ORACLE_DENOM } from 'constants/oracle'
-import useMarsTokenPrice from 'hooks/tokenomics/useMarsTokenPrice'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import { BNCoin } from 'types/classes/BNCoin'
+import { BN } from 'utils/helpers'
 const denom = 'factory/neutron1ndu2wvkrxtane8se2tr48gv7nsm46y5gcqjhux/MARS'
 export default function MarsTokenCard() {
   const [copiedDenom, setCopiedDenom] = useState(false)
-  const { data: marsTokenPriceData, isLoading: isLoadingMarsTokenPrice } = useMarsTokenPrice()
   const { data: tokenomicsData, isLoading: isLoadingTokenomicsData } = useTokenomicsData('30')
 
-  const marsTokenPrice = marsTokenPriceData ?? BN_ZERO
+  // Get the latest MARS token price from tokenomics data
+  const marsTokenPrice = useMemo(() => {
+    if (!tokenomicsData?.data.price_usd?.length) return BN_ZERO
+    return BN(tokenomicsData.data.price_usd[0].value_usd)
+  }, [tokenomicsData])
 
   // Calculate price change
   const priceChange = useMemo(() => {
@@ -38,7 +41,7 @@ export default function MarsTokenCard() {
     }
   }, [tokenomicsData])
 
-  const isLoading = isLoadingMarsTokenPrice || isLoadingTokenomicsData
+  const isLoading = isLoadingTokenomicsData
 
   const copyDenom = async () => {
     try {
