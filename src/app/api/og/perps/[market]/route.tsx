@@ -1,7 +1,8 @@
 import { ImageResponse } from 'next/og'
 import { neutronPerps } from '../../../../../data/assets/neutron-perps'
 
-export const runtime = 'edge'
+// Use Node.js runtime to avoid disabling SSG for other pages
+export const runtime = 'nodejs'
 
 export async function GET(request: Request, context: any) {
   try {

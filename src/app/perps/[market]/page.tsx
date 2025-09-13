@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 import { neutronPerps } from '../../../data/assets/neutron-perps'
 import { generatePerpsMarketMetadata } from '../../../metadata'
 import PerpsMarketPageContent from './components/PerpsMarketPageContent'
@@ -24,5 +25,9 @@ export async function generateMetadata({ params }: PerpsMarketPageProps): Promis
 export default async function PerpsMarketPage({ params }: PerpsMarketPageProps) {
   const { market } = await params
   const fullDenom = `perps/${market}` // Convert URL param back to full denom
-  return <PerpsMarketPageContent market={fullDenom} />
+  return (
+    <Suspense fallback={null}>
+      <PerpsMarketPageContent market={fullDenom} />
+    </Suspense>
+  )
 }

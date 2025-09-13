@@ -30,13 +30,15 @@ export const Tooltip = (props: Props) => {
     typeof window !== 'undefined' ? document.getElementById('wallet-assets-modal') : null
   const isInModal = typeof window !== 'undefined' ? document.getElementById('modal') : null
 
+  const appendTarget: Element | 'parent' =
+    isInWalletAssetModal ??
+    isInModal ??
+    (typeof window !== 'undefined' ? document.body : null) ??
+    'parent'
+
   return (
     <Tippy
-      appendTo={() =>
-        isInWalletAssetModal ??
-        isInModal ??
-        (typeof window !== 'undefined' ? document.body : undefined)
-      }
+      appendTo={appendTarget}
       interactive={props.interactive}
       animation={false}
       delay={[props.delay ?? 0, 0]}

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 import { pageMetadata } from '../../metadata'
 import PerpsPageContent from './components/PerpsPageContent'
 
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 }
 
 export default function PerpsPage() {
-  return <PerpsPageContent />
+  return (
+    <Suspense fallback={null}>
+      <PerpsPageContent />
+    </Suspense>
+  )
 }

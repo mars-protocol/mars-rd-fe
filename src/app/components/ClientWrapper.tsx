@@ -1,10 +1,10 @@
 'use client'
 
 import classNames from 'classnames'
+import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 import { SWRConfig } from 'swr'
-import { useSearchParams } from 'next/navigation'
 
 import Background from '../../components/common/Background'
 import { CircularProgress } from '../../components/common/CircularProgress'
@@ -20,8 +20,6 @@ interface ClientWrapperProps {
 
 export default function ClientWrapper({ children }: ClientWrapperProps) {
   const mobileNavExpanded = useStore((s) => s.mobileNavExpanded)
-  const searchParams = useSearchParams()
-  const isIframeView = searchParams?.get('iframeView') === 'on'
 
   // Suppress React 19 ref deprecation warnings from @tippyjs/react until library is updated
   useEffect(() => {
@@ -56,6 +54,20 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
       }
     }
   }, [])
+
+  return (
+    <Suspense fallback={<CircularProgress size={32} className='mt-8' />}>
+      <ClientWrapperInner mobileNavExpanded={mobileNavExpanded}>{children}</ClientWrapperInner>
+    </Suspense>
+  )
+}
+
+function ClientWrapperInner({
+  children,
+  mobileNavExpanded,
+}: ClientWrapperProps & { mobileNavExpanded: boolean }) {
+  const searchParams = useSearchParams()
+  const isIframeView = searchParams?.get('iframeView') === 'on'
 
   return (
     <>
