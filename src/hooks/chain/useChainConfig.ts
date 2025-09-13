@@ -10,13 +10,17 @@ export default function useChainConfig() {
   const urlChain = searchParams?.get('chain')
   const chainId = urlChain === 'osmosis' ? ChainInfoID.Osmosis1 : ChainInfoID.Neutron1
 
-  const rpcEndpoint = typeof window !== 'undefined' 
-    ? localStorage.getItem(`${chainId}/${LocalStorageKeys.RPC_ENDPOINT}`) ?? chains[chainId].endpoints.rpc
-    : chains[chainId].endpoints.rpc
-    
-  const restEndpoint = typeof window !== 'undefined'
-    ? localStorage.getItem(`${chainId}/${LocalStorageKeys.REST_ENDPOINT}`) ?? chains[chainId].endpoints.rest
-    : chains[chainId].endpoints.rest
+  const rpcEndpoint =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem(`${chainId}/${LocalStorageKeys.RPC_ENDPOINT}`) ??
+        chains[chainId].endpoints.rpc)
+      : chains[chainId].endpoints.rpc
+
+  const restEndpoint =
+    typeof window !== 'undefined'
+      ? (localStorage.getItem(`${chainId}/${LocalStorageKeys.REST_ENDPOINT}`) ??
+        chains[chainId].endpoints.rest)
+      : chains[chainId].endpoints.rest
 
   return {
     ...chains[chainId],

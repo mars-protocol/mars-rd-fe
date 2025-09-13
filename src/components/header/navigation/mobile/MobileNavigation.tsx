@@ -28,7 +28,7 @@ export default function MobileNavigation(props: Props) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    
+
     if (mobileNavExpanded) {
       document.body.classList.add('h-screen-full', 'overflow-hidden')
     } else {

@@ -3,7 +3,7 @@
 import classNames from 'classnames'
 import { ReactNode } from 'react'
 import Link from 'next/link'
-import { useSearchParams, usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import { ExternalLink } from 'components/common/Icons'
 import { getIsActive } from 'components/header/navigation/desktop/DesktopNavigation'

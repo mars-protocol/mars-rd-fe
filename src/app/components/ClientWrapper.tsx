@@ -33,7 +33,7 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
         if (
           typeof message === 'string' &&
           (message.includes('Accessing element.ref was removed in React 19') ||
-           message.includes('ref is now a regular prop'))
+            message.includes('ref is now a regular prop'))
         ) {
           return // Suppress this specific warning
         }
@@ -46,11 +46,13 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
         if (
           typeof message === 'string' &&
           (message.includes('Accessing element.ref was removed in React 19') ||
-           message.includes('ref is now a regular prop'))
+            message.includes('ref is now a regular prop'))
         ) {
           return true // Suppress this specific error
         }
-        return originalErrorHandler ? originalErrorHandler(message, source, lineno, colno, error) : false
+        return originalErrorHandler
+          ? originalErrorHandler(message, source, lineno, colno, error)
+          : false
       }
     }
   }, [])

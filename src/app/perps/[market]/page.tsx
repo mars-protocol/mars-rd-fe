@@ -10,8 +10,8 @@ interface PerpsMarketPageProps {
 }
 
 export function generateStaticParams() {
-  return neutronPerps.map((asset) => ({ 
-    market: asset.denom.replace('perps/', '') // Remove 'perps/' prefix for URL
+  return neutronPerps.map((asset) => ({
+    market: asset.denom.replace('perps/', ''), // Remove 'perps/' prefix for URL
   }))
 }
 

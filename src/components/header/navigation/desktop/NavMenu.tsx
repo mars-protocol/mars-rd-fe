@@ -76,7 +76,9 @@ export const NavMenu = (props: Props) => {
                         <span
                           className={classNames(
                             'w-full text-sm group-hover/submenuitem:text-white',
-                            getIsActive([submenuitem.page], pathname) ? 'text-white' : 'text-white/40',
+                            getIsActive([submenuitem.page], pathname)
+                              ? 'text-white'
+                              : 'text-white/40',
                           )}
                         >
                           {submenuitem.subtitle}
