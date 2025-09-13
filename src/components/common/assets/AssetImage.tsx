@@ -18,7 +18,6 @@ function LogoUknown() {
 }
 
 export default function AssetImage(props: Props) {
-  console.log(props.asset)
   if (props.asset.icon)
     return (
       <div className={props.className}>

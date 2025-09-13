@@ -1,6 +1,8 @@
+'use client'
+
 import classNames from 'classnames'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { ChevronDown } from 'components/common/Icons'
 import Text from 'components/common/Text'
@@ -16,15 +18,17 @@ interface Props {
 export default function MobileNavigation(props: Props) {
   const { menuTree } = props
   const mobileNavExpanded = useStore((s) => s.mobileNavExpanded)
-  const [searchParams] = useSearchParams()
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const currentPage = getPage(pathname)
   const chainConfig = useChainConfig()
 
   const menu = useMemo(() => menuTree(chainConfig), [menuTree, chainConfig])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     if (mobileNavExpanded) {
       document.body.classList.add('h-screen-full', 'overflow-hidden')
     } else {
@@ -41,9 +45,11 @@ export default function MobileNavigation(props: Props) {
       window.scrollTo(0, 0)
       if (typeof window !== 'undefined') setTimeout(() => window.scrollTo(0, 0), 200)
       useStore.setState({ mobileNavExpanded: false })
-      navigate(getRoute(getPage(page), searchParams))
+      const newPath = page === 'main' ? '/' : `/${page}`
+      const params = new URLSearchParams(searchParams)
+      router.push(`${newPath}?${params.toString()}`)
     },
-    [navigate, searchParams],
+    [router, searchParams],
   )
 
   return (

@@ -1,9 +1,11 @@
+'use client'
+
 import classNames from 'classnames'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'next/navigation'
 
 export default function Background() {
-  const [searchParams] = useSearchParams()
-  const isIframeView = searchParams.get('iframeView') === 'on'
+  const searchParams = useSearchParams()
+  const isIframeView = searchParams?.get('iframeView') === 'on'
 
   if (isIframeView) return null
 

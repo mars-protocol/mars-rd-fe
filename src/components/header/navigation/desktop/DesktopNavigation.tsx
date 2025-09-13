@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
+import { usePathname } from 'next/navigation'
 
 import Button from 'components/common/Button'
 import { ChevronDown } from 'components/common/Icons'
@@ -13,9 +14,10 @@ interface Props {
   menuTree: (chainConfig: ChainConfig) => MenuTreeEntry[]
 }
 
-export function getIsActive(pages: string[]) {
-  const segments = location.pathname.split('/')
-  if (location.pathname === '/' && pages.includes('main')) {
+export function getIsActive(pages: string[], pathname?: string) {
+  if (!pathname) return false
+  const segments = pathname.split('/')
+  if (pathname === '/' && pages.includes('main')) {
     return true
   }
   return pages.some((page) => segments.includes(page))

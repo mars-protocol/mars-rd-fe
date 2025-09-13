@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { usePathname } from 'next/navigation'
 
 import Divider from 'components/common/Divider'
 import { ChevronDown } from 'components/common/Icons'
@@ -15,6 +16,7 @@ interface Props {
 export const NavMenu = (props: Props) => {
   const { item, index } = props
   const [showMenu, setShowMenu] = useToggle()
+  const pathname = usePathname()
 
   if (!item.submenu) return null
 
@@ -35,7 +37,7 @@ export const NavMenu = (props: Props) => {
           item={{ pages: [item.pages[0]], label: item.label }}
           className={classNames(
             'whitespace-nowrap',
-            (getIsActive(item.pages) || showMenu) && '!text-white',
+            (getIsActive(item.pages, pathname) || showMenu) && '!text-white',
           )}
         >
           {item.label}
@@ -74,7 +76,7 @@ export const NavMenu = (props: Props) => {
                         <span
                           className={classNames(
                             'w-full text-sm group-hover/submenuitem:text-white',
-                            getIsActive([submenuitem.page]) ? 'text-white' : 'text-white/40',
+                            getIsActive([submenuitem.page], pathname) ? 'text-white' : 'text-white/40',
                           )}
                         >
                           {submenuitem.subtitle}
