@@ -173,9 +173,9 @@ export const pageMetadata = {
 }
 
 // Generate dynamic metadata for perps market pages
-export const generatePerpsMarketMetadata = (marketName: string): Metadata => {
-  const title = `${marketName} Market`
-  const description = `Detailed analytics for ${marketName} perpetuals market on Mars Protocol - Trading data, open interest, funding rates, and more.`
+export const generatePerpsMarketMetadata = (marketSymbol: string, marketDenom: string): Metadata => {
+  const title = `${marketSymbol} Market`
+  const description = `Detailed analytics for ${marketSymbol} perpetuals market on Mars Protocol - Trading data, open interest, funding rates, and more.`
 
   return {
     title,
@@ -185,17 +185,17 @@ export const generatePerpsMarketMetadata = (marketName: string): Metadata => {
       description,
       images: [
         {
-          url: `/api/og/perps/${encodeURIComponent(marketName.toLowerCase())}`,
+          url: `/api/og/perps/${encodeURIComponent(marketDenom)}`,
           width: 1032,
           height: 540,
-          alt: `${marketName} Market Analytics`,
+          alt: `${marketSymbol} Market Analytics`,
         },
       ],
     },
     twitter: {
       title: `Mars Protocol - ${title}`,
       description,
-      images: [`/api/og/perps/${encodeURIComponent(marketName.toLowerCase())}`],
+      images: [`/api/og/perps/${encodeURIComponent(marketDenom)}`],
     },
   }
 }
