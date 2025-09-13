@@ -2,7 +2,6 @@ import MetricsCard from 'components/common/Card/MetricsCard'
 import { GridToken } from 'components/common/Icons'
 import { BN_ZERO } from 'constants/math'
 import useCirculatingSupply from 'hooks/tokenomics/useCirculatingSupply'
-import useMarsTokenPrice from 'hooks/tokenomics/useMarsTokenPrice'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
 import { useMemo } from 'react'
@@ -12,12 +11,16 @@ export default function TokenomicsMetrics() {
   const { data: circulatingSupplyData, isLoading: isLoadingCirculatingSupply } =
     useCirculatingSupply()
   const { data: totalSupplyData, isLoading: isLoadingTotalSupply } = useTotalSupply()
-  const { data: marsTokenPriceData, isLoading: isLoadingMarsTokenPrice } = useMarsTokenPrice()
-  const { isLoading: isLoadingTokenomicsData } = useTokenomicsData('30')
+  const { data: tokenomicsData, isLoading: isLoadingTokenomicsData } = useTokenomicsData('30')
 
   const circulatingSupply = circulatingSupplyData ?? 0
   const totalSupply = totalSupplyData ?? 0
-  const marsTokenPrice = marsTokenPriceData ?? BN_ZERO
+
+  // Get the latest price from tokenomics data (first element is most recent)
+  const marsTokenPrice = useMemo(() => {
+    if (!tokenomicsData?.data?.price_usd?.length) return BN_ZERO
+    return BN(tokenomicsData.data.price_usd[0].value_usd)
+  }, [tokenomicsData])
 
   // Market caps
   const marketCap = useMemo(
@@ -28,6 +31,16 @@ export default function TokenomicsMetrics() {
     () => BN(circulatingSupply).multipliedBy(marsTokenPrice),
     [circulatingSupply, marsTokenPrice],
   )
+
+  const totalValueBurned = useMemo(() => {
+    if (!tokenomicsData?.data?.burned_supply?.length) return BN_ZERO
+    return BN(tokenomicsData.data.burned_supply[0].value_usd)
+  }, [tokenomicsData])
+
+  const totalBurnedSupply = useMemo(() => {
+    if (!tokenomicsData?.data?.burned_supply?.length) return BN_ZERO
+    return BN(tokenomicsData.data.burned_supply[0].amount)
+  }, [tokenomicsData])
 
   const metrics: Metric[] = [
     {
@@ -43,6 +56,12 @@ export default function TokenomicsMetrics() {
       formatOptions: { abbreviated: true },
     },
     {
+      value: totalValueBurned,
+      label: 'Total Value Burned',
+      isCurrency: true,
+      formatOptions: { abbreviated: true },
+    },
+    {
       value: BN(totalSupply),
       label: 'Total Supply',
       formatOptions: { abbreviated: true },
@@ -52,13 +71,14 @@ export default function TokenomicsMetrics() {
       label: 'Circulating Supply',
       formatOptions: { abbreviated: true },
     },
+    {
+      value: totalBurnedSupply,
+      label: 'Burned Supply',
+      formatOptions: { abbreviated: true },
+    },
   ]
 
-  const isLoading =
-    isLoadingCirculatingSupply ||
-    isLoadingTotalSupply ||
-    isLoadingMarsTokenPrice ||
-    isLoadingTokenomicsData
+  const isLoading = isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingTokenomicsData
 
   return (
     <MetricsCard

@@ -45,7 +45,7 @@ export function getPage(pathname: string): Page {
   return 'trade' as Page
 }
 
-export function getSearchParamsObject(searchParams: URLSearchParams) {
+function getSearchParamsObject(searchParams: URLSearchParams) {
   const params: { [key: string]: string } = {}
 
   Array.from(searchParams?.entries() || []).forEach(([key, value]) => (params[key] = value))

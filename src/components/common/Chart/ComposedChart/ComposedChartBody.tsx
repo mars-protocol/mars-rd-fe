@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
 import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
-import DisplayCurrency from 'components/common/DisplayCurrency'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import { Circle } from 'components/common/Icons'
 import Text from 'components/common/Text'
@@ -22,7 +21,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { BNCoin } from 'types/classes/BNCoin'
 import { formatValue } from 'utils/formatters'
 import { BN } from 'utils/helpers'
 
@@ -72,20 +70,13 @@ function TooltipContent(props: TooltipContentProps & { requiresOracleAdjustment?
                 className='text-xs'
               />
             ) : seriesConfig?.isUSD ? (
-              <DisplayCurrency
-                coin={BNCoin.fromDenomAndBigNumber(
-                  'usd',
-                  seriesConfig?.isNormalized || !requiresOracleAdjustment
-                    ? BN(amount)
-                    : BN(amount).shiftedBy(-PRICE_ORACLE_DECIMALS),
-                )}
-                options={{
-                  minDecimals: 0,
-                  maxDecimals: 2,
-                  abbreviated: true,
-                }}
+              <FormattedNumber
+                amount={(seriesConfig?.isNormalized || !requiresOracleAdjustment
+                  ? BN(amount)
+                  : BN(amount).shiftedBy(-PRICE_ORACLE_DECIMALS)
+                ).toNumber()}
+                options={{ minDecimals: 0, maxDecimals: 2, abbreviated: true, prefix: '$' }}
                 className='text-xs'
-                showSignPrefix
               />
             ) : (
               <FormattedNumber

@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
 import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
-import DisplayCurrency from 'components/common/DisplayCurrency'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import { Circle } from 'components/common/Icons'
 import Text from 'components/common/Text'
@@ -21,7 +20,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { BNCoin } from 'types/classes/BNCoin'
 import { formatValue } from 'utils/formatters'
 import { BN } from 'utils/helpers'
 
@@ -69,14 +67,12 @@ const TooltipContent = ({
                 className='text-xs'
               />
             ) : lineConfig?.isUSD ? (
-              <DisplayCurrency
-                coin={BNCoin.fromDenomAndBigNumber(
-                  'usd',
-                  lineConfig?.isNormalized
-                    ? BN(value)
-                    : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS),
-                )}
-                options={{ maxDecimals: 2, minDecimals: 2, abbreviated: true }}
+              <FormattedNumber
+                amount={(lineConfig?.isNormalized
+                  ? BN(value)
+                  : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS)
+                ).toNumber()}
+                options={{ maxDecimals: 2, minDecimals: 2, abbreviated: true, prefix: '$' }}
                 className='text-xs'
               />
             ) : (

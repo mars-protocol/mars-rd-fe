@@ -1,10 +1,9 @@
 import { BN_ZERO } from 'constants/math'
-import { priceFeedIDs } from 'constants/pythPriceFeedIDs'
 import { BNCoin } from 'types/classes/BNCoin'
 import { byDenom } from 'utils/array'
 import { demagnify, truncate } from 'utils/formatters'
 
-export function findCoinByDenom(denom: string, coins: BigNumberCoin[]) {
+function findCoinByDenom(denom: string, coins: BigNumberCoin[]) {
   return coins.find((coin) => coin.denom === denom)
 }
 
@@ -12,7 +11,7 @@ function isAssetPair(assetPair: Asset | AssetPair): assetPair is AssetPair {
   return (<AssetPair>assetPair).buy !== undefined
 }
 
-export function sortAssetsOrPairs(
+function sortAssetsOrPairs(
   assets: Asset[] | AssetPair[],
   markets: Market[],
   balances: BNCoin[],
@@ -50,16 +49,16 @@ export function sortAssetsOrPairs(
   })
 }
 
-export function stringifyDenom(denom: string) {
+function stringifyDenom(denom: string) {
   return denom.replaceAll('/', '_').replaceAll('.', '')
 }
 
-export function getAssetSymbolByDenom(denom: string, assets: Asset[]) {
+function getAssetSymbolByDenom(denom: string, assets: Asset[]) {
   const asset = assets.find(byDenom(denom))
   return asset?.symbol ?? getSymbolFromUnknownAssetDenom(denom)
 }
 
-export function getSymbolFromUnknownAssetDenom(denom: string) {
+function getSymbolFromUnknownAssetDenom(denom: string) {
   const denomParts = denom.split('/')
   if (denomParts[0] === 'factory') return denomParts[denomParts.length - 1].toUpperCase()
   return 'UNKNOWN'
@@ -91,14 +90,6 @@ function getAssetNameOrSymbolFromUnknownAsset({
   return truncate(symbolOrName, [7, 3])
 }
 
-export function handleUnknownAsset(coin: Coin): Asset {
-  return {
-    denom: coin.denom,
-    decimals: 6,
-    name: getNameFromUnknownAssetDenom(coin.denom),
-    symbol: getSymbolFromUnknownAssetDenom(coin.denom),
-  }
-}
 export function convertAstroportAssetsResponse(data: AstroportAsset[]): Asset[] {
   return data.map((asset) => {
     return {
@@ -106,13 +97,9 @@ export function convertAstroportAssetsResponse(data: AstroportAsset[]): Asset[] 
       name: getAssetNameOrSymbolFromUnknownAsset({ name: asset.description }),
       decimals: asset.decimals,
       symbol: getAssetNameOrSymbolFromUnknownAsset({ symbol: asset.symbol }),
-      logo: asset.icon ?? null,
-      price: asset.priceUSD
-        ? BNCoin.fromCoin({ denom: asset.denom, amount: String(asset.priceUSD) })
-        : undefined,
-      pythPriceFeedId: priceFeedIDs.find((pf) => pf.symbol === asset.symbol.toUpperCase())
-        ?.priceFeedID,
-      pythFeedName: priceFeedIDs.find((pf) => pf.symbol === asset.symbol.toUpperCase())?.feedName,
+      icon: asset.icon ?? '',
+      chainId: asset.chainId,
+      description: asset.description,
     }
   })
 }

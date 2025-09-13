@@ -18,11 +18,12 @@ function LogoUknown() {
 }
 
 export default function AssetImage(props: Props) {
-  if (props.asset.logo)
+  console.log(props.asset)
+  if (props.asset.icon)
     return (
       <div className={props.className}>
         <Image
-          src={props.asset.logo}
+          src={props.asset.icon}
           width={24}
           height={24}
           alt={props.asset.symbol}

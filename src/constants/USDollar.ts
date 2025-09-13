@@ -1,8 +1,10 @@
 const USD: Asset = {
   symbol: '$',
-  name: 'US Dollar',
+  description: 'US Dollar',
   denom: 'usd',
   decimals: 2,
+  chainId: '',
+  icon: '',
 }
 
 export default USD

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import DisplayCurrency from 'components/common/DisplayCurrency'
+import { FormattedNumber } from 'components/common/FormattedNumber'
 import { ChevronDown, ChevronRight } from 'components/common/Icons'
 import Text from 'components/common/Text'
 import AssetImage from 'components/common/assets/AssetImage'
@@ -88,9 +88,10 @@ export default function Option(props: Props) {
           orientation='rtl'
           suffix
         />
-        <DisplayCurrency
+        <FormattedNumber
           className='col-span-2 text-sm text-right text-white/50'
-          coin={BNCoin.fromDenomAndBigNumber(asset.denom, balance)}
+          amount={balance.toNumber()}
+          options={{ abbreviated: true, minDecimals: 0, maxDecimals: 2, prefix: '$' }}
         />
       </div>
     )

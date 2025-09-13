@@ -1,26 +1,25 @@
 import AssetImage from 'components/common/assets/AssetImage'
-import DisplayCurrency from 'components/common/DisplayCurrency'
+import { FormattedNumber } from 'components/common/FormattedNumber'
+import { InfoCircle } from 'components/common/Icons'
 import Text from 'components/common/Text'
 import TitleAndSubCell from 'components/common/TitleAndSubCell'
-import useAsset from 'hooks/assets/useAsset'
-import { FormattedNumber } from 'components/common/FormattedNumber'
-import { BN } from 'utils/helpers'
-import { BNCoin } from 'types/classes/BNCoin'
-import { BN_ZERO, MIN_AMOUNT } from 'constants/math'
-import { demagnify, getCoinValue } from 'utils/formatters'
-import { InfoCircle } from 'components/common/Icons'
-import { ORACLE_DENOM } from 'constants/oracle'
 import { Tooltip } from 'components/common/Tooltip'
+import { BN_ZERO, MIN_AMOUNT } from 'constants/math'
+import useAsset from 'hooks/assets/useAsset'
 import { useMemo } from 'react'
+import { BNCoin } from 'types/classes/BNCoin'
+import { demagnify, getCoinValue } from 'utils/formatters'
+import { BN } from 'utils/helpers'
 
 interface Props {
   value: BNCoin
   assetData: Asset[]
   historicalPrice?: string
+  hidePrice?: boolean
 }
 
 export default function Asset(props: Props) {
-  const { value, assetData, historicalPrice } = props
+  const { value, assetData, historicalPrice, hidePrice } = props
   const asset = useAsset(value.denom)
 
   const assetAmount = asset ? demagnify(value.amount.toString(), asset) : 0
@@ -40,7 +39,10 @@ export default function Asset(props: Props) {
     if (historicalPrice) {
       return BN(historicalPrice).multipliedBy(assetAmount)
     }
-    return getCoinValue(value, assetData)
+    const currentValue = getCoinValue(value, assetData)
+    // If we don't have a price for this asset, return 'N/A'
+    if (currentValue.isZero()) return 'N/A'
+    return currentValue
   }, [historicalPrice, assetAmount, value, assetData])
 
   const assetValue = calculateValue
@@ -50,8 +52,8 @@ export default function Asset(props: Props) {
   return (
     <TitleAndSubCell
       title={
-        <div className='flex items-center justify-end'>
-          <AssetImage asset={asset} className='w-4 h-4 mr-1' />
+        <div className='flex justify-end items-center'>
+          <AssetImage asset={asset} className='mr-1 w-4 h-4' />
           <FormattedNumber
             amount={displayAmount}
             smallerThanThreshold={!isZero && isBelowMinAmount}
@@ -64,31 +66,33 @@ export default function Asset(props: Props) {
         </div>
       }
       sub={
-        <div className='flex items-center justify-end gap-1'>
-          {assetValue === 'N/A' ? (
-            <Text size='xs' className='text-white/60'>
-              N/A
-            </Text>
-          ) : (
-            <DisplayCurrency
-              coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, assetValue)}
-              className='text-xs'
-              options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
-            />
-          )}
-          <Tooltip
-            type='info'
-            content={
-              <Text size='xs'>
-                {historicalPrice
-                  ? 'Price of the asset when liquidation happened'
-                  : 'Current price of the asset'}
+        hidePrice ? undefined : (
+          <div className='flex gap-1 justify-end items-center'>
+            {assetValue === 'N/A' ? (
+              <Text size='xs' className='text-white/60'>
+                N/A
               </Text>
-            }
-          >
-            <InfoCircle className='w-3.5 h-3.5 text-white/40 hover:text-inherit' />
-          </Tooltip>
-        </div>
+            ) : (
+              <FormattedNumber
+                amount={BN(assetValue).toNumber()}
+                className='text-xs'
+                options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true, prefix: '$' }}
+              />
+            )}
+            <Tooltip
+              type='info'
+              content={
+                <Text size='xs'>
+                  {historicalPrice
+                    ? 'Price of the asset when liquidation happened'
+                    : 'Current price of the asset'}
+                </Text>
+              }
+            >
+              <InfoCircle className='w-3.5 h-3.5 text-white/40 hover:text-inherit' />
+            </Tooltip>
+          </div>
+        )
       }
     />
   )

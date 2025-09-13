@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import AssetImage from 'components/common/assets/AssetImage'
 import Card from 'components/common/Card'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
@@ -5,18 +6,17 @@ import Divider from 'components/common/Divider'
 import Text from 'components/common/Text'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import PerpsMetrics from 'components/main/perps/PerpsMetrics'
-import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
-import { getRoute } from 'utils/route'
+import { TIMEFRAME } from 'constants/timeframe'
+import { neutronPerps } from 'data/assets/neutron-perps'
+import useChainConfig from 'hooks/chain/useChainConfig'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { TIMEFRAME } from 'constants/timeframe'
-import classNames from 'classnames'
-import useChainConfig from 'hooks/chain/useChainConfig'
+import { getRoute } from 'utils/route'
 
 export default function PerpsOverviewPage() {
   const navigate = useNavigate()
   const { asset } = useParams()
-  const perpsAssets = usePerpsEnabledAssets()
+  const perpsAssets = neutronPerps
   const [searchParams] = useSearchParams()
   const isIframeView = searchParams.get('iframeView') === 'on'
   const chainConfig = useChainConfig()
@@ -43,7 +43,7 @@ export default function PerpsOverviewPage() {
     () => [
       {
         label: (
-          <div className='flex w-full gap-2'>
+          <div className='flex gap-2 w-full'>
             <Text size='sm' className='leading-4'>
               Total Statistics
             </Text>
@@ -53,7 +53,7 @@ export default function PerpsOverviewPage() {
       },
       ...(perpsAssets || []).map((asset) => ({
         label: (
-          <div className='flex w-full gap-2'>
+          <div className='flex gap-2 w-full'>
             <AssetImage asset={asset} className='w-4 h-4' />
             <Text size='sm' className='leading-4'>
               {asset.symbol}
@@ -68,7 +68,7 @@ export default function PerpsOverviewPage() {
 
   if (isIframeView) {
     return (
-      <div className='w-full '>
+      <div className='w-full'>
         <SelectionControlPanel
           timeframe={TIMEFRAME}
           selectedTimeframe={selectedTimeframe}

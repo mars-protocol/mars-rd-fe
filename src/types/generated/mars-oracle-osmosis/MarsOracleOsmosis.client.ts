@@ -28,7 +28,7 @@ import {
   ArrayOfPriceSourceResponseForString,
   ArrayOfPriceResponse,
 } from './MarsOracleOsmosis.types'
-export interface MarsOracleOsmosisReadOnlyInterface {
+interface MarsOracleOsmosisReadOnlyInterface {
   contractAddress: string
   config: () => Promise<ConfigResponse>
   priceSource: ({ denom }: { denom: string }) => Promise<PriceSourceResponseForString>
@@ -136,7 +136,7 @@ export class MarsOracleOsmosisQueryClient implements MarsOracleOsmosisReadOnlyIn
     })
   }
 }
-export interface MarsOracleOsmosisInterface extends MarsOracleOsmosisReadOnlyInterface {
+interface MarsOracleOsmosisInterface extends MarsOracleOsmosisReadOnlyInterface {
   contractAddress: string
   sender: string
   setPriceSource: (
@@ -179,7 +179,7 @@ export interface MarsOracleOsmosisInterface extends MarsOracleOsmosisReadOnlyInt
   ) => Promise<ExecuteResult>
   custom: (fee?: number | StdFee | 'auto', memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>
 }
-export class MarsOracleOsmosisClient
+class MarsOracleOsmosisClient
   extends MarsOracleOsmosisQueryClient
   implements MarsOracleOsmosisInterface
 {

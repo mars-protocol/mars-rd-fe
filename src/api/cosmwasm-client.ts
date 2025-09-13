@@ -175,15 +175,4 @@ const getAccountNftQueryClient = async (chainConfig: ChainConfig) => {
   }
 }
 
-export {
-  getClient,
-  getCreditManagerQueryClient,
-  getIncentivesQueryClient,
-  getOracleQueryClientNeutron,
-  getOracleQueryClientOsmosis,
-  getParamsQueryClient,
-  getPerpsQueryClient,
-  getRedBankQueryClient,
-  getVaultQueryClient,
-  getAccountNftQueryClient,
-}
+export { getAccountNftQueryClient, getParamsQueryClient }

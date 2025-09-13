@@ -1,14 +1,12 @@
 import Card from 'components/common/Card'
-import DisplayCurrency from 'components/common/DisplayCurrency'
+import { FormattedNumber } from 'components/common/FormattedNumber'
 import { Copy } from 'components/common/Icons'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import { BN_ZERO } from 'constants/math'
-import { ORACLE_DENOM } from 'constants/oracle'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
-import { BNCoin } from 'types/classes/BNCoin'
 import { BN } from 'utils/helpers'
 const denom = 'factory/neutron1ndu2wvkrxtane8se2tr48gv7nsm46y5gcqjhux/MARS'
 export default function MarsTokenCard() {
@@ -101,16 +99,20 @@ export default function MarsTokenCard() {
             </div>
           </div>
           <div className='text-center sm:text-right'>
-            {isLoading ? (
+            {isLoading || marsTokenPrice.isEqualTo(BN_ZERO) ? (
               <Loading className='mx-auto w-32 h-8 sm:w-40 sm:h-10 sm:mx-0' />
             ) : (
-              <DisplayCurrency
-                coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, marsTokenPrice)}
+              <FormattedNumber
+                amount={marsTokenPrice.toNumber()}
                 className='text-2xl font-semibold text-white sm:text-3xl'
-                options={{ maxDecimals: 4, minDecimals: 4 }}
+                options={{
+                  maxDecimals: 4,
+                  minDecimals: 4,
+                  prefix: '$',
+                }}
               />
             )}
-            {isLoading ? (
+            {isLoading || marsTokenPrice.isEqualTo(BN_ZERO) ? (
               <Loading className='mx-auto mt-2 w-40 h-4 sm:w-48 sm:mx-0' />
             ) : (
               priceChange && (

@@ -4,48 +4,9 @@ import { VAULTS_META_DATA } from 'constants/vaults'
 import { ChainInfoID, NETWORK } from 'types/enums'
 import { getUrl } from 'utils/url'
 
-const LP_ASSETS = [
-  {
-    symbol: 'OSMO-ATOM',
-    name: 'OSMO-ATOM LP',
-    denom: 'gamm/pool/1',
-    decimals: 6,
-    campaigns: [],
-  },
-  {
-    symbol: 'OSMO-USDC.axl',
-    name: 'OSMO-USDC.axl LP',
-    denom: 'gamm/pool/678',
-    decimals: 6,
-    campaigns: [],
-  },
-  {
-    symbol: 'OSMO-WBTC.axl',
-    name: 'OSMO-WBTC.axl LP',
-    denom: 'gamm/pool/712',
-    decimals: 6,
-    campaigns: [],
-  },
-  {
-    symbol: 'OSMO-WETH.axl',
-    name: 'OSMO-WETH.axl LP',
-    denom: 'gamm/pool/704',
-    decimals: 6,
-    campaigns: [],
-  },
-  {
-    symbol: 'stATOM-ATOM',
-    name: 'stATOM-ATOM LP',
-    denom: 'gamm/pool/803',
-    decimals: 6,
-    campaigns: [],
-  },
-]
-
 const Osmosis1: ChainConfig = {
   id: ChainInfoID.Osmosis1,
   isOsmosis: true,
-  lp: LP_ASSETS,
   stables: [
     'ibc/498A0751C798A0D9A389AA3691123DADA57DAA4FE165D5C75894505B876BA6E4',
     'ibc/4ABBEF4C8926DDDB320AE5188CFD63267ABBCEFC0583E4AE05D6E5AA2401DDAB',

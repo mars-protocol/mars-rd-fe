@@ -1,6 +1,6 @@
-import useSWRImmutable from 'swr/immutable'
 import getAssetParams from 'api/params/getAssetParams'
 import useChainConfig from 'hooks/chain/useChainConfig'
+import useSWRImmutable from 'swr/immutable'
 import { AssetParamsBaseForAddr } from 'types/generated/mars-params/MarsParams.types'
 
 export default function useAssetParams() {
@@ -8,9 +8,7 @@ export default function useAssetParams() {
   return useSWRImmutable(
     `chains/${chainConfig.id}/assets/params`,
     async () => addParamWithdrawEnabled(await getAssetParams(chainConfig)),
-    {
-      suspense: true,
-    },
+    { revalidateOnFocus: false },
   )
 }
 

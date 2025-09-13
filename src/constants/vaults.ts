@@ -1,9 +1,9 @@
 import { VaultStatus } from 'types/enums'
 import { BN_ZERO } from 'constants/math'
 
-export const VAULT_DEPOSIT_BUFFER = 0.999
+const VAULT_DEPOSIT_BUFFER = 0.999
 
-export const TESTNET_VAULTS_META_DATA: VaultMetaData[] = [
+const TESTNET_VAULTS_META_DATA: VaultMetaData[] = [
   {
     address: 'osmo1m45ap4rq4m2mfjkcqu9ks9mxmyx2hvx0cdca9sjmrg46q7lghzqqhxxup5',
     name: 'OSMO-ATOM',
@@ -131,7 +131,7 @@ export const VAULTS_META_DATA: VaultMetaData[] = [
   },
 ]
 
-export const MOCK_DEPOSITED_VAULT_POSITION = {
+const MOCK_DEPOSITED_VAULT_POSITION = {
   values: {
     primary: BN_ZERO,
     secondary: BN_ZERO,

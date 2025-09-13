@@ -112,10 +112,12 @@ interface PerpsVaultUnlockingPosition {
 }
 
 interface Asset extends AssetMetaData {
+  chainId: string
   denom: string
-  name: string
-  decimals: number
   symbol: string
+  icon: string
+  description: string
+  decimals: number
 }
 
 interface AssetMetaData {
@@ -209,7 +211,7 @@ interface ChainConfig {
   isOsmosis: boolean
   lp?: Asset[]
   stables: string[]
-  deprecated?: string[]
+  deprecated: string[]
   campaignAssets?: AssetCampaignInfo[]
   defaultTradingPair: TradingPair
   bech32Config: import('@keplr-wallet/types').Bech32Config
@@ -1315,9 +1317,6 @@ interface AstroportAsset {
   icon?: string
   description: string
   decimals: number
-  priceUSD: number
-  totalLiquidityUSD: number
-  dayVolumeUSD: number
 }
 interface AstroportAssetsCached {
   tokens: AstroportAsset[]

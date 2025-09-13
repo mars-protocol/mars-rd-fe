@@ -5,8 +5,8 @@
  * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
  */
 
-export type Decimal = string
-export type HlsAssetTypeForAddr =
+type Decimal = string
+type HlsAssetTypeForAddr =
   | {
       coin: {
         denom: string
@@ -17,27 +17,27 @@ export type HlsAssetTypeForAddr =
         addr: Addr
       }
     }
-export type Addr = string
-export type Uint128 = string
-export type AccountKind =
+type Addr = string
+type Uint128 = string
+type AccountKind =
   | ('default' | 'high_levered_strategy')
   | {
       fund_manager: {
         vault_addr: string
       }
     }
-export type Int128 = string
-export type VaultPositionAmount =
+type Int128 = string
+type VaultPositionAmount =
   | {
       unlocked: VaultAmount
     }
   | {
       locking: LockingVaultAmount
     }
-export type VaultAmount = string
-export type VaultAmount1 = string
-export type UnlockingPositions = VaultUnlockingPosition[]
-export interface HealthComputer {
+type VaultAmount = string
+type VaultAmount1 = string
+type UnlockingPositions = VaultUnlockingPosition[]
+interface HealthComputer {
   asset_params: {
     [k: string]: AssetParamsBaseForAddr
   }
@@ -49,7 +49,7 @@ export interface HealthComputer {
   positions: Positions
   vaults_data: VaultsData
 }
-export interface AssetParamsBaseForAddr {
+interface AssetParamsBaseForAddr {
   close_factor: Decimal
   credit_manager: CmSettingsForAddr
   denom: string
@@ -60,28 +60,28 @@ export interface AssetParamsBaseForAddr {
   protocol_liquidation_fee: Decimal
   red_bank: RedBankSettings
 }
-export interface CmSettingsForAddr {
+interface CmSettingsForAddr {
   hls?: HlsParamsBaseForAddr | null
   whitelisted: boolean
   withdraw_enabled: boolean
 }
-export interface HlsParamsBaseForAddr {
+interface HlsParamsBaseForAddr {
   correlations: HlsAssetTypeForAddr[]
   liquidation_threshold: Decimal
   max_loan_to_value: Decimal
 }
-export interface LiquidationBonus {
+interface LiquidationBonus {
   max_lb: Decimal
   min_lb: Decimal
   slope: Decimal
   starting_lb: Decimal
 }
-export interface RedBankSettings {
+interface RedBankSettings {
   borrow_enabled: boolean
   deposit_enabled: boolean
   withdraw_enabled: boolean
 }
-export interface PerpsData {
+interface PerpsData {
   params: {
     [k: string]: PerpParams
   }
@@ -101,7 +101,7 @@ export interface PerpParams {
   opening_fee_rate: Decimal
   skew_scale: Uint128
 }
-export interface Positions {
+interface Positions {
   account_id: string
   account_kind: AccountKind
   debts: DebtAmount[]
@@ -111,17 +111,17 @@ export interface Positions {
   staked_astro_lps: Coin[]
   vaults: VaultPosition[]
 }
-export interface DebtAmount {
+interface DebtAmount {
   amount: Uint128
   denom: string
   shares: Uint128
 }
-export interface Coin {
+interface Coin {
   amount: Uint128
   denom: string
   [k: string]: unknown
 }
-export interface PerpPosition {
+interface PerpPosition {
   base_denom: string
   current_exec_price: Decimal
   current_price: Decimal
@@ -132,29 +132,29 @@ export interface PerpPosition {
   size: Int128
   unrealized_pnl: PnlAmounts
 }
-export interface PnlAmounts {
+interface PnlAmounts {
   accrued_funding: Int128
   closing_fee: Int128
   opening_fee: Int128
   pnl: Int128
   price_pnl: Int128
 }
-export interface VaultPosition {
+interface VaultPosition {
   amount: VaultPositionAmount
   vault: VaultBaseForAddr
 }
-export interface LockingVaultAmount {
+interface LockingVaultAmount {
   locked: VaultAmount1
   unlocking: UnlockingPositions
 }
-export interface VaultUnlockingPosition {
+interface VaultUnlockingPosition {
   coin: Coin
   id: number
 }
-export interface VaultBaseForAddr {
+interface VaultBaseForAddr {
   address: Addr
 }
-export interface VaultsData {
+interface VaultsData {
   vault_configs: {
     [k: string]: VaultConfigBaseForAddr
   }
@@ -162,7 +162,7 @@ export interface VaultsData {
     [k: string]: VaultPositionValue
   }
 }
-export interface VaultConfigBaseForAddr {
+interface VaultConfigBaseForAddr {
   addr: Addr
   deposit_cap: Coin
   hls?: HlsParamsBaseForAddr | null
@@ -170,11 +170,11 @@ export interface VaultConfigBaseForAddr {
   max_loan_to_value: Decimal
   whitelisted: boolean
 }
-export interface VaultPositionValue {
+interface VaultPositionValue {
   base_coin: CoinValue
   vault_coin: CoinValue
 }
-export interface CoinValue {
+interface CoinValue {
   amount: Uint128
   denom: string
   value: Uint128

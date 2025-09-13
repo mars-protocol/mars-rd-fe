@@ -1,6 +1,6 @@
 import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
 import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
-import DisplayCurrency from 'components/common/DisplayCurrency'
+import { FormattedNumber } from 'components/common/FormattedNumber'
 import moment from 'moment'
 import Text from 'components/common/Text'
 import {
@@ -54,18 +54,10 @@ function TooltipContent(props: TooltipContentProps) {
           <div key={index} className='flex items-center gap-1'>
             <Circle className='fill-current h-2 w-2' color={entry.stroke || entry.fill} />
             <Text size='xs'>{label}: </Text>
-            <DisplayCurrency
-              coin={BNCoin.fromDenomAndBigNumber(
-                'usd',
-                BN(amount).shiftedBy(-PRICE_ORACLE_DECIMALS),
-              )}
-              options={{
-                minDecimals: 0,
-                maxDecimals: 2,
-                abbreviated: true,
-              }}
+            <FormattedNumber
+              amount={BN(amount).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()}
+              options={{ minDecimals: 0, maxDecimals: 2, abbreviated: true, prefix: '$' }}
               className='text-xs'
-              showSignPrefix
             />
           </div>
         )

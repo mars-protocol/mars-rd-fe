@@ -35,7 +35,7 @@ import {
   ArrayOfCoin,
   ArrayOfWhitelistEntry,
 } from './MarsIncentives.types'
-export interface MarsIncentivesReadOnlyInterface {
+interface MarsIncentivesReadOnlyInterface {
   contractAddress: string
   stakedAstroLpRewards: ({
     accountId,
@@ -323,7 +323,7 @@ export class MarsIncentivesQueryClient implements MarsIncentivesReadOnlyInterfac
     })
   }
 }
-export interface MarsIncentivesInterface extends MarsIncentivesReadOnlyInterface {
+interface MarsIncentivesInterface extends MarsIncentivesReadOnlyInterface {
   contractAddress: string
   sender: string
   updateWhitelist: (
@@ -457,7 +457,7 @@ export interface MarsIncentivesInterface extends MarsIncentivesReadOnlyInterface
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsIncentivesClient
+class MarsIncentivesClient
   extends MarsIncentivesQueryClient
   implements MarsIncentivesInterface
 {

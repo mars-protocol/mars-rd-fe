@@ -1,6 +1,7 @@
 import { FundingRateTimeBase } from 'types/enums'
+import { BN } from 'utils/helpers'
 
-export const CHART_COLORS = {
+const CHART_COLORS = {
   primary: '#30E0A1',
   secondary: '#AB47BC',
   tertiary: '#580DA3',
@@ -433,24 +434,24 @@ export const OVERVIEW_CHART_CONFIGS = {
   },
 }
 
-export const TOKENOMICS_CHART_TRANSFORMATIONS = {
+const TOKENOMICS_CHART_TRANSFORMATIONS = {
   burned: [
     {
       path: ['burned_supply'],
       targetKey: 'burned_amount',
-      formatFn: (value: any) => parseFloat(value.amount),
+      formatFn: (value: TokenomicsDataPoint) => parseFloat(BN(value.amount).toString()),
     },
     {
       path: ['burned_supply'],
       targetKey: 'burned_value_usd',
-      formatFn: (value: any) => value.value_usd,
+      formatFn: (value: TokenomicsDataPoint) => BN(value.value_usd).toNumber(),
     },
   ],
   liquidity: [
     {
       path: ['on_chain_liquidity_usd'],
       targetKey: 'liquidity_usd',
-      formatFn: (value: any) => value.value_usd,
+      formatFn: (value: TokenomicsDataPoint) => BN(value.value_usd).toNumber(),
     },
   ],
 }

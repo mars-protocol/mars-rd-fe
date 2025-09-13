@@ -91,7 +91,7 @@ import {
   VaultPositionValue,
   CoinValue,
 } from './MarsCreditManager.types'
-export interface MarsCreditManagerReadOnlyInterface {
+interface MarsCreditManagerReadOnlyInterface {
   contractAddress: string
   accountKind: ({ accountId }: { accountId: string }) => Promise<AccountKind>
   accounts: ({
@@ -416,7 +416,7 @@ export class MarsCreditManagerQueryClient implements MarsCreditManagerReadOnlyIn
     })
   }
 }
-export interface MarsCreditManagerInterface extends MarsCreditManagerReadOnlyInterface {
+interface MarsCreditManagerInterface extends MarsCreditManagerReadOnlyInterface {
   contractAddress: string
   sender: string
   createCreditAccount: (
@@ -508,7 +508,7 @@ export interface MarsCreditManagerInterface extends MarsCreditManagerReadOnlyInt
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsCreditManagerClient
+class MarsCreditManagerClient
   extends MarsCreditManagerQueryClient
   implements MarsCreditManagerInterface
 {

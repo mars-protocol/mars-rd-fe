@@ -34,7 +34,7 @@ export default function useClients() {
       } as ContractClients
     },
     {
-      suspense: true,
+      fallbackData: undefined,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       revalidateIfStale: false,
