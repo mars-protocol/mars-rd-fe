@@ -20,12 +20,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PerpsMarketPageProps): Promise<Metadata> {
   const { market } = await params
   const fullDenom = `perps/${market}`
-  
-  // Find the asset data to get the correct symbol
+
+  // Find the asset data to get the correct symbol and description
   const marketAsset = neutronPerps.find((asset) => asset.denom === fullDenom)
   const marketSymbol = marketAsset?.symbol || market.toUpperCase()
-  
-  return generatePerpsMarketMetadata(marketSymbol, market)
+  const marketDescription =
+    marketAsset?.description || market.charAt(0).toUpperCase() + market.slice(1)
+
+  return generatePerpsMarketMetadata(marketSymbol, marketDescription, market)
 }
 
 export default async function PerpsMarketPage({ params }: PerpsMarketPageProps) {
