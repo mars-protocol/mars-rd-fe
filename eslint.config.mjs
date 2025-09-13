@@ -1,7 +1,7 @@
 // @ts-check
 
 import { fixupPluginRules } from '@eslint/compat'
-import eslintPluginNext from 'eslint-plugin-next'
+import nextEslintPlugin from '@next/eslint-plugin-next'
 import eslint from '@eslint/js'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import eslintPluginReact from 'eslint-plugin-react'
@@ -13,7 +13,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   eslintPluginPrettierRecommended,
   // Next.js recommended rules for App Router
-  ...eslintPluginNext.configs['core-web-vitals'],
+  ...nextEslintPlugin.configs['core-web-vitals'],
 
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
   {
@@ -33,13 +33,13 @@ export default tseslint.config(
     plugins: {
       react: eslintPluginReact,
       'react-hooks': fixupPluginRules(eslintPluginReactHooks),
-      next: fixupPluginRules(eslintPluginNext),
+      next: fixupPluginRules(nextEslintPlugin),
     },
   },
   {
     rules: {
       // Ensure Next.js link, image, and other best practices
-      ...eslintPluginNext.configs['core-web-vitals'].rules,
+      ...nextEslintPlugin.configs['core-web-vitals'].rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
       '@typescript-eslint/no-empty-interface': 'off',
       '@typescript-eslint/no-explicit-any': 'off',

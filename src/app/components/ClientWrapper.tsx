@@ -1,3 +1,4 @@
+// @ts-check
 'use client'
 
 import classNames from 'classnames'
@@ -6,8 +7,8 @@ import { Suspense, useEffect } from 'react'
 import { isMobile } from 'react-device-detect'
 import { SWRConfig } from 'swr'
 
+import { CircularProgress } from 'components/common/CircularProgress'
 import Background from '../../components/common/Background'
-import { CircularProgress } from '../../components/common/CircularProgress'
 import Footer from '../../components/common/Footer'
 import PageMetadata from '../../components/common/PageMetadata'
 import Header from '../../components/header/Header'
@@ -56,7 +57,13 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
   }, [])
 
   return (
-    <Suspense fallback={<CircularProgress size={32} className='mt-8' />}>
+    <Suspense
+      fallback={
+        <div className='flex justify-center items-center w-full h-screen'>
+          <CircularProgress size={32} />
+        </div>
+      }
+    >
       <ClientWrapperInner mobileNavExpanded={mobileNavExpanded}>{children}</ClientWrapperInner>
     </Suspense>
   )
@@ -71,13 +78,31 @@ function ClientWrapperInner({
 
   return (
     <>
-      <Suspense fallback={<div>Loading page metadata...</div>}>
+      <Suspense
+        fallback={
+          <div className='flex justify-center items-center w-full h-screen'>
+            <CircularProgress size={32} />
+          </div>
+        }
+      >
         <PageMetadata />
       </Suspense>
-      <Suspense fallback={<div>Loading background...</div>}>
+      <Suspense
+        fallback={
+          <div className='flex justify-center items-center w-full h-screen'>
+            <CircularProgress size={32} />
+          </div>
+        }
+      >
         <Background />
       </Suspense>
-      <Suspense fallback={<div>Loading header...</div>}>
+      <Suspense
+        fallback={
+          <div className='flex justify-center items-center w-full h-screen'>
+            <CircularProgress size={32} />
+          </div>
+        }
+      >
         <Header />
       </Suspense>
       <main
@@ -94,7 +119,13 @@ function ClientWrapperInner({
         )}
       >
         <SWRConfig value={{ use: [debugSWR] }}>
-          <Suspense fallback={<CircularProgress size={32} className='mt-8' />}>
+          <Suspense
+            fallback={
+              <div className='flex justify-center items-center w-full h-screen'>
+                <CircularProgress size={32} />
+              </div>
+            }
+          >
             <div
               className={classNames(
                 'flex items-start mx-auto w-full max-w-screen-full',
@@ -106,7 +137,13 @@ function ClientWrapperInner({
           </Suspense>
         </SWRConfig>
       </main>
-      <Suspense fallback={<div>Loading footer...</div>}>
+      <Suspense
+        fallback={
+          <div className='flex justify-center items-center w-full h-screen'>
+            <CircularProgress size={32} />
+          </div>
+        }
+      >
         <Footer />
       </Suspense>
     </>

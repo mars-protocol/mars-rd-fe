@@ -1,3 +1,4 @@
+import { CircularProgress } from 'components/common/CircularProgress'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import { neutronPerps } from '../../../data/assets/neutron-perps'
@@ -26,7 +27,13 @@ export default async function PerpsMarketPage({ params }: PerpsMarketPageProps) 
   const { market } = await params
   const fullDenom = `perps/${market}` // Convert URL param back to full denom
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <div className='flex justify-center items-center w-full h-screen'>
+          <CircularProgress size={32} />
+        </div>
+      }
+    >
       <PerpsMarketPageContent market={fullDenom} />
     </Suspense>
   )
