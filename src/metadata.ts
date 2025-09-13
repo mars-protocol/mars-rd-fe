@@ -37,7 +37,7 @@ export const defaultMetadata: Metadata = {
       'Insights for Mars Protocol - Check liquidations, perps markets, tokenomics, and protocol health in real-time.',
     images: [
       {
-        url: '/banner.png',
+        url: 'https://stats.marsprotocol.io/og-images/main.jpg',
         width: 1032,
         height: 540,
         alt: 'Mars Protocol Risk Dashboard',
@@ -51,7 +51,7 @@ export const defaultMetadata: Metadata = {
     title: 'Mars Protocol Risk Dashboard',
     description:
       'Insights for Mars Protocol - Check liquidations, perps markets, tokenomics, and protocol health in real-time.',
-    images: ['/banner.png'],
+    images: ['https://stats.marsprotocol.io/og-images/main.jpg'],
   },
   robots: {
     index: true,
@@ -84,12 +84,18 @@ export const pageMetadata = {
         'Mars Protocol risk dashboard overview - Monitor key metrics, liquidations, and protocol health across all supported chains.',
       images: [
         {
-          url: '/og-images/main.jpg',
+          url: 'https://stats.marsprotocol.io/og-images/main.jpg',
           width: 1032,
           height: 540,
           alt: 'Mars Protocol Risk Dashboard - Overview',
         },
       ],
+    },
+    twitter: {
+      title: 'Mars Protocol Risk Dashboard - Overview',
+      description:
+        'Mars Protocol risk dashboard overview - Monitor key metrics, liquidations, and protocol health across all supported chains.',
+      images: ['https://stats.marsprotocol.io/og-images/main.jpg'],
     },
   },
   liquidations: {
@@ -102,12 +108,18 @@ export const pageMetadata = {
         'Real-time liquidation monitoring for Mars Protocol - Track liquidation events, volumes, and trends across all markets.',
       images: [
         {
-          url: '/og-images/liquidations.jpg',
+          url: 'https://stats.marsprotocol.io/og-images/liquidations.jpg',
           width: 1032,
           height: 540,
           alt: 'Mars Protocol - Liquidations Dashboard',
         },
       ],
+    },
+    twitter: {
+      title: 'Mars Protocol - Liquidations Dashboard',
+      description:
+        'Real-time liquidation monitoring for Mars Protocol - Track liquidation events, volumes, and trends across all markets.',
+      images: ['https://stats.marsprotocol.io/og-images/liquidations.jpg'],
     },
   },
   perps: {
@@ -120,12 +132,18 @@ export const pageMetadata = {
         'Mars Protocol perpetuals markets overview - Monitor trading volumes, open interest, and market statistics.',
       images: [
         {
-          url: '/og-images/perps.jpg',
+          url: 'https://stats.marsprotocol.io/og-images/perps.jpg',
           width: 1032,
           height: 540,
           alt: 'Mars Protocol - Perpetuals Markets',
         },
       ],
+    },
+    twitter: {
+      title: 'Mars Protocol - Perpetuals Markets',
+      description:
+        'Mars Protocol perpetuals markets overview - Monitor trading volumes, open interest, and market statistics.',
+      images: ['https://stats.marsprotocol.io/og-images/perps.jpg'],
     },
   },
   tokenomics: {
@@ -138,12 +156,18 @@ export const pageMetadata = {
         'Mars Protocol tokenomics dashboard - Track MARS token supply, distribution, and key economic metrics.',
       images: [
         {
-          url: '/og-images/tokenomics.jpg',
+          url: 'https://stats.marsprotocol.io/og-images/tokenomics.jpg',
           width: 1032,
           height: 540,
           alt: 'Mars Protocol - Tokenomics Dashboard',
         },
       ],
+    },
+    twitter: {
+      title: 'Mars Protocol - Tokenomics Dashboard',
+      description:
+        'Mars Protocol tokenomics dashboard - Track MARS token supply, distribution, and key economic metrics.',
+      images: ['https://stats.marsprotocol.io/og-images/tokenomics.jpg'],
     },
   },
 }

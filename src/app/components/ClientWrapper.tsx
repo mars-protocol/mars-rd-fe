@@ -10,7 +10,6 @@ import { SWRConfig } from 'swr'
 import Fallback from 'components/common/Fallback'
 import Background from '../../components/common/Background'
 import Footer from '../../components/common/Footer'
-import PageMetadata from '../../components/common/PageMetadata'
 import Header from '../../components/header/Header'
 import useStore from '../../store'
 import { debugSWR } from '../../utils/middleware'
@@ -72,9 +71,6 @@ function ClientWrapperInner({
 
   return (
     <>
-      <Suspense fallback={<Fallback />}>
-        <PageMetadata />
-      </Suspense>
       <Suspense fallback={<Fallback />}>
         <Background />
       </Suspense>
