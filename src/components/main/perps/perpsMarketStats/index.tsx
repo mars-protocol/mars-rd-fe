@@ -1,23 +1,23 @@
-import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
 import ChartError from 'components/common/Chart/common/ChartError'
-import ComposedChart from 'components/common/Chart/ComposedChart'
-import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
-import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
-import Text from 'components/common/Text'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
-import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
-import usePerpsVaultStats from 'hooks/perps/usePerpsVaultStats'
-import { BN } from 'utils/helpers'
+import ComposedChart from 'components/common/Chart/ComposedChart'
+import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
+import SynchronizedChart from 'components/common/Chart/SynchronizedChart'
 import { CircularProgress } from 'components/common/CircularProgress'
-import { FundingRateTimeBase } from 'types/enums'
-import { mutate } from 'swr'
-import { useMemo, useState } from 'react'
-import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
+import Text from 'components/common/Text'
+import StatisticsPanel from 'components/main/perps/perpsMarketStats/StatisticsPanel'
 import {
   DEFAULT_PERPS_GLOBAL_DATA,
   FUNDING_RATE_OPTIONS,
   PERPS_CHART_CONFIGS,
 } from 'constants/chartData'
+import { usePerpsChartData } from 'hooks/perps/usePerpsChartData'
+import usePerpsStats from 'hooks/perps/usePerpsGlobalStats'
+import usePerpsVaultStats from 'hooks/perps/usePerpsVaultStats'
+import { useMemo, useState } from 'react'
+import { mutate } from 'swr'
+import { FundingRateTimeBase } from 'types/enums'
+import { BN } from 'utils/helpers'
 
 interface Props {
   timeframe: string
@@ -129,8 +129,8 @@ export default function PerpsMarketStats(props: Props) {
 
   if (perpsStatsLoading)
     return (
-      <div className='h-100 w-full flex items-center justify-center'>
-        <div className='flex flex-wrap items-center justify-center'>
+      <div className='flex justify-center items-center w-full h-100'>
+        <div className='flex flex-wrap justify-center items-center'>
           <CircularProgress size={60} />
           <Text size='xl' className='w-full text-center'>
             Fetching data...
@@ -141,10 +141,10 @@ export default function PerpsMarketStats(props: Props) {
   if (!perpsStats || error) return <ChartError handleRefetch={handleRefetch} />
 
   return (
-    <div className='w-full flex flex-col gap-4'>
+    <div className='flex flex-col gap-4 w-full'>
       <StatisticsPanel data={perpsStats} loading={perpsStatsLoading} />
 
-      <div className='flex flex-col md:flex-row gap-4'>
+      <div className='flex flex-col gap-4 md:flex-row'>
         <div className='w-full md:w-1/2'>
           <DynamicLineChart
             data={tradingVolumeData}
@@ -165,7 +165,7 @@ export default function PerpsMarketStats(props: Props) {
         </div>
       </div>
 
-      <div className='flex flex-col md:flex-row gap-4'>
+      <div className='flex flex-col gap-4 md:flex-row'>
         <div className='w-full md:w-1/2'>
           {!isGlobalStats ? (
             <DynamicLineChart
@@ -179,7 +179,7 @@ export default function PerpsMarketStats(props: Props) {
               height='h-80'
               timeframe={timeframe}
               title={
-                <div className='flex w-full justify-between items-center'>
+                <div className='flex justify-between items-center w-full'>
                   <Text size='sm'>Funding Rate</Text>
                   <TimeframeSelector
                     timeframe={FUNDING_RATE_OPTIONS}
@@ -212,7 +212,7 @@ export default function PerpsMarketStats(props: Props) {
         </div>
       </div>
 
-      <div className='flex flex-col md:flex-row gap-4'>
+      <div className='flex flex-col gap-4 md:flex-row'>
         <div className='w-full md:w-1/2'>
           <DynamicLineChart
             data={skewData}
@@ -233,6 +233,7 @@ export default function PerpsMarketStats(props: Props) {
             }
             height='h-80'
             timeframe={timeframe}
+            requiresOracleAdjustment={true}
           />
         </div>
       </div>
@@ -245,7 +246,7 @@ export default function PerpsMarketStats(props: Props) {
         timeframe={timeframe}
       />
 
-      <div className='flex flex-col md:flex-row gap-4'>
+      <div className='flex flex-col gap-4 md:flex-row'>
         <div className='w-full md:w-1/2'>
           <DynamicLineChart
             data={totalPnlData}
@@ -281,12 +282,13 @@ export default function PerpsMarketStats(props: Props) {
           config={PERPS_CHART_CONFIGS.combinedChart}
           height='h-90'
           timeframe={timeframe}
+          requiresOracleAdjustment={true}
         />
       )}
 
       {isGlobalStats && (
         <>
-          <div className='flex flex-col md:flex-row gap-4'>
+          <div className='flex flex-col gap-4 md:flex-row'>
             <div className='w-full md:w-1/2'>
               <DynamicLineChart
                 data={vaultData}

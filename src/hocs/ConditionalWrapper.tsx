@@ -1,10 +1,12 @@
+import React from 'react'
+
 interface Props {
   condition: boolean
-  wrapper: (children: JSX.Element) => JSX.Element
-  children: JSX.Element
+  wrapper: (children: React.ReactNode) => JSX.Element
+  children: React.ReactNode
 }
 
-const ConditionalWrapper = ({ condition, wrapper, children }: Props) =>
-  condition ? wrapper(children) : children
-
-export default ConditionalWrapper
+export default function ConditionalWrapper(props: Props) {
+  const { condition, wrapper, children } = props
+  return condition ? wrapper(children) : <>{children}</>
+}

@@ -1,13 +1,10 @@
 import classNames from 'classnames'
 import Card from 'components/common/Card'
-import DisplayCurrency from 'components/common/DisplayCurrency'
+import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
-import React from 'react'
-import { BNCoin } from 'types/classes/BNCoin'
-import { FormattedNumber } from 'components/common/FormattedNumber'
-import { ORACLE_DENOM } from 'constants/oracle'
 import { Tooltip } from 'components/common/Tooltip'
+import React from 'react'
 
 interface Props {
   title?: string
@@ -55,11 +52,13 @@ export default function MetricsCard(props: Props) {
             {isLoading ? (
               <Loading className='w-full h-8' />
             ) : metric.isCurrency ? (
-              <DisplayCurrency
+              <FormattedNumber
                 className={classNames(`w-full ${numberClassName}`)}
-                coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, metric.value)}
-                options={metric.formatOptions}
-                showSignPrefix={metric.showSignPrefix}
+                amount={metric.value.toNumber()}
+                options={{
+                  ...metric.formatOptions,
+                  prefix: '$',
+                }}
               />
             ) : (
               <FormattedNumber

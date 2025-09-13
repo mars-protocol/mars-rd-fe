@@ -4,7 +4,6 @@ import { Positions } from 'types/generated/mars-credit-manager/MarsCreditManager
 import {
   AssetParamsBaseForAddr as AssetParams,
   AssetParamsBaseForAddr,
-  TotalDepositResponse,
 } from 'types/generated/mars-params/MarsParams.types'
 import { Market as RedBankMarket } from 'types/generated/mars-red-bank/MarsRedBank.types'
 import { BN, getLeverageFromLTV } from 'utils/helpers'
@@ -15,7 +14,6 @@ export function resolveMarketResponse(
   asset: Asset,
   marketResponse: RedBankMarket & Partial<Market>,
   assetParamsResponse: AssetParams,
-  assetCapResponse: TotalDepositResponse,
 ): Market {
   try {
     return {
@@ -29,11 +27,6 @@ export function resolveMarketResponse(
       liquidity: marketResponse.liquidity ?? BN_ZERO,
       depositEnabled: assetParamsResponse.red_bank.deposit_enabled,
       borrowEnabled: assetParamsResponse.red_bank.borrow_enabled,
-      cap: {
-        denom: assetCapResponse.denom,
-        used: BN(assetCapResponse.amount),
-        max: BN(assetParamsResponse.deposit_cap),
-      },
       ltv: {
         max: Number(assetParamsResponse.max_loan_to_value),
         liq: Number(assetParamsResponse.liquidation_threshold),
@@ -59,7 +52,7 @@ export function resolveMarketResponse(
   }
 }
 
-export function resolveHLSStrategies(
+function resolveHLSStrategies(
   type: 'vault' | 'coin',
   assets: AssetParamsBaseForAddr[],
 ): HLSStrategyNoCap[] {
@@ -99,7 +92,7 @@ export function resolveHLSStrategies(
   return HLSStakingStrategies
 }
 
-export function resolvePerpsPositions(
+function resolvePerpsPositions(
   perpPositions: Positions['perps'],
   assets: Asset[],
 ): PerpsPosition[] {

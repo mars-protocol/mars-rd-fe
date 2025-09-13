@@ -4,7 +4,11 @@ import scrollbarHide from 'tailwind-scrollbar-hide'
 import containerQueries from '@tailwindcss/container-queries'
 
 module.exports = {
-  content: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx}', 
+    './src/app/**/*.{js,ts,jsx,tsx}', 
+    './src/components/**/*.{js,ts,jsx,tsx}'
+  ],
   safelist: [
     'border-error',
     'border-success',

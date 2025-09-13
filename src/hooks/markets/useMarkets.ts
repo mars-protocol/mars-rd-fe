@@ -1,8 +1,7 @@
 import useSWR from 'swr'
 
-import useTradeEnabledAssets from 'hooks/assets/useTradeEnabledAssets'
+import useAssets from 'hooks/assets/useAssets'
 import useChainConfig from 'hooks/chain/useChainConfig'
-import useMarketDepositCaps from 'hooks/markets/useMarketDepositCaps'
 import useMarketsInfo from 'hooks/markets/useMarketsInfo'
 import useAssetParams from 'hooks/params/useAssetParams'
 import {
@@ -15,23 +14,20 @@ import { resolveMarketResponse } from 'utils/resolvers'
 
 export default function useMarkets() {
   const chainConfig = useChainConfig()
+  const { data: assets } = useAssets()
   const { data: marketInfos } = useMarketsInfo()
-  const { data: marketDepositCaps } = useMarketDepositCaps()
   const { data: assetParams } = useAssetParams()
-  const assets = useTradeEnabledAssets()
-
   const result = useSWR(
     !!marketInfos?.length &&
-      !!marketDepositCaps?.length &&
-      !!assetParams.length &&
+      !!assetParams?.length &&
+      !!assets?.length &&
       `chains/${chainConfig.id}/markets`,
     () => {
-      return assets.map((asset) =>
+      return assets!.map((asset) =>
         resolveMarketResponse(
           asset,
           marketInfos!.find(byDenom(asset.denom)) as RedBankMarket & Partial<Market>,
-          assetParams.find(byDenom(asset.denom)) as AssetParams,
-          marketDepositCaps!.find(byDenom(asset.denom)) as TotalDepositResponse,
+          assetParams!.find(byDenom(asset.denom)) as AssetParams,
         ),
       )
     },

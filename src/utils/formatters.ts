@@ -15,7 +15,7 @@ export function truncate(text = '', [h, t]: [number, number] = [6, 6]): string {
   return text.length > h + t ? [head, tail].join('...') : text
 }
 
-export const produceCountdown = (remainingTime: number) => {
+const produceCountdown = (remainingTime: number) => {
   const duration = moment.duration(remainingTime, 'milliseconds')
   const days = formatValue(duration.asDays(), { minDecimals: 0, maxDecimals: 0 })
 
@@ -128,28 +128,28 @@ export const formatValue = (amount: number | string, options?: FormatOptions): s
   return returnValue
 }
 
-export function formatHealth(health: number) {
+function formatHealth(health: number) {
   return formatValue(health, {
     minDecimals: 0,
     maxDecimals: 2,
   })
 }
 
-export function formatLeverage(leverage: number) {
+function formatLeverage(leverage: number) {
   return formatValue(leverage, {
     minDecimals: 2,
     suffix: 'x',
   })
 }
 
-export function formatPercent(percent: number | string, minDecimals?: number) {
+function formatPercent(percent: number | string, minDecimals?: number) {
   return formatValue(+percent, {
     minDecimals: minDecimals ?? 0,
     suffix: '%',
   })
 }
 
-export function formatAmountWithSymbol(coin: Coin, assets: Asset[], options?: FormatOptions) {
+function formatAmountWithSymbol(coin: Coin, assets: Asset[], options?: FormatOptions) {
   const asset = assets.find((asset) => asset.denom === coin.denom)
 
   if (!asset) return
@@ -165,18 +165,18 @@ export function formatAmountWithSymbol(coin: Coin, assets: Asset[], options?: Fo
   })
 }
 
-export function formatAmountToPrecision(amount: number | string, decimals: number) {
+function formatAmountToPrecision(amount: number | string, decimals: number) {
   return Number(BN(amount).toPrecision(decimals))
 }
 
-export const convertPercentage = (percent: number) => {
+const convertPercentage = (percent: number) => {
   let percentage = percent
   if (percent >= 100) percentage = 100
   if (percent !== 0 && percent < 0.01) percentage = 0.01
   return Number(formatValue(percentage, { minDecimals: 0, maxDecimals: 0 }))
 }
 
-export function magnify(amount: number | string, asset: Asset | PseudoAsset) {
+function magnify(amount: number | string, asset: Asset | PseudoAsset) {
   const _amount = BN(amount)
   return _amount.isZero() ? _amount : _amount.shiftedBy(asset.decimals)
 }
@@ -210,7 +210,7 @@ export function getCoinValue(coin: BNCoin, assets: Asset[]) {
   return getAdjustedCoinPrice(asset, coinPrice).multipliedBy(coin.amount)
 }
 
-export function getCoinAmount(denom: string, value: BigNumber, assets: Asset[]) {
+function getCoinAmount(denom: string, value: BigNumber, assets: Asset[]) {
   const asset = assets.find(byDenom(denom))
   const coinPrice = asset?.price
 
@@ -220,6 +220,6 @@ export function getCoinAmount(denom: string, value: BigNumber, assets: Asset[]) 
   return value.dividedBy(coinPrice.amount).shiftedBy(decimals).integerValue()
 }
 
-export function convertLiquidityRateToAPR(rate: number) {
+function convertLiquidityRateToAPR(rate: number) {
   return rate >= 0.01 ? rate : 0.0
 }

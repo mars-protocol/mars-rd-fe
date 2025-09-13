@@ -1,10 +1,8 @@
 import Card from 'components/common/Card'
-import DisplayCurrency from 'components/common/DisplayCurrency'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
 import Text from 'components/common/Text'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
-import { BNCoin } from 'types/classes/BNCoin'
 import { BN } from 'utils/helpers'
 
 interface Props {
@@ -80,21 +78,18 @@ export default function StatisticsPanel(props: Props) {
   ]
 
   return (
-    <div className='flex flex-wrap md:flex-nowrap items-center justify-center gap-2'>
+    <div className='flex flex-wrap gap-2 justify-center items-center md:flex-nowrap'>
       {metrics.map((metric, index) => {
         return (
           <Card className='text-center py-3 w-[calc(50%-0.5rem)] md:w-45 bg-white/5' key={index}>
             {loading ? (
-              <div className='flex items-center justify-center px-8 w-full h-8'>
+              <div className='flex justify-center items-center px-8 w-full h-8'>
                 <Loading />
               </div>
             ) : metric.isCurrency ? (
-              <DisplayCurrency
-                coin={BNCoin.fromDenomAndBigNumber(
-                  'usd',
-                  BN(metric.value).shiftedBy(-PRICE_ORACLE_DECIMALS),
-                )}
-                options={metric.formatOptions}
+              <FormattedNumber
+                amount={BN(metric.value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()}
+                options={{ ...metric.formatOptions, prefix: '$' }}
                 className='text-sm'
               />
             ) : (

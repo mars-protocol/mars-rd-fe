@@ -46,7 +46,7 @@ import {
   VaultDeposit,
   VaultUnlock,
 } from './MarsPerps.types'
-export interface MarsPerpsReadOnlyInterface {
+interface MarsPerpsReadOnlyInterface {
   contractAddress: string
   owner: () => Promise<OwnerResponse>
   config: () => Promise<ConfigForString>
@@ -288,7 +288,7 @@ export class MarsPerpsQueryClient implements MarsPerpsReadOnlyInterface {
     })
   }
 }
-export interface MarsPerpsInterface extends MarsPerpsReadOnlyInterface {
+interface MarsPerpsInterface extends MarsPerpsReadOnlyInterface {
   contractAddress: string
   sender: string
   updateOwner: (
@@ -394,7 +394,7 @@ export interface MarsPerpsInterface extends MarsPerpsReadOnlyInterface {
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsPerpsClient extends MarsPerpsQueryClient implements MarsPerpsInterface {
+class MarsPerpsClient extends MarsPerpsQueryClient implements MarsPerpsInterface {
   client: SigningCosmWasmClient
   sender: string
   contractAddress: string

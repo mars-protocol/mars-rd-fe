@@ -1,10 +1,12 @@
+'use client'
+
 import classNames from 'classnames'
 import { ReactNode } from 'react'
-import { NavLink as Link, useSearchParams } from 'react-router-dom'
+import Link from 'next/link'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 import { ExternalLink } from 'components/common/Icons'
 import { getIsActive } from 'components/header/navigation/desktop/DesktopNavigation'
-import { getRoute } from 'utils/route'
 
 interface Props {
   children: string | ReactNode
@@ -16,27 +18,51 @@ interface Props {
 }
 
 export const NavLink = (props: Props) => {
-  const [searchParams] = useSearchParams()
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
   const { isHome, item, className, onClick } = props
 
-  const itemLink = item.externalUrl ? item.externalUrl : getRoute(item.pages[0], searchParams)
-  const link = isHome ? getRoute('main', searchParams) : itemLink
+  const params = new URLSearchParams(searchParams || '')
+  const page = item.pages[0]
+  const itemLink = item.externalUrl
+    ? item.externalUrl
+    : page === 'main'
+      ? `/?${params.toString()}`
+      : `/${page}?${params.toString()}`
+  const link = isHome ? `/?${params.toString()}` : itemLink
+
+  if (item.externalUrl) {
+    return (
+      <a
+        href={link}
+        onClick={onClick ? onClick : undefined}
+        className={classNames(
+          className,
+          'font-semibold hover:text-white active:text-white group-hover/submenuitem:text-white',
+          'text-white/60',
+        )}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        <>
+          {props.children}
+          <ExternalLink className='inline-block w-4 ml-1 mb-0.5' />
+        </>
+      </a>
+    )
+  }
 
   return (
     <Link
-      to={link}
+      href={link}
       onClick={onClick ? onClick : undefined}
       className={classNames(
         className,
         'font-semibold hover:text-white active:text-white group-hover/submenuitem:text-white',
-        getIsActive(item.pages) ? 'pointer-events-none text-white' : 'text-white/60',
+        getIsActive(item.pages, pathname) ? 'pointer-events-none text-white' : 'text-white/60',
       )}
-      target={item.externalUrl ? '_blank' : undefined}
     >
-      <>
-        {props.children}
-        {item.externalUrl && <ExternalLink className='inline-block w-4 ml-1 mb-0.5' />}
-      </>
+      {props.children}
     </Link>
   )
 }

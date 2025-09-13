@@ -26,7 +26,7 @@ import {
   ArrayOfPriceSourceResponseForString,
   ArrayOfPriceResponse,
 } from './MarsOracleWasm.types'
-export interface MarsOracleWasmReadOnlyInterface {
+interface MarsOracleWasmReadOnlyInterface {
   contractAddress: string
   config: () => Promise<ConfigResponse>
   priceSource: ({ denom }: { denom: string }) => Promise<PriceSourceResponseForString>
@@ -134,7 +134,7 @@ export class MarsOracleWasmQueryClient implements MarsOracleWasmReadOnlyInterfac
     })
   }
 }
-export interface MarsOracleWasmInterface extends MarsOracleWasmReadOnlyInterface {
+interface MarsOracleWasmInterface extends MarsOracleWasmReadOnlyInterface {
   contractAddress: string
   sender: string
   setPriceSource: (
@@ -182,7 +182,7 @@ export interface MarsOracleWasmInterface extends MarsOracleWasmReadOnlyInterface
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsOracleWasmClient
+class MarsOracleWasmClient
   extends MarsOracleWasmQueryClient
   implements MarsOracleWasmInterface
 {

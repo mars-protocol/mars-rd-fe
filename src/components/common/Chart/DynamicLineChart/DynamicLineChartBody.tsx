@@ -1,4 +1,14 @@
-import React from 'react'
+import classNames from 'classnames'
+import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
+import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
+import { FormattedNumber } from 'components/common/FormattedNumber'
+import { Circle } from 'components/common/Icons'
+import Text from 'components/common/Text'
+import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
+import { LocalStorageKeys } from 'constants/localStorageKeys'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
+import useLocalStorage from 'hooks/localStorage/useLocalStorage'
+import moment from 'moment'
 import {
   Area,
   AreaChart,
@@ -10,21 +20,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import moment from 'moment'
 import { formatValue } from 'utils/formatters'
-import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
-import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
-import DisplayCurrency from 'components/common/DisplayCurrency'
-import Text from 'components/common/Text'
-import { BNCoin } from 'types/classes/BNCoin'
 import { BN } from 'utils/helpers'
-import { PRICE_ORACLE_DECIMALS } from 'constants/query'
-import { Circle } from 'components/common/Icons'
-import classNames from 'classnames'
-import { FormattedNumber } from 'components/common/FormattedNumber'
-import useLocalStorage from 'hooks/localStorage/useLocalStorage'
-import { LocalStorageKeys } from 'constants/localStorageKeys'
-import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 
 interface Props {
   data: MergedChartData[]
@@ -32,6 +29,10 @@ interface Props {
   height?: string
   customYAxisDomain?: (values: number[]) => [number, number]
   timeframe?: string
+  baselineLeft?: number
+  baselineRight?: number
+  leftDomainFn?: (values: number[]) => [number, number]
+  rightDomainFn?: (values: number[]) => [number, number]
 }
 
 const TooltipContent = ({
@@ -56,23 +57,29 @@ const TooltipContent = ({
         const value = typeof item.value === 'string' ? parseFloat(item.value) : item.value
 
         return (
-          <div key={index} className='flex items-center gap-1'>
-            <Circle className='fill-current h-2 w-2' color={item.color} />
+          <div key={index} className='flex gap-1 items-center'>
+            <Circle className='w-2 h-2 fill-current' color={item.color} />
             <Text size='xs'>{item.name}: </Text>
             {lineConfig?.isPercentage ? (
               <FormattedNumber
                 amount={value}
-                options={{ maxDecimals: 3, minDecimals: 0, suffix: '%' }}
+                options={{ maxDecimals: 2, minDecimals: 0, suffix: '%' }}
+                className='text-xs'
+              />
+            ) : lineConfig?.isUSD ? (
+              <FormattedNumber
+                amount={(lineConfig?.isNormalized
+                  ? BN(value)
+                  : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS)
+                ).toNumber()}
+                options={{ maxDecimals: 2, minDecimals: 2, abbreviated: true, prefix: '$' }}
                 className='text-xs'
               />
             ) : (
-              <DisplayCurrency
-                coin={BNCoin.fromDenomAndBigNumber(
-                  'usd',
-                  BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS),
-                )}
+              <FormattedNumber
+                amount={value}
+                options={{ maxDecimals: 0, minDecimals: 0, thousandSeparator: true }}
                 className='text-xs'
-                showSignPrefix
               />
             )}
           </div>
@@ -83,7 +90,17 @@ const TooltipContent = ({
 }
 
 export default function DynamicLineChartBody(props: Props) {
-  const { data, lines, height = 'h-65', customYAxisDomain, timeframe = '' } = props
+  const {
+    data,
+    lines,
+    height = 'h-65',
+    customYAxisDomain,
+    timeframe = '',
+    baselineLeft,
+    baselineRight,
+    leftDomainFn,
+    rightDomainFn,
+  } = props
   const [reduceMotion] = useLocalStorage<boolean>(
     LocalStorageKeys.REDUCE_MOTION,
     DEFAULT_SETTINGS.reduceMotion,
@@ -107,17 +124,43 @@ export default function DynamicLineChartBody(props: Props) {
       return customYAxisDomain(extractValues())
     }
 
-    // Default percentage handling
+    // Default percentage handling only
     if (!lines[0]?.isPercentage) return undefined
 
     const values = extractValues()
     const maxValue = Math.max(...values)
     const minValue = Math.min(...values)
 
-    // Add 10% padding to the domain y-axis
+    // Add 10% padding to the domain y-axis without forcing zero
     const padding = (maxValue - minValue) * 0.1
-    return [Math.min(0, minValue - padding), maxValue + padding]
+    return [minValue - padding, maxValue + padding]
   }
+
+  // Build domains per axis when provided
+  const leftValues = reversedData
+    .map((item) =>
+      lines
+        .filter((l) => (l.yAxisId ?? 'left') === 'left')
+        .map((l) =>
+          typeof item[l.dataKey] === 'string'
+            ? parseFloat(item[l.dataKey] as string)
+            : (item[l.dataKey] as number),
+        ),
+    )
+    .flat()
+  const rightValues = reversedData
+    .map((item) =>
+      lines
+        .filter((l) => l.yAxisId === 'right')
+        .map((l) =>
+          typeof item[l.dataKey] === 'string'
+            ? parseFloat(item[l.dataKey] as string)
+            : (item[l.dataKey] as number),
+        ),
+    )
+    .flat()
+  const leftDomain = leftDomainFn && leftValues.length ? leftDomainFn(leftValues) : undefined
+  const rightDomain = rightDomainFn && rightValues.length ? rightDomainFn(rightValues) : undefined
 
   return (
     <div className={classNames('-ml-4', height)}>
@@ -159,6 +202,7 @@ export default function DynamicLineChartBody(props: Props) {
               strokeWidth={2}
               isAnimationActive={!reduceMotion}
               strokeDasharray={lineConfig.strokeDasharray}
+              yAxisId={lineConfig.yAxisId ?? 'left'}
             />
           ))}
 
@@ -179,12 +223,13 @@ export default function DynamicLineChartBody(props: Props) {
             interval={reversedData.length > 10 ? Math.floor(reversedData.length / 7) : 0}
           />
           <YAxis
+            yAxisId='left'
             axisLine={false}
             tickLine={false}
             fontSize={8}
             tickCount={8}
             stroke='rgba(255, 255, 255, 0.4)'
-            domain={getYAxisDomain()}
+            domain={leftDomain ?? getYAxisDomain()}
             tickFormatter={(value) => {
               if (lines[0]?.isPercentage) {
                 return formatValue(value, {
@@ -193,15 +238,68 @@ export default function DynamicLineChartBody(props: Props) {
                   suffix: '%',
                 })
               }
-              const adjustedValue = BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
-              return formatValue(adjustedValue, {
+              // Check if any left axis line is USD
+              const hasUSDOnLeft = lines.some(
+                (line) => (line.yAxisId ?? 'left') === 'left' && line.isUSD,
+              )
+              if (hasUSDOnLeft) {
+                const hasNormalizedData = lines.some(
+                  (line) => (line.yAxisId ?? 'left') === 'left' && line.isUSD && line.isNormalized,
+                )
+                const adjustedValue = hasNormalizedData
+                  ? value
+                  : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
+                return formatValue(adjustedValue, {
+                  minDecimals: 0,
+                  maxDecimals: 2,
+                  prefix: '$',
+                  abbreviated: true,
+                })
+              }
+              return formatValue(value, {
                 minDecimals: 0,
-                maxDecimals: 2,
-                prefix: '$',
+                maxDecimals: 0,
+                thousandSeparator: true,
                 abbreviated: true,
               })
             }}
           />
+          {lines.some((l) => l.yAxisId === 'right') && (
+            <YAxis
+              yAxisId='right'
+              orientation='right'
+              axisLine={false}
+              tickLine={false}
+              fontSize={8}
+              tickCount={8}
+              stroke='rgba(255, 255, 255, 0.4)'
+              domain={rightDomain}
+              tickFormatter={(value) => {
+                // Check if any right axis line is USD
+                const hasUSDOnRight = lines.some((line) => line.yAxisId === 'right' && line.isUSD)
+                if (hasUSDOnRight) {
+                  const hasNormalizedData = lines.some(
+                    (line) => line.yAxisId === 'right' && line.isUSD && line.isNormalized,
+                  )
+                  const adjustedValue = hasNormalizedData
+                    ? value
+                    : BN(value).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber()
+                  return formatValue(adjustedValue, {
+                    minDecimals: 0,
+                    maxDecimals: 2,
+                    prefix: '$',
+                    abbreviated: true,
+                  })
+                }
+                return formatValue(value, {
+                  minDecimals: 0,
+                  maxDecimals: 2,
+                  prefix: '$',
+                  abbreviated: true,
+                })
+              }}
+            />
+          )}
 
           <Tooltip
             content={
@@ -216,7 +314,25 @@ export default function DynamicLineChartBody(props: Props) {
           <Legend content={<ChartLegend payload={[]} data={reversedData} />} verticalAlign='top' />
 
           <CartesianGrid opacity={0.1} vertical={false} />
-          <ReferenceLine y={0} stroke='rgba(255, 255, 255, 0.2)' strokeWidth={2} />
+          {typeof baselineLeft === 'number' ? (
+            <ReferenceLine
+              y={baselineLeft}
+              yAxisId='left'
+              stroke='rgba(255, 255, 255, 0.2)'
+              strokeWidth={2}
+            />
+          ) : (
+            <ReferenceLine y={0} yAxisId='left' stroke='rgba(255, 255, 255, 0.2)' strokeWidth={2} />
+          )}
+          {lines.some((l) => l.yAxisId === 'right') &&
+            (typeof baselineRight === 'number' ? (
+              <ReferenceLine
+                y={baselineRight}
+                yAxisId='right'
+                stroke='rgba(255, 255, 255, 0.2)'
+                strokeWidth={2}
+              />
+            ) : null)}
         </AreaChart>
       </ResponsiveContainer>
     </div>

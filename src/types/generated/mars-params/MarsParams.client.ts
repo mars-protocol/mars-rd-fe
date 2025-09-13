@@ -49,7 +49,7 @@ import {
   ConfigResponse,
   OwnerResponse,
 } from './MarsParams.types'
-export interface MarsParamsReadOnlyInterface {
+interface MarsParamsReadOnlyInterface {
   contractAddress: string
   owner: () => Promise<OwnerResponse>
   config: () => Promise<ConfigResponse>
@@ -264,7 +264,7 @@ export class MarsParamsQueryClient implements MarsParamsReadOnlyInterface {
     })
   }
 }
-export interface MarsParamsInterface extends MarsParamsReadOnlyInterface {
+interface MarsParamsInterface extends MarsParamsReadOnlyInterface {
   contractAddress: string
   sender: string
   updateOwner: (
@@ -310,7 +310,7 @@ export interface MarsParamsInterface extends MarsParamsReadOnlyInterface {
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsParamsClient extends MarsParamsQueryClient implements MarsParamsInterface {
+class MarsParamsClient extends MarsParamsQueryClient implements MarsParamsInterface {
   client: SigningCosmWasmClient
   sender: string
   contractAddress: string

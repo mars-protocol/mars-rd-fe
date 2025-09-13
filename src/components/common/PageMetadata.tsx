@@ -1,18 +1,20 @@
+'use client'
+
 import { useMemo } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
-import { useLocation } from 'react-router-dom'
+import { usePathname } from 'next/navigation'
 
 import PAGE_METADATA from 'constants/pageMetadata'
 
 const helmetContext = {}
 
 function PageMetadata() {
-  const location = useLocation()
+  const pathname = usePathname()
 
   const metadata = useMemo(() => {
-    const route = location.pathname.split('/').reverse()[0] as keyof typeof PAGE_METADATA
+    const route = pathname.split('/').reverse()[0] as keyof typeof PAGE_METADATA
     return PAGE_METADATA[route] || PAGE_METADATA['main']
-  }, [location])
+  }, [pathname])
 
   return (
     <HelmetProvider context={helmetContext}>

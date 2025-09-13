@@ -1,16 +1,18 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
-import useAssets from 'hooks/assets/useAssets'
-import useLendingMarkets from 'hooks/markets/useLendingMarkets'
-import useOverviewData from 'hooks/tokenomics/useOverviewData'
-import usePerpsEnabledAssets from 'hooks/assets/usePerpsEnabledAssets'
-import useTotalAccounts from 'hooks/accounts/useTotalAccounts'
-import { BN } from 'utils/helpers'
+import { GridGlobe } from 'components/common/Icons'
 import { BN_ZERO } from 'constants/math'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
+import { neutronPerps } from 'data/assets/neutron-perps'
+import useTotalAccounts from 'hooks/accounts/useTotalAccounts'
+import useAssets from 'hooks/assets/useAssets'
+import useChainConfig from 'hooks/chain/useChainConfig'
+import useAssetParams from 'hooks/params/useAssetParams'
+import useActivePerpsMarketsCount from 'hooks/perps/useActivePerpsMarketsCount'
+import useOverviewData from 'hooks/tokenomics/useOverviewData'
+import { useMemo } from 'react'
 import { ChainInfoID } from 'types/enums'
 import { getCurrentChainId } from 'utils/getCurrentChainId'
-import { GridGlobe } from 'components/common/Icons'
-import { PRICE_ORACLE_DECIMALS } from 'constants/query'
-import { useMemo } from 'react'
+import { BN } from 'utils/helpers'
 
 export default function StatsMetrics() {
   const { data: totalAccounts, isLoading: totalAccountsLoading } = useTotalAccounts()
@@ -19,8 +21,9 @@ export default function StatsMetrics() {
 
   const chainId = getCurrentChainId()
   const isNeutron = chainId === ChainInfoID.Neutron1
-  const perpsAssets = usePerpsEnabledAssets()
-  const markets = useLendingMarkets()
+  const { data: activePerpsCount } = useActivePerpsMarketsCount()
+  const chainConfig = useChainConfig()
+  const { data: assetParams, isLoading: assetParamsLoading } = useAssetParams()
 
   const latestTvl = useMemo(() => {
     return overviewData?.total_value_locked?.length
@@ -28,25 +31,27 @@ export default function StatsMetrics() {
       : 0
   }, [overviewData])
 
-  const activeMarkets = useMemo(() => {
-    return (
-      markets?.filter(
-        (market) =>
-          !market.asset.isDeprecated &&
-          !market.asset.symbol.includes('USDC') &&
-          !market.asset.symbol.includes('USDT.kava'),
-      ) ?? []
-    )
-  }, [markets])
+  const listedAssetsCount = useMemo(() => {
+    if (assetParamsLoading || !assetParams) return 0
+    return assetParams.filter(
+      (p) =>
+        p.credit_manager?.whitelisted &&
+        p.red_bank?.deposit_enabled &&
+        !chainConfig.deprecated.includes(p.denom) &&
+        !p.denom.includes('share') &&
+        !p.denom.includes('gamm'),
+    ).length
+  }, [assetParams, assetParamsLoading, chainConfig.deprecated])
 
   const activeStrategies = useMemo(() => {
-    if (!assets) return []
-    return isNeutron
-      ? assets.filter((asset) => asset.isWhitelisted && asset.denom.includes('share'))
-      : assets.filter((asset) => asset.isWhitelisted && asset.denom.includes('gamm'))
-  }, [assets, isNeutron])
+    if (assetParamsLoading || !assetParams) return []
+    return assetParams.filter(
+      (p) =>
+        p.credit_manager?.whitelisted && (p.denom.includes('share') || p.denom.includes('gamm')),
+    )
+  }, [assetParams, assetParamsLoading])
 
-  const loading = totalAccountsLoading || overviewDataLoading || assetsLoading
+  const loading = totalAccountsLoading || overviewDataLoading || assetsLoading || assetParamsLoading
 
   return (
     <MetricsCard
@@ -79,7 +84,7 @@ export default function StatsMetrics() {
           },
         },
         {
-          value: BN(activeMarkets?.length || 0),
+          value: BN(listedAssetsCount || 0),
           label: 'Listed Assets',
           formatOptions: {
             maxDecimals: 0,
@@ -99,7 +104,7 @@ export default function StatsMetrics() {
         ...(isNeutron
           ? [
               {
-                value: BN(perpsAssets?.length || 0),
+                value: BN((activePerpsCount ?? 0) || neutronPerps.length || 0),
                 label: 'Active Perps Markets',
                 formatOptions: {
                   maxDecimals: 0,
@@ -109,7 +114,7 @@ export default function StatsMetrics() {
             ]
           : []),
       ]}
-      className='w-full gap-5 sm:gap-10 md:gap-18'
+      className='gap-5 w-full sm:gap-10 md:gap-18'
       numberClassName='text-2xl md:text-4xl'
     />
   )

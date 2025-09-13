@@ -1,7 +1,11 @@
 import { ChainInfoID } from 'types/enums'
 
 export const getCurrentChainId = (urlSearchParams?: URLSearchParams): ChainInfoID => {
-  const searchParams = urlSearchParams || new URLSearchParams(window.location.search)
+  const searchParams =
+    urlSearchParams ||
+    (typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search)
+      : new URLSearchParams())
   const urlChain = searchParams.get('chain')?.toLowerCase()
 
   switch (urlChain) {

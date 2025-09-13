@@ -12,13 +12,13 @@ export function BN(n: BigNumber.Value) {
   return new BigNumber(n)
 }
 
-export function getApproximateHourlyInterest(amount: string, borrowRate: number) {
+function getApproximateHourlyInterest(amount: string, borrowRate: number) {
   return BigNumber(borrowRate)
     .dividedBy(24 * 365)
     .multipliedBy(amount)
 }
 
-export function asyncThrottle<F extends (...args: any[]) => Promise<any>>(func: F, wait?: number) {
+function asyncThrottle<F extends (...args: any[]) => Promise<any>>(func: F, wait?: number) {
   const throttled = throttle((resolve, reject, args: Parameters<F>) => {
     func(...args)
       .then(resolve)
@@ -30,7 +30,7 @@ export function asyncThrottle<F extends (...args: any[]) => Promise<any>>(func: 
     }) as ReturnType<F>
 }
 
-export function mergeBNCoinArrays(array1: BNCoin[], array2: BNCoin[]) {
+function mergeBNCoinArrays(array1: BNCoin[], array2: BNCoin[]) {
   const merged: BNCoin[] = []
 
   array1.forEach((coin) => {
@@ -48,7 +48,7 @@ export function mergeBNCoinArrays(array1: BNCoin[], array2: BNCoin[]) {
   return merged
 }
 
-export function getValueFromBNCoins(coins: BNCoin[], assets: Asset[]): BigNumber {
+function getValueFromBNCoins(coins: BNCoin[], assets: Asset[]): BigNumber {
   let totalValue = BN_ZERO
 
   coins.forEach((coin) => {
@@ -62,7 +62,7 @@ export function getLeverageFromLTV(ltv: number) {
   return +(1 / (1 - ltv)).toPrecision(2)
 }
 
-export function getGovernanceUrl(walletId: WalletID) {
+function getGovernanceUrl(walletId: WalletID) {
   switch (walletId) {
     case WalletID.Station:
       return DocURL.COUNCIL_STATION

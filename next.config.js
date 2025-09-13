@@ -30,14 +30,7 @@ const nextConfig = {
       },
     ]
   },
-  async rewrites() {
-    return [
-      {
-        source: '/:any*',
-        destination: '/',
-      },
-    ]
-  },
+  // Removed catch-all rewrite to allow App Router routes to resolve normally
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,

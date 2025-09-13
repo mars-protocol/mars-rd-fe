@@ -23,7 +23,7 @@ import {
   Empty,
   VaultStandardInfoResponse,
 } from './MarsMockVault.types'
-export interface MarsMockVaultReadOnlyInterface {
+interface MarsMockVaultReadOnlyInterface {
   contractAddress: string
   vaultStandardInfo: () => Promise<VaultStandardInfoResponse>
   info: () => Promise<VaultInfoResponse>
@@ -105,7 +105,7 @@ export class MarsMockVaultQueryClient implements MarsMockVaultReadOnlyInterface 
     })
   }
 }
-export interface MarsMockVaultInterface extends MarsMockVaultReadOnlyInterface {
+interface MarsMockVaultInterface extends MarsMockVaultReadOnlyInterface {
   contractAddress: string
   sender: string
   deposit: (
@@ -139,7 +139,7 @@ export interface MarsMockVaultInterface extends MarsMockVaultReadOnlyInterface {
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsMockVaultClient
+class MarsMockVaultClient
   extends MarsMockVaultQueryClient
   implements MarsMockVaultInterface
 {

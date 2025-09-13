@@ -26,12 +26,19 @@ export const Tooltip = (props: Props) => {
     DEFAULT_SETTINGS.reduceMotion,
   )
 
-  const isInWalletAssetModal = document.getElementById('wallet-assets-modal')
-  const isInModal = document.getElementById('modal')
+  const isInWalletAssetModal =
+    typeof window !== 'undefined' ? document.getElementById('wallet-assets-modal') : null
+  const isInModal = typeof window !== 'undefined' ? document.getElementById('modal') : null
+
+  const appendTarget: Element | 'parent' =
+    isInWalletAssetModal ??
+    isInModal ??
+    (typeof window !== 'undefined' ? document.body : null) ??
+    'parent'
 
   return (
     <Tippy
-      appendTo={() => isInWalletAssetModal ?? isInModal ?? document.body}
+      appendTo={appendTarget}
       interactive={props.interactive}
       animation={false}
       delay={[props.delay ?? 0, 0]}

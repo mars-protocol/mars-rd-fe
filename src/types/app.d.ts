@@ -112,10 +112,12 @@ interface PerpsVaultUnlockingPosition {
 }
 
 interface Asset extends AssetMetaData {
+  chainId: string
   denom: string
-  name: string
-  decimals: number
   symbol: string
+  icon: string
+  description: string
+  decimals: number
 }
 
 interface AssetMetaData {
@@ -209,7 +211,7 @@ interface ChainConfig {
   isOsmosis: boolean
   lp?: Asset[]
   stables: string[]
-  deprecated?: string[]
+  deprecated: string[]
   campaignAssets?: AssetCampaignInfo[]
   defaultTradingPair: TradingPair
   bech32Config: import('@keplr-wallet/types').Bech32Config
@@ -363,7 +365,7 @@ interface PythUpdateExecuteMsg {
   update_price_feeds: { data: string[] }
 }
 
-type Page = 'main' | 'liquidations' | 'perps' | 'perps/{asset}'
+type Page = 'main' | 'liquidations' | 'perps' | 'perps/{asset}' | 'tokenomics'
 
 type OsmosisRouteResponse = {
   amount_in: {
@@ -1315,9 +1317,6 @@ interface AstroportAsset {
   icon?: string
   description: string
   decimals: number
-  priceUSD: number
-  totalLiquidityUSD: number
-  dayVolumeUSD: number
 }
 interface AstroportAssetsCached {
   tokens: AstroportAsset[]
@@ -1508,6 +1507,8 @@ interface LineConfig {
   isPercentage?: boolean
   strokeDasharray?: string
   yAxisId?: string
+  isUSD?: boolean
+  isNormalized?: boolean
 }
 
 interface ChartConfig {
@@ -1616,4 +1617,45 @@ interface PerpsTradingFee {
     opening: BigNumber
     closing: BigNumber
   }
+}
+
+interface TokenomicsDataPoint {
+  date: string
+  amount: string
+  value_usd: number
+}
+
+interface TokenomicsPriceDataPoint {
+  date: string
+  value_usd: number
+}
+
+interface TokenomicsLiquidityDataPoint {
+  date: string
+  value_usd: number
+}
+
+interface TokenomicsData {
+  burned_supply: TokenomicsDataPoint[]
+  treasury_supply: TokenomicsDataPoint[]
+  price_usd: TokenomicsPriceDataPoint[]
+  on_chain_liquidity_usd: TokenomicsLiquidityDataPoint[]
+}
+
+interface TokenomicsToken {
+  symbol: string
+  denom: string
+  decimals: number
+}
+
+interface TokenomicsMeta {
+  token: TokenomicsToken
+  last_updated: string
+  total_records: number
+  days_requested: number
+}
+
+interface TokenomicsApiResponse {
+  data: TokenomicsData
+  meta: TokenomicsMeta
 }

@@ -1,20 +1,20 @@
+import { ColumnDef, Row } from '@tanstack/react-table'
+import { CircularProgress } from 'components/common/CircularProgress'
+import { InfoCircle } from 'components/common/Icons'
+import Table from 'components/common/Table'
+import Text from 'components/common/Text'
+import { Tooltip } from 'components/common/Tooltip'
 import Account from 'components/main/Liquidations/Table/Cell/Account'
 import Asset from 'components/main/Liquidations/Table/Cell/Asset'
 import LiquidationFees from 'components/main/Liquidations/Table/Cell/LiquidationFees'
 import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
-import Pagination from 'components/main/Liquidations/Table/Pagination'
-import Table from 'components/common/Table'
-import Text from 'components/common/Text'
 import Timestamp from 'components/main/Liquidations/Table/Cell/Timestamp'
 import Transaction from 'components/main/Liquidations/Table/Cell/Transaction'
+import Pagination from 'components/main/Liquidations/Table/Pagination'
 import useAssets from 'hooks/assets/useAssets'
-import useLiquidations from 'hooks/liquidations/useLiquidations'
-import { CircularProgress } from 'components/common/CircularProgress'
-import { ColumnDef, Row } from '@tanstack/react-table'
-import { useEffect, useMemo, useState } from 'react'
 import useChainConfig from 'hooks/chain/useChainConfig'
-import { InfoCircle } from 'components/common/Icons'
-import { Tooltip } from 'components/common/Tooltip'
+import useLiquidations from 'hooks/liquidations/useLiquidations'
+import { useEffect, useMemo, useState } from 'react'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
@@ -58,23 +58,17 @@ export default function LiquidationsTable() {
       {
         header: 'Liquidated Collateral',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
-          <Asset value={row.original.collateral_asset_won as BNCoin} assetData={assetsData} />
+          <Asset
+            value={row.original.collateral_asset_won as BNCoin}
+            assetData={assetsData}
+            historicalPrice={row.original.price_liquidated}
+          />
         ),
       },
       {
         header: 'Liquidation Price',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
           <LiquidationPrice value={row.original} />
-        ),
-      },
-      {
-        header: 'Repaid Debt',
-        cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
-          <Asset
-            value={row.original.debt_asset_repaid as BNCoin}
-            assetData={assetsData}
-            historicalPrice={row.original.price_debt_repaid}
-          />
         ),
       },
       {

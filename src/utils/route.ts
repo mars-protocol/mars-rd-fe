@@ -29,7 +29,7 @@ export function getRoute(
 }
 
 export function getPage(pathname: string): Page {
-  const pages: Page[] = ['main', 'liquidations', 'perps']
+  const pages: Page[] = ['main', 'liquidations', 'tokenomics', 'perps']
   const segments = pathname.split('/')
 
   const page = segments.find((segment) => pages.includes(segment as Page))
@@ -45,7 +45,7 @@ export function getPage(pathname: string): Page {
   return 'trade' as Page
 }
 
-export function getSearchParamsObject(searchParams: URLSearchParams) {
+function getSearchParamsObject(searchParams: URLSearchParams) {
   const params: { [key: string]: string } = {}
 
   Array.from(searchParams?.entries() || []).forEach(([key, value]) => (params[key] = value))

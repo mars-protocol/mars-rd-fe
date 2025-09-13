@@ -1,6 +1,6 @@
 # Mars Protocol Risk Dashboard
 
-![https://risk.marsprotocol.io](https://raw.githubusercontent.com/mars-protocol/mars-rd-fe/main/public/banner.png)
+![https://stats.marsprotocol.io](https://raw.githubusercontent.com/mars-protocol/mars-rd-fe/main/public/banner.png)
 
 ## 1. Web App
 

@@ -1,3 +1,5 @@
+'use client'
+
 import classNames from 'classnames'
 import { Logo } from 'components/common/Icons'
 import ChainSelect from 'components/header/ChainSelect'
@@ -5,8 +7,8 @@ import DesktopNavigation from 'components/header/navigation/desktop/DesktopNavig
 import { NavLink } from 'components/header/navigation/desktop/NavLink'
 import MobileNavigation from 'components/header/navigation/mobile/MobileNavigation'
 import MobileNavigationToggle from 'components/header/navigation/mobile/MobileNavigationToggle'
+import { useSearchParams } from 'next/navigation'
 import { isMobile } from 'react-device-detect'
-import { useSearchParams } from 'react-router-dom'
 
 const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
   {
@@ -16,6 +18,10 @@ const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
   {
     pages: ['liquidations' as Page],
     label: 'Liquidations',
+  },
+  {
+    pages: ['tokenomics' as Page],
+    label: 'Tokenomics',
   },
   ...(chainConfig.perps
     ? [
@@ -28,8 +34,8 @@ const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
 ]
 
 export default function Header() {
-  const [searchParams] = useSearchParams()
-  const isIframeView = searchParams.get('iframeView') === 'on'
+  const searchParams = useSearchParams()
+  const isIframeView = searchParams?.get('iframeView') === 'on'
 
   if (isIframeView) return null
 

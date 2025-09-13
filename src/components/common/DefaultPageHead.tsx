@@ -13,8 +13,8 @@ function DefaultPageHead() {
       <meta content='summary_large_image' name='twitter:card' />
       <meta content='@mars_protocol' name='twitter:site' />
       <meta content='@mars_protocol' name='twitter:creator' />
-      <meta content='https://risk.marsprotocol.io' property='og:url' />
-      <meta content='https://risk.marsprotocol.io/banner.png' property='og:image' />
+      <meta content='https://stats.marsprotocol.io' property='og:url' />
+      <meta content='https://stats.marsprotocol.io/banner.png' property='og:image' />
       <meta content='Mars Protocol' property='og:site_name' />
       <meta content='#ffffff' name='msapplication-TileColor' />
       <meta content='#ffffff' name='theme-color' />

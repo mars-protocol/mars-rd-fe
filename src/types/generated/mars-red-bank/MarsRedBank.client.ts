@@ -32,7 +32,7 @@ import {
   UserHealthStatus,
   UserPositionResponse,
 } from './MarsRedBank.types'
-export interface MarsRedBankReadOnlyInterface {
+interface MarsRedBankReadOnlyInterface {
   contractAddress: string
   config: () => Promise<ConfigResponse>
   market: ({ denom }: { denom: string }) => Promise<Market>
@@ -366,7 +366,7 @@ export class MarsRedBankQueryClient implements MarsRedBankReadOnlyInterface {
     })
   }
 }
-export interface MarsRedBankInterface extends MarsRedBankReadOnlyInterface {
+interface MarsRedBankInterface extends MarsRedBankReadOnlyInterface {
   contractAddress: string
   sender: string
   updateOwner: (
@@ -496,7 +496,7 @@ export interface MarsRedBankInterface extends MarsRedBankReadOnlyInterface {
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsRedBankClient extends MarsRedBankQueryClient implements MarsRedBankInterface {
+class MarsRedBankClient extends MarsRedBankQueryClient implements MarsRedBankInterface {
   client: SigningCosmWasmClient
   sender: string
   contractAddress: string

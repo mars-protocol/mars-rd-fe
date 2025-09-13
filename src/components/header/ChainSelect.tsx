@@ -1,6 +1,8 @@
+'use client'
+
 import classNames from 'classnames'
 import React, { useCallback, useMemo } from 'react'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSWRConfig } from 'swr'
 
 import chains from 'chains'
@@ -30,9 +32,9 @@ interface ChainOptionProps {
 export default function ChainSelect(props: Props) {
   const [showMenu, setShowMenu] = useToggle()
   const { mutate } = useSWRConfig()
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const location = useLocation()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
   const chainConfig = useChainConfig()
 
   const selectChain = useCallback(
@@ -48,10 +50,11 @@ export default function ChainSelect(props: Props) {
       const newParams = new URLSearchParams(searchParams)
       newParams.set('chain', getChainName(chainConfig.id))
 
-      const currentPage = location.pathname.split('/').pop() || 'main'
-      navigate(getRoute(currentPage as Page, newParams))
+      const currentPage = pathname.split('/').pop() || 'main'
+      const newPath = currentPage === 'main' ? '/' : `/${currentPage}`
+      router.push(`${newPath}?${newParams.toString()}`)
     },
-    [navigate, searchParams, location, setShowMenu, mutate],
+    [router, searchParams, pathname, setShowMenu, mutate],
   )
 
   const ChainOption = (props: ChainOptionProps) => {
@@ -97,7 +100,7 @@ export default function ChainSelect(props: Props) {
         )}
       />
       {props.withText && (
-        <div className='absolute w-3 -translate-y-1/2 right-2 top-1/2 z-1'>
+        <div className='absolute right-2 top-1/2 w-3 -translate-y-1/2 z-1'>
           <ChevronDown />
         </div>
       )}

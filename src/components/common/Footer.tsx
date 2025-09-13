@@ -1,16 +1,17 @@
+'use client'
+
 import { DocURL } from 'types/enums'
 import { TextLink } from 'components/common/TextLink'
 import useStore from 'store'
-
 import packageInfo from '../../../package.json'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'next/navigation'
 
 export default function Footer() {
   const version = `v${packageInfo.version}`
   const flatVersion = packageInfo.version.split('.').join('')
 
-  const [searchParams] = useSearchParams()
-  const isIframeView = searchParams.get('iframeView') === 'on'
+  const searchParams = useSearchParams()
+  const isIframeView = searchParams?.get('iframeView') === 'on'
 
   if (isIframeView) return null
 

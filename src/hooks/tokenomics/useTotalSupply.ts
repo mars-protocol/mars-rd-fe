@@ -1,6 +1,11 @@
 import getTotalSupply from 'api/tokenomics/getTotalSupply'
+import useChainConfig from 'hooks/chain/useChainConfig'
 import useSWRImmutable from 'swr/immutable'
 
 export default function useTotalSupply() {
-  return useSWRImmutable('tokenomics/totalSupply', async () => getTotalSupply())
+  const chainConfig = useChainConfig()
+
+  return useSWRImmutable(`chains/${chainConfig.id}/tokenomics/totalSupply`, async () =>
+    getTotalSupply(),
+  )
 }

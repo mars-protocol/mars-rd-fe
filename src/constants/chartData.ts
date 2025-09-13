@@ -1,6 +1,7 @@
 import { FundingRateTimeBase } from 'types/enums'
+import { BN } from 'utils/helpers'
 
-export const CHART_COLORS = {
+const CHART_COLORS = {
   primary: '#30E0A1',
   secondary: '#AB47BC',
   tertiary: '#580DA3',
@@ -132,12 +133,14 @@ export const PERPS_CHART_CONFIGS = {
         name: 'Long Positions',
         color: CHART_COLORS.tertiary,
         yAxisId: 'right',
+        isUSD: true,
       },
       {
         dataKey: 'short',
         name: 'Short Positions',
         color: CHART_COLORS.secondary,
         yAxisId: 'right',
+        isUSD: true,
       },
     ],
     line: {
@@ -145,6 +148,7 @@ export const PERPS_CHART_CONFIGS = {
       name: 'Max OI',
       color: CHART_COLORS.primary,
       yAxisId: 'left',
+      isUSD: true,
     },
   },
   openInterestGlobal: {
@@ -153,11 +157,13 @@ export const PERPS_CHART_CONFIGS = {
         dataKey: 'long',
         name: 'Long Positions',
         color: CHART_COLORS.tertiary,
+        isUSD: true,
       },
       {
         dataKey: 'short',
         name: 'Short Positions',
         color: CHART_COLORS.secondary,
+        isUSD: true,
       },
     ],
   },
@@ -166,26 +172,30 @@ export const PERPS_CHART_CONFIGS = {
       dataKey: 'realized_trading_fees',
       color: CHART_COLORS.secondary,
       name: 'Realized Trading Fees',
+      isUSD: true,
     },
     {
       dataKey: 'realized_net_funding_fees',
       color: CHART_COLORS.tertiary,
       name: 'Realized Funding Fees',
+      isUSD: true,
     },
   ],
   skew: [
-    { dataKey: 'skew', color: CHART_COLORS.tertiary, name: 'Skew' },
+    { dataKey: 'skew', color: CHART_COLORS.tertiary, name: 'Skew', isUSD: true },
     {
       dataKey: 'max_oi_positive',
       color: CHART_COLORS.secondary,
       name: 'Max Net OI',
       strokeDasharray: '5 8',
+      isUSD: true,
     },
     {
       dataKey: 'max_oi_negative',
       color: CHART_COLORS.secondary,
       name: 'Max Net OI',
       strokeDasharray: '5 8',
+      isUSD: true,
     },
   ],
   notional: [
@@ -193,6 +203,7 @@ export const PERPS_CHART_CONFIGS = {
       dataKey: 'notional_liquidated',
       color: CHART_COLORS.secondary,
       name: 'Notional Liquidated',
+      isUSD: true,
     },
   ],
   tradingVolume: [
@@ -200,6 +211,7 @@ export const PERPS_CHART_CONFIGS = {
       dataKey: 'trading_volume',
       color: CHART_COLORS.primary,
       name: 'Trading Volume',
+      isUSD: true,
     },
   ],
   imbalanceRatio: [
@@ -220,8 +232,8 @@ export const PERPS_CHART_CONFIGS = {
     },
   ],
   vault: [
-    { dataKey: 'deposit', color: CHART_COLORS.secondary, name: 'Deposit' },
-    { dataKey: 'vault_value', color: CHART_COLORS.tertiary, name: 'Value' },
+    { dataKey: 'deposit', color: CHART_COLORS.secondary, name: 'Deposit', isUSD: true },
+    { dataKey: 'vault_value', color: CHART_COLORS.tertiary, name: 'Value', isUSD: true },
   ],
   vaultCollateralization: [
     {
@@ -236,16 +248,19 @@ export const PERPS_CHART_CONFIGS = {
       dataKey: 'realized_net_funding_fees',
       color: CHART_COLORS.tertiary,
       name: 'Realized Funding Fees',
+      isUSD: true,
     },
     {
       dataKey: 'unrealized_net_funding_fees',
       color: CHART_COLORS.secondary,
       name: 'Unrealized Funding Fees',
+      isUSD: true,
     },
     {
       dataKey: 'netTotal',
       color: CHART_COLORS.primary,
       name: 'Net Funding Fees',
+      isUSD: true,
     },
   ],
   realizedPnlBreakdown: [
@@ -253,21 +268,25 @@ export const PERPS_CHART_CONFIGS = {
       dataKey: 'realized_trading_fees',
       color: CHART_COLORS.tertiary,
       name: 'Realized Trading Fees',
+      isUSD: true,
     },
     {
       dataKey: 'realized_net_funding_fees',
       color: CHART_COLORS.secondary,
       name: 'Realized Funding Fees',
+      isUSD: true,
     },
     {
       dataKey: 'realized_price_pnl',
       color: CHART_COLORS.quaternary,
       name: 'Realized Price PnL',
+      isUSD: true,
     },
     {
       dataKey: 'total',
       color: CHART_COLORS.primary,
       name: 'Total',
+      isUSD: true,
     },
   ],
   totalPnl: [
@@ -275,16 +294,19 @@ export const PERPS_CHART_CONFIGS = {
       dataKey: 'realized',
       color: CHART_COLORS.tertiary,
       name: 'Cumulative Realized PnL',
+      isUSD: true,
     },
     {
       dataKey: 'unrealized',
       color: CHART_COLORS.secondary,
       name: 'Unrealized PnL',
+      isUSD: true,
     },
     {
       dataKey: 'netTotal',
       color: CHART_COLORS.primary,
       name: 'Net Total PnL',
+      isUSD: true,
     },
   ],
   pnl: {
@@ -293,11 +315,13 @@ export const PERPS_CHART_CONFIGS = {
         dataKey: 'dailyRealizedChange',
         name: 'Daily Realized Change',
         color: CHART_COLORS.tertiary,
+        isUSD: true,
       },
       line: {
         dataKey: 'cumulativeRealized',
         name: 'Cumulative Realized PnL',
         color: CHART_COLORS.primary,
+        isUSD: true,
       },
     },
     secondaryChart: {
@@ -305,11 +329,13 @@ export const PERPS_CHART_CONFIGS = {
         dataKey: 'dailyUnrealizedChange',
         name: 'Daily Unrealized Change',
         color: CHART_COLORS.secondary,
+        isUSD: true,
       },
       line: {
         dataKey: 'cumulativeUnrealized',
         name: 'Cumulative Unrealized PnL',
         color: CHART_COLORS.primary,
+        isUSD: true,
       },
     },
   },
@@ -320,17 +346,20 @@ export const PERPS_CHART_CONFIGS = {
         color: CHART_COLORS.secondary,
         name: 'Max Net OI',
         strokeDasharray: '5 8',
+        isUSD: true,
       },
       {
         dataKey: 'max_oi_negative',
         color: CHART_COLORS.secondary,
         name: 'Max Net OI',
         strokeDasharray: '5 8',
+        isUSD: true,
       },
       {
         dataKey: 'skew',
         color: CHART_COLORS.tertiary,
         name: 'Skew',
+        isUSD: true,
       },
     ],
     secondary: [
@@ -384,6 +413,7 @@ export const OVERVIEW_CHART_CONFIGS = {
       dataKey: 'total_value_locked',
       color: CHART_COLORS.primary,
       name: 'Total Value Locked',
+      isUSD: true,
     },
   ],
   supplyBorrow: {
@@ -392,12 +422,80 @@ export const OVERVIEW_CHART_CONFIGS = {
         dataKey: 'supply',
         name: 'Total Supply',
         color: CHART_COLORS.tertiary,
+        isUSD: true,
       },
       {
         dataKey: 'borrow',
         name: 'Total Borrow',
         color: CHART_COLORS.secondary,
+        isUSD: true,
       },
     ],
   },
+}
+
+const TOKENOMICS_CHART_TRANSFORMATIONS = {
+  burned: [
+    {
+      path: ['burned_supply'],
+      targetKey: 'burned_amount',
+      formatFn: (value: TokenomicsDataPoint) => parseFloat(BN(value.amount).toString()),
+    },
+    {
+      path: ['burned_supply'],
+      targetKey: 'burned_value_usd',
+      formatFn: (value: TokenomicsDataPoint) => BN(value.value_usd).toNumber(),
+    },
+  ],
+  liquidity: [
+    {
+      path: ['on_chain_liquidity_usd'],
+      targetKey: 'liquidity_usd',
+      formatFn: (value: TokenomicsDataPoint) => BN(value.value_usd).toNumber(),
+    },
+  ],
+}
+
+export const TOKENOMICS_CHART_CONFIGS = {
+  burned: [
+    {
+      dataKey: 'burned_amount',
+      color: CHART_COLORS.secondary,
+      name: 'Burned Amount (MARS)',
+      yAxisId: 'left',
+    },
+    {
+      dataKey: 'burned_value_usd',
+      color: CHART_COLORS.tertiary,
+      name: 'Burned Value (USD)',
+      yAxisId: 'right',
+      isUSD: true,
+      isNormalized: true,
+    },
+  ],
+  liquidity: [
+    {
+      dataKey: 'liquidity_usd',
+      color: CHART_COLORS.primary,
+      name: 'On-Chain Liquidity (USD)',
+      isUSD: true,
+      isNormalized: true,
+    },
+  ],
+  treasury: [
+    {
+      dataKey: 'treasury_amount',
+      color: CHART_COLORS.secondary,
+      name: 'Treasury Amount (MARS)',
+      yAxisId: 'left',
+    },
+    {
+      dataKey: 'treasury_value_usd',
+      color: CHART_COLORS.tertiary,
+      name: 'Treasury Value (USD)',
+      yAxisId: 'right',
+      isUSD: true,
+      isNormalized: true,
+    },
+  ],
 }

@@ -1,12 +1,10 @@
-import DisplayCurrency from 'components/common/DisplayCurrency'
+import { FormattedNumber } from 'components/common/FormattedNumber'
 import Text from 'components/common/Text'
 import TitleAndSubCell from 'components/common/TitleAndSubCell'
-import { BN } from 'utils/helpers'
-import { BNCoin } from 'types/classes/BNCoin'
-import { ORACLE_DENOM } from 'constants/oracle'
-import { useMemo } from 'react'
 import { BN_ZERO } from 'constants/math'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
+import { useMemo } from 'react'
+import { BN } from 'utils/helpers'
 
 interface Props {
   value: LiquidationDataItem
@@ -36,22 +34,13 @@ export default function LiquidationPrice(props: Props) {
   return (
     <TitleAndSubCell
       title={
-        <DisplayCurrency
-          coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, BN(value.price_liquidated!))}
+        <FormattedNumber
+          amount={BN(value.price_liquidated!).toNumber()}
           className='text-xs'
-          options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
+          options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true, prefix: '$' }}
         />
       }
-      sub={
-        <div className='flex items-center justify-end space-x-1'>
-          <Text size='xs'>Total: </Text>
-          <DisplayCurrency
-            coin={BNCoin.fromDenomAndBigNumber(ORACLE_DENOM, totalValue)}
-            className='text-xs'
-            options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true }}
-          />
-        </div>
-      }
+      sub={undefined}
     />
   )
 }

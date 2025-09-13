@@ -35,7 +35,7 @@ import {
   Addr,
   OwnershipForAddr,
 } from './MarsAccountNft.types'
-export interface MarsAccountNftReadOnlyInterface {
+interface MarsAccountNftReadOnlyInterface {
   contractAddress: string
   config: () => Promise<NftConfigBaseForString>
   nextId: () => Promise<String>
@@ -271,7 +271,7 @@ export class MarsAccountNftQueryClient implements MarsAccountNftReadOnlyInterfac
     })
   }
 }
-export interface MarsAccountNftInterface extends MarsAccountNftReadOnlyInterface {
+interface MarsAccountNftInterface extends MarsAccountNftReadOnlyInterface {
   contractAddress: string
   sender: string
   updateConfig: (
@@ -385,7 +385,7 @@ export interface MarsAccountNftInterface extends MarsAccountNftReadOnlyInterface
     _funds?: Coin[],
   ) => Promise<ExecuteResult>
 }
-export class MarsAccountNftClient
+class MarsAccountNftClient
   extends MarsAccountNftQueryClient
   implements MarsAccountNftInterface
 {
