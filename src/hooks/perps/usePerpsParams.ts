@@ -8,7 +8,7 @@ import { byDenom } from 'utils/array'
 import { BN } from 'utils/helpers'
 import iterateContractQuery from 'utils/iterateContractQuery'
 
-function usePerpsParams(denom: string) {
+export default function usePerpsParams(denom: string) {
   const perpsParams = useAllPerpsParams()
 
   return useMemo(() => {
@@ -30,7 +30,7 @@ export function useAllPerpsParamsSC() {
   return useSWRImmutable(
     clients && chainConfig.perps && `chains/${chainConfig.id}/perps/params`,
     async () => getPerpsParams(chainConfig, clients!),
-    { fallbackData: [] },
+    { revalidateOnFocus: false },
   )
 }
 

@@ -9,6 +9,7 @@ import PerpsMetrics from 'components/main/perps/PerpsMetrics'
 import { TIMEFRAME } from 'constants/timeframe'
 import { neutronPerps } from 'data/assets/neutron-perps'
 import useChainConfig from 'hooks/chain/useChainConfig'
+import { useAllPerpsParamsSC } from 'hooks/perps/usePerpsParams'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getRoute } from 'utils/route'
@@ -16,7 +17,12 @@ import { getRoute } from 'utils/route'
 export default function PerpsOverviewPage() {
   const navigate = useNavigate()
   const { asset } = useParams()
-  const perpsAssets = neutronPerps
+  const { data: perpsParams } = useAllPerpsParamsSC()
+
+  const perpsAssets = useMemo(
+    () => neutronPerps.filter((p) => perpsParams?.some((ap) => ap.denom === p.denom)),
+    [perpsParams],
+  )
   const [searchParams] = useSearchParams()
   const isIframeView = searchParams.get('iframeView') === 'on'
   const chainConfig = useChainConfig()
