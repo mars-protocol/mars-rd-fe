@@ -1,11 +1,12 @@
 import { FundingRateTimeBase } from 'types/enums'
 import { BN } from 'utils/helpers'
 
-const CHART_COLORS = {
+export const CHART_COLORS = {
   primary: '#30E0A1',
   secondary: '#AB47BC',
   tertiary: '#580DA3',
   quaternary: '#3DB2FF',
+  quinary: '#FF4D4D',
 }
 
 export const DEFAULT_PERPS_GLOBAL_DATA: PerpsGlobalData = {
@@ -460,7 +461,7 @@ export const TOKENOMICS_CHART_CONFIGS = {
   burned: [
     {
       dataKey: 'burned_amount',
-      color: CHART_COLORS.secondary,
+      color: CHART_COLORS.quinary,
       name: 'Burned Amount (MARS)',
       yAxisId: 'left',
     },

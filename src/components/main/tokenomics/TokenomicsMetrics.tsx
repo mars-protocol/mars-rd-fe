@@ -1,3 +1,4 @@
+'use client'
 import MetricsCard from 'components/common/Card/MetricsCard'
 import { GridToken } from 'components/common/Icons'
 import { BN_ZERO, MRC_98_BURN_AMOUNT } from 'constants/math'
@@ -62,21 +63,6 @@ export default function TokenomicsMetrics() {
       value: totalValueBurned,
       label: 'Total Value Burned',
       isCurrency: true,
-      formatOptions: { abbreviated: true },
-    },
-    {
-      value: BN(totalSupply),
-      label: 'Total Supply',
-      formatOptions: { abbreviated: true },
-    },
-    {
-      value: BN(circulatingSupply),
-      label: 'Circulating Supply',
-      formatOptions: { abbreviated: true },
-    },
-    {
-      value: totalBurnedSupply,
-      label: 'Burned Supply',
       formatOptions: { abbreviated: true },
     },
   ]
