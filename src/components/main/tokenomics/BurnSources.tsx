@@ -6,32 +6,37 @@ interface BurnSource {
   title: string
   description: string
   url: string
+  linkName: string
 }
 
 const burnSources: BurnSource[] = [
+  {
+    title: 'Community Pool Burn I',
+    description:
+      'As part of the comprehensive tokenomics 2.0 upgrade, 300 million MARS tokens were permanently burned from the community pool to reduce total supply and improve tokenomics.',
+    url: 'https://forum.marsprotocol.io/t/mrc-98-comprehensive-signaling-proposal-for-mars-protocol/1298',
+    linkName: 'Forum Post',
+  },
   {
     title: 'Non-Migrated MARS Tokens',
     description:
       'Legacy MARS tokens left unmigrated from Mars Hub (mars-1) to Neutron (neutron-1) during the migration window were permanently burned.',
     url: 'https://daodao.zone/dao/neutron1n3yey5yvlrtzgjam3x0k5auqwf0kealzyeu8zcq7adkjcmys2u5s6wcj9a/proposals/A16',
+    linkName: 'Governance Proposal',
   },
   {
-    title: 'MRC-98 Community Pool Burn',
+    title: 'Community Pool Burn II',
     description:
-      'As part of the comprehensive tokenomics 2.0 upgrade, 300 million MARS tokens were permanently burned from the community pool to reduce total supply and improve tokenomics.',
-    url: 'https://forum.marsprotocol.io/t/mrc-98-comprehensive-signaling-proposal-for-mars-protocol/1298',
-  },
-  {
-    title: 'Community Pool Fund Burn',
-    description:
-      'The Community Pool Fund was burned after contributors decided not to allocate grants to third-party builders, ensuring unused funds were permanently removed.',
+      'The remaining Community Pool Fund was burned after contributors decided not to allocate grants to third-party builders, ensuring unused funds were permanently removed.',
     url: 'https://daodao.zone/dao/neutron1pxjszcmmdxwtw9kv533u3hcudl6qahsa42chcs24gervf4ge40usaw3pcr/proposals/A47',
+    linkName: 'Governance Proposal',
   },
   {
     title: 'Buyback and Burn Program',
     description:
       "40% of Mars Protocol's revenue is allocated to systematic buybacks and burns, driving ongoing deflationary pressure.",
     url: 'https://daodao.zone/dao/neutron1pxjszcmmdxwtw9kv533u3hcudl6qahsa42chcs24gervf4ge40usaw3pcr/proposals/A64',
+    linkName: 'Governance Proposal',
   },
 ]
 
@@ -75,7 +80,7 @@ export default function BurnSources() {
                   rel='noopener noreferrer'
                   className='inline-flex items-center space-x-2 text-sm font-medium text-red-400 transition-colors hover:text-red-300 group-hover:underline'
                 >
-                  <span>View Governance Proposal</span>
+                  <span>{source.linkName}</span>
                   <ExternalLink className='w-4 h-4' />
                 </a>
               </div>

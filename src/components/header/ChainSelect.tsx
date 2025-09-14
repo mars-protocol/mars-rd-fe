@@ -1,8 +1,8 @@
 'use client'
 
 import classNames from 'classnames'
-import React, { useCallback, useMemo } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React, { useCallback, useMemo } from 'react'
 import { useSWRConfig } from 'swr'
 
 import chains from 'chains'
@@ -15,7 +15,6 @@ import useChainConfig from 'hooks/chain/useChainConfig'
 import useToggle from 'hooks/common/useToggle'
 import useStore from 'store'
 import { ChainInfoID } from 'types/enums'
-import { getRoute } from 'utils/route'
 import { getChainName } from 'utils/getChainName'
 
 interface Props {
