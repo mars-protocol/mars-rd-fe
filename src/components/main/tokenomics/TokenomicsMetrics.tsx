@@ -1,6 +1,6 @@
 import MetricsCard from 'components/common/Card/MetricsCard'
 import { GridToken } from 'components/common/Icons'
-import { BN_ZERO } from 'constants/math'
+import { BN_ZERO, MRC_98_BURN_AMOUNT } from 'constants/math'
 import useCirculatingSupply from 'hooks/tokenomics/useCirculatingSupply'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
@@ -34,12 +34,15 @@ export default function TokenomicsMetrics() {
 
   const totalValueBurned = useMemo(() => {
     if (!tokenomicsData?.data?.burned_supply?.length) return BN_ZERO
-    return BN(tokenomicsData.data.burned_supply[0].value_usd)
-  }, [tokenomicsData])
+    // Add MRC-98 burn amount value (300M * current MARS price) to the burned value
+    const mrc98BurnValue = BN(MRC_98_BURN_AMOUNT).multipliedBy(marsTokenPrice)
+    return BN(tokenomicsData.data.burned_supply[0].value_usd).plus(mrc98BurnValue)
+  }, [tokenomicsData, marsTokenPrice])
 
   const totalBurnedSupply = useMemo(() => {
     if (!tokenomicsData?.data?.burned_supply?.length) return BN_ZERO
-    return BN(tokenomicsData.data.burned_supply[0].amount)
+    // Add MRC-98 burn amount (300M MARS) to the burned supply
+    return BN(tokenomicsData.data.burned_supply[0].amount).plus(MRC_98_BURN_AMOUNT)
   }, [tokenomicsData])
 
   const metrics: Metric[] = [
