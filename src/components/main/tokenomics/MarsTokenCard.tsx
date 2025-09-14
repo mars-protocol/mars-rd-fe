@@ -54,12 +54,10 @@ export default function MarsTokenCard() {
   // Render cards with placeholders to avoid layout shift
 
   return (
-    <div className='space-y-4 w-full'>
-      {/* Header card moved to TokenomicsMetrics */}
-
-      {/* MARS Token Card */}
-      <Card className='p-4 sm:p-6 bg-white/5'>
-        <div className='flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center sm:space-y-0'>
+    <Card className='p-4 h-full sm:p-6 bg-white/5'>
+      <div className='flex flex-col justify-between space-y-4 h-full lg:space-y-6'>
+        {/* Token Info Section */}
+        <div className='flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-start sm:space-y-0'>
           <div className='flex items-center space-x-3 sm:space-x-4'>
             <div className='flex flex-shrink-0 justify-center items-center w-12 h-12 rounded-full sm:w-16 sm:h-16'>
               <Image
@@ -98,41 +96,46 @@ export default function MarsTokenCard() {
               </div>
             </div>
           </div>
-          <div className='text-center sm:text-right'>
-            {isLoading || marsTokenPrice.isEqualTo(BN_ZERO) ? (
-              <Loading className='mx-auto w-32 h-8 sm:w-40 sm:h-10 sm:mx-0' />
-            ) : (
+        </div>
+
+        {/* Price Section */}
+        <div className='text-center sm:text-left lg:text-center'>
+          {isLoading || marsTokenPrice.isEqualTo(BN_ZERO) ? (
+            <div className='space-y-2'>
+              <Loading className='mx-auto w-32 h-8 sm:w-40 sm:h-10' />
+              <Loading className='mx-auto w-40 h-4 sm:w-48' />
+            </div>
+          ) : (
+            <div className='space-y-2'>
               <FormattedNumber
                 amount={marsTokenPrice.toNumber()}
-                className='text-2xl font-semibold text-white sm:text-3xl'
+                className='text-3xl font-bold text-white sm:text-4xl lg:text-5xl'
                 options={{
                   maxDecimals: 4,
                   minDecimals: 4,
                   prefix: '$',
                 }}
               />
-            )}
-            {isLoading || marsTokenPrice.isEqualTo(BN_ZERO) ? (
-              <Loading className='mx-auto mt-2 w-40 h-4 sm:w-48 sm:mx-0' />
-            ) : (
-              priceChange && (
-                <div className='flex justify-center items-center mt-1 space-x-2 sm:justify-end'>
+              {priceChange && (
+                <div className='flex justify-center items-center space-x-2'>
                   <Text
-                    size='sm'
-                    className={`font-medium ${
+                    size='base'
+                    className={`font-semibold ${
                       priceChange.isPositive ? 'text-profit' : 'text-loss'
                     }`}
                   >
                     {priceChange.isPositive ? '+' : ''}
-                    {priceChange.percentChange.toFixed(2)}% ($
-                    {priceChange.absoluteChange.toFixed(5)})
+                    {priceChange.percentChange.toFixed(2)}%
+                  </Text>
+                  <Text size='sm' className='text-white/60'>
+                    (${priceChange.absoluteChange.toFixed(5)})
                   </Text>
                 </div>
-              )
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
-      </Card>
-    </div>
+      </div>
+    </Card>
   )
 }
