@@ -16,6 +16,12 @@ const burnSources: BurnSource[] = [
     url: 'https://daodao.zone/dao/neutron1n3yey5yvlrtzgjam3x0k5auqwf0kealzyeu8zcq7adkjcmys2u5s6wcj9a/proposals/A16',
   },
   {
+    title: 'MRC-98 Community Pool Burn',
+    description:
+      'As part of the comprehensive tokenomics 2.0 upgrade, 300 million MARS tokens were permanently burned from the community pool to reduce total supply and improve tokenomics.',
+    url: 'https://forum.marsprotocol.io/t/mrc-98-comprehensive-signaling-proposal-for-mars-protocol/1298',
+  },
+  {
     title: 'Community Pool Fund Burn',
     description:
       'The Community Pool Fund was burned after contributors decided not to allocate grants to third-party builders, ensuring unused funds were permanently removed.',
@@ -43,7 +49,7 @@ export default function BurnSources() {
           </Text>
         </div>
 
-        <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
           {burnSources.map((source, index) => (
             <Card
               key={index}

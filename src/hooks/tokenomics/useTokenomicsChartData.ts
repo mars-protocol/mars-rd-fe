@@ -1,3 +1,4 @@
+import { MRC_98_BURN_AMOUNT } from 'constants/math'
 import { useMemo } from 'react'
 
 interface TokenomicsDataItem {
@@ -34,11 +35,21 @@ export function useTokenomicsChartData(tokenomicsData: TokenomicsData | null) {
   const burnedData = useMemo(() => {
     if (!tokenomicsData?.data.burned_supply) return null
 
-    return tokenomicsData.data.burned_supply.slice().map((item: TokenomicsDataItem) => ({
-      date: item.date,
-      burned_amount: parseFloat(item.amount),
-      burned_value_usd: item.value_usd,
-    }))
+    return tokenomicsData.data.burned_supply.slice().map((item: TokenomicsDataItem) => {
+      // Find the corresponding price for this date
+      const priceData = tokenomicsData.data.price_usd.find((price) => price.date === item.date)
+      const marsPrice = priceData?.value_usd || 0
+
+      // Add MRC-98 burn amount (300M MARS) to the burned supply
+      const adjustedBurnedAmount = parseFloat(item.amount) + MRC_98_BURN_AMOUNT
+      const adjustedBurnedValueUsd = item.value_usd + MRC_98_BURN_AMOUNT * marsPrice
+
+      return {
+        date: item.date,
+        burned_amount: adjustedBurnedAmount,
+        burned_value_usd: adjustedBurnedValueUsd,
+      }
+    })
   }, [tokenomicsData])
 
   const liquidityData = useMemo(() => {
