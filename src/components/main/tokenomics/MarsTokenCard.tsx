@@ -123,7 +123,7 @@ export default function MarsTokenCard() {
                 }}
               />
               {priceChange && (
-                <div className='flex'>
+                <div className='flex justify-center md:justify-end'>
                   <Text
                     size='base'
                     className={`font-semibold ${
