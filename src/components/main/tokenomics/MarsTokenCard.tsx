@@ -1,4 +1,3 @@
-import Card from 'components/common/Card'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import { Copy } from 'components/common/Icons'
 import Loading from 'components/common/Loading'
@@ -54,11 +53,10 @@ export default function MarsTokenCard() {
   // Render cards with placeholders to avoid layout shift
 
   return (
-    <Card className='p-4 h-full sm:p-6 bg-white/5'>
-      <div className='flex flex-col justify-between space-y-4 h-full lg:space-y-6'>
-        {/* Token Info Section */}
-        <div className='flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-start sm:space-y-0'>
-          <div className='flex items-center space-x-3 sm:space-x-4'>
+    <>
+      <div className='flex flex-wrap gap-4 justify-between pb-4 w-full h-full lg:gap-6'>
+        <div className='flex flex-wrap gap-4 w-full sm:flex-row sm:justify-between sm:items-start sm:space-y-0'>
+          <div className='flex flex-1 gap-3 items-center sm:gap-4'>
             <div className='flex flex-shrink-0 justify-center items-center w-12 h-12 rounded-full sm:w-16 sm:h-16'>
               <Image
                 src='/token/MARS.svg'
@@ -68,8 +66,8 @@ export default function MarsTokenCard() {
                 className='rounded-full sm:w-16 sm:h-16'
               />
             </div>
-            <div className='flex-1 min-w-0'>
-              <div className='flex items-center space-x-2'>
+            <div className='flex flex-wrap w-full'>
+              <div className='flex gap-2 items-center w-full'>
                 <Text size='lg' className='font-bold text-white sm:text-xl'>
                   Mars Protocol
                 </Text>
@@ -77,8 +75,16 @@ export default function MarsTokenCard() {
                   MARS
                 </Text>
               </div>
-              <div className='flex items-center mt-1 space-x-2 min-w-0'>
-                <Text size='xs' className='font-mono truncate text-white/60 sm:text-sm'>
+              <div className='flex gap-2 items-center mt-1 w-ful'>
+                {/* Mobile: Truncated denom */}
+                <Text
+                  size='xs'
+                  className='font-mono text-white/60 truncate max-w-[200px] sm:hidden'
+                >
+                  {denom}
+                </Text>
+                {/* Desktop: Full denom */}
+                <Text size='xs' className='hidden font-mono text-white/60 sm:block sm:text-sm'>
                   {denom}
                 </Text>
                 <button
@@ -99,7 +105,7 @@ export default function MarsTokenCard() {
         </div>
 
         {/* Price Section */}
-        <div className='text-center sm:text-left lg:text-center'>
+        <div className='w-full text-center lg:text-right md:w-auto'>
           {isLoading || marsTokenPrice.isEqualTo(BN_ZERO) ? (
             <div className='space-y-2'>
               <Loading className='mx-auto w-32 h-8 sm:w-40 sm:h-10' />
@@ -109,7 +115,7 @@ export default function MarsTokenCard() {
             <div className='space-y-2'>
               <FormattedNumber
                 amount={marsTokenPrice.toNumber()}
-                className='text-3xl font-bold text-white sm:text-4xl lg:text-5xl'
+                className='text-3xl font-bold text-white'
                 options={{
                   maxDecimals: 4,
                   minDecimals: 4,
@@ -117,7 +123,7 @@ export default function MarsTokenCard() {
                 }}
               />
               {priceChange && (
-                <div className='flex justify-center items-center space-x-2'>
+                <div className='flex'>
                   <Text
                     size='base'
                     className={`font-semibold ${
@@ -127,7 +133,7 @@ export default function MarsTokenCard() {
                     {priceChange.isPositive ? '+' : ''}
                     {priceChange.percentChange.toFixed(2)}%
                   </Text>
-                  <Text size='sm' className='text-white/60'>
+                  <Text size='sm' className='pl-2 text-white/60'>
                     (${priceChange.absoluteChange.toFixed(5)})
                   </Text>
                 </div>
@@ -136,6 +142,6 @@ export default function MarsTokenCard() {
           )}
         </div>
       </div>
-    </Card>
+    </>
   )
 }
