@@ -55,7 +55,7 @@ export default function MarsTokenCard() {
   return (
     <>
       <div className='flex flex-wrap gap-4 justify-between pb-4 w-full h-full lg:gap-6'>
-        <div className='flex flex-wrap gap-4 w-full sm:flex-row sm:justify-between sm:items-start sm:space-y-0'>
+        <div className='flex flex-wrap gap-4 sm:flex-row sm:justify-between sm:items-start sm:space-y-0'>
           <div className='flex flex-1 gap-3 items-center sm:gap-4'>
             <div className='flex flex-shrink-0 justify-center items-center w-12 h-12 rounded-full sm:w-16 sm:h-16'>
               <Image
