@@ -25,7 +25,7 @@ export default function Card(props: Props) {
       )}
     >
       {typeof props.title === 'string' ? (
-        <Text size='lg' className='flex items-center w-full p-4 font-semibold bg-white/10'>
+        <Text size='lg' className='flex items-center p-4 w-full font-semibold bg-white/10'>
           {props.title}
         </Text>
       ) : typeof props.title === 'object' ? (

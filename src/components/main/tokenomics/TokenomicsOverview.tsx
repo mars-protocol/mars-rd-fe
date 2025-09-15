@@ -253,7 +253,7 @@ export default function TokenomicsOverview() {
   )
 
   return (
-    <Card className='p-6 h-full bg-white/5'>
+    <Card className='p-4 h-full md:p-6 bg-white/5'>
       <div className='flex flex-col space-y-6 h-full'>
         {/* Header: Token Info and Price */}
         <div className='flex flex-col space-y-4 lg:flex-row lg:justify-between lg:items-center lg:space-y-0'>
@@ -277,7 +277,15 @@ export default function TokenomicsOverview() {
                 </Text>
               </div>
               <div className='flex items-center mt-1 space-x-2'>
-                <Text size='xs' className='font-mono truncate text-white/50 max-w-[300px]'>
+                {/* Mobile: Truncated denom */}
+                <Text
+                  size='xs'
+                  className='font-mono text-white/50 truncate max-w-[200px] lg:hidden'
+                >
+                  {DENOM}
+                </Text>
+                {/* Desktop: Full denom */}
+                <Text size='xs' className='hidden font-mono text-white/50 lg:block'>
                   {DENOM}
                 </Text>
                 <button

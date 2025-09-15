@@ -56,15 +56,15 @@ export default function TokenomicsCharts() {
   }, [])
 
   return (
-    <Card className='p-6 w-full bg-white/5'>
+    <Card className='p-4 w-full md:p-6 bg-white/5'>
       <div className='flex flex-col gap-6'>
-        <div className='flex justify-between items-center'>
-          <Text>Tokenomics Data</Text>
+        <div className='flex flex-wrap justify-between items-center'>
+          <Text className='pb-2'>Tokenomics Data</Text>
           <TimeframeSelector
             timeframe={TOKENOMICS_TIMEFRAME}
             selectedTimeframe={selectedTimeframe}
             setSelectedTimeframe={setSelectedTimeframe}
-            className='!my-0'
+            className='!my-0 pb-2'
           />
         </div>
         <Divider />

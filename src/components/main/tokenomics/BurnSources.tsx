@@ -42,7 +42,7 @@ const burnSources: BurnSource[] = [
 
 export default function BurnSources() {
   return (
-    <Card className='p-8 w-full bg-gradient-to-br border from-red-500/10 to-red-500/5 border-red-500/20'>
+    <Card className='p-2 w-full bg-gradient-to-br border md:p-8 from-red-500/10 to-red-500/5 border-red-500/20'>
       <div className='space-y-6'>
         <div className='space-y-2 text-center'>
           <Text size='2xl' className='font-bold text-white'>
@@ -58,7 +58,7 @@ export default function BurnSources() {
           {burnSources.map((source, index) => (
             <Card
               key={index}
-              className='p-6 border transition-all duration-300 bg-white/5 border-white/10 hover:border-red-500/30 group hover:bg-red-500/5'
+              className='p-4 border transition-all duration-300 md:p-6 bg-white/5 border-white/10 hover:border-red-500/30 group hover:bg-red-500/5'
             >
               <div className='space-y-4'>
                 <div className='space-y-2'>
@@ -88,7 +88,7 @@ export default function BurnSources() {
           ))}
         </div>
 
-        <div className='p-6 bg-gradient-to-r via-transparent rounded-lg border from-red-500/20 to-red-500/20 border-red-500/20'>
+        <div className='p-4 bg-gradient-to-r via-transparent rounded-lg border md:p-6 from-red-500/20 to-red-500/20 border-red-500/20'>
           <div className='space-y-3 text-center'>
             <Text size='lg' className='font-semibold text-white'>
               Revenue-Driven Deflation
