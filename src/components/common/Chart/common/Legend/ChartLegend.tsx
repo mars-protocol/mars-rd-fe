@@ -37,10 +37,10 @@ export default function ChartLegend(props: Props) {
     })
 
   return (
-    <div className='flex justify-end gap-1 sm:gap-4 mb-3 ml-3'>
+    <div className='flex gap-1 justify-end mb-3 ml-3 sm:gap-4'>
       {filteredPayload.map((entry, index) => (
-        <div className='flex items-center' key={`item-${index}`}>
-          <Circle className='fill-current h-2 w-2' color={entry.payload.stroke} />
+        <div className='flex items-center pl-2 md:pl-0' key={`item-${index}`}>
+          <Circle className='w-2 h-2 fill-current' color={entry.payload.stroke} />
           <Text size='xs' className='mx-2'>
             {entry.value}
           </Text>

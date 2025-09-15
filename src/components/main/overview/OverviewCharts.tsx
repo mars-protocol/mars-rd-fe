@@ -74,7 +74,7 @@ export default function OverviewCharts() {
   }
 
   return (
-    <Card className='p-6 w-full bg-white/5'>
+    <Card className='p-4 w-full md:p-6 bg-white/5'>
       <div className='flex flex-col gap-6'>
         <div className='flex justify-between items-center'>
           <Text>Overview Data</Text>
