@@ -34,7 +34,7 @@ const burnSources: BurnSource[] = [
   {
     title: 'Buyback and Burn Program',
     description:
-      "40% of Mars Protocol's revenue is allocated to systematic buybacks and burns, driving ongoing deflationary pressure.",
+      "45% of Mars Protocol's revenue is allocated to systematic buybacks and burns, driving ongoing deflationary pressure.",
     url: 'https://daodao.zone/dao/neutron1pxjszcmmdxwtw9kv533u3hcudl6qahsa42chcs24gervf4ge40usaw3pcr/proposals/A64',
     linkName: 'Governance Proposal',
   },
@@ -101,7 +101,7 @@ export default function BurnSources() {
             <div className='flex justify-center items-center pt-4 space-x-8'>
               <div className='text-center'>
                 <Text size='xl' className='font-bold text-red-400'>
-                  40%
+                  45%
                 </Text>
                 <Text size='sm' className='text-white/60'>
                   of Revenue
