@@ -120,7 +120,7 @@ export const PERPS_CHART_TRANSFORMATIONS = {
     {
       path: ['funding_and_pnl', 'funding_rate'],
       targetKey: 'funding_rate',
-      formatFn: (value: number) => value * 365 * 100,
+      formatFn: (value: number) => value * 365,
     },
   ],
   vaultApy: [{ path: ['apy'], targetKey: 'apy' }],
