@@ -5,7 +5,11 @@ import useSWRImmutable from 'swr/immutable'
 export default function useTotalSupply() {
   const chainConfig = useChainConfig()
 
-  return useSWRImmutable(`chains/${chainConfig.id}/tokenomics/totalSupply`, async () =>
-    getTotalSupply(),
+  return useSWRImmutable(
+    `chains/${chainConfig.id}/tokenomics/totalSupply`,
+    async () => getTotalSupply(),
+    {
+      refreshInterval: 300_000,
+    },
   )
 }

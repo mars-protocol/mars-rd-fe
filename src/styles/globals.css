@@ -191,3 +191,7 @@ svg {
   fill: theme('colors.martian-red');
   r: 5px;
 }
+
+* {
+  outline: none;
+}

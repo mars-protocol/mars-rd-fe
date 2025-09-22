@@ -3,6 +3,7 @@ import MetricsCard from 'components/common/Card/MetricsCard'
 import { GridToken } from 'components/common/Icons'
 import { BN_ZERO, MRC_98_BURN_AMOUNT } from 'constants/math'
 import useCirculatingSupply from 'hooks/tokenomics/useCirculatingSupply'
+import useStakedSupply from 'hooks/tokenomics/useStakedSupply'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
 import { useMemo } from 'react'
@@ -11,10 +12,12 @@ import { BN } from 'utils/helpers'
 export default function TokenomicsMetrics() {
   const { data: circulatingSupplyData, isLoading: isLoadingCirculatingSupply } =
     useCirculatingSupply()
+  const { data: stakedSupplyData, isLoading: isLoadingStakedSupply } = useStakedSupply()
   const { data: totalSupplyData, isLoading: isLoadingTotalSupply } = useTotalSupply()
   const { data: tokenomicsData, isLoading: isLoadingTokenomicsData } = useTokenomicsData('30')
 
   const circulatingSupply = circulatingSupplyData ?? 0
+  const stakedSupply = stakedSupplyData ?? 0
   const totalSupply = totalSupplyData ?? 0
 
   // Get the latest price from tokenomics data (first element is most recent)
@@ -31,6 +34,10 @@ export default function TokenomicsMetrics() {
   const circulatingMarketCap = useMemo(
     () => BN(circulatingSupply).multipliedBy(marsTokenPrice),
     [circulatingSupply, marsTokenPrice],
+  )
+  const stakedMarketCap = useMemo(
+    () => BN(stakedSupply).multipliedBy(marsTokenPrice),
+    [stakedSupply, marsTokenPrice],
   )
 
   const totalValueBurned = useMemo(() => {
@@ -60,6 +67,12 @@ export default function TokenomicsMetrics() {
       formatOptions: { abbreviated: true },
     },
     {
+      value: stakedMarketCap,
+      label: 'Staked Value',
+      isCurrency: true,
+      formatOptions: { abbreviated: true },
+    },
+    {
       value: totalValueBurned,
       label: 'Total Value Burned',
       isCurrency: true,
@@ -67,7 +80,11 @@ export default function TokenomicsMetrics() {
     },
   ]
 
-  const isLoading = isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingTokenomicsData
+  const isLoading =
+    isLoadingCirculatingSupply ||
+    isLoadingStakedSupply ||
+    isLoadingTotalSupply ||
+    isLoadingTokenomicsData
 
   return (
     <MetricsCard
