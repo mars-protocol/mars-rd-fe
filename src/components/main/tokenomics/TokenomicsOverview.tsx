@@ -6,6 +6,7 @@ import MarsTokenCard from 'components/main/tokenomics/MarsTokenCard'
 import { CHART_COLORS } from 'constants/chartData'
 import { MRC_98_BURN_AMOUNT } from 'constants/math'
 import useCirculatingSupply from 'hooks/tokenomics/useCirculatingSupply'
+import useStakedSupply from 'hooks/tokenomics/useStakedSupply'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
 import { useCallback, useMemo } from 'react'
@@ -52,13 +53,19 @@ export default function TokenomicsOverview() {
   // Data hooks
   const { data: circulatingSupplyData, isLoading: isLoadingCirculatingSupply } =
     useCirculatingSupply()
+  const { data: stakedSupplyData, isLoading: isLoadingStakedSupply } = useStakedSupply()
   const { data: totalSupplyData, isLoading: isLoadingTotalSupply } = useTotalSupply()
   const { data: tokenomicsData, isLoading: isLoadingTokenomicsData } = useTokenomicsData('30')
 
   // Computed values
   const circulatingSupply = circulatingSupplyData ?? 0
+  const stakedSupply = stakedSupplyData ?? 0
   const totalSupply = totalSupplyData ?? 0
-  const isLoading = isLoadingCirculatingSupply || isLoadingTotalSupply || isLoadingTokenomicsData
+  const isLoading =
+    isLoadingCirculatingSupply ||
+    isLoadingStakedSupply ||
+    isLoadingTotalSupply ||
+    isLoadingTokenomicsData
 
   // Supply calculations
   const totalBurnedSupply = useMemo(() => {
@@ -70,14 +77,25 @@ export default function TokenomicsOverview() {
     return Math.max(0, totalSupply - circulatingSupply)
   }, [totalSupply, circulatingSupply])
 
+  const unstakedCirculatingSupply = useMemo(() => {
+    return Math.max(0, circulatingSupply - stakedSupply)
+  }, [circulatingSupply, stakedSupply])
+
   // Stable pie chart data structure - only values change, structure stays the same
   const pieData = useMemo((): PieDataItem[] => {
     // Create stable objects with consistent keys to prevent re-renders
     const data = [
       {
-        name: 'Circulating Supply',
-        shortName: 'Circulating',
-        value: circulatingSupply,
+        name: 'Non-Staked',
+        shortName: 'Non-Staked',
+        value: unstakedCirculatingSupply,
+        color: CHART_COLORS.primary,
+        gradientId: 'circulating-gradient',
+      },
+      {
+        name: 'Staked Supply',
+        shortName: 'Staked Circulating',
+        value: stakedSupply,
         color: CHART_COLORS.primary,
         gradientId: 'circulating-gradient',
       },
@@ -99,12 +117,13 @@ export default function TokenomicsOverview() {
 
     // Only return new array if values actually changed significantly
     return data
-  }, [circulatingSupply, nonCirculatingSupply, totalBurnedSupply])
+  }, [unstakedCirculatingSupply, stakedSupply, nonCirculatingSupply, totalBurnedSupply])
 
   // Stable label name mapping to prevent re-renders
   const labelMapping = useMemo(
     () => ({
-      'Circulating Supply': 'Circulating',
+      'Non-Staked': 'Non-Staked',
+      'Staked Supply': 'Staked',
       'Vested/Locked/DAO': 'Vested/Locked',
       'Burned Supply': 'Burned',
     }),
@@ -196,12 +215,35 @@ export default function TokenomicsOverview() {
       {
         label: 'Circulating Supply',
         value: circulatingSupply,
-        className: 'p-1 bg-gradient-to-r rounded-lg from-green-500/20 to-green-500/10',
-        colorDot: CHART_COLORS.primary,
+        className: 'p-1',
+        isBold: true,
         showDivider: false,
       },
+      {
+        label: ' ↳ Non-Staked',
+        value: unstakedCirculatingSupply,
+        className: 'pl-4 pr-1 py-1 bg-gradient-to-r rounded-lg from-green-500/20 to-green-500/10',
+        colorDot: CHART_COLORS.primary,
+        showDivider: false,
+        isSubItem: true,
+      },
+      {
+        label: ' ↳ Staked',
+        value: stakedSupply,
+        className: 'pl-4 pr-1 py-1 bg-gradient-to-r rounded-lg from-green-500/15 to-green-500/8',
+        colorDot: CHART_COLORS.primary,
+        showDivider: false,
+        isSubItem: true,
+      },
     ],
-    [totalBurnedSupply, totalSupply, nonCirculatingSupply, circulatingSupply],
+    [
+      totalBurnedSupply,
+      totalSupply,
+      nonCirculatingSupply,
+      circulatingSupply,
+      unstakedCirculatingSupply,
+      stakedSupply,
+    ],
   )
 
   return (
@@ -234,14 +276,14 @@ export default function TokenomicsOverview() {
                         />
                       )}
                       <Text
-                        className={`text-xs md:text-sm text-white/90 ${item.isBold ? 'font-bold text-white' : ''}`}
+                        className={`text-xs md:text-sm ${item.isSubItem ? 'text-white/70' : 'text-white/90'} ${item.isBold ? 'font-bold text-white' : ''}`}
                       >
                         {item.label}
                       </Text>
                     </div>
                     <FormattedNumber
                       amount={item.value}
-                      className={`text-xs md:text-sm text-white ${item.isBold ? 'font-bold' : ''}`}
+                      className={`text-xs md:text-sm ${item.isSubItem ? 'text-white/70' : 'text-white'} ${item.isBold ? 'font-bold' : ''}`}
                       options={{ abbreviated: false, suffix: ' MARS' }}
                     />
                   </div>

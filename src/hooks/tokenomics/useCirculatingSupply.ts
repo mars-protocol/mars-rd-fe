@@ -9,7 +9,7 @@ export default function useCirculatingSupply() {
     `chains/${chainConfig.id}/tokenomics/circulatingSupply`,
     async () => getCirculatingSupply(),
     {
-      refreshInterval: 60_000,
+      refreshInterval: 300_000,
     },
   )
 }
