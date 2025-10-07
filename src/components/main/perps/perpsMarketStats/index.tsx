@@ -21,16 +21,16 @@ import { BN } from 'utils/helpers'
 
 interface Props {
   timeframe: string
-  selectedOption: string
+  selectedMarket: string
 }
 
 export default function PerpsMarketStats(props: Props) {
-  const { timeframe, selectedOption } = props
+  const { timeframe, selectedMarket } = props
   const {
     data: perpsStats,
     isLoading: perpsStatsLoading,
     error,
-  } = usePerpsStats(selectedOption, timeframe)
+  } = usePerpsStats(selectedMarket, timeframe)
   const { data: perpsVaultApyData } = usePerpsVaultStats(timeframe)
 
   const {
@@ -51,12 +51,12 @@ export default function PerpsMarketStats(props: Props) {
 
   const handleRefetch = async () => {
     await Promise.all([
-      mutate(['perps/stats', selectedOption, timeframe], undefined, { revalidate: true }),
+      mutate(['perps/stats', selectedMarket, timeframe], undefined, { revalidate: true }),
       mutate(['perps/vault-stats', timeframe], undefined, { revalidate: true }),
     ])
   }
 
-  const isGlobalStats = selectedOption === 'total'
+  const isGlobalStats = selectedMarket === 'total'
   const transformedFundingRateData = useMemo(() => {
     return fundingRateData.map((item) => ({
       ...item,

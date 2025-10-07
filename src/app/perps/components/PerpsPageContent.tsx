@@ -10,7 +10,7 @@ import Divider from '../../../components/common/Divider'
 import Text from '../../../components/common/Text'
 import PerpsMarketStats from '../../../components/main/perps/perpsMarketStats'
 import PerpsMetrics from '../../../components/main/perps/PerpsMetrics'
-import { TIMEFRAME } from '../../../constants/timeframe'
+import { PERPS_TIMEFRAME } from '../../../constants/timeframe'
 import { neutronPerps } from '../../../data/assets/neutron-perps'
 import useChainConfig from '../../../hooks/chain/useChainConfig'
 import { useAllPerpsParamsSC } from '../../../hooks/perps/usePerpsParams'
@@ -39,8 +39,8 @@ export default function PerpsPageContent({ selectedMarket }: PerpsPageContentPro
     }
   }, [chainConfig.perps, router])
 
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAME[2].value)
-  const [selectedOption, setSelectedOption] = useState<string>(
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(PERPS_TIMEFRAME[2].value)
+  const [selectedMarketOption, setSelectedMarketOption] = useState<string>(
     selectedMarket ? selectedMarket : 'total',
   )
 
@@ -52,7 +52,7 @@ export default function PerpsPageContent({ selectedMarket }: PerpsPageContentPro
       const urlParam = value.replace('perps/', '')
       router.push(`/perps/${urlParam}`)
     }
-    setSelectedOption(value)
+    setSelectedMarketOption(value)
   }
 
   const displayOptions = useMemo(
@@ -87,12 +87,12 @@ export default function PerpsPageContent({ selectedMarket }: PerpsPageContentPro
       <ClientWrapper>
         <div className='w-full'>
           <SelectionControlPanel
-            timeframe={TIMEFRAME}
+            timeframe={PERPS_TIMEFRAME}
             selectedTimeframe={selectedTimeframe}
             onTimeframeSelect={setSelectedTimeframe}
           />
           <Divider className='mt-2 mb-4' />
-          <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
+          <PerpsMarketStats timeframe={selectedTimeframe} selectedMarket={selectedMarketOption} />
         </div>
       </ClientWrapper>
     )
@@ -107,14 +107,14 @@ export default function PerpsPageContent({ selectedMarket }: PerpsPageContentPro
         >
           <SelectionControlPanel
             selectOptions={displayOptions}
-            defaultSelectValue={selectedOption}
+            defaultSelectValue={selectedMarketOption}
             onSelectChange={handleSelectChange}
-            timeframe={TIMEFRAME}
+            timeframe={PERPS_TIMEFRAME}
             selectedTimeframe={selectedTimeframe}
             onTimeframeSelect={setSelectedTimeframe}
           />
           <Divider className='mt-2 mb-4' />
-          <PerpsMarketStats timeframe={selectedTimeframe} selectedOption={selectedOption} />
+          <PerpsMarketStats timeframe={selectedTimeframe} selectedMarket={selectedMarketOption} />
         </Card>
       </div>
     </ClientWrapper>

@@ -1,4 +1,4 @@
-import { TIMEFRAME } from 'constants/timeframe'
+import { PERPS_TIMEFRAME } from 'constants/timeframe'
 import { getApiBaseUrl } from 'utils/api'
 import { getUrl } from 'utils/url'
 export default async function getPerpsMarketStats(
@@ -7,7 +7,7 @@ export default async function getPerpsMarketStats(
 ) {
   try {
     const baseUrl = getApiBaseUrl()
-    const timeframeConfig = TIMEFRAME.find((t) => t.value === timeframe) || {
+    const timeframeConfig = PERPS_TIMEFRAME.find((t) => t.value === timeframe) || {
       granularity: 'day',
       value: Number(timeframe),
     }
