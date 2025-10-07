@@ -404,6 +404,7 @@ export const OVERVIEW_CHART_TRANSFORMATIONS = {
     {
       path: ['total_borrow'],
       targetKey: 'borrow',
+      formatFn: (value: number) => -value,
     },
   ],
 }
@@ -424,12 +425,14 @@ export const OVERVIEW_CHART_CONFIGS = {
         name: 'Total Supply',
         color: CHART_COLORS.tertiary,
         isUSD: true,
+        stackId: 'supply',
       },
       {
         dataKey: 'borrow',
         name: 'Total Borrow',
         color: CHART_COLORS.secondary,
         isUSD: true,
+        stackId: 'borrow',
       },
     ],
   },

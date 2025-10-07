@@ -1509,6 +1509,7 @@ interface LineConfig {
   yAxisId?: string
   isUSD?: boolean
   isNormalized?: boolean
+  stackId?: string
 }
 
 interface ChartConfig {

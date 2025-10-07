@@ -226,7 +226,7 @@ export default function ComposedChartBody(props: Props) {
               yAxisId={bar.yAxisId || 'left'}
               dataKey={bar.dataKey}
               name={bar.name}
-              stackId='positions'
+              stackId={bar.stackId || 'positions'}
               fill={`url(#gradient-${index})`}
               stroke={bar.color}
               maxBarSize={24}

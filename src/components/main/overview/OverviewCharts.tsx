@@ -60,6 +60,12 @@ export default function OverviewCharts() {
           lines={OVERVIEW_CHART_CONFIGS.tvl}
           height='h-100'
           title='Total Value Locked'
+          customYAxisDomain={(values) => {
+            const max = Math.max(...values)
+            const min = Math.min(...values)
+            const padding = (max - min) * 0.3 // 30% padding
+            return [min - padding, max + padding]
+          }}
         />
 
         <ComposedChart
