@@ -5,7 +5,7 @@ import { GridLandscape } from 'components/common/Icons'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 
 export default function PerpsMetrics() {
-  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', '365')
+  const { data: perpsStats, isLoading: perpsStatsLoading } = usePerpsStats('total', 'all')
 
   const perpsMetrics: Metric[] = [
     {

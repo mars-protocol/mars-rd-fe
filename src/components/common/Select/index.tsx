@@ -21,7 +21,7 @@ interface Props {
 
 export default function Select(props: Props) {
   const [value, setValue] = useState(props.defaultValue)
-  const selectedOption = value
+  const selectedMarket = value
     ? props.options.find((option) => option?.value === value || option?.denom === value)
     : undefined
   const [selected, setSelected] = useState<SelectOption | undefined>(undefined)
@@ -39,7 +39,7 @@ export default function Select(props: Props) {
   }
 
   useEffect(() => {
-    if (selectedOption && !selected) setSelected(selectedOption)
+    if (selectedMarket && !selected) setSelected(selectedMarket)
 
     if (props.defaultValue && value === props.defaultValue) return
     setValue(props.defaultValue)
@@ -48,7 +48,7 @@ export default function Select(props: Props) {
     )
     if (!option) return
     setSelected(option)
-  }, [value, props.defaultValue, props.options, selected, selectedOption])
+  }, [value, props.defaultValue, props.options, selected, selectedMarket])
 
   return (
     <div className={classNames('flex flex-col flex-wrap', props.containerClassName)}>

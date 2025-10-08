@@ -7,9 +7,9 @@ import Text from 'components/common/Text'
 import BurnSources from 'components/main/tokenomics/BurnSources'
 import { TOKENOMICS_CHART_CONFIGS } from 'constants/chartData'
 import { TOKENOMICS_TIMEFRAME } from 'constants/timeframe'
+import { useTokenomicsChartData } from 'hooks/tokenomics/useTokenomicsChartData'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import { useMemo, useState } from 'react'
-import { useTokenomicsChartData } from '../../../hooks/tokenomics/useTokenomicsChartData'
 
 export default function TokenomicsCharts() {
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TOKENOMICS_TIMEFRAME[1].value)

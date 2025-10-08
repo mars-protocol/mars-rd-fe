@@ -1,14 +1,16 @@
-export const TIMEFRAME = [
+export const PERPS_TIMEFRAME = [
   { value: '24', label: '24H', granularity: 'hour' },
   { value: '7', label: '7D', granularity: 'day' },
   { value: '30', label: '30D', granularity: 'day' },
   { value: '90', label: '90D', granularity: 'day' },
+  { value: '12', label: '1Y', granularity: 'month' },
 ]
 
 export const OVERVIEW_TIMEFRAME = [
   { value: '7', label: '7D', granularity: 'day' },
   { value: '30', label: '30D', granularity: 'day' },
   { value: '90', label: '90D', granularity: 'day' },
+  { value: '365', label: '1Y', granularity: 'day' },
 ]
 
 export const TOKENOMICS_TIMEFRAME = [
