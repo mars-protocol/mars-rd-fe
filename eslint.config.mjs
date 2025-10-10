@@ -13,7 +13,14 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   eslintPluginPrettierRecommended,
   // Next.js recommended rules for App Router
-  ...nextEslintPlugin.configs['core-web-vitals'],
+  {
+    plugins: {
+      '@next/next': nextEslintPlugin,
+    },
+    rules: {
+      ...nextEslintPlugin.configs['core-web-vitals'].rules,
+    },
+  },
 
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
   {
@@ -33,7 +40,6 @@ export default tseslint.config(
     plugins: {
       react: eslintPluginReact,
       'react-hooks': fixupPluginRules(eslintPluginReactHooks),
-      next: fixupPluginRules(nextEslintPlugin),
     },
   },
   {
