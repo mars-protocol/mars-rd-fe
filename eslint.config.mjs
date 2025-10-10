@@ -1,8 +1,8 @@
 // @ts-check
 
 import { fixupPluginRules } from '@eslint/compat'
-import nextEslintPlugin from '@next/eslint-plugin-next'
 import eslint from '@eslint/js'
+import nextEslintPlugin from '@next/eslint-plugin-next'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import eslintPluginReact from 'eslint-plugin-react'
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks'
@@ -39,7 +39,6 @@ export default tseslint.config(
   {
     rules: {
       // Ensure Next.js link, image, and other best practices
-      ...nextEslintPlugin.configs['core-web-vitals'].rules,
       ...eslintPluginReactHooks.configs.recommended.rules,
       '@typescript-eslint/no-empty-interface': 'off',
       '@typescript-eslint/no-explicit-any': 'off',

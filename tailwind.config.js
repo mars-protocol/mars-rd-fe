@@ -37,9 +37,11 @@ module.exports = {
     'text-5xl',
     'text-yellow-300',
     'text-violet-500',
+    'text-green',
     'text-grey-light',
     'fill-yellow-300',
     'fill-violet-500',
+    'fill-green',
     'fill-martian-red',
     'fill-grey-light',
     'w-2',
@@ -65,6 +67,15 @@ module.exports = {
     'bg-slider-6',
     'bg-slider-7',
     'bg-slider-8',
+    'gradient-droplets',
+    'gradient-stride',
+    'gradient-lido',
+    'gradient-description',
+    'gradient-milkyway',
+    'droplets',
+    'stride',
+    'lido',
+    'milkyway',
   ],
   theme: {
     extend: {
@@ -84,14 +95,15 @@ module.exports = {
         desktop: '100% auto',
       },
       borderRadius: {
-        xs: '2px',
-        sm: '4px',
-        base: '8px',
-        lg: '12px',
-        xl: '16px',
-        '2xl': '20px',
-        '3xl': '30px',
-        '4xl': '100px',
+        none: '0px',
+        xs: '0px',
+        sm: '2px',
+        base: '0px',
+        lg: '0px',
+        xl: '0px',
+        '2xl': '0px',
+        '3xl': '0px',
+        '4xl': '0px',
       },
       boxShadow: {
         inset: 'inset 0px 2px 2px hsl(var(--color-black) /0.25)',
@@ -155,6 +167,11 @@ module.exports = {
         'slider-6': 'hsl(var(--color-slider-6) / <alpha-value>)',
         'slider-7': 'hsl(var(--color-slider-7) / <alpha-value>)',
         'slider-8': 'hsl(var(--color-slider-8) / <alpha-value>)',
+        'card-bg': 'hsl(var(--color-card-bg) / <alpha-value>)',
+        'card-border': 'hsl(var(--color-card-border) / <alpha-value>)',
+        surface: 'hsl(var(--color-surface) / <alpha-value>)',
+        'surface-light': 'hsl(var(--color-surface-light) / <alpha-value>)',
+        'surface-dark': 'hsl(var(--color-surface-dark) / <alpha-value>)',
       },
       containers: {
         'nav-0': '140px',
@@ -169,17 +186,17 @@ module.exports = {
         sans: ['Inter', 'sans-serif'],
       },
       fontSize: {
-        '2xs': ['10px', '16px'],
+        '2xs': ['11px', '15px'],
         xs: ['12px', '16px'],
         sm: ['14px', '18px'],
-        base: ['16px', '20px'],
-        lg: ['17px', '24px'],
-        xl: ['19px', '28px'],
-        '2xl': ['21px', '32px'],
-        '3xl': ['24px', '36px'],
-        '4xl': ['30px', '40px'],
-        '5xl': ['39px', '56px'],
-        '6xl': ['61px', '80px'],
+        base: ['15px', '19px'],
+        lg: ['16px', '21px'],
+        xl: ['17px', '23px'],
+        '2xl': ['19px', '25px'],
+        '3xl': ['22px', '30px'],
+        '4xl': ['26px', '34px'],
+        '5xl': ['32px', '44px'],
+        '6xl': ['48px', '64px'],
       },
       fontWeight: {
         light: 300,
@@ -392,10 +409,10 @@ module.exports = {
     containerQueries,
     plugin(function ({ addBase, addUtilities, theme }) {
       addBase({
-        h1: { fontSize: '61px', lineHeight: '80px', fontWeight: theme('fontWeight.light') },
-        h2: { fontSize: '9px', lineHeight: '56px' },
-        h3: { fontSize: '30px', lineHeight: '40px' },
-        h4: { fontSize: '24px', lineHeight: '36px', fontWeight: theme('fontWeight.normal') },
+        h1: { fontSize: '48px', lineHeight: '64px', fontWeight: theme('fontWeight.light') },
+        h2: { fontSize: '32px', lineHeight: '44px' },
+        h3: { fontSize: '24px', lineHeight: '32px' },
+        h4: { fontSize: '20px', lineHeight: '28px', fontWeight: theme('fontWeight.normal') },
       })
 
       addUtilities({
@@ -428,23 +445,19 @@ module.exports = {
           transition: 'stroke-dashoffset 1000ms ease-in',
         },
         '.gradient-card': {
-          background:
-            'linear-gradient(180deg, hsl(var(--color-white) /0.2) 0%, hsl(var(--color-white) /0) 100%), linear-gradient(0deg,  hsl(var(--color-white) /0.05),  hsl(var(--color-white) /0.05))',
+          background: 'transparent',
         },
         '.gradient-card-content': {
-          backgroundImage: 'linear-gradient(to right, transparent, hsl(var(--color-white) /0.05))',
+          background: 'transparent',
         },
         '.gradient-header': {
-          background:
-            'linear-gradient(90deg, hsl(var(--color-white) /0.1) 0%, hsl(var(--color-white) /0) 50%)',
+          background: 'hsl(var(--color-surface-dark))',
         },
         '.gradient-intro': {
-          background:
-            'linear-gradient(90deg, hsl(var(--color-white) /0) 60%, hsl(var(--color-purple-dark) /0.1) 90%)',
+          background: 'hsl(var(--color-surface))',
         },
         '.gradient-hls-intro': {
-          background:
-            'linear-gradient(90deg, hsl(var(--color-white) /0) 60%, hsl(var(--color-hls-secondary) /0.1) 90%)',
+          background: 'hsl(var(--color-surface))',
         },
         '.gradient-hls': {
           background:
@@ -456,11 +469,11 @@ module.exports = {
         },
         '.gradient-primary-to-secondary': {
           background:
-            'linear-gradient(180deg, hsl(var(--color-purple)) 0%, hsl(var(--color-purple-dark)) 100%)',
+            'linear-gradient(180deg, hsl(var(--color-martian-red)) 0%, hsl(var(--color-mars)) 100%)',
         },
         '.gradient-secondary-to-primary': {
           background:
-            'linear-gradient(180deg, hsl(var(--color-purple-dark)) 100%, hsl(var(--color-purple)) 0%)',
+            'linear-gradient(180deg, hsl(var(--color-martian-red)) 100%, hsl(var(--color-mars)) 0%)',
         },
         '.gradient-slider-1': {
           background:
@@ -482,6 +495,10 @@ module.exports = {
           background:
             'linear-gradient(270deg, hsl(var(--color-slider-pink-primary) /0.89) 0%, hsl(var(--color-slider-pink-secondary) /0.05) 100%)',
         },
+        '.gradient-slider-martian-red': {
+          background:
+            'linear-gradient(270deg, hsl(var(--color-martian-red) /0.886) 0%, hsl(var(--color-martian-red) /0.051) 100%)',
+        },
         '.gradient-slider-green': {
           background:
             'linear-gradient(270deg, hsl(var(--color-slider-green-primary) /0.886) 0%, hsl(var(--color-slider-green-secondary) /0.051) 100%)',
@@ -490,13 +507,26 @@ module.exports = {
           background:
             'linear-gradient(270deg, hsl(var(--color-slider-red-primary) /0.886) 0%, hsl(var(--color-slider-red-secondary) /0.051) 100%)',
         },
-        '.gradient-tooltip': {
-          background:
-            'linear-gradient(77.47deg, hsl(var(--color-tooltip-primary) /0.9) 11.58%, hsl(var(--color-tooltip-secondary) /0.9) 93.89%)',
-        },
         '.gradient-active-tab': {
           background:
             'linear-gradient(270deg, hsl(var(--color-active-tab-primary) /0.765) 0%, hsl(var(--color-active-tab-secondary) /0.886) 23.77%, hsl(var(--color-active-tab-tertiary) /0.26) 99.2%)',
+        },
+        '.gradient-droplets': {
+          background: 'linear-gradient(90deg, #6039FF, #E8B8FF)',
+        },
+        '.gradient-stride': {
+          background: 'linear-gradient(90deg, #E50571, #FB5DA9)',
+        },
+        '.gradient-lido': {
+          background:
+            'linear-gradient(rgb(101, 98, 255) 11.28%, rgb(0, 163, 255) 61.02%, rgb(99, 214, 210) 100%)',
+        },
+        '.gradient-description': {
+          background:
+            'linear-gradient(45deg, rgba(60, 90, 180, 0.3), rgba(60, 90, 180, 0.3), rgba(200, 0, 130, 0.3))',
+        },
+        '.gradient-milkyway': {
+          background: 'linear-gradient(90deg, #FEf7F1 0%, #FDE2FB 50%, #FDE4FC 100%)',
         },
         '.number': {
           whiteSpace: 'nowrap',
@@ -511,43 +541,43 @@ module.exports = {
           lineHeight: '12px',
           textTransform: 'uppercase',
           fontWeight: theme('fontWeight.semibold'),
-          letterSpacing: theme('letterSpacing.wide'),
+          letterSpacing: theme('letterSpacing.normal'),
         },
-        '.text-2xs': { fontSize: '10px', lineHeight: '16px' },
+        '.text-2xs': { fontSize: '10px', lineHeight: '14px' },
         '.text-2xs-caps': {
           fontSize: '10px',
-          lineHeight: '16px',
+          lineHeight: '14px',
           textTransform: 'uppercase',
           fontWeight: theme('fontWeight.semibold'),
-          letterSpacing: theme('letterSpacing.wide'),
+          letterSpacing: theme('letterSpacing.normal'),
         },
         '.text-xs-caps': {
           fontSize: '12px',
           lineHeight: '16px',
           textTransform: 'uppercase',
           fontWeight: theme('fontWeight.semibold'),
-          letterSpacing: theme('letterSpacing.wider'),
+          letterSpacing: theme('letterSpacing.normal'),
         },
         '.text-sm-caps': {
           fontSize: '14px',
-          lineHeight: '20px',
+          lineHeight: '18px',
           textTransform: 'uppercase',
           fontWeight: theme('fontWeight.semibold'),
-          letterSpacing: theme('letterSpacing.wider'),
+          letterSpacing: theme('letterSpacing.normal'),
         },
         '.text-base-caps': {
           fontSize: '16px',
           lineHeight: '20px',
           textTransform: 'uppercase',
           fontWeight: theme('fontWeight.semibold'),
-          letterSpacing: theme('letterSpacing.wider'),
+          letterSpacing: theme('letterSpacing.normal'),
         },
         '.text-lg-caps': {
           fontSize: '17px',
-          lineHeight: '24px',
+          lineHeight: '22px',
           textTransform: 'uppercase',
           fontWeight: theme('fontWeight.semibold'),
-          letterSpacing: theme('letterSpacing.wider'),
+          letterSpacing: theme('letterSpacing.normal'),
         },
         '.text-xl-caps': {
           fontSize: '19px',
@@ -580,6 +610,31 @@ module.exports = {
           backgroundRepeat: 'no-repeat',
           backgroundSize: '100% auto',
           backgroundPosition: 'top',
+        },
+        '.droplets': {
+          background: 'linear-gradient(90deg, #6039FF, #E8B8FF)',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          fontWeight: 'bold',
+        },
+        '.stride': {
+          background: 'linear-gradient(90deg, #E50571, #FB5DA9)',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          fontWeight: 'bold',
+        },
+        '.lido': {
+          background:
+            'linear-gradient(90deg, rgb(101, 98, 255) 11.28%, rgb(0, 163, 255) 61.02%, rgb(99, 214, 210) 100%)',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          fontWeight: 'bold',
+        },
+        '.milkyway': {
+          background: 'linear-gradient(90deg, #FEf7F1 0%, #FDE2FB 50%, #FDE4FC 100%)',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          fontWeight: 'bold',
         },
       })
     }),

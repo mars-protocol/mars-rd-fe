@@ -1,6 +1,6 @@
-import React from 'react'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import Select from 'components/common/Select'
+import React from 'react'
 
 interface Props {
   selectOptions?: { value: string; label: React.ReactNode }[]
@@ -27,7 +27,7 @@ export default function SelectionControlPanel(props: Props) {
           options={selectOptions}
           defaultValue={defaultSelectValue}
           onChange={onSelectChange}
-          className='relative border w-full sm:w-60 rounded-base border-white/10 bg-white/10'
+          className='relative border w-full sm:w-60 border-white/10 bg-white/10'
           containerClassName='justify-center w-full sm:w-auto'
         />
       )}

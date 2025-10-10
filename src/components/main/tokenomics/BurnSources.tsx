@@ -88,7 +88,7 @@ export default function BurnSources() {
           ))}
         </div>
 
-        <div className='p-4 bg-gradient-to-r via-transparent rounded-lg border md:p-6 from-red-500/20 to-red-500/20 border-red-500/20'>
+        <div className='p-4 bg-gradient-to-r via-transparent border md:p-6 from-red-500/20 to-red-500/20 border-red-500/20'>
           <div className='space-y-3 text-center'>
             <Text size='lg' className='font-semibold text-white'>
               Revenue-Driven Deflation

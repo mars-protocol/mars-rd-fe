@@ -1,15 +1,15 @@
 'use client'
 
 import classNames from 'classnames'
-import { useCallback, useEffect, useMemo } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { ChevronDown } from 'components/common/Icons'
 import Text from 'components/common/Text'
 import ChainSelect from 'components/header/ChainSelect'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import useStore from 'store'
-import { getPage, getRoute } from 'utils/route'
+import { getPage } from 'utils/route'
 
 interface Props {
   menuTree: (chainConfig: ChainConfig) => MenuTreeEntry[]
@@ -70,7 +70,7 @@ export default function MobileNavigation(props: Props) {
           <Text size='sm'>Page:</Text>
           <div className='relative'>
             <select
-              className='py-1.5 pl-2 pr-6 text-sm text-white bg-transparent border rounded-sm appearance-none border-white/30 focus:outline-none active:outline-none'
+              className='py-1.5 pl-2 pr-6 text-sm text-white bg-transparent border appearance-none border-white/30 focus:outline-none active:outline-none'
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
                 selectPage(event.target.value as Page)
               }
