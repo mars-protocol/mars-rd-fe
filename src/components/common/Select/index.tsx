@@ -61,7 +61,7 @@ export default function Select(props: Props) {
         data-testid='select-component'
         className={classNames(
           props.isParent && 'relative',
-          'flex min-w-fit items-center gap-2 bg-white/10',
+          'flex min-w-fit items-center gap-2 rounded-sm bg-surface-light border border-white/10',
           props.className,
         )}
         role='select'
