@@ -1,4 +1,5 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
+import classNames from 'classnames'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { InfoCircle, Cross } from 'components/common/Icons'
 import SearchBar from 'components/common/SearchBar'
@@ -22,6 +23,7 @@ export default function LiquidationsTable() {
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('')
   const [selectedAccounts, setSelectedAccounts] = useState<string[]>([])
+  const [activeAccounts, setActiveAccounts] = useState<string[]>([])
   const pageSize = 25
   const chainConfig = useChainConfig()
 
@@ -29,15 +31,13 @@ export default function LiquidationsTable() {
     setPage(1)
     setSearchQuery('')
     setSelectedAccounts([])
+    setActiveAccounts([])
   }, [chainConfig.id])
 
+  // Reset page when any filter changes
   useEffect(() => {
     setPage(1)
-  }, [debouncedSearchQuery])
-
-  useEffect(() => {
-    setPage(1)
-  }, [selectedAccounts])
+  }, [debouncedSearchQuery, selectedAccounts, activeAccounts])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -47,13 +47,15 @@ export default function LiquidationsTable() {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  // Filter by selected accounts array, or by current search query if no accounts are selected
+  // Filter by active accounts, or all selected accounts if none are active, or by current search query
   const searchFilter =
-    selectedAccounts.length > 0
-      ? selectedAccounts
-      : debouncedSearchQuery
-        ? [debouncedSearchQuery]
-        : undefined
+    activeAccounts.length > 0
+      ? activeAccounts
+      : selectedAccounts.length > 0
+        ? selectedAccounts
+        : debouncedSearchQuery
+          ? [debouncedSearchQuery]
+          : undefined
 
   const { data: liquidations, isLoading: isLiquidationsDataLoading } = useLiquidations(
     page,
@@ -78,6 +80,19 @@ export default function LiquidationsTable() {
 
   const handleRemoveAccount = (account: string) => {
     setSelectedAccounts((prev) => prev.filter((acc) => acc !== account))
+    setActiveAccounts((prev) => prev.filter((acc) => acc !== account))
+  }
+
+  const handleToggleActiveAccount = (account: string) => {
+    setActiveAccounts((prev) => {
+      const isActive = prev.includes(account)
+
+      if (isActive) {
+        return prev.filter((acc) => acc !== account)
+      } else {
+        return [...prev, account]
+      }
+    })
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -90,27 +105,37 @@ export default function LiquidationsTable() {
 
   const titleComponent = (
     <div className='flex items-center justify-between w-full px-4 py-3 bg-surface-dark'>
-      <Text size='base' className='font-semibold'>
-        Recently Executed Liquidations
-      </Text>
+      <Text className='font-semibold'>Recently Executed Liquidations</Text>
       <div className='flex items-center gap-2'>
         {selectedAccounts.length > 0 && (
           <div className='flex items-center gap-2 flex-wrap'>
-            {selectedAccounts.map((account, index) => (
-              <div
-                key={index}
-                className='flex items-center gap-1 px-2 py-1.5 rounded-sm border border-white/30 bg-transparent text-xs text-white/80'
-              >
-                <span>{account}</span>
-                <button
-                  onClick={() => handleRemoveAccount(account)}
-                  className='w-2 h-2 text-white/40 hover:text-white/60 transition-colors'
-                  type='button'
+            {selectedAccounts.map((account, index) => {
+              const isActive = activeAccounts.includes(account)
+              return (
+                <div
+                  key={index}
+                  className={classNames(
+                    'flex items-center gap-1 px-2 py-1.5 rounded-sm border text-xs cursor-pointer transition-colors',
+                    isActive
+                      ? 'border-white bg-white/10 text-white font-medium'
+                      : 'border-white/30 bg-transparent text-white/60 hover:border-white/50',
+                  )}
+                  onClick={() => handleToggleActiveAccount(account)}
                 >
-                  <Cross className='w-2 h-2' />
-                </button>
-              </div>
-            ))}
+                  <span>{account}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRemoveAccount(account)
+                    }}
+                    className='w-2 h-2 text-white/40 hover:text-white/60 transition-colors'
+                    type='button'
+                  >
+                    <Cross className='w-2 h-2' />
+                  </button>
+                </div>
+              )
+            })}
           </div>
         )}
         <SearchBar
