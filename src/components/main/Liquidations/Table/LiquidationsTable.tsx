@@ -1,6 +1,8 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
+import classNames from 'classnames'
 import { CircularProgress } from 'components/common/CircularProgress'
-import { InfoCircle } from 'components/common/Icons'
+import { InfoCircle, Cross } from 'components/common/Icons'
+import SearchBar from 'components/common/SearchBar'
 import Table from 'components/common/Table'
 import Text from 'components/common/Text'
 import { Tooltip } from 'components/common/Tooltip'
@@ -18,16 +20,47 @@ import { useEffect, useMemo, useState } from 'react'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('')
+  const [selectedAccounts, setSelectedAccounts] = useState<string[]>([])
+  const [activeAccounts, setActiveAccounts] = useState<string[]>([])
   const pageSize = 25
   const chainConfig = useChainConfig()
 
   useEffect(() => {
     setPage(1)
+    setSearchQuery('')
+    setSelectedAccounts([])
+    setActiveAccounts([])
   }, [chainConfig.id])
+
+  // Reset page when any filter changes
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearchQuery, selectedAccounts, activeAccounts])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery])
+
+  // Filter by active accounts, or all selected accounts if none are active, or by current search query
+  const searchFilter =
+    activeAccounts.length > 0
+      ? activeAccounts
+      : selectedAccounts.length > 0
+        ? selectedAccounts
+        : debouncedSearchQuery
+          ? [debouncedSearchQuery]
+          : undefined
 
   const { data: liquidations, isLoading: isLiquidationsDataLoading } = useLiquidations(
     page,
     pageSize,
+    searchFilter,
   )
   const { data: assetsData, isLoading: isAssetsLoading } = useAssets()
 
@@ -38,7 +71,83 @@ export default function LiquidationsTable() {
     setPage(newPage)
   }
 
+  const handleAddAccount = () => {
+    if (searchQuery.trim() && !selectedAccounts.includes(searchQuery.trim())) {
+      setSelectedAccounts((prev) => [...prev, searchQuery.trim()])
+      setSearchQuery('')
+    }
+  }
+
+  const handleRemoveAccount = (account: string) => {
+    setSelectedAccounts((prev) => prev.filter((acc) => acc !== account))
+    setActiveAccounts((prev) => prev.filter((acc) => acc !== account))
+  }
+
+  const handleToggleActiveAccount = (account: string) => {
+    setActiveAccounts((prev) => {
+      const isActive = prev.includes(account)
+
+      if (isActive) {
+        return prev.filter((acc) => acc !== account)
+      } else {
+        return [...prev, account]
+      }
+    })
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleAddAccount()
+    }
+  }
+
   const isLoading = (!liquidations && isLiquidationsDataLoading) || (!assetsData && isAssetsLoading)
+
+  const titleComponent = (
+    <div className='flex flex-col md:flex-row md:items-center md:justify-between w-full px-4 py-3 bg-surface-dark gap-3'>
+      <Text className='font-semibold'>Recently Executed Liquidations</Text>
+      <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full md:w-auto'>
+        {selectedAccounts.length > 0 && (
+          <div className='flex items-center gap-2 flex-wrap'>
+            {selectedAccounts.map((account, index) => {
+              const isActive = activeAccounts.includes(account)
+              return (
+                <div
+                  key={index}
+                  className={classNames(
+                    'flex items-center gap-1 px-2 py-1.5 rounded-sm border text-xs cursor-pointer transition-colors',
+                    isActive
+                      ? 'border-white bg-white/10 text-white font-medium'
+                      : 'border-white/30 bg-transparent text-white/60 hover:border-white/50',
+                  )}
+                  onClick={() => handleToggleActiveAccount(account)}
+                >
+                  <span>{account}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRemoveAccount(account)
+                    }}
+                    className='w-2 h-2 text-white/40 hover:text-white/60 transition-colors'
+                    type='button'
+                  >
+                    <Cross className='w-2 h-2' />
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        )}
+        <SearchBar
+          value={searchQuery}
+          onChange={setSearchQuery}
+          onKeyDown={handleKeyPress}
+          className='w-full sm:w-80'
+          label='Search by account IDs...'
+        />
+      </div>
+    </div>
+  )
 
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
     const baseColumns = [
@@ -135,6 +244,26 @@ export default function LiquidationsTable() {
   }
 
   if (!liquidations?.data?.length) {
+    if (searchFilter) {
+      return (
+        <>
+          <Table
+            title={titleComponent}
+            columns={columns}
+            data={[]}
+            tableBodyClassName='text-lg'
+            initialSorting={[]}
+          />
+          <div className='flex flex-wrap justify-center w-full gap-4 py-8'>
+            <Text className='w-full text-center' size='lg'>
+              No liquidations found for account ID
+              {Array.isArray(searchFilter) && searchFilter.length > 1 ? 's' : ''} &quot;
+              {Array.isArray(searchFilter) ? searchFilter.join(', ') : searchFilter}&quot;
+            </Text>
+          </div>
+        </>
+      )
+    }
     return (
       <div className='flex flex-wrap justify-center w-full gap-4'>
         <Text className='w-full text-center' size='xl'>
@@ -147,7 +276,7 @@ export default function LiquidationsTable() {
   return (
     <>
       <Table
-        title='Recently Executed Liquidations'
+        title={titleComponent}
         columns={columns}
         data={liquidations.data}
         tableBodyClassName='text-lg'
