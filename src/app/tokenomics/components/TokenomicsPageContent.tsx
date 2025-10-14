@@ -1,9 +1,9 @@
 'use client'
 
-import TokenomicsCharts from '../../../components/main/tokenomics/TokenomicsCharts'
-import TokenomicsMetrics from '../../../components/main/tokenomics/TokenomicsMetrics'
-import TokenomicsOverview from '../../../components/main/tokenomics/TokenomicsOverview'
-import ClientWrapper from '../../components/ClientWrapper'
+import TokenomicsCharts from 'components/main/tokenomics/TokenomicsCharts'
+import TokenomicsMetrics from 'components/main/tokenomics/TokenomicsMetrics'
+import TokenomicsOverview from 'components/main/tokenomics/TokenomicsOverview'
+import ClientWrapper from 'app/components/ClientWrapper'
 
 export default function TokenomicsPageContent() {
   return (

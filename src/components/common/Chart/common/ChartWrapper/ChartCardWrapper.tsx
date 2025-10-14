@@ -14,7 +14,7 @@ export default function ChartCardWrapper(props: Props) {
 
   return (
     <Card
-      className={classNames('w-full bg-black/10', className)}
+      className={classNames('w-full', className)}
       contentClassName='px-1 pb-2'
       title={
         <div className='px-4 py-3 flex items-center justify-between font-semibold bg-surface-light'>
