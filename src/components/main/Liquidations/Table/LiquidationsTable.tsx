@@ -1,6 +1,7 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { CircularProgress } from 'components/common/CircularProgress'
 import { InfoCircle } from 'components/common/Icons'
+import SearchBar from 'components/common/SearchBar'
 import Table from 'components/common/Table'
 import Text from 'components/common/Text'
 import { Tooltip } from 'components/common/Tooltip'
@@ -18,16 +19,32 @@ import { useEffect, useMemo, useState } from 'react'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
+  const [searchQuery, setSearchQuery] = useState<string>('')
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('')
   const pageSize = 25
   const chainConfig = useChainConfig()
 
   useEffect(() => {
     setPage(1)
+    setSearchQuery('')
   }, [chainConfig.id])
+
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearchQuery])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery])
 
   const { data: liquidations, isLoading: isLiquidationsDataLoading } = useLiquidations(
     page,
     pageSize,
+    debouncedSearchQuery,
   )
   const { data: assetsData, isLoading: isAssetsLoading } = useAssets()
 
@@ -39,6 +56,20 @@ export default function LiquidationsTable() {
   }
 
   const isLoading = (!liquidations && isLiquidationsDataLoading) || (!assetsData && isAssetsLoading)
+
+  const titleComponent = (
+    <div className='flex items-center justify-between w-full px-4 py-3 bg-surface-dark'>
+      <Text size='base' className='font-semibold'>
+        Recently Executed Liquidations
+      </Text>
+      <SearchBar
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder='Search by account ID...'
+        className='w-80'
+      />
+    </div>
+  )
 
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
     const baseColumns = [
@@ -135,6 +166,24 @@ export default function LiquidationsTable() {
   }
 
   if (!liquidations?.data?.length) {
+    if (debouncedSearchQuery) {
+      return (
+        <>
+          <Table
+            title={titleComponent}
+            columns={columns}
+            data={[]}
+            tableBodyClassName='text-lg'
+            initialSorting={[]}
+          />
+          <div className='flex flex-wrap justify-center w-full gap-4 py-8'>
+            <Text className='w-full text-center' size='lg'>
+              No liquidations found for account ID &quot;{debouncedSearchQuery}&quot;
+            </Text>
+          </div>
+        </>
+      )
+    }
     return (
       <div className='flex flex-wrap justify-center w-full gap-4'>
         <Text className='w-full text-center' size='xl'>
@@ -147,7 +196,7 @@ export default function LiquidationsTable() {
   return (
     <>
       <Table
-        title='Recently Executed Liquidations'
+        title={titleComponent}
         columns={columns}
         data={liquidations.data}
         tableBodyClassName='text-lg'
