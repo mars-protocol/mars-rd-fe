@@ -65,8 +65,8 @@ export default function LiquidationsTable() {
       <SearchBar
         value={searchQuery}
         onChange={setSearchQuery}
-        placeholder='Search by account ID...'
         className='w-80'
+        label='Search by account ID...'
       />
     </div>
   )
