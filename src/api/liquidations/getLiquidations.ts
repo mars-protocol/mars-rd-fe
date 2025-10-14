@@ -11,16 +11,25 @@ export default async function getLiquidations(
   chainId: ChainInfoID,
   page = 1,
   pageSize = 25,
-  searchQuery?: string,
+  searchQuery?: string | string[],
 ) {
   try {
     const baseUrl = getApiBaseUrl()
     const chain = getChainName(chainId)
 
     let filterParam = ''
-    if (searchQuery && searchQuery.trim()) {
-      const filter: LiquidationsFilter = { liquidatee_account_id: searchQuery.trim() }
-      filterParam = `&filters=${encodeURIComponent(JSON.stringify(filter))}`
+    if (searchQuery) {
+      let filter: LiquidationsFilter | undefined
+      // multiple account IDs
+      if (Array.isArray(searchQuery)) {
+        filter = { liquidatee_account_id: `[${searchQuery.join(', ')}]` }
+      } else if (searchQuery.trim()) {
+        // single account ID
+        filter = { liquidatee_account_id: searchQuery.trim() }
+      }
+      if (filter) {
+        filterParam = `&filters=${encodeURIComponent(JSON.stringify(filter))}`
+      }
     }
 
     const url = getUrl(

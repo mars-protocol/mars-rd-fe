@@ -1,6 +1,6 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { CircularProgress } from 'components/common/CircularProgress'
-import { InfoCircle } from 'components/common/Icons'
+import { InfoCircle, Cross } from 'components/common/Icons'
 import SearchBar from 'components/common/SearchBar'
 import Table from 'components/common/Table'
 import Text from 'components/common/Text'
@@ -21,17 +21,23 @@ export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('')
+  const [selectedAccounts, setSelectedAccounts] = useState<string[]>([])
   const pageSize = 25
   const chainConfig = useChainConfig()
 
   useEffect(() => {
     setPage(1)
     setSearchQuery('')
+    setSelectedAccounts([])
   }, [chainConfig.id])
 
   useEffect(() => {
     setPage(1)
   }, [debouncedSearchQuery])
+
+  useEffect(() => {
+    setPage(1)
+  }, [selectedAccounts])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,10 +47,18 @@ export default function LiquidationsTable() {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
+  // Filter by selected accounts array, or by current search query if no accounts are selected
+  const searchFilter =
+    selectedAccounts.length > 0
+      ? selectedAccounts
+      : debouncedSearchQuery
+        ? [debouncedSearchQuery]
+        : undefined
+
   const { data: liquidations, isLoading: isLiquidationsDataLoading } = useLiquidations(
     page,
     pageSize,
-    debouncedSearchQuery,
+    searchFilter,
   )
   const { data: assetsData, isLoading: isAssetsLoading } = useAssets()
 
@@ -55,6 +69,23 @@ export default function LiquidationsTable() {
     setPage(newPage)
   }
 
+  const handleAddAccount = () => {
+    if (searchQuery.trim() && !selectedAccounts.includes(searchQuery.trim())) {
+      setSelectedAccounts((prev) => [...prev, searchQuery.trim()])
+      setSearchQuery('')
+    }
+  }
+
+  const handleRemoveAccount = (account: string) => {
+    setSelectedAccounts((prev) => prev.filter((acc) => acc !== account))
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleAddAccount()
+    }
+  }
+
   const isLoading = (!liquidations && isLiquidationsDataLoading) || (!assetsData && isAssetsLoading)
 
   const titleComponent = (
@@ -62,12 +93,34 @@ export default function LiquidationsTable() {
       <Text size='base' className='font-semibold'>
         Recently Executed Liquidations
       </Text>
-      <SearchBar
-        value={searchQuery}
-        onChange={setSearchQuery}
-        className='w-80'
-        label='Search by account ID...'
-      />
+      <div className='flex items-center gap-2'>
+        {selectedAccounts.length > 0 && (
+          <div className='flex items-center gap-2 flex-wrap'>
+            {selectedAccounts.map((account, index) => (
+              <div
+                key={index}
+                className='flex items-center gap-1 px-2 py-1.5 rounded-sm border border-white/30 bg-transparent text-xs text-white/80'
+              >
+                <span>{account}</span>
+                <button
+                  onClick={() => handleRemoveAccount(account)}
+                  className='w-2 h-2 text-white/40 hover:text-white/60 transition-colors'
+                  type='button'
+                >
+                  <Cross className='w-2 h-2' />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <SearchBar
+          value={searchQuery}
+          onChange={setSearchQuery}
+          onKeyDown={handleKeyPress}
+          className='w-80'
+          label='Search by account IDs...'
+        />
+      </div>
     </div>
   )
 
@@ -166,7 +219,7 @@ export default function LiquidationsTable() {
   }
 
   if (!liquidations?.data?.length) {
-    if (debouncedSearchQuery) {
+    if (searchFilter) {
       return (
         <>
           <Table
@@ -178,7 +231,9 @@ export default function LiquidationsTable() {
           />
           <div className='flex flex-wrap justify-center w-full gap-4 py-8'>
             <Text className='w-full text-center' size='lg'>
-              No liquidations found for account ID &quot;{debouncedSearchQuery}&quot;
+              No liquidations found for account ID
+              {Array.isArray(searchFilter) && searchFilter.length > 1 ? 's' : ''} &quot;
+              {Array.isArray(searchFilter) ? searchFilter.join(', ') : searchFilter}&quot;
             </Text>
           </div>
         </>
