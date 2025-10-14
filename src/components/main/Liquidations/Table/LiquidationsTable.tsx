@@ -104,9 +104,9 @@ export default function LiquidationsTable() {
   const isLoading = (!liquidations && isLiquidationsDataLoading) || (!assetsData && isAssetsLoading)
 
   const titleComponent = (
-    <div className='flex items-center justify-between w-full px-4 py-3 bg-surface-dark'>
+    <div className='flex flex-col md:flex-row md:items-center md:justify-between w-full px-4 py-3 bg-surface-dark gap-3'>
       <Text className='font-semibold'>Recently Executed Liquidations</Text>
-      <div className='flex items-center gap-2'>
+      <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full md:w-auto'>
         {selectedAccounts.length > 0 && (
           <div className='flex items-center gap-2 flex-wrap'>
             {selectedAccounts.map((account, index) => {
@@ -142,7 +142,7 @@ export default function LiquidationsTable() {
           value={searchQuery}
           onChange={setSearchQuery}
           onKeyDown={handleKeyPress}
-          className='w-80'
+          className='w-full sm:w-80'
           label='Search by account IDs...'
         />
       </div>
