@@ -9,9 +9,9 @@ export const buttonColorClasses = {
 }
 
 export const focusClasses = {
-  primary: 'bg-surface hover:border hover:border-white/40',
-  secondary: 'bg-surface hover:border hover:border-white/40',
-  tertiary: 'bg-surface hover:border hover:border-white/40',
+  primary: 'bg-surface border-white/40',
+  secondary: 'bg-surface border-white/40',
+  tertiary: 'bg-surface border-white/40 bg-white/20',
   quaternary: 'text-white',
 }
 

@@ -21,13 +21,13 @@ export default function SelectionControlPanel(props: Props) {
     onTimeframeSelect,
   } = props
   return (
-    <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between w-full'>
+    <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between w-full my-2'>
       {selectOptions && onSelectChange && defaultSelectValue && (
         <Select
           options={selectOptions}
           defaultValue={defaultSelectValue}
           onChange={onSelectChange}
-          className='relative border w-full sm:w-60 border-white/10 bg-white/10'
+          className='relative w-full sm:w-60'
           containerClassName='justify-center w-full sm:w-auto'
         />
       )}

@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Card from 'components/common/Card'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
@@ -239,10 +240,10 @@ export default function TokenomicsOverview() {
   )
 
   return (
-    <Card className='p-4 h-full md:p-6 bg-white/5'>
+    <Card className='p-4 h-full md:p-6 bg-surface-light'>
       <MarsTokenCard />
       {/* Supply Breakdown and Chart Section */}
-      <div className='flex flex-col p-4 pb-0 space-y-6  lg:flex-row lg:space-x-8 lg:space-y-0 bg-white/5'>
+      <div className='flex flex-col p-4 pb-0 space-y-6 lg:flex-row lg:space-x-8 lg:space-y-0 bg-white/5'>
         {/* Left: Multi-step Calculation */}
         <div className='flex-1 space-y-4'>
           <Text size='lg' className='pt-4 font-bold text-white'>
@@ -274,7 +275,7 @@ export default function TokenomicsOverview() {
             <div className='space-y-3 pb-4'>
               {supplyBreakdownItems.map((item, index) => (
                 <div key={item.label}>
-                  <div className={`flex justify-between items-center ${item.className}`}>
+                  <div className={classNames('flex justify-between items-center', item.className)}>
                     <div className='flex items-center space-x-2'>
                       {item.colorDot && (
                         <div
@@ -283,14 +284,22 @@ export default function TokenomicsOverview() {
                         />
                       )}
                       <Text
-                        className={`text-xs md:text-sm ${item.isSubItem ? 'text-white/70' : 'text-white/90'} ${item.isBold ? 'font-bold text-white' : ''}`}
+                        className={classNames(
+                          'text-xs md:text-sm',
+                          item.isSubItem ? 'text-white/70' : 'text-white/90',
+                          item.isBold ? 'font-bold text-white' : '',
+                        )}
                       >
                         {item.label}
                       </Text>
                     </div>
                     <FormattedNumber
                       amount={item.value}
-                      className={`text-xs md:text-sm ${item.isSubItem ? 'text-white/70' : 'text-white'} ${item.isBold ? 'font-bold' : ''}`}
+                      className={classNames(
+                        'text-xs md:text-sm',
+                        item.isSubItem ? 'text-white/70' : 'text-white',
+                        item.isBold ? 'font-bold' : '',
+                      )}
                       options={{ abbreviated: false, suffix: ' MARS' }}
                     />
                   </div>
