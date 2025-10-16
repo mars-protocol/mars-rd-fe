@@ -7,7 +7,7 @@ import Table from 'components/common/Table'
 import Text from 'components/common/Text'
 import { Tooltip } from 'components/common/Tooltip'
 import Account from 'components/main/Liquidations/Table/Cell/Account'
-import Asset from 'components/main/Liquidations/Table/Cell/Asset'
+import LiquidatedAsset from 'components/main/Liquidations/Table/Cell/LiquidatedAsset'
 import LiquidationFees from 'components/main/Liquidations/Table/Cell/LiquidationFees'
 import LiquidationPrice from 'components/main/Liquidations/Table/Cell/LiquidationPrice'
 import Timestamp from 'components/main/Liquidations/Table/Cell/Timestamp'
@@ -104,7 +104,7 @@ export default function LiquidationsTable() {
   const isLoading = (!liquidations && isLiquidationsDataLoading) || (!assetsData && isAssetsLoading)
 
   const titleComponent = (
-    <div className='flex flex-col md:flex-row md:items-center md:justify-between w-full px-4 py-3 bg-surface-dark gap-3'>
+    <div className='flex flex-col md:flex-row md:items-center md:justify-between w-full px-4 py-2 bg-surface-dark gap-3'>
       <Text className='font-semibold'>Recently Executed Liquidations</Text>
       <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full md:w-auto'>
         {selectedAccounts.length > 0 && (
@@ -152,6 +152,7 @@ export default function LiquidationsTable() {
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
     const baseColumns = [
       {
+        id: 'timestamp',
         header: 'Time',
         meta: { className: 'min-w-20' },
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
@@ -167,10 +168,10 @@ export default function LiquidationsTable() {
       {
         header: 'Liquidated Collateral',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
-          <Asset
+          <LiquidatedAsset
             value={row.original.collateral_asset_won as BNCoin}
             assetData={assetsData}
-            historicalPrice={row.original.price_liquidated}
+            priceAtLiquidation={row.original.price_liquidated}
           />
         ),
       },
@@ -208,10 +209,10 @@ export default function LiquidationsTable() {
         accessorKey: 'protocol_fee_coin',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
           <div className='flex justify-end items-start gap-1'>
-            <Asset
+            <LiquidatedAsset
               value={row.original.protocol_fee_coin as BNCoin}
               assetData={assetsData}
-              historicalPrice={row.original.price_protocol_fee_coin}
+              priceAtLiquidation={row.original.price_protocol_fee_coin}
             />
             <Tooltip
               type='info'
@@ -225,7 +226,7 @@ export default function LiquidationsTable() {
       {
         header: 'Transaction',
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
-          <Transaction value={row.original.tx_hash as string} />
+          <Transaction txHash={row.original.tx_hash as string} />
         ),
       },
     ]
