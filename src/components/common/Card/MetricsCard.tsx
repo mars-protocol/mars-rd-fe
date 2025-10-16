@@ -53,7 +53,7 @@ export default function MetricsCard(props: Props) {
               <Loading className='w-full h-8' />
             ) : metric.isCurrency ? (
               <FormattedNumber
-                className={classNames(`w-full ${numberClassName}`)}
+                className={classNames('w-full', numberClassName)}
                 amount={metric.value.toNumber()}
                 options={{
                   ...metric.formatOptions,
@@ -62,7 +62,7 @@ export default function MetricsCard(props: Props) {
               />
             ) : (
               <FormattedNumber
-                className={classNames(`w-full ${numberClassName}`)}
+                className={classNames('w-full', numberClassName)}
                 amount={metric.value.toNumber()}
                 options={metric.formatOptions}
               />
