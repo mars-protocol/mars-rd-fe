@@ -163,7 +163,7 @@ export default function DynamicLineChartBody(props: Props) {
   const rightDomain = rightDomainFn && rightValues.length ? rightDomainFn(rightValues) : undefined
 
   return (
-    <div className={classNames('-ml-4', height)}>
+    <div className={classNames('-ml-2', height)}>
       <ResponsiveContainer width='100%' height='100%'>
         <AreaChart
           data={reversedData}

@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Card from 'components/common/Card'
 import { FormattedNumber } from 'components/common/FormattedNumber'
 import Loading from 'components/common/Loading'
@@ -10,7 +11,7 @@ import useStakedSupply from 'hooks/tokenomics/useStakedSupply'
 import useTokenomicsData from 'hooks/tokenomics/useTokenomicsData'
 import useTotalSupply from 'hooks/tokenomics/useTotalSupply'
 import { useCallback, useMemo } from 'react'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { Cell, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer } from 'recharts'
 
 // Constants
 const DENOM = 'factory/neutron1ndu2wvkrxtane8se2tr48gv7nsm46y5gcqjhux/MARS'
@@ -30,17 +31,7 @@ interface PieDataItem {
   value: number
   color: string
   gradientId: string
-}
-
-interface LabelProps {
-  cx: number
-  cy: number
-  midAngle: number
-  innerRadius: number
-  outerRadius: number
-  percent: number
-  value: number
-  name: string
+  [key: string]: unknown
 }
 
 interface PriceChange {
@@ -132,15 +123,17 @@ export default function TokenomicsOverview() {
 
   // Custom label renderer for donut chart - memoized to prevent re-renders
   const renderCustomizedLabel = useCallback(
-    (props: LabelProps) => {
+    (props: PieLabelRenderProps) => {
       const { cx, cy, midAngle, outerRadius, percent, name } = props
 
-      if (percent < 0.03) return null // Don't show label if slice is too small
+      if (!cx || !cy || midAngle === undefined || !outerRadius || percent === undefined || !name)
+        return null
+      if (typeof percent === 'number' && percent < 0.03) return null // Don't show label if slice is too small
 
       const RADIAN = Math.PI / 180
-      const radius = outerRadius + CHART_CONFIG.labelRadius
-      const x = cx + radius * Math.cos(-midAngle * RADIAN)
-      const y = cy + radius * Math.sin(-midAngle * RADIAN)
+      const radius = (outerRadius as number) + CHART_CONFIG.labelRadius
+      const x = (cx as number) + radius * Math.cos(-(midAngle as number) * RADIAN)
+      const y = (cy as number) + radius * Math.sin(-(midAngle as number) * RADIAN)
 
       const displayName = labelMapping[name as keyof typeof labelMapping] || name
 
@@ -174,7 +167,7 @@ export default function TokenomicsOverview() {
             strokeWidth={0.3}
             paintOrder='stroke fill'
           >
-            {`${(percent * 100).toFixed(1)}%`}
+            {`${(Number(percent) * 100).toFixed(1)}%`}
           </text>
         </g>
       )
@@ -194,7 +187,7 @@ export default function TokenomicsOverview() {
       {
         label: 'Burned Supply',
         value: totalBurnedSupply,
-        className: 'p-1 bg-gradient-to-r rounded-lg from-purple-500/20 to-purple-500/10',
+        className: 'p-1 bg-gradient-to-r from-purple-500/20 to-purple-500/10',
         colorDot: CHART_COLORS.quinary,
         showDivider: true,
       },
@@ -208,7 +201,7 @@ export default function TokenomicsOverview() {
       {
         label: 'Vested/Locked/DAO',
         value: nonCirculatingSupply,
-        className: 'p-1 bg-gradient-to-r rounded-lg from-purple-400/20 to-purple-400/10',
+        className: 'p-1 bg-gradient-to-r from-purple-400/20 to-purple-400/10',
         colorDot: CHART_COLORS.secondary,
         showDivider: false,
       },
@@ -222,7 +215,7 @@ export default function TokenomicsOverview() {
       {
         label: ' ↳ Non-Staked',
         value: unstakedCirculatingSupply,
-        className: 'pl-4 pr-1 py-1 bg-gradient-to-r rounded-lg from-green-500/20 to-green-500/10',
+        className: 'pl-4 pr-1 py-1 bg-gradient-to-r from-green-500/20 to-green-500/10',
         colorDot: CHART_COLORS.primary,
         showDivider: false,
         isSubItem: true,
@@ -230,7 +223,7 @@ export default function TokenomicsOverview() {
       {
         label: ' ↳ Staked',
         value: stakedSupply,
-        className: 'pl-4 pr-1 py-1 bg-gradient-to-r rounded-lg from-green-500/15 to-green-500/8',
+        className: 'pl-4 pr-1 py-1 bg-gradient-to-r from-green-500/15 to-green-500/8',
         colorDot: CHART_COLORS.primary,
         showDivider: false,
         isSubItem: true,
@@ -247,10 +240,10 @@ export default function TokenomicsOverview() {
   )
 
   return (
-    <Card className='p-4 h-full md:p-6 bg-white/5'>
+    <Card className='p-4 h-full md:p-6 bg-surface-light'>
       <MarsTokenCard />
       {/* Supply Breakdown and Chart Section */}
-      <div className='flex flex-col p-4 pb-0 space-y-6 rounded-xl lg:flex-row lg:space-x-8 lg:space-y-0 bg-white/5'>
+      <div className='flex flex-col p-4 pb-0 space-y-6 lg:flex-row lg:space-x-8 lg:space-y-0 bg-white/5'>
         {/* Left: Multi-step Calculation */}
         <div className='flex-1 space-y-4'>
           <Text size='lg' className='pt-4 font-bold text-white'>
@@ -258,16 +251,31 @@ export default function TokenomicsOverview() {
           </Text>
 
           {isLoading ? (
-            <div className='space-y-3'>
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Loading key={i} className='w-full h-6' />
+            <div className='space-y-3 pb-4'>
+              {Array.from({ length: 7 }).map((_, i) => (
+                <div key={i}>
+                  <div
+                    className={`flex justify-between items-center p-1 ${i === 1 || i === 3 || i === 5 || i === 6 ? 'bg-gradient-to-r from-white/5 to-white/2' : ''}`}
+                  >
+                    <div className='flex items-center space-x-2'>
+                      {/* Color dot placeholder for items that have them */}
+                      {(i === 1 || i === 3 || i === 5 || i === 6) && (
+                        <div className='w-2 h-2 rounded-full bg-white/20' />
+                      )}
+                      <Loading className='w-32 h-4' />
+                    </div>
+                    <Loading className='w-20 h-4' />
+                  </div>
+                  {/* Divider after "Burned Supply" item (index 1) */}
+                  {i === 1 && <div className='my-2 border-t border-white/20' />}
+                </div>
               ))}
             </div>
           ) : (
-            <div className='space-y-3'>
+            <div className='space-y-3 pb-4'>
               {supplyBreakdownItems.map((item, index) => (
                 <div key={item.label}>
-                  <div className={`flex justify-between items-center ${item.className}`}>
+                  <div className={classNames('flex justify-between items-center', item.className)}>
                     <div className='flex items-center space-x-2'>
                       {item.colorDot && (
                         <div
@@ -276,14 +284,22 @@ export default function TokenomicsOverview() {
                         />
                       )}
                       <Text
-                        className={`text-xs md:text-sm ${item.isSubItem ? 'text-white/70' : 'text-white/90'} ${item.isBold ? 'font-bold text-white' : ''}`}
+                        className={classNames(
+                          'text-xs md:text-sm',
+                          item.isSubItem ? 'text-white/70' : 'text-white/90',
+                          item.isBold ? 'font-bold text-white' : '',
+                        )}
                       >
                         {item.label}
                       </Text>
                     </div>
                     <FormattedNumber
                       amount={item.value}
-                      className={`text-xs md:text-sm ${item.isSubItem ? 'text-white/70' : 'text-white'} ${item.isBold ? 'font-bold' : ''}`}
+                      className={classNames(
+                        'text-xs md:text-sm',
+                        item.isSubItem ? 'text-white/70' : 'text-white',
+                        item.isBold ? 'font-bold' : '',
+                      )}
                       options={{ abbreviated: false, suffix: ' MARS' }}
                     />
                   </div>

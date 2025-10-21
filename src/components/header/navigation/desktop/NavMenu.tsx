@@ -47,27 +47,26 @@ export const NavMenu = (props: Props) => {
       {showMenu && (
         <>
           <div
-            className='absolute left-0 z-50 top-full'
+            className='absolute left-0 top-full z-50'
             onMouseLeave={() => {
               if (showMenu) setShowMenu(false)
             }}
           >
             <ul
               className={classNames(
-                'list-none flex flex-wrap  bg-white/10 backdrop-blur-lg',
-                'relative isolate max-w-full overflow-hidden rounded-sm',
-                'before:content-[" "] before:absolute before:inset-0 before:-z-1 before:rounded-sm before:p-[1px] before:border-glas',
+                'flex flex-wrap list-none backdrop-blur-lg bg-white/10',
+                'isolate overflow-hidden relative max-w-full',
               )}
             >
               {item.submenu.map((submenuitem, index) => (
-                <li className='w-full p-0 m-0 group/submenuitem' key={index}>
+                <li className='p-0 m-0 w-full group/submenuitem' key={index}>
                   {index !== 0 && <Divider />}
                   <NavLink
                     item={{ pages: [submenuitem.page], label: submenuitem.label }}
                     onClick={() => {
                       if (showMenu) setShowMenu(false)
                     }}
-                    className='flex items-center w-full gap-4 p-4 whitespace-nowrap'
+                    className='flex gap-4 items-center p-4 w-full whitespace-nowrap'
                   >
                     {submenuitem.icon && <div className='w-6'>{submenuitem.icon}</div>}
                     <Text className='flex flex-wrap'>

@@ -223,3 +223,28 @@ function getCoinAmount(denom: string, value: BigNumber, assets: Asset[]) {
 function convertLiquidityRateToAPR(rate: number) {
   return rate >= 0.01 ? rate : 0.0
 }
+
+export function getPriceDecimals(price?: number | BigNumber, additionalDecimals: number = 2) {
+  if (!price) return 2
+  const priceNum = BN(price).abs()
+
+  if (priceNum.isZero() || priceNum.isGreaterThanOrEqualTo(10)) return 2
+
+  if (priceNum.isLessThan(1)) {
+    const priceStr = priceNum.toFixed(20)
+    const [, decimals] = priceStr.split('.')
+    if (!decimals) return 2
+
+    let leadingZeros = 0
+    for (const digit of decimals) {
+      if (digit === '0') {
+        leadingZeros++
+      } else {
+        break
+      }
+    }
+    return leadingZeros + additionalDecimals
+  }
+
+  return 2
+}

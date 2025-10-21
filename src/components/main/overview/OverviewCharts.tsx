@@ -1,4 +1,3 @@
-import Card from 'components/common/Card'
 import ChartError from 'components/common/Chart/common/ChartError'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import ComposedChart from 'components/common/Chart/ComposedChart'
@@ -80,7 +79,7 @@ export default function OverviewCharts() {
   }
 
   return (
-    <Card className='p-4 w-full md:p-6 bg-white/5'>
+    <div className='w-full'>
       <div className='flex flex-col gap-6'>
         <div className='flex justify-between items-center'>
           <Text>Overview Data</Text>
@@ -94,6 +93,6 @@ export default function OverviewCharts() {
         <Divider />
         {renderContent()}
       </div>
-    </Card>
+    </div>
   )
 }

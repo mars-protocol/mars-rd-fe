@@ -61,7 +61,7 @@ export default function Select(props: Props) {
         data-testid='select-component'
         className={classNames(
           props.isParent && 'relative',
-          'flex min-w-fit items-center gap-2 bg-white/10',
+          'flex min-w-fit items-center gap-2 rounded-sm bg-surface-light border border-white/10',
           props.className,
         )}
         role='select'
@@ -98,7 +98,7 @@ export default function Select(props: Props) {
           setShow={setShowDropdown}
           hasBackdropIsolation
         >
-          <div className='relative w-full overflow-hidden rounded-sm isolate'>
+          <div className='relative w-full overflow-hidden isolate'>
             {props.title && (
               <Text size='lg' className='block p-4 font-bold bg-white/25'>
                 {props.title}

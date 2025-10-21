@@ -1,6 +1,6 @@
+import { pageMetadata } from 'metadata'
 import { Metadata } from 'next'
-import { pageMetadata } from '../../metadata'
-import LiquidationsPageContent from './components/LiquidationsPageContent'
+import LiquidationsPageContent from 'app/liquidations/components/LiquidationsPageContent'
 
 export const metadata: Metadata = pageMetadata.liquidations
 
