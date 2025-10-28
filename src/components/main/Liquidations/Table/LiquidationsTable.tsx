@@ -1,7 +1,8 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
+import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
 import { CircularProgress } from 'components/common/CircularProgress'
-import { InfoCircle, Cross } from 'components/common/Icons'
+import { Cross, InfoCircle } from 'components/common/Icons'
 import SearchBar from 'components/common/SearchBar'
 import Table from 'components/common/Table'
 import Text from 'components/common/Text'
@@ -13,10 +14,12 @@ import LiquidationPrice from 'components/main/Liquidations/Table/Cell/Liquidatio
 import Timestamp from 'components/main/Liquidations/Table/Cell/Timestamp'
 import Transaction from 'components/main/Liquidations/Table/Cell/Transaction'
 import Pagination from 'components/main/Liquidations/Table/Pagination'
+import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import useAssets from 'hooks/assets/useAssets'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import useLiquidations from 'hooks/liquidations/useLiquidations'
 import { useEffect, useMemo, useState } from 'react'
+import { BN } from 'utils/helpers'
 
 export default function LiquidationsTable() {
   const [page, setPage] = useState<number>(1)
@@ -103,6 +106,10 @@ export default function LiquidationsTable() {
 
   const isLoading = (!liquidations && isLiquidationsDataLoading) || (!assetsData && isAssetsLoading)
 
+  const calculateUSD = (price: string | undefined, amount: string | number | BigNumber.Value) => {
+    return price ? BN(price).multipliedBy(amount).shiftedBy(-PRICE_ORACLE_DECIMALS).toNumber() : 0
+  }
+
   const titleComponent = (
     <div className='flex flex-col md:flex-row md:items-center md:justify-between w-full px-4 py-2 bg-surface-dark gap-3'>
       <Text className='font-semibold'>Recently Executed Liquidations</Text>
@@ -166,7 +173,20 @@ export default function LiquidationsTable() {
         ),
       },
       {
+        id: 'collateral_asset_won',
         header: 'Liquidated Collateral',
+        accessorKey: 'collateral_asset_won',
+        sortingFn: (rowA: Row<LiquidationDataItem>, rowB: Row<LiquidationDataItem>) => {
+          const aUSD = calculateUSD(
+            rowA.original.price_liquidated,
+            rowA.original.collateral_asset_won?.amount || 0,
+          )
+          const bUSD = calculateUSD(
+            rowB.original.price_liquidated,
+            rowB.original.collateral_asset_won?.amount || 0,
+          )
+          return aUSD - bUSD
+        },
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
           <LiquidatedAsset
             value={row.original.collateral_asset_won as BNCoin}
@@ -182,6 +202,8 @@ export default function LiquidationsTable() {
         ),
       },
       {
+        id: 'protocol_fee_coin',
+        accessorKey: 'protocol_fee_coin',
         header: () => (
           <div className='flex items-center gap-1'>
             Protocol Fee
@@ -206,7 +228,17 @@ export default function LiquidationsTable() {
             </Tooltip>
           </div>
         ),
-        accessorKey: 'protocol_fee_coin',
+        sortingFn: (rowA: Row<LiquidationDataItem>, rowB: Row<LiquidationDataItem>) => {
+          const aUSD = calculateUSD(
+            rowA.original.price_protocol_fee_coin,
+            rowA.original.protocol_fee_coin?.amount || 0,
+          )
+          const bUSD = calculateUSD(
+            rowB.original.price_protocol_fee_coin,
+            rowB.original.protocol_fee_coin?.amount || 0,
+          )
+          return aUSD - bUSD
+        },
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
           <div className='flex justify-end items-start gap-1'>
             <LiquidatedAsset
