@@ -15,18 +15,28 @@ interface Props<T> {
   onClick?: (id: string) => void
 }
 
+function isAccountBalanceRow(row: unknown): row is AccountBalanceRow {
+  return (row as AccountBalanceRow).type !== undefined
+}
+
+function isAccountPerpRow(row: unknown): row is AccountPerpRow {
+  return (row as AccountPerpRow).tradeDirection !== undefined
+}
+
 function getBorderColor(
   type: TableType,
   row: AccountBalanceRow | AccountStrategyRow | AccountPerpRow,
 ) {
   if (type === 'strategies') return ''
-  if (type === 'balances') {
-    const balancesRow = row as AccountBalanceRow
-    return balancesRow.type === 'borrow' ? 'border-loss' : 'border-profit'
+  if (type === 'balances' && isAccountBalanceRow(row)) {
+    return row.type === 'borrow' ? 'border-loss' : 'border-profit'
   }
 
-  const perpRow = row as AccountPerpRow
-  return perpRow.tradeDirection === 'short' ? 'border-loss' : 'border-profit'
+  if (isAccountPerpRow(row)) {
+    return row.tradeDirection === 'short' ? 'border-loss' : 'border-profit'
+  }
+
+  return ''
 }
 
 export default function Row<T>(props: Props<T>) {
@@ -55,8 +65,16 @@ export default function Row<T>(props: Props<T>) {
             !isExpanded && row.toggleExpanded()
           }
 
-          if (props.onClick) {
-            props.onClick((row.original as any).asset.denom)
+          if (
+            props.onClick &&
+            typeof row.original === 'object' &&
+            row.original !== null &&
+            'asset' in row.original &&
+            typeof row.original.asset === 'object' &&
+            row.original.asset !== null &&
+            'denom' in row.original.asset
+          ) {
+            props.onClick(row.original.asset.denom as string)
           }
         }}
       >
@@ -72,7 +90,12 @@ export default function Row<T>(props: Props<T>) {
                   type !== 'strategies' &&
                   LEFT_ALIGNED_ROWS.includes(cell.column.id) &&
                   'border-l',
-                type && type !== 'strategies' && getBorderColor(type, cell.row.original as any),
+                type &&
+                  type !== 'strategies' &&
+                  getBorderColor(
+                    type,
+                    cell.row.original as AccountBalanceRow | AccountStrategyRow | AccountPerpRow,
+                  ),
                 cell.column.columnDef.meta?.className,
               )}
             >

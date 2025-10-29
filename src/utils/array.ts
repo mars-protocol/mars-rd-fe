@@ -1,6 +1,20 @@
-export const byDenom = (denom: string) => (entity: any) => entity.denom === denom
-export const bySymbol = (symbol: string) => (entity: any) => entity.symbol === symbol
-const byTokenDenom = (denom: string) => (entity: any) => entity.token.denom === denom
+interface HasDenom {
+  denom: string
+}
+
+interface HasSymbol {
+  symbol: string
+}
+
+interface HasToken {
+  token: {
+    denom: string
+  }
+}
+
+export const byDenom = (denom: string) => (entity: HasDenom) => entity.denom === denom
+export const bySymbol = (symbol: string) => (entity: HasSymbol) => entity.symbol === symbol
+const byTokenDenom = (denom: string) => (entity: HasToken) => entity.token.denom === denom
 
 function partition<T>(arr: Array<T>, predicate: (val: T) => boolean): [Array<T>, Array<T>] {
   const partitioned: [Array<T>, Array<T>] = [[], []]
