@@ -4,12 +4,11 @@ import { neutronPerps } from '../../../../../data/assets/neutron-perps'
 // Use Node.js runtime to avoid disabling SSG for other pages
 export const runtime = 'nodejs'
 
-export async function GET(request: Request, context: any) {
+export async function GET(request: Request, context: { params: Promise<{ market: string }> }) {
   try {
-    const marketParam = context.params.market
-    const marketDenom = `perps/${decodeURIComponent(
-      Array.isArray(marketParam) ? marketParam[0] : marketParam,
-    )}`
+    const params = await context.params
+    const marketParam = params.market
+    const marketDenom = `perps/${decodeURIComponent(marketParam)}`
 
     // Find the market asset data
     const marketAsset = neutronPerps.find((asset) => asset.denom === marketDenom)
@@ -75,8 +74,9 @@ export async function GET(request: Request, context: any) {
         height: 540,
       },
     )
-  } catch (e: any) {
-    console.log(`${e.message}`)
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unknown error'
+    console.log(message)
     return new Response(`Failed to generate the image`, {
       status: 500,
     })

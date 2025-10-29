@@ -4,7 +4,7 @@ import { StoreApi } from 'zustand'
 export default function createCommonSlice(
   set: StoreApi<Store>['setState'],
   get: StoreApi<Store>['getState'],
-) {
+): CommonSlice {
   return {
     accounts: null,
     balances: [],

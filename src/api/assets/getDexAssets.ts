@@ -8,7 +8,7 @@ import { osmosisTokens } from 'data/assets/osmosis-tokens'
 
 export default async function getDexAssets(chainConfig: ChainConfig) {
   try {
-    let tokens: any[]
+    let tokens: AstroportAsset[]
 
     // Load essential static data based on chain ID
     switch (chainConfig.id) {

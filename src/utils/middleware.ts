@@ -1,7 +1,7 @@
 import { Middleware, SWRHook } from 'swr'
 
 export const debugSWR: Middleware = (useSWRNext: SWRHook) => (key, fetcher, config) => {
-  const extendedFetcher = async (...args: any[]) => {
+  const extendedFetcher = async (...args: unknown[]) => {
     const startTime = Date.now()
     const res = await fetcher!(...args)
     process.env.NODE_ENV !== 'production' &&

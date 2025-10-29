@@ -32,14 +32,35 @@ function getBorderColor(
   return perpRow.tradeDirection === 'short' ? 'border-loss' : 'border-profit'
 }
 
+// Type guards for row data
+function hasName(row: unknown): row is { name: string } {
+  return typeof row === 'object' && row !== null && 'name' in row
+}
+
+function hasIsWhitelisted(row: unknown): row is { isWhitelisted?: boolean } {
+  return typeof row === 'object' && row !== null
+}
+
+function hasAssetDenom(row: unknown): row is { asset: { denom: string } } {
+  return (
+    typeof row === 'object' &&
+    row !== null &&
+    'asset' in row &&
+    typeof row.asset === 'object' &&
+    row.asset !== null &&
+    'denom' in row.asset
+  )
+}
+
 export default function Row<T>(props: Props<T>) {
   const { renderExpanded, table, row, type, spacingClassName, isSelectable, isBalancesTable } =
     props
   const canExpand = !!renderExpanded
 
-  const name = (row.original as any).name ?? ''
+  const name = hasName(row.original) ? row.original.name : ''
   const isWhitelisted =
-    (row.original as any).isWhitelisted !== false && !name.includes('Perps USDC Vault')
+    (hasIsWhitelisted(row.original) ? row.original.isWhitelisted !== false : true) &&
+    !name.includes('Perps USDC Vault')
 
   return (
     <>
@@ -65,8 +86,8 @@ export default function Row<T>(props: Props<T>) {
             !isExpanded && row.toggleExpanded()
           }
 
-          if (props.onClick) {
-            props.onClick((row.original as any).asset.denom)
+          if (props.onClick && hasAssetDenom(row.original)) {
+            props.onClick(row.original.asset.denom)
           }
         }}
       >
@@ -83,7 +104,11 @@ export default function Row<T>(props: Props<T>) {
                   'border-l',
                 type &&
                   type !== 'strategies' &&
-                  getBorderColor(type, cell.row.original as any, isWhitelisted),
+                  getBorderColor(
+                    type,
+                    cell.row.original as AccountBalanceRow | AccountStrategyRow | AccountPerpRow,
+                    isWhitelisted,
+                  ),
                 cell.column.columnDef.meta?.className,
                 !isWhitelisted && isBalancesTable && 'opacity-60',
                 !isWhitelisted && isBalancesTable && 'group-hover/assetRow:opacity-100',

@@ -38,7 +38,7 @@ export class BNCoin {
     }
   }
 
-  toSignedCoin(): any {
+  toSignedCoin(): { denom: string; size: string } {
     return {
       denom: this.denom,
       size: this.amount.integerValue().toString(),

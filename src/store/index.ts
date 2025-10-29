@@ -4,7 +4,7 @@ import { devtools } from 'zustand/middleware'
 import createCommonSlice from 'store/slices/common'
 import createModalSlice from 'store/slices/modal'
 
-const store = (set: StoreApi<Store>['setState'], get: StoreApi<Store>['getState']) => ({
+const store = (set: StoreApi<Store>['setState'], get: StoreApi<Store>['getState']): Store => ({
   ...createCommonSlice(set, get),
   ...createModalSlice(set, get),
 })

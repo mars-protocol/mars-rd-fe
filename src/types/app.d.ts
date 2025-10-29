@@ -1073,8 +1073,11 @@ interface TransactionEventAttribute {
 type TransactionType = 'default' | 'oracle' | 'create' | 'burn' | 'unlock' | 'transaction'
 
 interface CommonSlice {
+  accounts?: Account[] | null
   address?: string
   chainConfig: ChainConfig
+  creditAccounts?: Account[] | null
+  hlsAccounts?: HLSAccountWithStrategy[] | null
   userDomain?: {
     domain: string
     domain_full: string
@@ -1103,6 +1106,7 @@ interface FocusComponent {
 }
 
 interface ModalSlice {
+  resetStettingsModal: boolean
   settingsModal: boolean
 }
 
@@ -1314,7 +1318,7 @@ interface AstroportAsset {
   chainId: string
   denom: string
   symbol: string
-  icon?: string
+  icon?: string | null
   description: string
   decimals: number
 }
