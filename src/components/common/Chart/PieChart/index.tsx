@@ -6,6 +6,7 @@ interface PieChartData {
   name: string
   value: number
   color: string
+  [key: string]: unknown
 }
 
 interface Props {

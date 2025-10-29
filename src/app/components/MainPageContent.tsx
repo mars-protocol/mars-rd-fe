@@ -1,8 +1,8 @@
 'use client'
 
-import OverviewCharts from '../../components/main/overview/OverviewCharts'
-import StatsMetrics from '../../components/main/overview/StatsMetrics'
-import ClientWrapper from './ClientWrapper'
+import ClientWrapper from 'app/components/ClientWrapper'
+import OverviewCharts from 'components/main/overview/OverviewCharts'
+import StatsMetrics from 'components/main/overview/StatsMetrics'
 
 export default function MainPageContent() {
   return (

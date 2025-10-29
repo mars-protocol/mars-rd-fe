@@ -1,10 +1,10 @@
-import { FormattedNumber } from 'components/common/FormattedNumber'
-import Text from 'components/common/Text'
-import TitleAndSubCell from 'components/common/TitleAndSubCell'
-import { BN_ZERO } from 'constants/math'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
+import useAssets from 'hooks/assets/useAssets'
 import { useMemo } from 'react'
+import { byDenom } from 'utils/array'
 import { BN } from 'utils/helpers'
+import { getPriceDecimals } from 'utils/formatters'
+import { FormattedNumber } from 'components/common/FormattedNumber'
 
 interface Props {
   value: LiquidationDataItem
@@ -12,35 +12,31 @@ interface Props {
 
 export default function LiquidationPrice(props: Props) {
   const { value } = props
+  const { data: assets } = useAssets()
 
-  const isInvalidPrice =
-    !value.price_liquidated ||
-    value.price_liquidated === 'null' ||
-    !value.collateral_asset_won?.amount
+  const liquidationPrice = useMemo(() => {
+    if (!value.price_liquidated || !value.collateral_asset_won || !assets) return null
 
-  const totalValue = useMemo(() => {
-    if (isInvalidPrice) {
-      return BN_ZERO
-    }
-    return BN(value.price_liquidated!)
-      .multipliedBy(BN(value.collateral_asset_won!.amount))
-      .shiftedBy(-PRICE_ORACLE_DECIMALS)
-  }, [value.price_liquidated, value.collateral_asset_won, isInvalidPrice])
+    // Find the asset for the collateral
+    const asset = assets.find(byDenom(value.collateral_asset_won.denom))
+    if (!asset) return null
 
-  if (isInvalidPrice) {
-    return <Text size='xs'>N/A</Text>
-  }
+    const actualPrice = BN(value.price_liquidated).shiftedBy(asset.decimals - PRICE_ORACLE_DECIMALS)
+
+    return actualPrice
+  }, [value.price_liquidated, value.collateral_asset_won, assets])
+
+  if (!liquidationPrice) return <span>-</span>
 
   return (
-    <TitleAndSubCell
-      title={
-        <FormattedNumber
-          amount={BN(value.price_liquidated!).toNumber()}
-          className='text-xs'
-          options={{ minDecimals: 1, maxDecimals: 2, abbreviated: true, prefix: '$' }}
-        />
-      }
-      sub={undefined}
+    <FormattedNumber
+      className='text-xs text-white/50'
+      amount={liquidationPrice.toNumber()}
+      options={{
+        abbreviated: false,
+        maxDecimals: getPriceDecimals(liquidationPrice),
+        prefix: '$',
+      }}
     />
   )
 }

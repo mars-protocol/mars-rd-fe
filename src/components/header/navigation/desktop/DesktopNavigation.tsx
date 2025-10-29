@@ -1,14 +1,13 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
-import { usePathname } from 'next/navigation'
 
 import Button from 'components/common/Button'
 import { ChevronDown } from 'components/common/Icons'
 import { NavLink } from 'components/header/navigation/desktop/NavLink'
 import { NavMenu } from 'components/header/navigation/desktop/NavMenu'
+import useChainConfig from 'hooks/chain/useChainConfig'
 import useToggle from 'hooks/common/useToggle'
 import useStore from 'store'
-import useChainConfig from 'hooks/chain/useChainConfig'
 
 interface Props {
   menuTree: (chainConfig: ChainConfig) => MenuTreeEntry[]
@@ -61,9 +60,8 @@ export default function DesktopNavigation(props: Props) {
             <div className='absolute left-0 top-[calc(100%+4px)] z-50'>
               <ul
                 className={classNames(
-                  'py-4 list-none flex flex-wrap gap-2 bg-white/10 backdrop-blur-lg',
-                  'relative isolate max-w-full overflow-hidden rounded-sm',
-                  'before:content-[" "] before:absolute before:inset-0 before:-z-1 before:rounded-sm before:p-[1px] before:border-glas',
+                  'flex flex-wrap gap-2 py-4 list-none backdrop-blur-lg bg-white/10',
+                  'isolate overflow-hidden relative max-w-full',
                 )}
               >
                 {menu.map((item, index) => (
@@ -71,7 +69,7 @@ export default function DesktopNavigation(props: Props) {
                     <NavLink
                       item={item}
                       onClick={() => setShowMenu(false)}
-                      className='w-full px-4 whitespace-nowrap'
+                      className='px-4 w-full whitespace-nowrap'
                     >
                       {item.label}
                     </NavLink>

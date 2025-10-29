@@ -105,13 +105,13 @@ export default function ComposedChartBody(props: Props) {
   const isPercentageAxis = config.secondary && config.secondary.some((line) => line.isPercentage)
 
   return (
-    <div className={classNames(height, hasSecondaryAxis ? 'ml-0' : '-ml-4')}>
+    <div className={classNames(height, hasSecondaryAxis ? '-ml-2' : '-ml-4')}>
       <ResponsiveContainer width='100%' height='100%'>
         <ComposedChart
           data={reversedData}
           margin={{
             top: 10,
-            right: 0,
+            right: 10,
             left: 0,
             bottom: 0,
           }}

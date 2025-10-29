@@ -61,8 +61,8 @@ export default function ChainSelect(props: Props) {
     return (
       <div
         className={classNames(
-          'flex items-center gap-2 px-4 py-3 bg-white/10 border-white/20 relative',
-          active ? 'bg-white/30 pointer-events-none' : 'hover:bg-white/20',
+          'flex items-center gap-2 px-4 py-3 rounded-sm bg-surface-light border border-white/10 relative',
+          active ? 'bg-white/5 pointer-events-none' : 'hover:bg-white/10',
           index > 0 && 'border-t',
         )}
         role='button'

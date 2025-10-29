@@ -42,7 +42,7 @@ export async function GET(request: Request, context: any) {
             style={{
               position: 'absolute',
               top: '200px',
-              left: '320px',
+              left: '120px',
               width: '170px',
               height: '170px',
             }}
@@ -56,7 +56,7 @@ export async function GET(request: Request, context: any) {
               top: '200px', // Same top position as icon
               // Icon is at right: 280px, width: 170px, so icon left edge is at 280px - 170px = 110px from right
               // Text should be 50px to the right of icon, so at 110px - 50px = 60px from right
-              left: '520px',
+              left: '320px',
               fontSize: '100px',
               fontWeight: '600',
               color: '#ffffff',

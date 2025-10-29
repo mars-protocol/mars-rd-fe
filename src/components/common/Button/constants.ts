@@ -1,21 +1,19 @@
 export const buttonColorClasses = {
   primary:
-    'font-bold gradient-primary-to-secondary hover:bg-white/20 active:bg-white/40 focus:bg-white/20',
+    'font-bold gradient-primary-to-secondary hover:bg-white/20 active:bg-white/20 focus:bg-surface',
   secondary:
-    'border border-white/30 bg-transparent hover:bg-white/20 active:bg-white/40 focus:bg-white/20',
-  tertiary: 'bg-white/10 hover:bg-white/20 active:bg-white/40 focus:bg-white/20',
+    'border border-white/30 bg-transparent hover:bg-white/10 active:bg-white/20  focus:bg-white/10',
+  tertiary:
+    'bg-surface-light border border-white/10 hover:bg-white/10 active:bg-white/20 focus:bg-white/20',
   quaternary: 'bg-transparent text-white/60 hover:text-white active:text-white',
 }
 
 export const focusClasses = {
-  primary: 'bg-white/20',
-  secondary: 'bg-white/20',
-  tertiary: 'bg-white/20',
+  primary: 'bg-surface border-white/40',
+  secondary: 'bg-surface border-white/40',
+  tertiary: 'bg-surface border-white/40 bg-white/20',
   quaternary: 'text-white',
 }
-
-export const buttonBorderClasses =
-  'before:content-[" "] before:absolute before:inset-0 before:rounded-sm before:p-[1px] before:border-glas before:-z-1'
 
 export const buttonGradientClasses = [
   'before:content-[" "] before:absolute before:inset-0 before:rounded-sm before:-z-1 before:opacity-0',
@@ -54,8 +52,8 @@ export const buttonPaddingClasses = {
 export const buttonVariantClasses = {
   solid: 'rounded-sm text-white shadow-button justify-center group',
   transparent: 'rounded-sm bg-transparent p-0 transition duration-200 ease-in',
-  round: 'rounded-full p-0',
-  rounded: 'rounded-2xl',
+  round: 'p-0',
+  rounded: '',
 }
 
 export const circularProgressSize = {

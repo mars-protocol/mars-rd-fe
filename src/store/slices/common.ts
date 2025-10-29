@@ -1,6 +1,7 @@
 import { StoreApi } from 'zustand'
 
 import Neutron1 from 'chains/neutron/neutron-1'
+import { StoreApi } from 'zustand'
 
 export default function createCommonSlice(
   set: StoreApi<CommonSlice>['setState'],

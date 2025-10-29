@@ -1,4 +1,3 @@
-import Card from 'components/common/Card'
 import ChartError from 'components/common/Chart/common/ChartError'
 import TimeframeSelector from 'components/common/Chart/common/SelectionControlPanel/TimeframeSelector'
 import DynamicLineChart from 'components/common/Chart/DynamicLineChart'
@@ -56,7 +55,7 @@ export default function TokenomicsCharts() {
   }, [])
 
   return (
-    <Card className='p-4 w-full md:p-6 bg-white/5'>
+    <div className='w-full'>
       <div className='flex flex-col gap-6'>
         <div className='flex flex-wrap justify-between items-center'>
           <Text className='pb-2'>Tokenomics Data</Text>
@@ -116,6 +115,6 @@ export default function TokenomicsCharts() {
           </div>
         )}
       </div>
-    </Card>
+    </div>
   )
 }

@@ -1,10 +1,7 @@
 'use client'
 
-import classNames from 'classnames'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import ClientWrapper from 'app/components/ClientWrapper'
 import AssetImage from 'components/common/assets/AssetImage'
-import Card from 'components/common/Card'
 import SelectionControlPanel from 'components/common/Chart/common/SelectionControlPanel'
 import Divider from 'components/common/Divider'
 import Text from 'components/common/Text'
@@ -14,7 +11,8 @@ import { PERPS_TIMEFRAME } from 'constants/timeframe'
 import { neutronPerps } from 'data/assets/neutron-perps'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import { useAllPerpsParamsSC } from 'hooks/perps/usePerpsParams'
-import ClientWrapper from 'app/components/ClientWrapper'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
 
 interface PerpsPageContentProps {
   selectedMarket?: string
@@ -102,9 +100,7 @@ export default function PerpsPageContent({ selectedMarket }: PerpsPageContentPro
     <ClientWrapper>
       <div className='w-full'>
         <PerpsMetrics />
-        <Card
-          className={classNames('p-1 md:p-4 bg-white/5', isIframeView ? 'bg-transparent' : 'mt-5')}
-        >
+        <div className='w-full'>
           <SelectionControlPanel
             selectOptions={displayOptions}
             defaultSelectValue={selectedMarketOption}
@@ -115,7 +111,7 @@ export default function PerpsPageContent({ selectedMarket }: PerpsPageContentPro
           />
           <Divider className='mt-2 mb-4' />
           <PerpsMarketStats timeframe={selectedTimeframe} selectedMarket={selectedMarketOption} />
-        </Card>
+        </div>
       </div>
     </ClientWrapper>
   )

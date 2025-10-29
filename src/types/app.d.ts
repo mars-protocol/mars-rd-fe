@@ -1098,7 +1098,7 @@ interface CommonSlice {
 }
 
 interface FocusComponent {
-  component: import('react').JSX.Element | null
+  component: import('react').ReactElement | null
   onClose?: () => void
 }
 
@@ -1108,18 +1108,18 @@ interface ModalSlice {
 
 interface AlertDialogButton {
   text?: string
-  icon?: JSX.Element
+  icon?: React.ReactElement
   isAsync?: boolean
   onClick?: () => Promise<void> | void
 }
 
 interface AlertDialogConfig {
-  icon?: JSX.Element
+  icon?: React.ReactElement
   checkbox?: {
     text: string
     onClick: (isChecked: boolean) => void
   }
-  content: JSX.Element | string
+  content: React.ReactElement | string
   negativeButton?: AlertDialogButton
   positiveButton?: AlertDialogButton
   title: string
