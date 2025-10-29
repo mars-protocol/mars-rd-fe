@@ -18,7 +18,7 @@ function getApproximateHourlyInterest(amount: string, borrowRate: number) {
     .multipliedBy(amount)
 }
 
-function asyncThrottle<F extends (...args: never[]) => Promise<unknown>>(func: F, wait?: number) {
+function asyncThrottle<F extends (...args: unknown[]) => Promise<unknown>>(func: F, wait?: number) {
   const throttled = throttle((resolve, reject, args: Parameters<F>) => {
     func(...args)
       .then(resolve)
