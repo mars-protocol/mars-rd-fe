@@ -5,7 +5,7 @@ export default function createModalSlice(
   get: StoreApi<Store>['getState'],
 ): ModalSlice {
   return {
-    resetStettingsModal: false,
+    resetSettingsModal: false,
     settingsModal: false,
   }
 }
