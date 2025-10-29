@@ -1106,7 +1106,7 @@ interface FocusComponent {
 }
 
 interface ModalSlice {
-  resetStettingsModal: boolean
+  resetSettingsModal: boolean
   settingsModal: boolean
 }
 
