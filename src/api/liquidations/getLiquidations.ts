@@ -12,6 +12,7 @@ export default async function getLiquidations(
   page = 1,
   pageSize = 25,
   searchQuery?: string | string[],
+  order: 'asc' | 'desc' = 'desc',
 ) {
   try {
     const baseUrl = getApiBaseUrl()
@@ -34,7 +35,7 @@ export default async function getLiquidations(
 
     const url = getUrl(
       baseUrl,
-      `/v2/liquidations?chain=${chain}&product=creditmanager&page=${page}&limit=${pageSize}&orders={"block_height":"desc"}${filterParam}`,
+      `/v2/liquidations?chain=${chain}&product=creditmanager&page=${page}&limit=${pageSize}&orders={"block_height":"${order}"}${filterParam}`,
     )
     const response = await fetch(url)
     const data = await response.json()

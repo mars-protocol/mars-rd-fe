@@ -3377,5 +3377,14 @@ export const neutronTokens = {
       description: 'Astroport NTRN-dATOM LP',
       decimals: 6,
     },
+    {
+      chainId: 'neutron-1',
+      denom:
+        'factory/neutron1yem82r0wf837lfkwvcu2zxlyds5qrzwkz8alvmg0apyrjthk64gqeq2e98/astroport/share',
+      symbol: 'ATOM-dATOM LP',
+      icon: null,
+      description: 'Astroport ATOM-dATOM LP',
+      decimals: 6,
+    },
   ],
 }
