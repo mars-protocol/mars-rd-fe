@@ -2771,5 +2771,14 @@ export const osmosisTokens = {
       description: 'stATOM-ATOM LP',
       decimals: 6,
     },
+    {
+      chainId: 'osmosis-1',
+      denom:
+        'factory/osmo1jfmwayj8jqp9tfy4v4eks5c2jpnqdumn8x8xvfllng0wfes770qqp7jl4j/VaultToken/678/14d/USDC/OSMO',
+      symbol: 'OSMO-USDC',
+      icon: null,
+      description: 'OSMO-USDC LP',
+      decimals: 6,
+    },
   ],
 }
