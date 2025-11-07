@@ -1,4 +1,4 @@
-import { ColumnDef, Row } from '@tanstack/react-table'
+import { ColumnDef, OnChangeFn, Row, SortingState } from '@tanstack/react-table'
 import BigNumber from 'bignumber.js'
 import classNames from 'classnames'
 import { CircularProgress } from 'components/common/CircularProgress'
@@ -27,6 +27,8 @@ export default function LiquidationsTable() {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('')
   const [selectedAccounts, setSelectedAccounts] = useState<string[]>([])
   const [activeAccounts, setActiveAccounts] = useState<string[]>([])
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'timestamp', desc: true }])
+  const [timestampOrder, setTimestampOrder] = useState<'asc' | 'desc'>('desc')
   const pageSize = 25
   const chainConfig = useChainConfig()
 
@@ -64,6 +66,7 @@ export default function LiquidationsTable() {
     page,
     pageSize,
     searchFilter,
+    timestampOrder,
   )
   const { data: assetsData, isLoading: isAssetsLoading } = useAssets()
 
@@ -161,10 +164,25 @@ export default function LiquidationsTable() {
     </div>
   )
 
+  const handleSortingChange: OnChangeFn<SortingState> = (updater) => {
+    setSorting((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater
+      const timestampEntry = next.find((item) => item.id === 'timestamp')
+
+      if (timestampEntry) {
+        setTimestampOrder(timestampEntry.desc ? 'desc' : 'asc')
+        setPage(1)
+      }
+
+      return next
+    })
+  }
+
   const columns = useMemo<ColumnDef<LiquidationDataItem>[]>(() => {
     const baseColumns = [
       {
         id: 'timestamp',
+        accessorKey: 'timestamp',
         header: 'Time',
         meta: { className: 'min-w-20' },
         cell: ({ row }: { row: Row<LiquidationDataItem> }) => (
@@ -290,7 +308,8 @@ export default function LiquidationsTable() {
             columns={columns}
             data={[]}
             tableBodyClassName='text-lg'
-            initialSorting={[]}
+            initialSorting={sorting}
+            onSortingChange={handleSortingChange}
           />
           <div className='flex flex-wrap justify-center w-full gap-4 py-8'>
             <Text className='w-full text-center' size='lg'>
@@ -318,7 +337,8 @@ export default function LiquidationsTable() {
         columns={columns}
         data={liquidations.data}
         tableBodyClassName='text-lg'
-        initialSorting={[]}
+        initialSorting={sorting}
+        onSortingChange={handleSortingChange}
       />
 
       {totalPages > 1 && (
