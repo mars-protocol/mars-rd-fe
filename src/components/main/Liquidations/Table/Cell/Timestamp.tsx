@@ -1,6 +1,6 @@
 import Text from 'components/common/Text'
 import TitleAndSubCell from 'components/common/TitleAndSubCell'
-import moment from 'moment'
+import dayjs from 'utils/dayjs'
 
 interface Props {
   value: string
@@ -11,7 +11,7 @@ export default function Timestamp(props: Props) {
   if (!value) return <Text size='xs'>N/A</Text>
 
   const timestamp = Math.floor(parseInt(value) / 1000)
-  const date = moment.unix(timestamp).utc()
+  const date = dayjs.unix(timestamp).utc()
 
   return (
     <TitleAndSubCell

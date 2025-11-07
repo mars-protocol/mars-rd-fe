@@ -8,7 +8,7 @@ import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
 import useLocalStorage from 'hooks/localStorage/useLocalStorage'
-import moment from 'moment'
+import dayjs from 'utils/dayjs'
 import {
   Bar,
   CartesianGrid,
@@ -142,9 +142,9 @@ export default function ComposedChartBody(props: Props) {
             stroke='rgba(255, 255, 255, 0.4)'
             tickFormatter={(value) => {
               if (timeframe === '24') {
-                return moment(value).format('HH:mm')
+                return dayjs(value).format('HH:mm')
               }
-              return moment(value).format('DD MMM')
+              return dayjs(value).format('DD MMM')
             }}
             axisLine={false}
             tickLine={false}

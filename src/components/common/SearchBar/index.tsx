@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Search, Cross } from 'components/common/Icons'
+import { Cross, Search } from 'components/common/Icons'
 import { ChangeEvent, InputHTMLAttributes } from 'react'
 
 interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
@@ -26,7 +26,6 @@ export default function SearchBar({ value, onChange, className, label, ...props 
         className,
       )}
     >
-      {/* <Search className='w-4 h-4 text-white/40 flex-shrink-0' /> */}
       <div className='relative w-full'>
         <input
           type='text'
