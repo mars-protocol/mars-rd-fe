@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import moment from 'moment'
+import dayjs from 'utils/dayjs'
 
 import { BN_ZERO } from 'constants/math'
 import { ORACLE_DENOM } from 'constants/oracle'
@@ -16,14 +16,14 @@ export function truncate(text = '', [h, t]: [number, number] = [6, 6]): string {
 }
 
 const produceCountdown = (remainingTime: number) => {
-  const duration = moment.duration(remainingTime, 'milliseconds')
-  const days = formatValue(duration.asDays(), { minDecimals: 0, maxDecimals: 0 })
+  const duration = dayjs.duration(remainingTime, 'milliseconds')
+  const daysValue = Math.floor(duration.asDays())
+  const hoursValue = Math.floor(duration.asHours()) % 24
+  const minutesValue = Math.floor(duration.asMinutes()) % 60
 
-  duration.subtract(days, 'days')
-  const hours = formatValue(duration.asHours(), { minDecimals: 0, maxDecimals: 0 })
-
-  duration.subtract(hours, 'hours')
-  const minutes = formatValue(duration.asMinutes(), { minDecimals: 0, maxDecimals: 0 })
+  const days = formatValue(daysValue, { minDecimals: 0, maxDecimals: 0 })
+  const hours = formatValue(hoursValue, { minDecimals: 0, maxDecimals: 0 })
+  const minutes = formatValue(minutesValue, { minDecimals: 0, maxDecimals: 0 })
 
   return `${days}d ${hours}h ${minutes}m`
 }

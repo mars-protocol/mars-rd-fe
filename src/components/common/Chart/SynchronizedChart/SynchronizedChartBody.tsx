@@ -1,7 +1,7 @@
 import ChartTooltip from 'components/common/Chart/common/Tooltip/ChartTooltip'
 import ChartLegend from 'components/common/Chart/common/Legend/ChartLegend'
 import { FormattedNumber } from 'components/common/FormattedNumber'
-import moment from 'moment'
+import dayjs from 'utils/dayjs'
 import Text from 'components/common/Text'
 import {
   Bar,
@@ -123,9 +123,9 @@ export default function SynchronizedChartBody(props: Props) {
             dy={10}
             tickFormatter={(value) => {
               if (timeframe === '24') {
-                return moment(value).format('HH:mm')
+                return dayjs(value).format('HH:mm')
               }
-              return moment(value).format('DD MMM')
+              return dayjs(value).format('DD MMM')
             }}
             interval={reversedData.length > 10 ? Math.floor(reversedData.length / 7) : 0}
           />
@@ -209,9 +209,9 @@ export default function SynchronizedChartBody(props: Props) {
             dy={10}
             tickFormatter={(value) => {
               if (timeframe === '24') {
-                return moment(value).format('HH:mm')
+                return dayjs(value).format('HH:mm')
               }
-              return moment(value).format('DD MMM')
+              return dayjs(value).format('DD MMM')
             }}
             interval={reversedData.length > 10 ? Math.floor(data.length / 7) : 0}
           />

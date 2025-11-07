@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import moment from 'moment'
+import dayjs from 'utils/dayjs'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { DEFAULT_SETTINGS } from 'constants/defaultSettings'
 import { LocalStorageKeys } from 'constants/localStorageKeys'
@@ -9,12 +9,12 @@ function createLoadingData() {
   const data = []
   const dataValues1 = [10, 20, 80, 30, 60, 50, 60]
   const dataValues2 = [60, 50, 30, 70, 40, 20, 40]
-  const startDate = moment().subtract(7, 'days')
-  const endDate = moment()
-  const days = endDate.diff(startDate, 'days')
+  const startDate = dayjs().subtract(7, 'day')
+  const endDate = dayjs()
+  const days = endDate.diff(startDate, 'day')
 
   for (let i = 0; i < days; i++) {
-    const date = moment(startDate).add(i, 'days')
+    const date = startDate.add(i, 'day')
     data.push({
       date: date.format('YYYY-MM-DD'),
       value1: dataValues1[i],
