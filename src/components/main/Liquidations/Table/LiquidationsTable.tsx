@@ -37,10 +37,10 @@ export default function LiquidationsTable() {
     setActiveAccounts([])
   }, [chainConfig.id])
 
-  // Reset page when any filter changes
+  // Reset page when search query changes
   useEffect(() => {
     setPage(1)
-  }, [debouncedSearchQuery, selectedAccounts, activeAccounts])
+  }, [debouncedSearchQuery])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -78,12 +78,14 @@ export default function LiquidationsTable() {
     if (searchQuery.trim() && !selectedAccounts.includes(searchQuery.trim())) {
       setSelectedAccounts((prev) => [...prev, searchQuery.trim()])
       setSearchQuery('')
+      setPage(1)
     }
   }
 
   const handleRemoveAccount = (account: string) => {
     setSelectedAccounts((prev) => prev.filter((acc) => acc !== account))
     setActiveAccounts((prev) => prev.filter((acc) => acc !== account))
+    setPage(1)
   }
 
   const handleToggleActiveAccount = (account: string) => {
@@ -91,11 +93,14 @@ export default function LiquidationsTable() {
       const isActive = prev.includes(account)
 
       if (isActive) {
-        return prev.filter((acc) => acc !== account)
+        const updatedAccounts = prev.filter((acc) => acc !== account)
+        return updatedAccounts
       } else {
-        return [...prev, account]
+        const updatedAccounts = [...prev, account]
+        return updatedAccounts
       }
     })
+    setPage(1)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
