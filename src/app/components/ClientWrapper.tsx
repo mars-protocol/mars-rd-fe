@@ -4,7 +4,6 @@
 import classNames from 'classnames'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect } from 'react'
-import { isMobile } from 'react-device-detect'
 import { SWRConfig } from 'swr'
 
 import Fallback from 'components/common/Fallback'
@@ -86,8 +85,8 @@ function ClientWrapperInner({
           'gap-4 p-2 pb-20',
           'md:gap-6 md:px-4 md:py-6',
           'justify-center',
-          isMobile && 'items-start transition-all duration-500',
-          mobileNavExpanded && isMobile && '-ml-full',
+          'items-start transition-all duration-500',
+          mobileNavExpanded && '-ml-full',
         )}
       >
         <SWRConfig value={{ use: [debugSWR] }}>

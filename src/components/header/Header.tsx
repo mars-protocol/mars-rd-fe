@@ -7,7 +7,6 @@ import { NavLink } from 'components/header/navigation/desktop/NavLink'
 import MobileNavigation from 'components/header/navigation/mobile/MobileNavigation'
 import MobileNavigationToggle from 'components/header/navigation/mobile/MobileNavigationToggle'
 import { useSearchParams } from 'next/navigation'
-import { isMobile } from 'react-device-detect'
 
 const menuTree = (chainConfig: ChainConfig): MenuTreeEntry[] => [
   {
@@ -40,23 +39,23 @@ export default function Header() {
 
   return (
     <>
-      <header className='fixed left-0 top-0 z-50 w-full max-w-screen-full bg-surface-dark'>
-        <div className='flex items-center justify-between px-4 py-4 h-18'>
-          <div className='relative z-50 flex items-center flex-1'>
+      <header className='fixed top-0 left-0 z-50 w-full max-w-screen-full bg-surface-dark'>
+        <div className='flex justify-between items-center px-4 py-4 h-18'>
+          <div className='flex relative z-50 flex-1 items-center'>
             <NavLink isHome item={{ pages: ['main'], label: 'home' }}>
               <span className='block w-10 h-10'>
                 <MarsToken className='text-white' />
               </span>
             </NavLink>
-            {!isMobile && <DesktopNavigation menuTree={menuTree} />}
+            <DesktopNavigation menuTree={menuTree} />
           </div>
           <div className='flex gap-4'>
-            {!isMobile && <ChainSelect className='hidden md:flex' />}
-            {isMobile && <MobileNavigationToggle className='md:hidden' />}
+            <ChainSelect className='hidden md:flex' />
+            <MobileNavigationToggle className='md:hidden' />
           </div>
         </div>
       </header>
-      {isMobile && <MobileNavigation menuTree={menuTree} />}
+      <MobileNavigation menuTree={menuTree} />
     </>
   )
 }
