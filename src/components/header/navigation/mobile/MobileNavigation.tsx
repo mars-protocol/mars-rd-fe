@@ -55,18 +55,18 @@ export default function MobileNavigation(props: Props) {
   return (
     <nav
       className={classNames(
-        'fixed md:hidden max-w-screen-full w-screen-full top-18 p-2 pt-4 pb-20 transition-all overflow-y-scroll h-[calc(100dvh-72px)] z-20 items-start',
+        'overflow-y-scroll fixed z-20 items-start p-2 pt-4 pb-20 transition-all md:hidden max-w-screen-full w-screen-full top-18 h-[calc(100dvh-72px)] scrollbar-hide',
         mobileNavExpanded ? 'right-0 opacity-100' : '-right-full opacity-0',
       )}
     >
       <div className='flex flex-wrap gap-4'>
-        <div className='flex items-center justify-between w-full'>
+        <div className='flex justify-between items-center w-full'>
           <Text size='sm'>Outpost:</Text>
           <div className='relative'>
             <ChainSelect withText />
           </div>
         </div>
-        <div className='flex items-center justify-between w-full'>
+        <div className='flex justify-between items-center w-full'>
           <Text size='sm'>Page:</Text>
           <div className='relative'>
             <select
@@ -101,7 +101,7 @@ export default function MobileNavigation(props: Props) {
                 )
               })}
             </select>
-            <div className='absolute w-3 -translate-y-1/2 right-2 top-1/2 -z-1'>
+            <div className='absolute right-2 top-1/2 w-3 -translate-y-1/2 -z-1'>
               <ChevronDown />
             </div>
           </div>
