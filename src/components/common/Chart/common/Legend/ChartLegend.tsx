@@ -13,13 +13,13 @@ interface LegendEntry {
     legendType: string
     name: string
     dataKey: string
-    [key: string]: any
+    [key: string]: unknown
   }
 }
 
 interface Props {
   payload: LegendEntry[]
-  data?: any[]
+  data?: Record<string, unknown>[]
 }
 
 export default function ChartLegend(props: Props) {

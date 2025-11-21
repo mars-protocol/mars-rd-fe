@@ -1,4 +1,4 @@
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer } from 'recharts'
 
 interface PieChartData {
   name: string
@@ -14,24 +14,34 @@ interface Props {
 
 const RADIAN = Math.PI / 180
 
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+const renderCustomizedLabel = (props: PieLabelRenderProps) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props
 
-  if (percent < 0.05) return null // Don't show label if slice is too small
+  // Type guards for numeric properties
+  const cxNum = typeof cx === 'number' ? cx : 0
+  const cyNum = typeof cy === 'number' ? cy : 0
+  const midAngleNum = typeof midAngle === 'number' ? midAngle : 0
+  const innerRadiusNum = typeof innerRadius === 'number' ? innerRadius : 0
+  const outerRadiusNum = typeof outerRadius === 'number' ? outerRadius : 0
+  const percentNum = typeof percent === 'number' ? percent : 0
+
+  const radius = innerRadiusNum + (outerRadiusNum - innerRadiusNum) * 0.5
+  const x = cxNum + radius * Math.cos(-midAngleNum * RADIAN)
+  const y = cyNum + radius * Math.sin(-midAngleNum * RADIAN)
+
+  if (percentNum < 0.05) return null // Don't show label if slice is too small
 
   return (
     <text
       x={x}
       y={y}
       fill='white'
-      textAnchor={x > cx ? 'start' : 'end'}
+      textAnchor={x > cxNum ? 'start' : 'end'}
       dominantBaseline='central'
       fontSize={12}
       fontWeight={600}
     >
-      {`${(percent * 100).toFixed(1)}%`}
+      {`${(percentNum * 100).toFixed(1)}%`}
     </text>
   )
 }

@@ -9,7 +9,7 @@ interface ChartTransformation {
 }
 
 export const useChartDataTransform = (
-  data: PerpsGlobalData | PerpsMarketData | PerpsVaultApyData,
+  data: PerpsGlobalData | PerpsMarketData | PerpsVaultApyData | OverviewData | null | undefined,
   transformations: ChartTransformation[],
 ) => {
   return useMemo(() => {
