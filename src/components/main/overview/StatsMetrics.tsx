@@ -2,12 +2,12 @@ import MetricsCard from 'components/common/Card/MetricsCard'
 import { GridGlobe } from 'components/common/Icons'
 import { BN_ZERO } from 'constants/math'
 import { PRICE_ORACLE_DECIMALS } from 'constants/query'
-import { neutronPerps } from 'data/assets/neutron-perps'
 import useTotalAccounts from 'hooks/accounts/useTotalAccounts'
 import useAssets from 'hooks/assets/useAssets'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import useAssetParams from 'hooks/params/useAssetParams'
 import useActivePerpsMarketsCount from 'hooks/perps/useActivePerpsMarketsCount'
+import usePerpsMarkets from 'hooks/perps/usePerpsMarkets'
 import useOverviewData from 'hooks/tokenomics/useOverviewData'
 import { useMemo } from 'react'
 import { ChainInfoID } from 'types/enums'
@@ -22,6 +22,7 @@ export default function StatsMetrics() {
   const chainId = getCurrentChainId()
   const isNeutron = chainId === ChainInfoID.Neutron1
   const { data: activePerpsCount } = useActivePerpsMarketsCount()
+  const { data: perpsMarkets } = usePerpsMarkets()
   const chainConfig = useChainConfig()
   const { data: assetParams, isLoading: assetParamsLoading } = useAssetParams()
 
@@ -104,7 +105,7 @@ export default function StatsMetrics() {
         ...(isNeutron
           ? [
               {
-                value: BN((activePerpsCount ?? 0) || neutronPerps.length || 0),
+                value: BN((activePerpsCount ?? 0) || perpsMarkets?.length || 0),
                 label: 'Active Perps Markets',
                 formatOptions: {
                   maxDecimals: 0,
