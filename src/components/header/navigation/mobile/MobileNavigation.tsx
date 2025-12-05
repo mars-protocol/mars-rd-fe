@@ -26,6 +26,19 @@ export default function MobileNavigation(props: Props) {
 
   const menu = useMemo(() => menuTree(chainConfig), [menuTree, chainConfig])
 
+  const selectedValue = useMemo(() => {
+    for (const item of menu) {
+      if (item.submenu) {
+        const match = item.submenu.find((subItem) => subItem.page === currentPage)
+        if (match) return match.page
+      }
+    }
+    const regularItem = menu.find(
+      (item) => !item.submenu && item.pages.includes(currentPage as Page),
+    )
+    return regularItem?.pages[0] ?? ''
+  }, [menu, currentPage])
+
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -71,6 +84,7 @@ export default function MobileNavigation(props: Props) {
           <div className='relative'>
             <select
               className='py-1.5 pl-2 pr-6 text-sm text-white bg-transparent border appearance-none border-white/30 focus:outline-none active:outline-none'
+              value={selectedValue}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
                 selectPage(event.target.value as Page)
               }
@@ -79,11 +93,7 @@ export default function MobileNavigation(props: Props) {
                 if (item.submenu) {
                   return item.submenu.map((subItem, subIndex) => {
                     return (
-                      <option
-                        key={subIndex}
-                        value={subItem.page}
-                        selected={subItem.page === currentPage}
-                      >
+                      <option key={subIndex} value={subItem.page}>
                         {`${item.label} - ${subItem.label}`}
                       </option>
                     )
@@ -91,11 +101,7 @@ export default function MobileNavigation(props: Props) {
                 }
 
                 return (
-                  <option
-                    key={index}
-                    value={item.pages[0]}
-                    selected={item.pages.indexOf(currentPage as Page) !== -1}
-                  >
+                  <option key={index} value={item.pages[0]}>
                     {item.label}
                   </option>
                 )
