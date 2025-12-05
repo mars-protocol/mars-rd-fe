@@ -8,9 +8,9 @@ import Text from 'components/common/Text'
 import PerpsMarketStats from 'components/main/perps/perpsMarketStats'
 import PerpsMetrics from 'components/main/perps/PerpsMetrics'
 import { PERPS_TIMEFRAME } from 'constants/timeframe'
-import { neutronPerps } from 'data/assets/neutron-perps'
 import useChainConfig from 'hooks/chain/useChainConfig'
 import { useAllPerpsParamsSC } from 'hooks/perps/usePerpsParams'
+import usePerpsMarkets from 'hooks/perps/usePerpsMarkets'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -22,10 +22,11 @@ export default function PerpsPageContent({ selectedMarket }: PerpsPageContentPro
   const router = useRouter()
   const searchParams = useSearchParams()
   const { data: perpsParams } = useAllPerpsParamsSC()
+  const { data: perpsMarkets } = usePerpsMarkets()
 
   const perpsAssets = useMemo(
-    () => neutronPerps.filter((p) => perpsParams?.some((ap) => ap.denom === p.denom)),
-    [perpsParams],
+    () => (perpsMarkets || []).filter((p) => perpsParams?.some((ap) => ap.denom === p.denom)),
+    [perpsParams, perpsMarkets],
   )
 
   const isIframeView = searchParams?.get('iframeView') === 'on'

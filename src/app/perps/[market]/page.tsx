@@ -1,7 +1,7 @@
 import Fallback from 'components/common/Fallback'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
-import { neutronPerps } from '../../../data/assets/neutron-perps'
+import getPerpsMarkets from 'api/perps/getPerpsMarkets'
 import { generatePerpsMarketMetadata } from '../../../metadata'
 import PerpsMarketPageContent from './components/PerpsMarketPageContent'
 
@@ -11,8 +11,9 @@ interface PerpsMarketPageProps {
   }>
 }
 
-export function generateStaticParams() {
-  return neutronPerps.map((asset) => ({
+export async function generateStaticParams() {
+  const perpsMarkets = await getPerpsMarkets()
+  return perpsMarkets.map((asset) => ({
     market: asset.denom.replace('perps/', ''), // Remove 'perps/' prefix for URL
   }))
 }
@@ -22,7 +23,8 @@ export async function generateMetadata({ params }: PerpsMarketPageProps): Promis
   const fullDenom = `perps/${market}`
 
   // Find the asset data to get the correct symbol and description
-  const marketAsset = neutronPerps.find((asset) => asset.denom === fullDenom)
+  const perpsMarkets = await getPerpsMarkets()
+  const marketAsset = perpsMarkets.find((asset) => asset.denom === fullDenom)
   const marketSymbol = marketAsset?.symbol || market.toUpperCase()
   const marketDescription =
     marketAsset?.description || market.charAt(0).toUpperCase() + market.slice(1)
