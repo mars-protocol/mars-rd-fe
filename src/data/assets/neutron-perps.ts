@@ -42,6 +42,14 @@ export const neutronPerps = [
   },
   {
     chainId: 'neutron-1',
+    denom: 'perps/uaster',
+    symbol: 'ASTER',
+    icon: 'https://raw.githubusercontent.com/mars-protocol/perps-markets/refs/heads/main/logos/ASTER.svg',
+    description: 'Aster',
+    decimals: 6,
+  },
+  {
+    chainId: 'neutron-1',
     denom: 'perps/uatom',
     symbol: 'ATOM',
     icon: 'https://raw.githubusercontent.com/mars-protocol/perps-markets/refs/heads/main/logos/ATOM.svg',
@@ -166,6 +174,14 @@ export const neutronPerps = [
     symbol: 'LINK',
     icon: 'https://raw.githubusercontent.com/mars-protocol/perps-markets/refs/heads/main/logos/LINK.svg',
     description: 'Chainlink',
+    decimals: 6,
+  },
+  {
+    chainId: 'neutron-1',
+    denom: 'perps/umon',
+    symbol: 'MON',
+    icon: 'https://raw.githubusercontent.com/mars-protocol/perps-markets/refs/heads/main/logos/MON.svg',
+    description: 'Monad',
     decimals: 6,
   },
   {
@@ -318,6 +334,22 @@ export const neutronPerps = [
     symbol: 'PUMP',
     icon: 'https://raw.githubusercontent.com/mars-protocol/perps-markets/refs/heads/main/logos/PUMP.svg',
     description: 'Pump',
+    decimals: 6,
+  },
+  {
+    chainId: 'neutron-1',
+    denom: 'perps/uwlfi',
+    symbol: 'WLFI',
+    icon: 'https://raw.githubusercontent.com/mars-protocol/perps-markets/refs/heads/main/logos/WLFI.svg',
+    description: 'World Liberty Finance',
+    decimals: 6,
+  },
+  {
+    chainId: 'neutron-1',
+    denom: 'perps/uzec',
+    symbol: 'ZEC',
+    icon: 'https://raw.githubusercontent.com/mars-protocol/perps-markets/refs/heads/main/logos/ZEC.svg',
+    description: 'ZCash',
     decimals: 6,
   },
 ]
